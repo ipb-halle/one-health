@@ -1,0 +1,46 @@
+@import './Constants.scss';
+
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
+
+@import 'primereact/resources/themes/saga-blue/theme.css';
+@import 'primereact/resources/primereact.min.css';
+@import 'primeicons/primeicons.css';
+
+.asterisk-mark::after {
+    content: '*';
+    color: red;
+}
+
+
+.panel-no-padding .p-panel-content {
+    padding: 0px;
+
+}
+
+.p-fileupload-content {
+    display: none !important;
+}
+
+.p-fileupload-buttonbar {
+    border-bottom: 1px solid #dee2e6;
+}
+
+
+.p-inputgroup-button {
+    background-color: #E9ECEF;
+    border-color: #CED4DA;
+    border-left: none;
+    color: #6C757D;
+}
+
+.p-filter-match-mode-dropdown {
+    background-color: #E9ECEF;
+    border-color: #CED4DA;
+    border-left: none;
+    padding-left: 2px;
+    max-width: 37.71px !important;
+}
+
+.p-filter-match-mode-dropdown .p-dropdown-trigger {
+    max-width: 0px;
+}

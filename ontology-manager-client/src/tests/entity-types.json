@@ -1,0 +1,226 @@
+[
+    {
+        "id" : "taxon",
+        "name" : "Taxon",
+        "pluralName": "Taxa",
+        "description" : "A taxon is a group of organisms that are classified together based on shared characteristics.",
+        "color": "#7c7a7a",
+        "keywords": [
+        ],
+        "properties": [
+            {
+                "name" : "Kingdom",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+            },
+            {
+                "name" : "Phylum",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+            },
+            {
+                "name" : "Family",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Sub-family",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Genus",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Species",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Sub-species",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name": "Scientific Name",
+                "key": true,
+                "dataType": "STRING",
+                "inherited": false
+
+            }
+        ],
+        "sources": []
+    },
+    {
+        "id" : "plant",
+        "name" : "Plant",
+        "pluralName": "Plants",
+        "color": "#297e00",
+        "description" : "A multicellular eukaryotic organism that belongs to the kingdom Plantae.",
+        "parent": { "id" : "taxon" },
+        "keywords": [
+        ],
+        "properties": [
+            {
+                "name" : "Growth Habit",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Duration",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            }
+        ],
+        "sources": []
+    },{
+        "id" : "location",
+        "name" : "Location",
+        "pluralName": "Locations",
+        "color": "#522009",
+        "description" : "A place.",
+        "keywords": [
+        ],
+        "properties": [
+            {
+                "name" : "Name",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            }
+        ],
+        "sources": []
+    }
+    
+    ,
+    {
+        "id" : "np",
+        "name" : "Natural Product",
+        "pluralName": "Natural Products",
+        "color": "#343ea0",
+        "description" : "A chemical compound produced by a living organism through its natural biochemical pathways.",
+        "keywords": [
+        ],
+        "properties": [
+            {
+                "name" : "InChI",
+                "key": true,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "InChI Key",
+                "key": true,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "SMILES",
+                "key": true,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Name",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            }
+        ],
+        "sources": []
+    },
+    {
+        "id":"produces",
+        "name":"PRODUCES",
+        "direction":"OUTGOING",
+        "leftEntityTypeId":"plant",
+        "leftCardinality":"MANY",
+        "rightEntityTypeId":"np",
+        "rightCardinality":"MANY",
+        "description" : "The natural product can be obtained from the plant",
+        "keywords": [],
+        "properties": [
+        ],
+        "sources" : []
+
+    },
+    {
+        "id" : "disease",
+        "name" : "Disease",
+        "pluralName": "Diseases",
+        "color": "#b1002a",
+        "description" : "A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.",
+        "keywords": [
+        ],
+        "properties": [
+            {
+                "name" : "Name",
+                "key": true,
+                "dataType": "STRING",
+                "inherited": false
+
+            },
+            {
+                "name" : "Classification",
+                "key": false,
+                "dataType": "STRING",
+                "inherited": false
+
+            }
+        ],
+        "sources": []
+    },
+    {
+        "id":"treats",
+        "name":"TREATS",
+        "direction":"OUTGOING",
+        "leftEntityTypeId":"np",
+        "leftCardinality":"MANY",
+        "rightEntityTypeId":"disease",
+        "rightCardinality":"MANY",
+        "description" : "The natural product can be used to treat the disease",
+        "keywords": [],
+        "properties": [
+        ],
+        "sources" : []
+
+    },
+    {
+        "id":"is_present_in",
+        "name":"IS PRESENT IN",
+        "direction":"OUTGOING",
+        "leftEntityTypeId":"plant",
+        "leftCardinality":"MANY",
+        "rightEntityTypeId":"location",
+        "rightCardinality":"MANY",
+        "description" : "The plant can be founded in",
+        "keywords": [],
+        "properties": [
+        ],
+        "sources" : []
+
+    }
+]

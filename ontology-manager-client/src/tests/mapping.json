@@ -1,0 +1,16 @@
+
+{
+    "type": "plant",
+    "properties": {
+
+        "kingdom" : { "name" : "Kingdom" },
+        "phylum" : { "name" : "Phylum" },
+        "family" : { "name" : "Family" },
+        "genus" : { "name" : "Genus" },
+        "species" : { "name" : "Species" },
+        "sub-species" : { "name" : "Sub-species" },
+        "scientific-name" : { "name" : "Scientific Name" }
+
+    }
+}
+

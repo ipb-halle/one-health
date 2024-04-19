@@ -1,0 +1,43 @@
+@use '../../Constants.scss' as c;
+
+.card {
+    width: 100%;
+    // box-shadow: c.$app-box-shadow;
+    border: 1px solid #dee2e6;
+    box-shadow: none;
+    background-color: c.$app-color-1;
+}
+
+p.card-text {
+    border-bottom: 1px;
+    background-color: red;
+    color: blue;
+}
+
+.p-card-body {
+    padding-bottom: 10px;
+    padding-top: 0px;
+}
+
+.icon-container {
+    width: 45px;
+    height: 40px;
+    border: 1px solid #d4d4d4;
+    border-radius: 3px;
+    padding-left: 12px;
+    margin-left: 12px;
+    background-color: #d4d4d4;
+}
+
+.button {
+    background-color: white;
+    border-color: #f5f6f7;
+    margin-left: -10px;
+    margin-right: 10px;
+    width: 270px;
+}
+
+.button:hover {
+    color: white;
+    background-color: #d4d4d4;
+}

@@ -1,0 +1,9 @@
+@import '../../Constants.scss';
+
+.content {
+    background-color: white;
+    padding-top: $app-header-height + 45px;
+    min-height: 1080px;
+    border-left-color: white;
+    padding-bottom: 40px;
+}
