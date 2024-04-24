@@ -1,0 +1,7 @@
+docker build -t ontology-manager-client -f client.dockerfile .
+docker build -t ontology-manager-server -f server.dockerfile .
+docker compose up
+
+
+
+neo4j-admin database dump --expand-commands system --to-path=/backup && neo4j-admin database dump --expand-commands neo4j --to-path=/backup

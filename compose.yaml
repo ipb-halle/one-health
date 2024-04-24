@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  server:
+    image: ontology-manager-server
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - graphdb
+
+  client:
+    image: ontology-manager-client
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+  graphdb:
+    container_name: graphdb
+    image: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    networks:
+      - app-network
+    volumes:
+      - sources_cu_plants_ontology_data:/data
+      - ./data/:/backup/
+    environment:
+      NEO4J_AUTH: none
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sources_cu_plants_ontology_data:
+    external: true
