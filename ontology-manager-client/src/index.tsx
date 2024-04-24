@@ -6,21 +6,9 @@ import App from './features/layout/app.component';
 import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
-const qs = require('qs');
 
 
 axios.defaults.baseURL = 'http://localhost:8080'
-axios.defaults.paramsSerializer = {
-    encode: (params) => {
-        console.log("repingaaaaa");
-        return qs.stringify(params);
-    },
-    serialize: (params) => {
-        console.log("repingaaaaa");
-      return qs.stringify(params);
-    },
-  };
-
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,

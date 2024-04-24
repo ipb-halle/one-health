@@ -72,6 +72,7 @@ Some of the advantages of this architecture are:
 - **plotly.js**: A library for interactive data visualization [[Read documentation](https://plotly.com/javascript/)] [[MIT License](https://github.com/remix-run/react-router/blob/main/LICENSE.md)]
 - **react-plotly.js**: React component wrapper for Plotly graphs [[Read documentation](https://github.com/plotly/react-plotly.js)] [[MIT License](https://raw.githubusercontent.com/plotly/react-plotly.js/master/LICENSE)]
 - **openchemlib-js**: Open source javascript chemistry library [[Read documentation](https://cheminfo.github.io/openchemlib-js/modules.html)] [[BSD-3-Clause License](https://github.com/remix-run/react-router/blob/main/LICENSE.md)]
+- **qs**: A querystring parsing and stringifying library [[Read documentation](https://github.com/ljharb/qs)] [[BSD-3-Clause License](https://raw.githubusercontent.com/ljharb/qs/main/LICENSE.md)]
 
 ## Features
 

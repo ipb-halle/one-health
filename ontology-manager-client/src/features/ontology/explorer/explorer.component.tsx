@@ -23,7 +23,6 @@ import { IMetadataElement } from './metadata-element';
 import { table } from 'console';
 import CytoscapeChart from './cytoscape-chart.component';
 
-let cola = require('cytoscape-cola');
 
 const React = require('react');
 
@@ -36,7 +35,6 @@ const Explorer: React.FC = () => {
     const background = "#343843";
     const [element, setElement] = useState<any>({});
 
-    cytoscape.use(cola)
 
     const [cytoscapeCore, setCytoscapeCore] = useState<Core>()
     const metadataService = dependencyFactory.get<IMetadataService>(SERVICE_TYPES.IMetadataService);

@@ -1,4 +1,3 @@
-import { Card, Form, Row, Col } from 'react-bootstrap';
 import { PropertyList } from '../properties';
 import { IProperty } from '../properties';
 import { DataTypes } from '../data-types/data-types';
