@@ -54,7 +54,7 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
     const onRemovePropertyHandler = (name: string) => {
         return () => {
             console.log("here");
-            let i = properties.indexOf(x => x.name === name);
+            let i = properties.findIndex(x => x.name === name);
 
             if (i >= 0) {
                 properties.splice(i, 1);
@@ -73,7 +73,7 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         const newProperty = "New Property";
 
 
-        if (properties.indexOf(x => x.name === newProperty) >= 0){
+        if (properties.findIndex(x => x.name === newProperty) >= 0){
             toast.current?.show({severity:"error", summary:"Error", detail:`Can't have two properties with the same name ${newProperty}`});
             return;
 

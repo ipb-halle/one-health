@@ -127,7 +127,7 @@ const EntityTypeForm: React.FC = () => {
             return false;
         }
     
-        if (entityType.properties.findIndex(x => x.key) < 0){
+        if (entityType.properties.findIndex(x:any => x.key) < 0){
             // toast.current?.show({severity:"error", summary:"Error", detail:"An entity type should have at least one key."});
             return false;
         }
