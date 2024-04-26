@@ -8,7 +8,7 @@ import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
 
 
-axios.defaults.baseURL = 'http://ontology-manager-server:8080'
+axios.defaults.baseURL = 'http://glacier.ipb-halle.de:8080'
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
