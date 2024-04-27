@@ -2,7 +2,10 @@ version: '3'
 
 services:
   server:
-    image: ontology-manager-server
+    container_name: ontology-manager-server
+    build:
+      context: .
+      dockerfile: server.dockerfile
     ports:
       - "8080:8080"
     networks:
@@ -11,7 +14,10 @@ services:
       - graphdb
 
   client:
-    image: ontology-manager-client
+    container_name: ontology-manager-client
+    build:
+      context: .
+      dockerfile: client.dockerfile
     ports:
       - "3000:3000"
     networks:

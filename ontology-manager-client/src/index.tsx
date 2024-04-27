@@ -8,7 +8,8 @@ import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
 
 
-axios.defaults.baseURL = 'http://glacier.ipb-halle.de:8080'
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+console.log(process.env);
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
