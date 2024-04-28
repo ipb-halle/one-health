@@ -1,8 +1,20 @@
-# Technical Manual
+# Software Design
 
-## Architecture
+## User Flows
 
-### Overview
+- User:
+  - Explore the graph
+  - Co-ocurrence Search
+  - Queryin
+- Curator:
+  - CRUD
+- Administrator:
+  - Name curators
+  - Other administrative stuff
+
+# Software Architecture
+
+## Overview
 
 The app makes use of a three-tier architecture:
 
@@ -19,46 +31,19 @@ Some of the advantages of this architecture are:
 - Scalability: Each tier can be scaled independently as needed. For example we can scale the server of the data tier as we integrate information about more countries without increasing the resources for the application and presentation tiers.
 - Maintainance: Each tier can be maintained independently, so different developers can work in the different tiers according to their skills.
 
-### Software
+The following sections provide details about the architecture of each tier of the application
 
+## Client Architecture
 
+### Overview
 
-## User Flows
+React application, single page application using React Router to route to each page component
 
-- User:
-  - Explore the graph
-  - Co-ocurrence Search
-  - Queryin
-- Curator:
-  - CRUD
-- Administrator:
-  - Name curators
-  - Other administrative stuff
-
-### Modules
-
-#### Metadata Definition
-
-#### Data Load
-
-#### Knowledge Graph Exploration
-
-#### Co-Occurrences Search
-
-
-
-
-
-
-
-# Frontend
-
-## Architecture Overview
+Each component is comprised by a tsx file a scss file and all the dtos are represented by a .d.ts file
 
 ### Dependencies
 
 - **bootstrap**: CSS framework for layout [[Read documentation]](https://getbootstrap.com/docs/5.3/getting-started/introduction/) [[MIT License](https://github.com/twbs/bootstrap/blob/main/LICENSE)]
-
 - **primereact**: UI components library for react [[Read documentation](https://primereact.org/)] [[MIT License](https://github.com/primefaces/primereact/blob/master/LICENSE.md)]
 - **primeicons**: UI icons library for react [[Read documentation](https://primereact.org/icons/)] [[MIT License](https://github.com/primefaces/primeicons/blob/master/LICENSE)]
 - **fontawesome-free**: Free version icon library and toolkit [[Read documentation](https://github.com/FortAwesome/Font-Awesome)] [[Free License](https://github.com/FortAwesome/Font-Awesome/blob/6.x/LICENSE.txt)]
@@ -73,6 +58,10 @@ Some of the advantages of this architecture are:
 - **react-plotly.js**: React component wrapper for Plotly graphs [[Read documentation](https://github.com/plotly/react-plotly.js)] [[MIT License](https://raw.githubusercontent.com/plotly/react-plotly.js/master/LICENSE)]
 - **openchemlib-js**: Open source javascript chemistry library [[Read documentation](https://cheminfo.github.io/openchemlib-js/modules.html)] [[BSD-3-Clause License](https://github.com/remix-run/react-router/blob/main/LICENSE.md)]
 - **qs**: A querystring parsing and stringifying library [[Read documentation](https://github.com/ljharb/qs)] [[BSD-3-Clause License](https://raw.githubusercontent.com/ljharb/qs/main/LICENSE.md)]
+
+## Server Architecture
+
+## Database Architecture
 
 ## Features
 
@@ -167,27 +156,73 @@ For graph visualization we selected [Cytoscape](https://js.cytoscape.org/) and i
 
 ### Chemistry Tools
 
-# Backend
+# Developer Guides
 
-### Architecture Overview
+## Environment Variables
 
-### Models
+For this applications we setted up two environments: `DEV` (Development) and `PROD` (Production). The configurations for these environments must be defined for both the server and client of the application and usually will be related to the networking of the application.
 
-### Repositories
+The **client environment** configuration is managed using the `.env*` files located in the root directory of the client (i.e. `ontology-manager-client/.env`), in this case we have three files: `.env` for general configurations for both environments, `.env.development` and `.env.production` for specific configurations for development and production respectively.  In the environment specific files we defined two variables `REACT_APP_API_URL=<server-url>` and `REACT_APP_ENV=<environment-name>`, then these variables can be accessed using the `process.env` object in JavaScript.
 
-### Services
+For example `REACT_APP_API_URL` is used to configure the base URL for the HTTP client (Axios in this case) which is done in the `index.tsx` file
 
-### Controllers
+```typescript
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+```
 
+By default running `npm start` will run a development server using values defined in the `.env.development` file while `npm build` will create a production build of the application using the values in `.env.production`. For more information about handling environment variables in Node.js please refer to the [documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
+The **server environment** configuration is managed using the `application-<env>.configuration` files located in `ontology-manager-server/src/main/resources/`, in this case we have three files: `application.configuration` which is the default configuration used by the Spring framework, `application-dev.configuration` and `application-prod.configuration` for specific configurations for development and production respectively. The `application.configuration` file is used as a proxy to select the active environment, in this case we setted `spring.profiles.active=dev` since we are in development most of the time, also the active profile can be selected when executing the `jar` file using arguments like we do when running the production build.
 
+```bash  
+java -jar -Dspring.profiles.active=prod app.jar
+```
 
+In these files we store the connection string informations for the databases and also in the future we might need to hide this files from the github to not expose our networking sensitive information. For more information about handling environment variables in Spring please refer to the [documentation](https://docs.spring.io/spring-boot/docs/1.2.0.M1/reference/html/boot-features-profiles.html).
 
+## Development Deployment
 
+For running the development build of the app you will need to deploy the databases, the server and the client in a single computer, in this section I will give you an example walkthrough of how this can be done.
 
+Let's start by deploying a database, in this case we use Neo4J Community Edition which can be installed in your computer but we prefer to use it as a docker container in this case
 
+```bash
+docker run --name one-health-graphdb -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none -v <your-volume>:/data -d neo4j
+```
 
+After executing this command you should be able to access the Neo4J Manager through `localhost:7474` and the server to communicate with the app using `localhost:7687`.
 
+To run the server we used [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/), just open the project folder (`ontology-manager-server`) and run the main file  `/src/main/java/ipbhalle.de.ontologymanagerserver/OntologyManagerServerApplication.java`. This should launch the server on `localhost:8080`.
+
+To run the client we used Visual Studio Code, after opening the client project directory on VS Code open a terminal and use the following commands to launch the client on `localhost:3000`
+
+```bash
+npm install
+npm start
+```
+
+Please notice that if any of the port is being used by another process the deployment will fail
+
+## Production Deployment
+
+The production build of the application is deployed using Docker, we provide three files:
+
+`server.dockerfile` provides a containerized version of the production build of the server
+
+`client.dockerfile` provides a containerized version of the production build of the client served by an HTTP server
+
+`compose.yaml` 
+
+Also we provide three files to automate the deployment process: pulling the newest version from GitHub, stoping and removing the containers, rebuilding the docker images and starting new containers.
+
+`run-docker.sh` automates this process without using the `compose` tool and `run-compose.sh` uses this tool.
+
+To execute this file run the following commands
+
+```bash
+chmod +x run-<tool>.sh
+./run-<tool>.sh
+```
 
 
 
