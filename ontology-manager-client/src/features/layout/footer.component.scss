@@ -1,0 +1,6 @@
+@use '../../Constants.scss' as c;
+
+
+.app-footer {
+    border: solid 1px c.$app-border-color;
+}

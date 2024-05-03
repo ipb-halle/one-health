@@ -14,6 +14,7 @@ import { CoOcurrenceSearch } from '../data-visualization/co-ocurrence-search';
 import EntityTypePage from '../ontology/entity-types/entity-type-page.component';
 import FiltersDemo from '../filter/demo';
 import GraphExplorer from '../ontology/graph/explorer.component';
+import ContactPage from '../pages/contact.component';
 
 function App() {
     return (
@@ -24,6 +25,10 @@ function App() {
                 <div className="content">
                     <Routes>
                         <Route path="/" Component={Home} />
+                        <Route
+                            path="/contact"
+                            Component={ContactPage}
+                        />
                         <Route
                             path="/documentation"
                             Component={Documentation}
@@ -57,6 +62,7 @@ function App() {
                 
                 </div>
                 
+                <Footer></Footer>
             </BrowserRouter>
         </div>
     );

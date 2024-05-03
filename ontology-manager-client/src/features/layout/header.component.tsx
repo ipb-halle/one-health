@@ -55,6 +55,16 @@ const Header: React.FC = () => {
                 }
             ],
         },
+        {
+            label: 'Documentation',
+            icon: 'pi pi-book',
+            url: '/documentation'
+        },
+        {
+            label: 'Contact',
+            icon: 'pi pi-envelope',
+            url: '/contact'
+        }
     ];
 
     const end = <HeaderSearchbar></HeaderSearchbar>;
@@ -65,7 +75,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="fluid fixed-top">
-            <Menubar model={items} start={start} end={end} />
+            <Menubar model={items} start={start} />
         </div>
     );
 };
