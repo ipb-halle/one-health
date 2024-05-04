@@ -1,9 +1,7 @@
 import { dependencyFactory } from "../../injection/inversify.config";
 import { ILinkTypeService } from "../../services";
 import { SERVICE_TYPES } from "../../services";
-import { RefObject, useState } from "react";
-import { Toast } from "primereact/toast";
-import { useRef } from "react";
+import { useContext, useState } from "react";
 import { Column } from "primereact/column";
 import LazyLoadGrid from "../../utils/grid/grid.component";
 import { ITypeQuery } from "./type-query";
@@ -15,6 +13,7 @@ import { filter } from "rxjs";
 import { IFilter } from "./filter";
 import { InputText } from "primereact/inputtext";
 import { ScrollPanel } from "primereact/scrollpanel";
+import { MessageServiceContext } from "../../messages";
 
 
 const React = require('react');
@@ -22,12 +21,13 @@ const React = require('react');
 interface TypeQueryBuilderProps {
     triggerQuery: boolean;
     parentUpdate: any;
-    toast: RefObject<Toast>;
 }
 
 
-const TypeQueryBuilder: React.FC<TypeQueryBuilderProps> = ({toast, triggerQuery, parentUpdate}) => {
+const TypeQueryBuilder: React.FC<TypeQueryBuilderProps> = ({triggerQuery, parentUpdate}) => {
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
+    const {messageService} = useContext(MessageServiceContext);
+
     const [query, setQuery] = useState<ITypeQuery>({});
     const [options, setOptions] = useState<SelectableOption[]>([]);
     const [groupByOptions, setGroupByOptions] = useState<SelectableOption[]>([]);
@@ -41,7 +41,7 @@ const TypeQueryBuilder: React.FC<TypeQueryBuilderProps> = ({toast, triggerQuery,
 
     const init = async () => {
         setOptions(
-            await entityService.getAllEntityTypesAsOptions(toast)
+            await entityService.getAllEntityTypesAsOptions(messageService!)
         );
 
     }
@@ -60,7 +60,7 @@ const TypeQueryBuilder: React.FC<TypeQueryBuilderProps> = ({toast, triggerQuery,
     const onTypeChangedHandler = async () => {
         if (query.type){
 
-           var  entityType = await entityService.get(query.type, toast)
+           var  entityType = await entityService.get(query.type, messageService!)
            var filters = entityType.properties.map((x) => { return { property: x.name, value: undefined} });
 
            setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));

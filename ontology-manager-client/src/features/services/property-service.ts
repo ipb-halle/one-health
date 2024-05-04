@@ -1,5 +1,5 @@
-import { PagedCrudService } from "./paged-crud-service";
-import { IHttpResponseHandlerSettings } from "./http-responses-handler";
+import { PagedCrudService } from "./interfaces/paged-crud-service";
+import { IHttpResponseHandlerSettings } from "./utils/http-responses-handler";
 import { injectable } from "inversify";
 import { IProperty } from "../ontology/properties";
 

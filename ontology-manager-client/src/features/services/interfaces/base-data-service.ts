@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { IHttpResponsesHandler } from "./http-responses-handler";
+import { IHttpResponsesHandler } from "../utils/http-responses-handler";
 import { injectable } from "inversify";
 
 /**
@@ -7,6 +7,7 @@ import { injectable } from "inversify";
 */
 @injectable()
 export abstract class BaseDataService {
+    readonly url: string = "";
 
     protected handleRequest<TResult>(
         request: Promise<AxiosResponse<TResult, any>>,

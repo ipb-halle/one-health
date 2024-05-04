@@ -1,7 +1,6 @@
-import { HttpStatusCodes } from "./http-status-codes";
-import { Axios, AxiosError, AxiosResponse } from "axios";
-import { Toast } from 'primereact/toast';
-import { MutableRefObject, useRef, RefObject } from "react";
+import { HttpStatusCodes } from "../http-status-codes";
+import { AxiosError } from "axios";
+import { MessageService } from "../../messages";
 
 export interface IHttpResponsesHandler {
     handleSuccess?(): void;
@@ -19,12 +18,12 @@ export interface IHttpResponseHandlerSettings {
 
 
 export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
-    constructor(protected toast : RefObject<Toast>,  protected settings?: IHttpResponseHandlerSettings) { }
+    constructor(protected messageService: MessageService,  protected settings?: IHttpResponseHandlerSettings) { }
 
 
     handleSuccess(): void {
         if (this.settings && this.settings.showSuccessMessage) {
-            this.toast.current?.show({severity: 'success', summary: 'Success', detail: this.settings.successMessage ? this.settings.successMessage : "Operation succeed." });
+            this.messageService.show({severity: 'success', summary: 'Success', detail: this.settings.successMessage ? this.settings.successMessage : "Operation succeed." });
         }
     }
 
@@ -32,7 +31,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         if (this.settings && this.settings.showErrorMessage == false) return;
 
         if (this.settings && this.settings.errorStatusesMessages && this.settings.errorStatusesMessages[errorResponse.response?.status ? errorResponse.response.status : 0] != null) {
-            this.toast.current?.show({severity: 'error', summary: 'Error', detail: this.settings.errorStatusesMessages[errorResponse.response?.status ? errorResponse.response.status : 0] });
+            this.messageService.show({severity: 'error', summary: 'Error', detail: this.settings.errorStatusesMessages[errorResponse.response?.status ? errorResponse.response.status : 0] });
             return;
         }
 
@@ -47,7 +46,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
     }
 
     protected handleOtherError(errorResponse: AxiosError): void {
-        this.toast.current?.show({severity: 'error', summary: 'Error', detail: errorResponse.code
+        this.messageService.show({severity: 'error', summary: 'Error', detail: errorResponse.code
             ? errorResponse.code :
             "An error has occurred at the website and your support team will need to fix the problem. " +
             "A preliminary report has been sent to the support team.Please do follow - up on the preliminary " +
@@ -58,14 +57,14 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
 }
 
 export class OnReadByIdResponsesHandler extends BaseHttpResponsesHandler {
-    constructor(private entityTitle: string, protected toast : RefObject<Toast>,  settings?: IHttpResponseHandlerSettings) {
-        super(toast, settings);
+    constructor(private entityTitle: string, protected messageService: MessageService,  settings?: IHttpResponseHandlerSettings) {
+        super(messageService, settings);
     }
 
     protected override handleErrorHttpStatusCode(errorResponse: AxiosError): void {
 
         if (errorResponse.response?.status == HttpStatusCodes.Status404NotFound) {
-            this.toast.current?.show({severity: 'error', summary: 'Error', detail:
+            this.messageService.show({severity: 'error', summary: 'Error', detail:
                 `${this.entityTitle} not found. Perhaps another user has deleted the ${this.entityTitle}. ` +
                 "Please consider refreshing the page."
             });

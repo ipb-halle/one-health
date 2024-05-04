@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useReducer } from 'react';
+import React, { RefObject, useContext, useEffect, useReducer } from 'react';
 import PropertyList from '../properties/property-list.component';
 import { Dropdown } from 'primereact/dropdown';
 
@@ -21,8 +21,6 @@ import { IEntityTypeService } from '../../services';
 import { SERVICE_TYPES } from '../../services';
 import { dependencyFactory } from '../../injection/inversify.config';
 
-
-import { Toast } from 'primereact/toast';
 import { formReducer } from '../../utils/formReducer';
 import { PageTitle } from '../../layout';
 import { IEntityType } from './entity-type';
@@ -34,11 +32,12 @@ import {KeywordSearch} from '../keywords';
 import { useParams } from 'react-router-dom';
 import { ColorPicker } from 'primereact/colorpicker';
 import DatasetList from '../data-sources/dataset-list.component';
+import { MessageServiceContext } from '../../messages';
 
 
 const EntityTypeForm: React.FC = () => {
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
-    const toast : RefObject<Toast> = useRef<Toast>(null);
+    const {messageService} = useContext(MessageServiceContext);
     const {id} = useParams();
 
     
@@ -70,11 +69,11 @@ const EntityTypeForm: React.FC = () => {
 
     const init = async (id: string | undefined) => {
         if (id)
-            setEntityType(await entityService.get(id, toast));
+            setEntityType(await entityService.get(id, messageService!));
         
             //TODO: no mapping needed here
         setParentOptions(
-            (await entityService.getAllEntityTypesAsOptions(toast))
+            (await entityService.getAllEntityTypesAsOptions(messageService!))
                 .map(x => { return {...x, disabled: x.value === entityType.id}}) // stops the user from selecting the same type as the parent
         );
 
@@ -85,7 +84,7 @@ const EntityTypeForm: React.FC = () => {
         entityType.properties = entityType.properties?.filter(x => !x.inherited);
 
         if (entityType.parent?.id){
-            const parent = await entityService.get(entityType.parent.id, toast);
+            const parent = await entityService.get(entityType.parent.id, messageService!);
             setEntityType({ ...entityType, properties: [...entityType.properties, ...parent.properties.map(x => { return {...x, inherited: true} } )] });
         }
 
@@ -123,12 +122,12 @@ const EntityTypeForm: React.FC = () => {
 
     const checkPropertiesValidity = () => {
         if (entityType.properties.length === 0){
-            // toast.current?.show({severity:"error", summary:"Error", detail:"An entity type should have at least one property."});
+            // messageService!.current?.show({severity:"error", summary:"Error", detail:"An entity type should have at least one property."});
             return false;
         }
     
         if (entityType.properties.findIndex(x => x.key) < 0){
-            // toast.current?.show({severity:"error", summary:"Error", detail:"An entity type should have at least one key."});
+            // messageService!.current?.show({severity:"error", summary:"Error", detail:"An entity type should have at least one key."});
             return false;
         }
         
@@ -140,7 +139,7 @@ const EntityTypeForm: React.FC = () => {
 
     const onSaveHandler = async () => {
         console.log(entityType);
-        const newEntityType = await entityService.create(entityType, toast);
+        const newEntityType = await entityService.create(entityType, messageService!);
 
         setEntityType(entityType);
     }
@@ -148,7 +147,6 @@ const EntityTypeForm: React.FC = () => {
 
     return (
         <div className="container">
-            <Toast ref={toast}></Toast>
             <PageTitle icon='pi pi-box' title='Entity Type Editor'/>
         
             <Panel header="Definition" className="mb-4">
@@ -235,7 +233,7 @@ const EntityTypeForm: React.FC = () => {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="entityType.keywords" className="font-bold block mb-2">Keywords</label>
-                            <KeywordSearch value={entityType.keywords} valueSetter={(e) => setEntityType({...entityType, keywords: e.target.value})}  toast={toast}></KeywordSearch>
+                            <KeywordSearch value={entityType.keywords} valueSetter={(e) => setEntityType({...entityType, keywords: e.target.value})}></KeywordSearch>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import { DataTable, DataTableSelectAllChangeEvent,
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
 import { IQueryCommand } from '../../filter';
-import { PagedCrudService } from '../../services/paged-crud-service';
+import { PagedCrudService } from '../../services/interfaces/paged-crud-service';
 import { filter } from 'rxjs';
 import { faL } from '@fortawesome/free-solid-svg-icons';
 

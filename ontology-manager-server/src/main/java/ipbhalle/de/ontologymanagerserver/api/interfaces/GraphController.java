@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.io.Console;
+import java.util.List;
 
 public class GraphController {
     private final IGraphService graphService;
@@ -15,15 +19,18 @@ public class GraphController {
         this.graphService = graphService;
     }
 
-    @GetMapping("initial-graph")
+    @GetMapping("get-initial")
     public ResponseEntity<GraphDTO> GetInitialGraph() {
        return new ResponseEntity<>(graphService.GetInitialSet(), HttpStatus.OK);
     }
 
 
-    @GetMapping("adjacent-nodes")
-    public ResponseEntity<GraphDTO> GetAdjacentNodes(String nodeId) {
-        return new ResponseEntity<>(graphService.GetAdjacentNodes(nodeId), HttpStatus.OK);
+    @GetMapping("get-node-expansion/{id}")
+    public ResponseEntity<GraphDTO> GetAdjacentNodes(@PathVariable String id, @RequestBody List<String> nodes) {
+
+        String a = "hello";
+        return new ResponseEntity<>(null, null);
+//       return new ResponseEntity<>(graphService.GetAdjacentNodes(nodeId), HttpStatus.OK);
     }
 
 }

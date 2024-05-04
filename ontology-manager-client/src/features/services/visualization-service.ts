@@ -1,15 +1,11 @@
-import { PagedCrudService } from "./paged-crud-service";
-import { IHttpResponseHandlerSettings } from "./http-responses-handler";
+import { IHttpResponseHandlerSettings } from "./utils/http-responses-handler";
 import { injectable } from "inversify";
-import { ILinkType } from "../ontology/link-types";
-import { BaseDataService } from "./base-data-service";
+import { BaseDataService } from "./interfaces/base-data-service";
 import axios from "axios";
-import { RefObject } from "react";
-import { Toast } from "primereact/toast";
-import { OnReadByIdResponsesHandler } from "./http-responses-handler";
-import { SelectableOption } from "../utils/selectable-option";
+import { OnReadByIdResponsesHandler } from "./utils/http-responses-handler";
 import { ICoOcurrenceQuery } from "../data-visualization/co-ocurrence-search/co-ocurrence-query";
 import { constructHttpParams } from "../utils/flatten";
+import { MessageService } from "../messages";
 const qs = require('qs');
 
 @injectable()
@@ -18,7 +14,7 @@ export class IOntologyService extends BaseDataService{
     entityTitle: string = "Ontology";
 
 
-    getCoOcurrences(query: ICoOcurrenceQuery, toast : RefObject<Toast>,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
+    getCoOcurrences(query: ICoOcurrenceQuery, messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
         var qparams = constructHttpParams(query);
         console.log(qparams);
         console.log("ahora no");
@@ -38,7 +34,7 @@ export class IOntologyService extends BaseDataService{
                     } 
                 }
             ),
-            new OnReadByIdResponsesHandler(this.entityTitle, toast, httpResponseHandlerSettings)
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
     }
 

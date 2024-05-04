@@ -1,10 +1,11 @@
 import { injectable } from "inversify";
-import { IEntityType } from "../ontology/entity-types/entity-type";
+import { IEntityType } from "../../ontology/entity-types/entity-type";
 import { BaseDataService } from "./base-data-service";
-import { BaseHttpResponsesHandler, IHttpResponseHandlerSettings, OnReadByIdResponsesHandler } from "./http-responses-handler";
+import { BaseHttpResponsesHandler, IHttpResponseHandlerSettings, OnReadByIdResponsesHandler } from "../utils/http-responses-handler";
 import axios, { Axios } from "axios";
 import { Toast } from "primereact/toast";
 import { RefObject } from "react";
+import { MessageService } from "../../messages";
 
 
 /**
@@ -13,30 +14,28 @@ import { RefObject } from "react";
 */
 @injectable()
 export class CrudService<TEntity> extends BaseDataService {
-    readonly url: string = "";
     readonly entityTitle: string = "";
 
-
-    get(id: number | string, toast : RefObject<Toast>, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity> {
+    get(id: number | string, messageService: MessageService, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity> {
 
         //TODO:how to fix the catch here
         return this.handleRequest<TEntity>(
             axios.get<TEntity>(`${this.url}/${id}`),
-            new OnReadByIdResponsesHandler(this.entityTitle, toast, httpResponseHandlerSettings)
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
     };
 
-    getAll(toast : RefObject<Toast>,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity[]> {
+    getAll(messageService: MessageService, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity[]> {
         return this.handleRequest<TEntity[]>(
             axios.get<TEntity[]>(`${this.url}/all`),
-            new OnReadByIdResponsesHandler(this.entityTitle, toast, httpResponseHandlerSettings)
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
     };
 
-    create(item: TEntity, toast : RefObject<Toast>, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity> {
+    create(item: TEntity, messageService: MessageService, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity> {
         return this.handleRequest<TEntity>(
             axios.post<TEntity>(`${this.url}`, item),
-            new OnReadByIdResponsesHandler(this.entityTitle, toast, httpResponseHandlerSettings)
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
     };
     update(id: number | string, item: TEntity, httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : Promise<TEntity> {

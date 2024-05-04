@@ -10,7 +10,7 @@ import { SERVICE_TYPES } from '../../services';
 import { IOntologyService } from '../../services/visualization-service';
 import { ICoOcurrenceQuery } from './co-ocurrence-query';
 import { Toast } from 'primereact/toast';
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Accordion } from 'primereact/accordion';
 import { AccordionTab } from 'primereact/accordion';
@@ -24,6 +24,7 @@ import TypeQueryBuilder from './type-query-builder';
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { debug } from 'console';
+import { MessageServiceContext } from '../../messages';
 
 
 const React = require('react');
@@ -62,11 +63,11 @@ var data: SankeyData = {
 const CoOcurrenceSearch: React.FC = () => {
     const ontologyService = dependencyFactory.get<IOntologyService>(SERVICE_TYPES.IOntologyService);
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
+    const {messageService} = useContext(MessageServiceContext);
+
     const [runQuery, setRunQuery] = useState<boolean>(false);
 
     const [typeOptions, setTypeOptions] = useState<SelectableOption[]>([]);
-
-    const toast : RefObject<Toast> = useRef<Toast>(null);
 
 
     const [sankeyData, setSankeyData] = useState<SankeyData>(
@@ -125,7 +126,7 @@ const CoOcurrenceSearch: React.FC = () => {
         updateData({});
 
         setTypeOptions(
-            await entityService.getAllEntityTypesAsOptions(toast)
+            await entityService.getAllEntityTypesAsOptions(messageService!)
         );
 
         // setSankeyData({...sankeyData, node: {label: nodes}, link: {
@@ -155,7 +156,7 @@ const CoOcurrenceSearch: React.FC = () => {
         
         console.log("cojoneee siiiii");
 
-        var graph = await ontologyService.getCoOcurrences(query, toast);
+        var graph = await ontologyService.getCoOcurrences(query, messageService!);
 
         if (!graph.nodes || !graph.links)
             return;
@@ -218,7 +219,6 @@ const CoOcurrenceSearch: React.FC = () => {
 
     return (
         <div className="container">
-            <Toast ref={toast}></Toast>
 
             <div className="row mb-3">
                 <div className="col pt-1" style={{ maxWidth: '50px' }}>
@@ -287,8 +287,8 @@ const CoOcurrenceSearch: React.FC = () => {
             </div>
 
             <div className='col-md-3'>
-                <TypeQueryBuilder toast={toast} triggerQuery={runQuery} parentUpdate={(leftQuery:any) => { setLeftTypeQuery(leftQuery)  }}></TypeQueryBuilder>
-                <TypeQueryBuilder toast={toast} triggerQuery={runQuery} parentUpdate={(rightQuery:any) => { setRightTypeQuery(rightQuery) }}></TypeQueryBuilder>
+                <TypeQueryBuilder triggerQuery={runQuery} parentUpdate={(leftQuery:any) => { setLeftTypeQuery(leftQuery)  }}></TypeQueryBuilder>
+                <TypeQueryBuilder triggerQuery={runQuery} parentUpdate={(rightQuery:any) => { setRightTypeQuery(rightQuery) }}></TypeQueryBuilder>
                
                 {/* <TypeQueryBuilder toast={toast}></TypeQueryBuilder> */}
 

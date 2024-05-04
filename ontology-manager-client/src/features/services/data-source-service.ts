@@ -1,16 +1,14 @@
-import { PagedCrudService } from "./paged-crud-service";
-import { IHttpResponseHandlerSettings } from "./http-responses-handler";
+import { PagedCrudService } from "./interfaces/paged-crud-service";
+import { IHttpResponseHandlerSettings } from "./utils/http-responses-handler";
 import { injectable } from "inversify";
 import { IDataSource } from "../ontology/data-sources";
-import { RefObject } from "react";
-import { Toast } from "primereact/toast";
 import axios from "axios";
-import { config } from "localforage";
+import { MessageService } from "../messages";
 
 @injectable()
 export class IDataSourceService extends PagedCrudService<IDataSource>{
 
-    writeFile(id: string, text: string, toast : RefObject<Toast>,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<any> {
+    writeFile(id: string, text: string,  messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<any> {
         return this.handleRequest<any>(
             axios.post<any>(`${this.url}/write-file/${id}`, text, {headers: {
                 'Content-Length': text.length,

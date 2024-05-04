@@ -2,11 +2,10 @@ import { Panel } from 'primereact/panel';
 import { Dropdown } from 'primereact/dropdown';
 import { FileUpload } from 'primereact/fileupload';
 import { PageTitle } from '../../layout';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tooltip } from 'primereact/tooltip';
-import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import {  FileUploadHeaderTemplateOptions, FileUploadSelectEvent, FileUploadUploadEvent, ItemTemplateOptions,} from 'primereact/fileupload';
 
@@ -21,6 +20,7 @@ import { processChunkAsync, readNextChunk } from '../../utils/files';
 import { table } from 'console';
 import DataPreview from './data-preview.component';
 import DatasetList from '../data-sources/dataset-list.component';
+import { MessageServiceContext } from '../../messages';
 
 
 const React = require('react');
@@ -34,7 +34,7 @@ const DataPreviewMemo = React.memo(DataPreview);
 
 
 const DataLoader: React.FC = () => {
-    const toast = useRef<Toast>(null);
+    const {messageService} = useContext(MessageServiceContext);
 
     const [dataset, setDataset] = useState<any[]>([]);
     const [header, setHeader] = useState<any[]>([]);
@@ -63,7 +63,7 @@ const DataLoader: React.FC = () => {
     const [uploading, setUploading] = useState<boolean>(false);
 
     const init = async () => {
-        let elementOptionsResult = await metadataService.getAllAsOptions(toast);
+        let elementOptionsResult = await metadataService.getAllAsOptions(messageService!);
         setElementOptions(elementOptionsResult);
     }
 
@@ -106,13 +106,13 @@ const DataLoader: React.FC = () => {
 
         if (newType === "entity"){
             console.log("requesting entity");
-            let newElement = await entityTypeService.get(elementId, toast);
+            let newElement = await entityTypeService.get(elementId, messageService!);
             setElement(newElement);
         }
 
         if (newType === "link"){
             console.log("requesting link");
-            let newElement = await linkTypeService.get(elementId, toast);
+            let newElement = await linkTypeService.get(elementId, messageService!);
             setElement(newElement);
         }
     }
@@ -156,14 +156,14 @@ const DataLoader: React.FC = () => {
             _totalSize += file.size || 0;
         });
 
-        toast.current?.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+        messageService!.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
     };
 
     const onUploadHandler = async () => 
     {
         console.log("here");
         console.log("siuuuuu")
-        const result = await dataSourceService.create(dataSource, toast);
+        const result = await dataSourceService.create(dataSource, messageService!);
         setDataSource(result);
 
         var offset = 0;
@@ -175,7 +175,7 @@ const DataLoader: React.FC = () => {
 
             var text: any = await processChunkAsync(chunk);
             if (result.id)
-                await dataSourceService.writeFile(result.id, text, toast);
+                await dataSourceService.writeFile(result.id, text, messageService!);
             console.log(chunk);
             console.log(`reading chunk ${i}`);
             offset += chunk.size;
@@ -231,7 +231,6 @@ const DataLoader: React.FC = () => {
             <PageTitle icon='pi pi-download' title='Data Load'/>
 
             <div className='mb-3'>
-            <Toast ref={toast}></Toast>
 
             <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
             <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />

@@ -1,6 +1,7 @@
 import { MessageService } from "./message-service";
 import { RefObject } from "react";
 import { Toast } from "primereact/toast";
+import { Message } from "./message";
 
 export class ToastMessageService implements MessageService {
     toast : RefObject<Toast>;
@@ -9,7 +10,7 @@ export class ToastMessageService implements MessageService {
         this.toast = toast;
     }
 
-    show(severity: "success" | "info" | "warn" | "error" | undefined, summary: string, detail: string): void {
-        this.toast.current?.show({severity: severity, summary: summary, detail: detail});
+    show(message: Message): void {
+        this.toast.current?.show(message);
     }
 }

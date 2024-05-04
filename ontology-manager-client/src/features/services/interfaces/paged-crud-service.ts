@@ -1,21 +1,22 @@
-import { IQueryCommand } from "../filter";
+import { IQueryCommand } from "../../filter";
 import { CrudService } from "./crud-service";
-import { IHttpResponseHandlerSettings } from "./http-responses-handler";
-import { IPagedData } from "./paged-data";
+import { IHttpResponseHandlerSettings } from "../utils/http-responses-handler";
+import { IPagedData } from "../paged-data";
 import { injectable } from "inversify";
 import axios from "axios";
 import { RefObject } from "react";
 import { Toast } from "primereact/toast";
-import { OnReadByIdResponsesHandler } from "./http-responses-handler";
-import { flatten } from "../utils";
-import { constructHttpParams } from "../utils/flatten";
+import { OnReadByIdResponsesHandler } from "../utils/http-responses-handler";
+import { flatten } from "../../utils";
+import { constructHttpParams } from "../../utils/flatten";
+import { MessageService } from "../../messages";
 
 
 
 @injectable()
 export class PagedCrudService<TEntity> extends CrudService<TEntity> {
     
-    getPage(queryCommand: IQueryCommand,toast : RefObject<Toast>, httpResponseHandlerSettings?: IHttpResponseHandlerSettings) : Promise<any> {
+    getPage(queryCommand: IQueryCommand, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings) : Promise<any> {
         var filters = Object.keys(queryCommand.filters).map(x => queryCommand.filters[x]);
 
        
@@ -24,7 +25,7 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
         console.log(constructHttpParams(query));
         return this.handleRequest<IPagedData<TEntity>>(
             axios.get<any>(`${this.url}/getPage`, { params: constructHttpParams(query), paramsSerializer: { indexes: false } }),
-            new OnReadByIdResponsesHandler(this.entityTitle, toast, httpResponseHandlerSettings)
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
     }
     

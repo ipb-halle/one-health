@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import './OntologyOverview.scss';
 import OverviewCard from './overview-card.component';
@@ -22,6 +22,7 @@ import EntityTypePage from './entity-types/entity-type-page.component';
 import { SelectButton } from 'primereact/selectbutton';
 import LinkTypePage from './link-types/link-type-page.component';
 import { Link } from 'react-router-dom';
+import { MessageServiceContext } from '../messages';
 
 
 interface HeaderProps {
@@ -44,14 +45,6 @@ const gridColumns: IGridColumn[] = [
     },
 ];
 
-// const properties: IProperty[] = [
-//     {
-//         name: 'name',
-//         description: 'description',
-//         type: DataTypes.Number,
-//         isKey: true,
-//     },
-// ];
 
 const a = (
     <>
@@ -67,7 +60,7 @@ const a = (
 
 const OntologyOverview: React.FC = () => {
     const metadataService = dependencyFactory.get<IMetadataService>(SERVICE_TYPES.IMetadataService);
-    const toast : RefObject<Toast> = useRef<Toast>(null);
+    const {messageService} = useContext(MessageServiceContext);
 
     const [summary, setSummary] = useState<IMetadataSummary>({
         entityTypesCount: 0,
@@ -83,7 +76,7 @@ const OntologyOverview: React.FC = () => {
     
 
     const init = async () => {
-        setSummary(await metadataService.getSummary(toast));
+        setSummary(await metadataService.getSummary(messageService!));
         console.log(summary);
     }
 
@@ -180,7 +173,7 @@ const OntologyOverview: React.FC = () => {
             </div>
 
             <Panel header="Explorer" className='panel-no-padding'>
-                <Explorer></Explorer>
+                <Explorer graphService={metadataService}></Explorer>
             </Panel>
         </div>
     );

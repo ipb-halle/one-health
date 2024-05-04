@@ -1,8 +1,6 @@
 import { injectable } from "inversify";
-import { PagedCrudService } from "./paged-crud-service";
+import { PagedCrudService } from "./interfaces/paged-crud-service";
 import { IKeyword } from "../ontology/keywords";
-
-// TODO: Wrap toast inside an interface IMessager or something like that
 
 @injectable()
 export class IKeywordService extends PagedCrudService<IKeyword>{};

@@ -1,5 +1,4 @@
-import { PagedCrudService } from "./paged-crud-service";
-import { IHttpResponseHandlerSettings } from "./http-responses-handler";
+import { PagedCrudService } from "./interfaces/paged-crud-service";
 import { injectable } from "inversify";
 import { ILinkType } from "../ontology/link-types";
 

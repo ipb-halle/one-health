@@ -8,12 +8,8 @@ import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { MultiSelect } from 'primereact/multiselect';
 import { SelectButton } from 'primereact/selectbutton';
-import { useReducer, useState } from 'react';
-import { Toast } from 'primereact/toast';
-import { useRef } from 'react';
-import { RefObject } from 'react';
+import { useContext, useReducer, useState } from 'react';
 import { PageTitle } from '../../layout';
 import { formReducer } from '../../utils/formReducer';
 import { ILinkType } from './link-type';
@@ -23,9 +19,9 @@ import { SERVICE_TYPES } from '../../services';
 import { SelectableOption } from '../../utils/selectable-option';
 import { useEffect } from 'react';
 import { KeywordSearch } from '../keywords';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import DatasetList from '../data-sources/dataset-list.component';
+import { MessageServiceContext } from '../../messages';
 const React = require('react');
 
 
@@ -33,7 +29,8 @@ const React = require('react');
 const LinkTypeForm: React.FC = () => {
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
     const linkTypeService = dependencyFactory.get<ILinkTypeService>(SERVICE_TYPES.ILinkTypeService);
-    const toast : RefObject<Toast> = useRef<Toast>(null);
+    const {messageService} = useContext(MessageServiceContext);
+
     const {id} = useParams();
 
     const directionOptions = [{name: "Outgoing", value: "OUTGOING"}, {name: "Incoming", value: "INCOMING"}, {name: "Undirected", value: "UNDIRECTED"}];
@@ -58,9 +55,9 @@ const LinkTypeForm: React.FC = () => {
 
     const init = async (id: string | undefined) => {
         if (id)
-            setLinkType(await linkTypeService.get(id, toast));
+            setLinkType(await linkTypeService.get(id, messageService!));
         
-        setEntityTypeOptions(await entityService.getAllEntityTypesAsOptions(toast));
+        setEntityTypeOptions(await entityService.getAllEntityTypesAsOptions(messageService!));
 
     };
 
@@ -89,7 +86,7 @@ const LinkTypeForm: React.FC = () => {
 
     const onSaveHandler = async () => {
         console.log(linkType);
-        const newLinkType = await linkTypeService.create(linkType, toast);
+        const newLinkType = await linkTypeService.create(linkType, messageService!);
 
         setLinkType(linkType);
     }
@@ -97,7 +94,6 @@ const LinkTypeForm: React.FC = () => {
 
     return (
         <div className="container">
-            <Toast ref={toast}></Toast>
             <PageTitle icon='pi pi-arrows-h' title='Link Type Editor'/>
 
 
@@ -216,7 +212,7 @@ const LinkTypeForm: React.FC = () => {
                         <div className="form-group">
                             <label htmlFor="linkType.keywords"  className="font-bold block mb-2" >Keywords</label>
 
-                            <KeywordSearch value={linkType.keywords} valueSetter={(e) => setLinkType({...linkType, keywords: e.target.value})}  toast={toast}></KeywordSearch>
+                            <KeywordSearch value={linkType.keywords} valueSetter={(e) => setLinkType({...linkType, keywords: e.target.value})}></KeywordSearch>
                         </div>
                     </div>
                 </div>

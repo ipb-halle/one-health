@@ -1,5 +1,5 @@
 import { MultiSelect, MultiSelectChangeEvent } from "primereact/multiselect";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { IKeyword } from "./keyword";
 import { dependencyFactory } from "../../injection/inversify.config";
 import { IKeywordService } from "../../services/keyword-service";
@@ -9,24 +9,26 @@ import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { filter } from "rxjs";
+import { MessageServiceContext } from "../../messages";
 const React = require('react');
 
 interface KeywordSearchProps {
     value: IKeyword[];
-    valueSetter: (e : MultiSelectChangeEvent ) => void 
-    toast: RefObject<Toast>;
+    valueSetter: (e : MultiSelectChangeEvent ) => void;
 }
 
 
-const KeywordSearch: React.FC<KeywordSearchProps> = ({value, valueSetter, toast}) => {
+const KeywordSearch: React.FC<KeywordSearchProps> = ({value, valueSetter}) => {
     const keywordService = dependencyFactory.get<IKeywordService>(SERVICE_TYPES.IKeywordService);
+    const {messageService} = useContext(MessageServiceContext);
+
     const [keywordOptions, setKeywordOptions] = useState<IKeyword[]>([]);
     const [availableOptions, setAvailableOptions] = useState<IKeyword[]>([]);
     const [filterValue, setFilterValue] = useState<string>("");
     
     useEffect(() => {
         const init = async () => {
-            return await keywordService.getAll(toast).then(result => {
+            return await keywordService.getAll(messageService!).then(result => {
                 setKeywordOptions(result);
             });
         }
@@ -47,7 +49,7 @@ const KeywordSearch: React.FC<KeywordSearchProps> = ({value, valueSetter, toast}
     const handleAddKeyword = async () => {
         if (keywordOptions.find(x => x.value === filterValue))
             return;
-        const newKeyword = await keywordService.create({value: filterValue}, toast);
+        const newKeyword = await keywordService.create({value: filterValue}, messageService!);
         setKeywordOptions([...keywordOptions, newKeyword]);
     }
 
