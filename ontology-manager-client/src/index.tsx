@@ -6,6 +6,7 @@ import App from './features/layout/app.component';
 import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
+import { ToastMessageServiceProvider } from "./features/messages";
 
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -17,7 +18,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <PrimeReactProvider>
-            <App />
+            <ToastMessageServiceProvider>
+                <App />
+            </ToastMessageServiceProvider>
         </PrimeReactProvider>
     </React.StrictMode>,
 );
