@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { IEntityType } from "../../ontology/entity-types/entity-type";
 import { BaseDataService } from "./base-data-service";
-import { BaseHttpResponsesHandler, IHttpResponseHandlerSettings, OnReadByIdResponsesHandler } from "../utils/http-responses-handler";
+import { BaseHttpResponsesHandler, IHttpResponseHandlerSettings, OnCreateResponseHandler, OnReadByIdResponsesHandler } from "../utils/http-responses-handler";
 import axios, { Axios } from "axios";
 import { Toast } from "primereact/toast";
 import { RefObject } from "react";
@@ -35,8 +35,8 @@ export class CrudService<TEntity> extends BaseDataService {
     create(item: TEntity, messageService: MessageService, httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<TEntity> {
         return this.handleRequest<TEntity>(
             axios.post<TEntity>(`${this.url}`, item),
-            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
-        ).then(x => x).catch(x => x);
+            new OnCreateResponseHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
+        );
     };
     update(id: number | string, item: TEntity, httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : Promise<TEntity> {
         throw new Error();

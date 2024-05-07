@@ -36,9 +36,6 @@ const Explorer: React.FC<GraphExplorerProps> = ({graphService}) => {
         let graph = await graphService.getInitial(messageService!);
         const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
         setElements([...newElements]);
-
-        
-        messageService?.show({severity:'success', summary:'Funciona repinga', detail:'si funciono repingaaaa'});
     };
 
 

@@ -75,15 +75,15 @@ export class OnReadByIdResponsesHandler extends BaseHttpResponsesHandler {
     }
 }
 
-// export class OnCreateResponseHandler extends BaseHttpResponsesHandler {
-//     constructor(entityTitle: string, protected toast : MutableRefObject<Toast>, settings?: IHttpResponseHandlerSettings) {
-//         super(toast, settings);
+export class OnCreateResponseHandler extends BaseHttpResponsesHandler {
+    constructor(entityTitle: string, protected messageService: MessageService, settings?: IHttpResponseHandlerSettings) {
+        super(messageService, settings);
 
-//         if (!this.settings) this.settings = <IHttpResponseHandlerSettings> {};
-//         if (this.settings.showSuccessMessage == null) this.settings.showSuccessMessage = true;
-//         if (this.settings.successMessage == null) this.settings.successMessage = `${entityTitle} created.`;
-//     }
-// }
+        if (!this.settings) this.settings = <IHttpResponseHandlerSettings> {};
+        if (this.settings.showSuccessMessage == null) this.settings.showSuccessMessage = true;
+        if (this.settings.successMessage == null) this.settings.successMessage = `${entityTitle} created.`;
+    }
+}
 
 // export class OnUpdateResponseHandler extends BaseHttpResponsesHandler {
 //     constructor(private entityTitle: string, protected toast : MutableRefObject<Toast>, settings?: IHttpResponseHandlerSettings) {

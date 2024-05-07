@@ -55,7 +55,7 @@ function App() {
                         />
                         <Route path="/entity-type-form/:id" Component={EntityTypeForm}/>
                         <Route path="/link-type-form/:id" Component={LinkTypeForm}/>
-                        <Route path="/listing" Component={GraphExplorer}/>
+                        <Route path="/neighborhood-explorer" Component={GraphExplorer}/>
                         <Route path="/test" Component={FiltersDemo}></Route>
 
                     </Routes>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { IProperty } from './property';
 import './property-list.component.scss';
 import { Panel } from 'primereact/panel';
@@ -15,6 +15,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { find } from 'rxjs';
 import { Button } from 'primereact/button';
 import { IEntityType } from '../entity-types';
+import { MessageServiceContext } from '../../messages';
+import { CollectionPlaceholder } from '../../utils/placeholders';
 
 interface PropertyListProps {
     properties: IProperty[];
@@ -24,18 +26,18 @@ interface PropertyListProps {
 }
 
 const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpdate, mode }) => {
+    const {messageService} = useContext(MessageServiceContext);
+
     const dataTypesToIcons = DataTypes.ICONS_MAPPING();
     
     const [propertyCount, setPropertyCount] = useState(properties?.length);
     const [originalName, setOriginalName] = useState(""); // Need this because for some reason the text editor doesn't keep the value when editing started
 
-    const toast = useRef<Toast>(null);
-
     // Templates for icons
 
     const dataTypeBodyTemplate = (property : IProperty) => {
         if (property.dataType)
-            return  <FontAwesomeIcon icon={dataTypesToIcons[property.dataType]}size="lg"/>
+            return <FontAwesomeIcon icon={dataTypesToIcons[property.dataType]}size="lg"/>
         return <></>
     }
 
@@ -43,8 +45,8 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         return  <><div style={{height:"15px"}}></div></>
     }
 
-    const dataTypeOptionTemplate = (option: any, ) => {
-        return  <FontAwesomeIcon icon={dataTypesToIcons[option.value]}size="lg"/>
+    const dataTypeOptionTemplate = (option: any) => {
+        return <FontAwesomeIcon icon={dataTypesToIcons[option.value]}size="lg"/>
     }
 
     const isKeyBodyTemplate = (property : IProperty) => {
@@ -59,6 +61,7 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
             if (i >= 0) {
                 properties.splice(i, 1);
                 parentUpdate([...properties]);
+                messageService?.show({severity:"success", summary:"Success", detail:'Property deleted'});
             }
         }
     }
@@ -74,13 +77,13 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
 
 
         if (properties.findIndex(x => x.name === newProperty) >= 0){
-            toast.current?.show({severity:"error", summary:"Error", detail:`Can't have two properties with the same name ${newProperty}`});
+            messageService?.show({severity:"error", summary:"Error", detail:`Can't have two properties with the same name ${newProperty}`});
             return;
 
         }
 
         parentUpdate([...properties,{name: newProperty, description: "A new property", dataType: DataTypes.STRING, key: false, inherited: false}]);
-        toast.current?.show({severity:"success", summary:"Success", detail:'Property added'});
+        messageService?.show({severity:"success", summary:"Success", detail:'Property added'});
     }
     
 
@@ -124,21 +127,20 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         
         if (rowData.inherited){ // Inherited properties of the parent can't be modified
             // TODO: BUG: When editing Name and Description I get the error toast twice
-            toast.current?.show({severity:"error", summary:"Error", detail:"Inherited properties can't be modified."});
+            messageService?.show({severity:"error", summary:"Error", detail:"Inherited properties can't be modified."});
             return;
         }
 
-
         if (field === "name"){
             if (!newValue){
-                toast.current?.show({severity:"error", summary:"Error", detail:"Name can't be empty"});
+                messageService?.show({severity:"error", summary:"Error", detail:"Name can't be empty"});
                 rowData[field] = originalName;
                 return;
             }
 
 
             if (properties.filter(x => x.name === newValue)?.length > 1){
-                toast.current?.show({severity:"error", summary:"Error", detail:"Can't have two properties with the same name"});
+                messageService?.show({severity:"error", summary:"Error", detail:"Can't have two properties with the same name"});
                 rowData[field] = originalName;
                 return;
             }
@@ -148,12 +150,12 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         if (field === "key")
         {
             if (safe){
-                toast.current?.show({severity:"error", summary:"Error", detail:"Can't modify the keys of stored definitions."});
+                messageService?.show({severity:"error", summary:"Error", detail:"Can't modify the keys of stored definitions."});
                 return;
             }
 
             if (rowData.inherited) {
-                toast.current?.show({severity:"error", summary:"Error", detail:"Can't modify inherited keys."});
+                messageService?.show({severity:"error", summary:"Error", detail:"Can't modify inherited keys."});
                 return;
             }
 
@@ -163,7 +165,7 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         if (field === "dataType"){
             
             if (rowData.id){ // The user can't modify the data type of a property that has already been saved
-                toast.current?.show({severity:"error", summary:"Error", detail:"Can't modify the data type of a property that has been saved before."});
+                messageService?.show({severity:"error", summary:"Error", detail:"Can't modify the data type of a property that has been saved before."});
                 return;
             }
         }
@@ -174,43 +176,28 @@ const PropertyList: React.FC<PropertyListProps> = ({ properties, safe, parentUpd
         }
     };
 
-    return (
-        <Panel header="Properties" icons={headerIcons} className="property-list">
-            <Toast ref={toast}/>
-            {/* <div
-                style={{ height: '400px' }}
-                className="d-flex justify-content-center"
-            >
-                <div className="h-100  d-flex align-items-center">
-                    <div className="row" style={{ width: '150px' }}>
-                        <i
-                            className="pi pi-list"
-                            style={{
-                                fontSize: '120px',
-                                color: '#d9dde1',
-                                height: '120px',
-                            }}
-                        ></i>
-                        <span> No properties yet</span>
-                    </div>
-                </div>
-            </div> */}
+    if (properties.length > 0) {
+        return (
+            <Panel header="Properties" icons={headerIcons} className="property-list">
+                <DataTable value={properties} editMode="cell" rowGroupMode="subheader" groupRowsBy='inherited' rowGroupHeaderTemplate={groupHeaderTemplate} sortField="inherited" scrollable scrollHeight="400px" tableStyle={{ lineHeight: '10px' }} style={{height:"100%"}}>
+                  <Column field="dataType" header="" body={dataTypeBodyTemplate} style={{paddingRight: "2px", width: "20px"}} editor={(options) => dataTypeEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
+                  <Column field="name" header="Name" style={{width:"25%"}} editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => {setOriginalName(e.value)}}></Column>
+                  <Column field="description" header="Description" style={{width: "60%"}} editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
+                  {
+                    mode === "EntityType" && <Column field="key" header="Is Key" body={isKeyBodyTemplate} style={{ width: '12%' }} editor={(options) => booleanEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
+                  }
+                  <Column field="" header="" body={getActionButtonsTemplate}/>
+                </DataTable>
+            </Panel>
+        ); 
+    } else {
+        return (
+            <Panel header="Properties" icons={headerIcons} className="property-list">
+                <CollectionPlaceholder icon='pi pi-list' message=''></CollectionPlaceholder>
+            </Panel>
+        )
+    }
 
-
-            {/* //TODO: add inherited propery and add group to the table */}
-
-
-            <DataTable value={properties} editMode="cell" rowGroupMode="subheader" groupRowsBy='inherited' rowGroupHeaderTemplate={groupHeaderTemplate} sortField="inherited" scrollable scrollHeight="400px" tableStyle={{ lineHeight: '10px' }} style={{height:"100%"}}>
-              <Column field="dataType" header="" body={dataTypeBodyTemplate} style={{paddingRight: "2px", width: "20px"}} editor={(options) => dataTypeEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
-              <Column field="name" header="Name" style={{width:"25%"}} editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete} onCellEditInit={(e) => {setOriginalName(e.value)}}></Column>
-              <Column field="description" header="Description" style={{width: "60%"}} editor={(options) => textEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
-              {
-                mode === "EntityType" && <Column field="key" header="Is Key" body={isKeyBodyTemplate} style={{ width: '12%' }} editor={(options) => booleanEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
-              }
-              <Column field="" header="" body={getActionButtonsTemplate}/>
-            </DataTable>
-        </Panel>
-    );
 };
 
 export default PropertyList;

@@ -95,7 +95,6 @@ const CytoscapeChart: React.FC<CytoscapeChartProps> =
                         {
                             content: `<span class="pi pi-share-alt" style="font-size:20px;"></span>`,
                             select: (node: any) => {
-                                console.log(cytoscapeCore.elements().jsons());
                                 
                                 const nodes = cytoscapeCore.elements().jsons()
                                         .filter((x:any) => x.group==="nodes" && x.data.id !== HIGHLIGHT)
@@ -105,15 +104,12 @@ const CytoscapeChart: React.FC<CytoscapeChartProps> =
                                     node.lock();
                                 });
 
-                                
-                                // graphService.getNodeExpansion(node.id(), nodes, null, null);
-                                // onNodeExpandHandler(node.id())
-                                //nodes, edges  = handler(node, elements)
-                                // add those the end
 
-                                
+                                cytoscapeCore.layout(layout).run(); 
 
-
+                                cytoscapeCore.nodes().forEach((node:any) => {
+                                    node.unlock();
+                                });
 
                             }
                         }

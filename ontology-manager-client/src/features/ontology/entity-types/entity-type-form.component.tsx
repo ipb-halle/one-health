@@ -1,16 +1,13 @@
-import React, { RefObject, useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import PropertyList from '../properties/property-list.component';
 import { Dropdown } from 'primereact/dropdown';
 
 
 import { IProperty } from '../properties';
-import { DataTypes } from '../data-types/data-types';
 import { Panel } from 'primereact/panel';
 import { InputText } from 'primereact/inputtext';
 
 import { InputTextarea } from 'primereact/inputtextarea';
-import { MultiSelect } from 'primereact/multiselect';
-import { string } from 'yargs';
 import { useState, useRef } from 'react';
 // import DatasetList from '../datasets/dataset-list.component';
 import { Divider } from 'primereact/divider';
@@ -26,21 +23,23 @@ import { PageTitle } from '../../layout';
 import { IEntityType } from './entity-type';
 import { EntityName } from 'typescript';
 import { SelectableOption } from '../../utils/selectable-option';
-import { IKeywordService } from '../../services/keyword-service';
-import { IKeyword } from '../keywords';
 import {KeywordSearch} from '../keywords';
 import { useParams } from 'react-router-dom';
 import { ColorPicker } from 'primereact/colorpicker';
 import DatasetList from '../data-sources/dataset-list.component';
 import { MessageServiceContext } from '../../messages';
+import { useNavigate } from 'react-router-dom';
 
+import './entity-type-form.component.scss';
 
 const EntityTypeForm: React.FC = () => {
+    // Services Initialization
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
     const {messageService} = useContext(MessageServiceContext);
-    const {id} = useParams();
-
+    const navigate = useNavigate();
     
+    // Component State
+    const {id} = useParams();
     const [entityType, setEntityType] = useReducer(
         formReducer<IEntityType>,
         {   // default state for new entity typ
@@ -53,23 +52,19 @@ const EntityTypeForm: React.FC = () => {
             color: "#F36924",
         }
     )
-
     const [parentOptions, setParentOptions] = useState<SelectableOption[]>([]);
     const [definitionValid, setDefinitionValid] = useState<boolean>(false);
     const [propertiesValid, setPropertiesValid] = useState<boolean>(false);
-
-    
 
     const updateProperty = (properties: IProperty[]) => {
         return setEntityType({...entityType, properties: properties});
     }
 
-    
-
 
     const init = async (id: string | undefined) => {
-        if (id)
+        if (id){
             setEntityType(await entityService.get(id, messageService!));
+        }
         
             //TODO: no mapping needed here
         setParentOptions(
@@ -139,7 +134,11 @@ const EntityTypeForm: React.FC = () => {
 
     const onSaveHandler = async () => {
         console.log(entityType);
-        const newEntityType = await entityService.create(entityType, messageService!);
+        await entityService.create(entityType, messageService!).then(
+            x => {
+                navigate("/ontology/overview/")
+            }
+        );
 
         setEntityType(entityType);
     }
@@ -152,26 +151,29 @@ const EntityTypeForm: React.FC = () => {
             <Panel header="Definition" className="mb-4">
                 <div className="row mb-4">
 
-                <div className='col-md-1'>
-                    <div className="form-group">
+                    <div className='col-md-1'>
+                        <div className="form-group">
                             <label htmlFor='entityType.color' className="font-bold block mb-2">Icon</label>
-                            <div style={{width:"50px", height:"50px", border:"solid 1px black"}}>
+                            <div style={{width:"42px", height:"42px", border:"solid 1px black"}}>
 
                             </div>
                         </div>
-                </div>
+                    </div>
 
                     <div className='col-md-1'>
-                    <div className="form-group">
+                        <div className="form-group">
                             <label htmlFor='entityType.color' className="font-bold block mb-2">Color</label>
                             <div></div>
-                            <ColorPicker value={entityType.color} onChange={(e:any) => setEntityType({...entityType, color: e.value ? e.value : "#F36924"} )}/>
+                            <ColorPicker 
+                                value={entityType.color} 
+                                onChange={(e:any) => setEntityType({...entityType, color: e.value ? e.value : "#F36924"} )}
+                                />
                         </div>
                     </div>
 
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor='entityType.name' className="font-bold block mb-2 asterisk-mark">Name {entityType.name}</label>
+                            <label htmlFor='entityType.name' className="font-bold block mb-2 asterisk-mark">Name</label>
                             <InputText 
                                 className= "form-control" 
                                 id = "entityType.name"
@@ -220,6 +222,7 @@ const EntityTypeForm: React.FC = () => {
                         <div className="form-group">
                             <label htmlFor="entityType.description" className="font-bold block mb-2">Description</label>
                             <InputTextarea 
+                                style={{resize: 'none'}}
                                 className="form-control" 
                                 rows={3} 
                                 id="entityType.description"
@@ -252,10 +255,10 @@ const EntityTypeForm: React.FC = () => {
             </Panel>
 
             <div className="row">
-                <div className="col-md-8" style={{height: "430px"}}>
+                <div className="col-md-8" style={{height: "500px"}}>
                     <PropertyList properties={entityType.properties} safe={false} parentUpdate={updateProperty} mode="EntityType"></PropertyList>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-4" style={{height: "500px"}}>
                     <DatasetList></DatasetList>
                 </div>
             </div>

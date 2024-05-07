@@ -1,0 +1,16 @@
+.dataset-list {
+    height: 100%;
+}
+
+.dataset-list .p-panel-content {
+    padding: 0px;
+    height: 100%
+}
+
+.dataset-list .p-toggleable-content {
+    height: calc(100% - 59px);
+}
+
+.dataset-list .p-datatable-table {
+    border: none;
+}

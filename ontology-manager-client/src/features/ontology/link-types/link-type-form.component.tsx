@@ -19,7 +19,7 @@ import { SERVICE_TYPES } from '../../services';
 import { SelectableOption } from '../../utils/selectable-option';
 import { useEffect } from 'react';
 import { KeywordSearch } from '../keywords';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DatasetList from '../data-sources/dataset-list.component';
 import { MessageServiceContext } from '../../messages';
 const React = require('react');
@@ -30,6 +30,7 @@ const LinkTypeForm: React.FC = () => {
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICE_TYPES.IEntityTypeService);
     const linkTypeService = dependencyFactory.get<ILinkTypeService>(SERVICE_TYPES.ILinkTypeService);
     const {messageService} = useContext(MessageServiceContext);
+    const navigate = useNavigate();
 
     const {id} = useParams();
 
@@ -86,9 +87,11 @@ const LinkTypeForm: React.FC = () => {
 
     const onSaveHandler = async () => {
         console.log(linkType);
-        const newLinkType = await linkTypeService.create(linkType, messageService!);
-
-        setLinkType(linkType);
+        await linkTypeService.create(linkType, messageService!).then(
+            x => {
+                navigate("/ontology/overview/")
+            }
+        );
     }
 
 

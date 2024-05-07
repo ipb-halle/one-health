@@ -12,6 +12,7 @@ import { IMetadataElement } from './metadata-element';
 import { Tooltip } from 'primereact/tooltip';
 import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
+import { CollectionPlaceholder } from '../../utils/placeholders';
 
 const React = require('react');
 
@@ -120,28 +121,10 @@ const ElementView: React.FC<ElementViewProps> = ({element
                 ))}
             </div>
         </>
-    ); else return (<>
-    <div
-                style={{ height: '100%' }}
-                className="d-flex justify-content-center"
-            >
-                <div className="h-100  d-flex align-items-center">
-                    <div className="row" style={{ width: '150px' }}>
-                        <i
-                            className="pi pi-list"
-                            style={{
-                                fontSize: '120px',
-                                color: '#F8F9FA',
-                                height: '120px',
-                                WebkitTextStroke: "1px #DEE2E6",
-                            }}
-                        ></i>
-                        <span> No item selected</span>
-                    </div>
-                </div>
-            </div>
-    
-    </>);
+    ); 
+    else return (
+        <CollectionPlaceholder icon='pi pi-list' message=''></CollectionPlaceholder>
+    );
 };
 
 export default ElementView;

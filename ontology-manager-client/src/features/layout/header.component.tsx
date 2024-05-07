@@ -38,12 +38,12 @@ const Header: React.FC = () => {
             ],
         },
         {
-            label: 'Search',
-            icon: 'pi pi-search',
+            label: 'Visualization',
+            icon: 'pi pi-chart-bar',
             items: [
                 {
                     label: 'Explorer',
-                    url: '/listing'
+                    url: '/neighborhood-explorer'
                 },
                 {
                     label: 'Co-ocurrence Search',
