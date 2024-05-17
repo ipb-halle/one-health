@@ -7,6 +7,7 @@ const SERVICE_TYPES = {
     ILinkTypeService: Symbol.for("ILinkTypeService"),
     IPropertyService: Symbol.for("IPropertyService"),
     IDataSourceService: Symbol.for("IDataSourceService"),
+    IEntityService: Symbol.for("IEntityService"),
 }
 
 export {SERVICE_TYPES};

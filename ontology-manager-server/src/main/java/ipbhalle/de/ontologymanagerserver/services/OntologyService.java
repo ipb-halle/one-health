@@ -1,8 +1,6 @@
 package ipbhalle.de.ontologymanagerserver.services;
 
-import ipbhalle.de.ontologymanagerserver.data.dtos.CoOcurrenceQuery;
-import ipbhalle.de.ontologymanagerserver.data.dtos.EntityDTO;
-import ipbhalle.de.ontologymanagerserver.data.dtos.GraphDTO;
+import ipbhalle.de.ontologymanagerserver.data.dtos.*;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IOntologyRepository;
 import ipbhalle.de.ontologymanagerserver.services.interfaces.IOntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +36,15 @@ public class OntologyService implements IOntologyService {
     @Override
     public GraphDTO GetAdjacentNodes(String nodeId) {
         return ontologyRepository.GetAdjacentNodes(nodeId);
+    }
+
+    @Override
+    public GraphNodeDTO GetNode(String nodeId) {
+        return null;
+    }
+
+    @Override
+    public GraphLinkDTO GetLink(String nodeId) {
+        return null;
     }
 }

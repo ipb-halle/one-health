@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Console;
@@ -25,12 +26,9 @@ public class GraphController {
     }
 
 
-    @GetMapping("get-node-expansion/{id}")
+    @PostMapping("get-node-expansion/{id}")
     public ResponseEntity<GraphDTO> GetAdjacentNodes(@PathVariable String id, @RequestBody List<String> nodes) {
-
-        String a = "hello";
-        return new ResponseEntity<>(null, null);
-//       return new ResponseEntity<>(graphService.GetAdjacentNodes(nodeId), HttpStatus.OK);
+      return new ResponseEntity<>(graphService.GetAdjacentNodes(id), HttpStatus.OK);
     }
 
 }

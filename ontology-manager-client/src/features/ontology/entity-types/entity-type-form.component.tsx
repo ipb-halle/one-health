@@ -29,8 +29,11 @@ import { ColorPicker } from 'primereact/colorpicker';
 import DatasetList from '../data-sources/dataset-list.component';
 import { MessageServiceContext } from '../../messages';
 import { useNavigate } from 'react-router-dom';
+import Joyride from 'react-joyride';
 
 import './entity-type-form.component.scss';
+import EntityTypeFormTour from './entity-type-form.tour.component';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 const EntityTypeForm: React.FC = () => {
     // Services Initialization
@@ -55,6 +58,7 @@ const EntityTypeForm: React.FC = () => {
     const [parentOptions, setParentOptions] = useState<SelectableOption[]>([]);
     const [definitionValid, setDefinitionValid] = useState<boolean>(false);
     const [propertiesValid, setPropertiesValid] = useState<boolean>(false);
+    const [runTutorial, setRunTutorial] = useState<boolean>(false);
 
     const updateProperty = (properties: IProperty[]) => {
         return setEntityType({...entityType, properties: properties});
@@ -143,12 +147,26 @@ const EntityTypeForm: React.FC = () => {
         setEntityType(entityType);
     }
 
+    const helpClickedHandler = () => {
+        console.log("ayudaaaaaa");
+        setRunTutorial(true);
+    }
+
+    const helpTourCallback = () => {
+        setRunTutorial(false);
+    }
+
+
 
     return (
-        <div className="container">
-            <PageTitle icon='pi pi-box' title='Entity Type Editor'/>
         
-            <Panel header="Definition" className="mb-4">
+
+        <div className="container">
+            <EntityTypeFormTour run={runTutorial} callback={helpTourCallback}/>
+
+            <PageTitle icon='pi pi-box' title='Entity Type Editor' help={true} helpClickedHandler={helpClickedHandler}/>
+        
+            <Panel id="definition" header="Definition" className="mb-4">
                 <div className="row mb-4">
 
                     <div className='col-md-1'>
@@ -255,7 +273,7 @@ const EntityTypeForm: React.FC = () => {
             </Panel>
 
             <div className="row">
-                <div className="col-md-8" style={{height: "500px"}}>
+                <div id="properties" className="col-md-8" style={{height: "500px"}}>
                     <PropertyList properties={entityType.properties} safe={false} parentUpdate={updateProperty} mode="EntityType"></PropertyList>
                 </div>
                 <div className="col-md-4" style={{height: "500px"}}>

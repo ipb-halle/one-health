@@ -8,6 +8,7 @@ import { DataSourceService } from "../services/data-source-service";
 import { IKeywordService, KeywordService } from "../services/keyword-service";
 import { IMetadataService, MetadataService } from "../services/metadata-service";
 import { IOntologyService, OntologyService } from "../services/visualization-service";
+import { EntityService, IEntityService } from "../services/entity-service";
 
 
 const dependencyFactory = new Container();
@@ -18,6 +19,7 @@ dependencyFactory.bind<IPropertyService>(SERVICE_TYPES.IPropertyService).to(Prop
 dependencyFactory.bind<IDataSourceService>(SERVICE_TYPES.IDataSourceService).to(DataSourceService);
 dependencyFactory.bind<IMetadataService>(SERVICE_TYPES.IMetadataService).to(MetadataService);
 dependencyFactory.bind<IOntologyService>(SERVICE_TYPES.IOntologyService).to(OntologyService);
+dependencyFactory.bind<IEntityService>(SERVICE_TYPES.IEntityService).to(EntityService);
 
 
 export { dependencyFactory };

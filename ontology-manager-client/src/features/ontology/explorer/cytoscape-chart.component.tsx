@@ -1,7 +1,7 @@
 import { dependencyFactory } from "../../injection/inversify.config";
 import { ILinkTypeService } from "../../services";
 import { SERVICE_TYPES } from "../../services";
-import { RefObject, useState } from "react";
+import { RefObject, useContext, useState } from "react";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
 import { Column } from "primereact/column";
@@ -16,6 +16,8 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import Cytoscape from 'cytoscape';
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { GraphService } from "../../services/interfaces/graph-service";
+import { MessageServiceContext } from "../../messages";
+import { group } from "console";
 
 Cytoscape.use(cxtmenu);
 
@@ -44,6 +46,8 @@ const CytoscapeChart: React.FC<CytoscapeChartProps> =
     ({elements, contextMenu=false, onNodeClickHandler, onEdgeClickHandler, onNodeExpandHandler, onNodeHideHandler, backgroundColor="#343843", edgeLineColor="#A5ABB6", edgeLabelColor="white", graphService}) => {
     const [cytoscapeCore, setCytoscapeCore] = useState<any>();
     let menu = {};
+    const { messageService } = useContext(MessageServiceContext);
+
 
     useEffect(() => {
         if (cytoscapeCore){
@@ -94,7 +98,7 @@ const CytoscapeChart: React.FC<CytoscapeChartProps> =
                         },
                         {
                             content: `<span class="pi pi-share-alt" style="font-size:20px;"></span>`,
-                            select: (node: any) => {
+                            select: async (node: any) =>  {
                                 
                                 const nodes = cytoscapeCore.elements().jsons()
                                         .filter((x:any) => x.group==="nodes" && x.data.id !== HIGHLIGHT)
@@ -104,6 +108,36 @@ const CytoscapeChart: React.FC<CytoscapeChartProps> =
                                     node.lock();
                                 });
 
+
+                                const graph = await graphService.getNodeExpansion(node.id(), [], messageService!);
+
+                                graph.nodes.forEach( (node:any) => {
+                                    try{
+                                        
+                                        cytoscapeCore.add({ 
+                                            data: { 
+                                                id: node.id, 
+                                                label: node.label, 
+                                                color: node.color
+                                            } 
+                                        });
+                                    } catch {
+
+                                    }
+                                    }
+                                );
+
+                                graph.links.forEach( (edge:any) => {
+                                    cytoscapeCore.add({
+                                        group: 'edges',
+                                        data: {
+                                            label: edge.label,
+                                            source: edge.source, // ID of the source node
+                                            target: edge.target, // ID of the target node
+                                            // You can add other properties to the edge data object
+                                        }
+                                    })
+                                })
 
                                 cytoscapeCore.layout(layout).run(); 
 

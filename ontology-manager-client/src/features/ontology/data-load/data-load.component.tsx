@@ -228,7 +228,7 @@ const DataLoader: React.FC = () => {
 
     return (
         <div className="container">
-            <PageTitle icon='pi pi-download' title='Data Load'/>
+            <PageTitle icon='pi pi-download' title='Data Load' help={true}/>
 
             <div className='mb-3'>
 

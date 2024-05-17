@@ -16,7 +16,7 @@ const React = require('react');
 const MemoChart = React.memo(CytoscapeChart);
 
 interface GraphExplorerProps{
-    graphService: GraphService; //TODO: make an interface GetInitial, GetNodeExpansion, make option to group edges or not in the api call
+    graphService: any; //TODO: make an interface GetInitial, GetNodeExpansion, make option to group edges or not in the api call
 };
 
 
@@ -88,7 +88,8 @@ const Explorer: React.FC<GraphExplorerProps> = ({graphService}) => {
                             onNodeHideHandler={onNodeHideHandler} 
                             backgroundColor="white"
                             edgeLineColor="black"
-                            edgeLabelColor="black"                           
+                            edgeLabelColor="black"   
+                            graphService={graphService}                        
                             >
                         </MemoChart>
                     </div>

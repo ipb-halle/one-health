@@ -116,4 +116,14 @@ public class N4JOntologyRepository implements IOntologyRepository {
     public GraphDTO GetAdjacentNodes(String nodeId) {
         return null;
     }
+
+    @Override
+    public GraphNodeDTO GetNode(String nodeId) {
+        return null;
+    }
+
+    @Override
+    public GraphLinkDTO GetLink(String linkId) {
+        return null;
+    }
 }

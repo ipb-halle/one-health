@@ -97,7 +97,7 @@ const LinkTypeForm: React.FC = () => {
 
     return (
         <div className="container">
-            <PageTitle icon='pi pi-arrows-h' title='Link Type Editor'/>
+            <PageTitle icon='pi pi-arrows-h' title='Link Type Editor' help={true}/>
 
 
 

@@ -25,6 +25,9 @@ import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { debug } from 'console';
 import { MessageServiceContext } from '../../messages';
+import { Sidebar } from 'primereact/sidebar';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+        
 
 
 const React = require('react');
@@ -68,9 +71,10 @@ const CoOcurrenceSearch: React.FC = () => {
     const [runQuery, setRunQuery] = useState<boolean>(false);
 
     const [typeOptions, setTypeOptions] = useState<SelectableOption[]>([]);
+    const [visible, setVisible] = useState<boolean>(false);
 
 
-    const [sankeyData, setSankeyData] = useState<SankeyData>(
+    const [sankeyData, setSankeyData] = useState<Partial<SankeyData>>(
         {
             node: {
                 label: [],
@@ -84,22 +88,22 @@ const CoOcurrenceSearch: React.FC = () => {
             name: 'myplot',
             orientation: 'h',
             visible: true,
-            legend: '',
-            legendrank: 1,
-            legendgrouptitle: {},
-            legendwidth: 123,
-            ids: [],
-            hoverinfo: '',
-            meta: 123,
-            customdata: [],
-            domain: {},
-            textfont: {},
-            selectpoints: 13,
-            arrangement: 'freeform',
-            hoverlabel: {},
-            valueformat: '',
-            valuesuffix: '',
-            uirevision: 23,
+            // legend: '',
+            // legendrank: 1,
+            // legendgrouptitle: {},
+            // legendwidth: 123,
+            // ids: [],
+            // hoverinfo: 'hello',
+            // meta: 123,
+            // customdata: [],
+            // domain: {},
+            // textfont: {},
+            // selectpoints: 13,
+            // arrangement: 'freeform',
+            // hoverlabel: {},
+            // valueformat: '',
+            // valuesuffix: '',
+            // uirevision: 23,
         }
     )
 
@@ -185,8 +189,11 @@ const CoOcurrenceSearch: React.FC = () => {
             sourcex.push(nodesMap.get(x.source));
             targetx.push(nodesMap.get(x.target));
             valuex.push(x.value);
-            labelx.push(x.label);
+            labelx.push(`${x.source} - ${x.label} - ${x.target}`);
         });
+
+        // labelx.push(`${x.source} - ${x.label} - ${x.target}`);
+
 
         console.log(sourcex);
 
@@ -218,7 +225,7 @@ const CoOcurrenceSearch: React.FC = () => {
 
 
     return (
-        <div className="container">
+        <div className='container'>
 
             <div className="row mb-3">
                 <div className="col pt-1" style={{ maxWidth: '50px' }}>
@@ -232,42 +239,6 @@ const CoOcurrenceSearch: React.FC = () => {
                 </div>
             </div>
 
-            {/* <Panel header="Query Parameters" className="mb-4">
-                <div className="row">
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <label
-                                htmlFor="numkeys"
-                                className="font-bold block mb-2"
-                            >
-                                Parent type
-                            </label>
-                            <Dropdown
-                                className="w-100"
-                                optionLabel="name"
-                                placeholder="Select a type"
-                                filter
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <label
-                                htmlFor="numkeys"
-                                className="font-bold block mb-2"
-                            >
-                                Parent type
-                            </label>
-                            <Dropdown
-                                className="w-100"
-                                optionLabel="name"
-                                placeholder="Select a type"
-                                filter
-                            />
-                        </div>
-                    </div>
-                </div>
-            </Panel> */}
 
             <div className='row pb-3'>
 
@@ -279,32 +250,15 @@ const CoOcurrenceSearch: React.FC = () => {
             <div className='row'>
             <div className='col-md-9' style={{height: "710px", border: "1px solid #DEE2E6"}}>
             <Plot
-                            data={[sankeyData]}
-                            layout={{ autosize: true }}
-                            useResizeHandler={true}
-                            style={{ width: '100%', height: '100%' }}
-                        />
+                data={[sankeyData]}
+                layout={{ autosize: true }}
+                useResizeHandler={true}
+                style={{ width: '100%', height: '100%' }}/>
             </div>
 
             <div className='col-md-3'>
                 <TypeQueryBuilder triggerQuery={runQuery} parentUpdate={(leftQuery:any) => { setLeftTypeQuery(leftQuery)  }}></TypeQueryBuilder>
                 <TypeQueryBuilder triggerQuery={runQuery} parentUpdate={(rightQuery:any) => { setRightTypeQuery(rightQuery) }}></TypeQueryBuilder>
-               
-                {/* <TypeQueryBuilder toast={toast}></TypeQueryBuilder> */}
-
-            {/* <div style={{border: "1px solid #DEE2E6", height:"49.5%", marginBottom: "7px"}}>
-
-<div style={{backgroundColor: "#F8F9FA", padding: "5px", borderBottom: "1px solid #DEE2E6"}}>
-    <Dropdown 
-        style={{width: "100%"}} 
-        options={typeOptions} 
-        value={query.leftTypeQuery.type} 
-        onChange={(e) => { 
-            setQuery({...query, leftTypeQuery: {...query.leftTypeQuery, type: e.value }});
-            }}/>
-</div>
-</div> */}
-
 
             </div>
             </div>

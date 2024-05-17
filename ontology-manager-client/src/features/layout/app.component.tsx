@@ -15,6 +15,7 @@ import EntityTypePage from '../ontology/entity-types/entity-type-page.component'
 import FiltersDemo from '../filter/demo';
 import GraphExplorer from '../ontology/graph/explorer.component';
 import ContactPage from '../pages/contact.component';
+import StructureSearchPage from '../search/structure-search/structure-search.component';
 
 function App() {
     return (
@@ -57,6 +58,7 @@ function App() {
                         <Route path="/link-type-form/:id" Component={LinkTypeForm}/>
                         <Route path="/neighborhood-explorer" Component={GraphExplorer}/>
                         <Route path="/test" Component={FiltersDemo}></Route>
+                        <Route path="search/structure-search" Component={StructureSearchPage}></Route>
 
                     </Routes>
                 

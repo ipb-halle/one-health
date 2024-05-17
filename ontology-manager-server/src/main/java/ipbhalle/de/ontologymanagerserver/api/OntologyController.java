@@ -14,12 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/ontology")
 @CrossOrigin(origins = "*") // TODO: make this inheritable ? and use an env variable
-public class OntologyController extends GraphController {
+public class OntologyController {
 
     private IOntologyService ontologyService;
 
     public OntologyController(IOntologyService ontologyService) {
-        super(ontologyService);
         this.ontologyService = ontologyService;
     }
 

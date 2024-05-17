@@ -38,6 +38,27 @@ const Header: React.FC = () => {
             ],
         },
         {
+            label: 'Search',
+            icon: 'pi pi-search',
+            items: [
+                {
+                    icon: 'fa fa-atom',
+                    label: 'Compound Search',
+                    url: '/search/structure-search'
+                },
+                {
+                    icon: 'fa fa-leaf',
+                    label: 'Plant Search',
+                    url: '/search/plant-search'
+                },
+                {
+                    icon: 'fa fa-virus',
+                    label: 'Disease Search',
+                    url: '/search/disease-search'
+                }
+            ]
+        },
+        {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
             items: [
