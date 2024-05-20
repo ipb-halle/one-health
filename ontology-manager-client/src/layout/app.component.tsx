@@ -3,7 +3,7 @@ import '../Style.scss';
 import { Routes, Route } from 'react-router-dom';
 import './app.component.scss';
 import Layout from './layout.component';
-import { CompoundSearchPageComponent, DataLoadPageComponent, DocumentationPageComponent, EntityTypeFormPageComponent, HomePageComponent, LinkTypeFormPageComponent, MetadataOverviewPageComponent, NeighborhoodExplorerPageComponent } from '../pages';
+import { CoOcurrencesSummaryPageComponent, CompoundSearchPageComponent, DataLoadPageComponent, DocumentationPageComponent, EntityTypeFormPageComponent, HomePageComponent, LinkTypeFormPageComponent, MetadataOverviewPageComponent, NeighborhoodExplorerPageComponent } from '../pages';
 
 function App() {
     return (
@@ -23,7 +23,7 @@ function App() {
                     <Route path="search/structure-search" element={<CompoundSearchPageComponent/>}/>
                 
                     <Route path="neighborhood-explorer" element={<NeighborhoodExplorerPageComponent/>}/>
-                    <Route path="visualization/co-ocurrence-search/" element={<CompoundSearchPageComponent/>}/>
+                    <Route path="visualization/co-ocurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
 
                     <Route path="documentation" element={<DocumentationPageComponent/>}/>
                 </Route>

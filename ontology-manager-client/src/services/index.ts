@@ -9,6 +9,7 @@ export  { IPropertyService, PropertyService} from "./modules/metadata/property-s
 
 export  { IEntityService, EntityService} from "./modules/visualization/entity-service";
 export  { IOntologyService, OntologyService} from "./modules/visualization/visualization-service";
+export  {IGraphVisualizationHistoryService, MockGraphVisualizationHistoryService} from "./modules/visualization/graph-visualization-history-service";
 
 
 

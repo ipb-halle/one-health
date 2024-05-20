@@ -8,7 +8,7 @@ const SERVICES = {
     IPropertyService: Symbol.for("IPropertyService"),
     IDataSourceService: Symbol.for("IDataSourceService"),
     IEntityService: Symbol.for("IEntityService"),
-    IQueryHistoryGraphService: Symbol.for("IQueryHistoryGraphService")
+    IGraphVisualizationHistoryService: Symbol.for("IGraphVisualizationHistoryService")
 }
 
 export {SERVICES};

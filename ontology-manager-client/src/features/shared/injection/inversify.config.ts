@@ -1,6 +1,26 @@
 import { Container } from "inversify";
-import { DataSourceService, EntityService, EntityTypeService, IDataSourceService, IEntityService, IEntityTypeService, IKeywordService, ILinkTypeService, IMetadataService, IOntologyService, IPropertyService, KeywordService, LinkTypeService, MetadataService, OntologyService, PropertyService, SERVICES } from "../../../services";
-import { IQueryHistoryGraphService, QueryHistoryGraphService } from "../../query-history/query-history-graph/query-history-graph.service";
+import { 
+    DataSourceService, 
+    EntityService, 
+    EntityTypeService, 
+    IDataSourceService, 
+    IEntityService, 
+    IEntityTypeService, 
+    IKeywordService, 
+    ILinkTypeService, 
+    IMetadataService, 
+    IOntologyService, 
+    IPropertyService, 
+    KeywordService, 
+    LinkTypeService, 
+    MetadataService, 
+    OntologyService, 
+    PropertyService,
+    IGraphVisualizationHistoryService, 
+    MockGraphVisualizationHistoryService,
+    SERVICES 
+} from "../../../services";
+
 
 
 const dependencyFactory = new Container();
@@ -12,7 +32,7 @@ dependencyFactory.bind<IDataSourceService>(SERVICES.IDataSourceService).to(DataS
 dependencyFactory.bind<IMetadataService>(SERVICES.IMetadataService).to(MetadataService);
 dependencyFactory.bind<IOntologyService>(SERVICES.IOntologyService).to(OntologyService);
 dependencyFactory.bind<IEntityService>(SERVICES.IEntityService).to(EntityService);
-dependencyFactory.bind<IQueryHistoryGraphService>(SERVICES.IQueryHistoryGraphService).to(QueryHistoryGraphService).inSingletonScope();
+dependencyFactory.bind<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService).to(MockGraphVisualizationHistoryService).inSingletonScope();
 
 
 export {dependencyFactory};

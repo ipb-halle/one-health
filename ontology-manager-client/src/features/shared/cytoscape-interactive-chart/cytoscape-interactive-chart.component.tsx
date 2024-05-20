@@ -160,6 +160,17 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         })
     }
 
+    getElements() {
+        const elements = this.cytoscapeCore.json().elements;
+        return JSON.stringify(elements);
+    }
+
+    setElements(elements:any) {
+        this.reset();
+        const parsed = JSON.parse(elements);
+        this.cytoscapeCore.add(parsed);
+    }
+
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;
 

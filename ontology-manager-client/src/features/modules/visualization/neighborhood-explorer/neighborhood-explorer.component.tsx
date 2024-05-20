@@ -15,8 +15,9 @@ import { DataView } from 'primereact/dataview';
 import { IQueryGraph } from '../../../query-history/query-history-graph/graph-query';
 import { MessageServiceContext } from '../../../shared/messages';
 import { dependencyFactory } from '../../../shared/injection';
-import { IQueryHistoryGraphService } from '../../../query-history/query-history-graph/query-history-graph.service';
-import { SERVICES } from '../../../../services';
+import { IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
+import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 
 const React = require('react');
@@ -31,30 +32,39 @@ interface GraphExplorerProps{
 const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphService}) => {
     const toast : RefObject<Toast> = useRef<Toast>(null);
     const [element, setElement] = useState<any>({});
-    const [queryHistory, setQueryHistory] = useState<IQueryGraph[]>([]);
+    const [queryHistory, setQueryHistory] = useState<Partial<ISavedGraphVisualization>[]>([]);
     const { messageService } = useContext(MessageServiceContext);
 
 
-    const queryHistoryGraphService = dependencyFactory.get<IQueryHistoryGraphService>(SERVICES.IQueryHistoryGraphService);
+    let savedVisualization: ISavedGraphVisualization = {
+        id: "",
+        name: "Untitled",
+        visualization: ""
+    }
+    const graphVisualizationHistoryService = dependencyFactory.get<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService);
 
     const myComponentRef : RefObject<CytoscapeInteractiveChartComponent> = useRef<CytoscapeInteractiveChartComponent>(null);
 
     
     const [elements, setElements] = useState<any>([]);
     const [nodeQuery, setNodeQuery] = useState<string>("");
+    // const [savedVisualization, setSavedVisualization] = useState<ISavedGraphVisualization>({
+    //     id: "",
+    //     name: "Untitled",
+    //     visualization: "dfdf"
+    // });
 
     const init = async () => {
         let graph = await graphService.getInitial(messageService!);
         const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
         setElements([...newElements]);
-        setQueryHistory(queryHistoryGraphService.getAsOptions());
+        setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
     };
 
 
     useEffect(() => {
         init();
     }, []);
-
     
     const onNodeClickHandler = useCallback(
         async (id:any) => {setElement(await graphService.getNode(id, messageService!));}, []
@@ -120,22 +130,69 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     ]
 
 
-    const listTemplate = (items: IQueryGraph[]) : ReactNode[] | undefined =>  {
+    const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
 
         let list = items.map((query, index) => {
-            return (<div>
-                    {query.name} {query.id}
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
+
+                    <span style={{marginLeft: 5}}>{query.name}</span>
+                    
+                    <div style={{marginLeft: 'auto'}}></div>
+                    <Button icon="pi pi-upload" rounded text aria-label="Filter" onClick={async (e) => {
+
+                        const loaded = await graphVisualizationHistoryService.get(query.id, messageService!);
+                        myComponentRef.current!.setElements(loaded.visualization);
+
+                    }} />
+
+                    <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
+                        await graphVisualizationHistoryService.delete(query.id);
+                        setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!))
+                        
+                        }} />
                 </div>)
         });
 
         return [<div className="grid grid-nogutter">{list}</div>];
     };
+
+    const accept =  async() => {
+        // const elements = myComponentRef.current!.getElements();
+        // console.log(savedVisualization);
+        // const item : ISavedGraphVisualization = {...savedVisualization, visualization: elements};
+        await graphVisualizationHistoryService.create(savedVisualization, messageService!);
+        setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
+    };
+
+    const saveStuff = async ()  => {
+        
+    }
+
+    const reject = () => {
+        console.log("rejected");
+    };
+
+    const confirmGraphVisualizationSave = () => {
+        confirmDialog({
+            header: 'Confirmation',
+            message: (
+                <div className="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
+                    <InputText 
+                        onChange={(e) => {savedVisualization.name = e.target.value}}></InputText>
+                    <i className="pi pi-exclamation-circle text-6xl text-primary-500"></i>
+                    <span>Please confirm to proceed moving forward.</span>
+                </div>
+            ),
+            accept,
+            reject,
+        });
+    };
   
 
     return (
         <div className="explorer">
-                   
+                <ConfirmDialog />
                 <div
                     className="row"
                     style={{ height: '700px', width: '100%', margin: '0px' }}
@@ -169,14 +226,15 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 <Button icon="fa fa-camera-rotate" onClick={(e) => {myComponentRef.current!.resetView();}}/>
                                 <Button icon="pi pi-th-large" onClick={(e) => {myComponentRef.current!.redoLayout();}}/>
                                 <Button icon="pi pi-eraser" onClick={(e) => {myComponentRef.current!.clean();}}/>
-                                <Button icon="pi pi-save" onClick={(e) => {
-                                    queryHistoryGraphService.save({
-                                        id: "2",
-                                        name: "saved one",
-                                        query: "jojoj"
-                                    });
-                                    setQueryHistory(queryHistoryGraphService.getAsOptions());
+                                <Button icon="pi pi-save" onClick={ async (e) => {
+        const elements = myComponentRef.current!.getElements();
 
+                                    savedVisualization = {
+                                        id: "",
+                                        name: "Untitled",
+                                        visualization: elements,
+                                    };
+                                    confirmGraphVisualizationSave();
                                 }}/>
 
 
@@ -228,7 +286,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                         ></ElementView>
                             </TabPanel>
                             <TabPanel header="History">
-                                <div style={{width: '100%', height:'100%'}}>
+                                <div style={{width: '100%', height:'600px', overflowY: 'scroll'}}>
                                     <DataView value={queryHistory} listTemplate={listTemplate} />
                                 </div>
                             </TabPanel>
