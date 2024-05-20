@@ -2,12 +2,12 @@ import "reflect-metadata";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './features/layout/app.component';
 import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
-import { ToastMessageServiceProvider } from "./features/messages";
 import { BrowserRouter } from 'react-router-dom';
+import { ToastMessageServiceProvider } from "./features/shared/messages";
+import App from "./layout/app.component";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
