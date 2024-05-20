@@ -54,8 +54,6 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     }
 
     findNode (query: string) {
-        console.log(query);
-        console.log("cojonesssssss");
         this.cytoscapeCore.nodes().forEach((node:any) => {
             var label = node.data('label').toLowerCase();
             if (label.includes(query.toLowerCase())) {

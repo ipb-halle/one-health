@@ -1,21 +1,15 @@
-.explorer .p-panel-content {
-    padding: 0px;
+@import '../../../../Constants.scss';
+
+.neighborhood-explorer {
+    border: 1px solid $app-border-color;
+    height: 800px;
+    width: 100%;
+    margin: 0;
 }
 
-.explorer .p-splitter {
-    border: none;
-}
-
-.explorer-node{
-    background-color: "blue";
-}
-
-.testing {
-    background-color: "#292C33";
-    height: 100px;
-    width: 200px;
-}
-
-.selected {
-    background-color: blue;
+.neighborhood-explorer-toolbar {
+    border-bottom: 1px solid $app-border-color;
+    padding: 3px;
+    padding-top: 4px;
+    display: flex;
 }

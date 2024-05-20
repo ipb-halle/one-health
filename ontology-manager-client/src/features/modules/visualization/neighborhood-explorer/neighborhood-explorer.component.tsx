@@ -30,11 +30,9 @@ interface GraphExplorerProps{
 
 
 const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphService}) => {
-    const toast : RefObject<Toast> = useRef<Toast>(null);
     const [element, setElement] = useState<any>({});
     const [queryHistory, setQueryHistory] = useState<Partial<ISavedGraphVisualization>[]>([]);
     const { messageService } = useContext(MessageServiceContext);
-
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -48,11 +46,6 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     
     const [elements, setElements] = useState<any>([]);
     const [nodeQuery, setNodeQuery] = useState<string>("");
-    // const [savedVisualization, setSavedVisualization] = useState<ISavedGraphVisualization>({
-    //     id: "",
-    //     name: "Untitled",
-    //     visualization: "dfdf"
-    // });
 
     const init = async () => {
         let graph = await graphService.getInitial(messageService!);
@@ -195,21 +188,19 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
   
 
     return (
-        <div className="explorer">
+        <div >
                 <ConfirmDialog />
-                <div
-                    className="row"
-                    style={{ height: '700px', width: '100%', margin: '0px' }}
-                >
-                    <div className="col-md-9" style={{ padding: '0px' }}>
-                        <div className="row" style={{ padding: '5px'}}>
+                <div className="row neighborhood-explorer">
+                    <div className="col-md-9" style={{ padding: '0px', height: '100%' }}>
+                        <div className="neighborhood-explorer-toolbar">
 
-                            <div className="col-6">
+                            <div className='col-6'>
+
                             <div className="p-inputgroup flex-1">
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-search"></i>
                                 </span>
-                                <InputText onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
+                                <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
                                     if(e.key == 'Enter')
                                         myComponentRef.current!.findNode(nodeQuery);
                                 }}/>
@@ -217,12 +208,13 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 <Button icon="pi pi-angle-right" onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}/>
 
                             </div>
-                            </div>
-                            <div className='col-3'>
-                            <SplitButton icon="pi pi-download"  model={downloadOptions} />
-                            </div>
-                            <div className='col-3'>
-                            <div className="p-inputgroup flex-1">
+                            </div >
+                         
+
+                          
+                            <div style={{marginLeft: 'auto', marginRight: 5}}>
+
+                            <div className="p-inputgroup flex-1" >
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-cog"></i>
                                 </span>
@@ -242,11 +234,15 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 }}/>
 
 
-                                
+                            
                             </div>
                             </div>
+
+                            <SplitButton icon="pi pi-download" model={downloadOptions} />
                         </div>
-                        <div className="row" id='cjon' style={{height: "645px"}}>
+                        <div className="row" style={{height: "calc(100% - 50px)", padding: 2}}>
+                            <div style={{height: "100%"}}>
+
                             <MemoChart 
                                 ref={myComponentRef}
                                 elements={elements} 
@@ -262,13 +258,13 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 messageService={messageService!}                      
                                 >
                             </MemoChart>
+                            </div>
                         </div>
                     </div>
 
                     <div
                         className="col-md-3"
                         style={{
-                            zIndex: 1,
                             padding: '0px',
                             borderLeft: '1px solid #dee2e6',
                             backgroundColor: 'white',
@@ -276,7 +272,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                     >
 
                         <TabView>
-                            <TabPanel header="Search">
+                            <TabPanel header="DB Search">
                                 <p className="m-0">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -285,9 +281,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 </p>
                             </TabPanel>
                             <TabPanel header="Details">
-                            <ElementView
-                           element={element}
-                        ></ElementView>
+
                             </TabPanel>
                             <TabPanel header="History">
                                 <div style={{width: '100%', height:'600px', overflowY: 'scroll'}}>

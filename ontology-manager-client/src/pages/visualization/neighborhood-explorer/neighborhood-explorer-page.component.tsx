@@ -23,11 +23,9 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     return (
         <div className="container">
             <PageTitle icon="fa fa-compass" title="Neighborhood Explorer" help={true}></PageTitle>
-            <Panel header="Explorer" className='panel-no-padding'>
             
             <NeighborhoodExplorerComponent graphService={entityService}/>
 
-            </Panel>
 
 
         </div>
