@@ -175,15 +175,19 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
     const confirmGraphVisualizationSave = () => {
         confirmDialog({
-            header: 'Confirmation',
-            message: (
-                <div className="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
-                    <InputText 
-                        onChange={(e) => {savedVisualization.name = e.target.value}}></InputText>
-                    <i className="pi pi-exclamation-circle text-6xl text-primary-500"></i>
-                    <span>Please confirm to proceed moving forward.</span>
+            header: 'Save graph visualization',
+            message: (<div>
+
+                <div className="flex flex-column align-items-center w-full border-bottom-1 surface-border" style={{marginBottom: 5}}>
+                    <i className="pi pi-exclamation-circle text-6xl text-primary-500" style={{marginRight: 5}}></i>
+                    <span>Please introduce a name for the visualization.</span>
                 </div>
+                    <InputText onChange={(e) => {savedVisualization.name = e.target.value}} style={{width:"100%"}}/>
+            </div>
+
             ),
+            acceptLabel: "Save",
+            rejectLabel: "Cancel",
             accept,
             reject,
         });
