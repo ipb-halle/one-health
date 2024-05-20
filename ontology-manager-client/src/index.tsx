@@ -7,10 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
 import { ToastMessageServiceProvider } from "./features/messages";
-
+import { BrowserRouter } from 'react-router-dom';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-console.log(process.env);
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -19,7 +18,9 @@ root.render(
     <React.StrictMode>
         <PrimeReactProvider>
             <ToastMessageServiceProvider>
-                <App />
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
             </ToastMessageServiceProvider>
         </PrimeReactProvider>
     </React.StrictMode>,

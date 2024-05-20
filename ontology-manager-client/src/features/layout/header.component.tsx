@@ -4,13 +4,18 @@ import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import './header.component.scss';
 import logo from '../../logo.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
+
+    const navigate = useNavigate();
     const items: MenuItem[] = [
         {
             label: 'Home',
             icon: 'pi pi-home',
-            url: '/',
+            command: () => {
+                navigate('/');
+            }
         },
         {
             label: 'Ontology',
@@ -18,22 +23,30 @@ const Header: React.FC = () => {
             items: [
                 {
                     label: 'Overview',
-                    url: '/ontology/overview/',
+                    command: () => {
+                        navigate('/ontology/overview/');
+                    }
                     // icon: 'pi pi-chart-bar'
                 },
                 {
                     label: 'New Entity Type',
-                    url: '/entity-type-form',
+                    command: () => {
+                        navigate('/entity-type-form');
+                    }
                     // icon: 'pi pi-box'
                 },
                 {
                     label: 'New Link Type',
-                    url: '/link-type-form',
+                    command: () => {
+                        navigate('/link-type-form');
+                    }
                     // icon: 'pi pi-arrows-h'
                 },
                 {
                     label: 'Data Load',
-                    url: '/ontology/data-load/0',
+                    command: () => {
+                        navigate('/ontology/data-load/0');
+                    }
                 },
             ],
         },
@@ -44,17 +57,23 @@ const Header: React.FC = () => {
                 {
                     icon: 'fa fa-atom',
                     label: 'Compound Search',
-                    url: '/search/structure-search'
+                    command: () => {
+                        navigate('/search/structure-search');
+                    }
                 },
                 {
                     icon: 'fa fa-leaf',
                     label: 'Plant Search',
-                    url: '/search/plant-search'
+                    command: () => {
+                        navigate('/search/plant-search');
+                    }
                 },
                 {
                     icon: 'fa fa-virus',
                     label: 'Disease Search',
-                    url: '/search/disease-search'
+                    command: () => {
+                        navigate('/search/disease-search');
+                    }
                 }
             ]
         },
@@ -64,31 +83,39 @@ const Header: React.FC = () => {
             items: [
                 {
                     label: 'Explorer',
-                    url: '/neighborhood-explorer'
+                    command: () => {
+                        navigate('/neighborhood-explorer');
+                    }
                 },
                 {
                     label: 'Co-ocurrence Search',
-                    url: '/visualization/co-ocurrence-search/',
+                    command: () => {
+                        navigate('/visualization/co-ocurrence-search/');
+                    }
                 },
                 {
                     label: 'test',
-                    url: '/test'
+                    command: () => {
+                        navigate('/test');
+                    }
                 }
             ],
         },
         {
             label: 'Documentation',
             icon: 'pi pi-book',
-            url: '/documentation'
+            command: () => {
+                navigate('/documentation');
+            }
         },
         {
             label: 'Contact',
             icon: 'pi pi-envelope',
-            url: '/contact'
+            command: () => {
+                navigate('/contact');
+            }
         }
     ];
-
-    const end = <HeaderSearchbar></HeaderSearchbar>;
 
     const start = (
         <img alt="logo" src={logo} height="40" className="mr-2"></img>
