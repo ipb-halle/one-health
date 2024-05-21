@@ -1,14 +1,19 @@
 package ipbhalle.de.ontologymanagerserver.n4j.repository;
 
-import ipbhalle.de.ontologymanagerserver.data.dtos.GraphDTO;
-import ipbhalle.de.ontologymanagerserver.data.dtos.GraphLinkDTO;
-import ipbhalle.de.ontologymanagerserver.data.dtos.GraphNodeDTO;
+import ipbhalle.de.ontologymanagerserver.data.dtos.*;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IEntityRepository;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IGraphRepository;
+import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntity;
+import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntityType;
+import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyInfo;
+import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyValue;
+import org.neo4j.driver.internal.value.MapValue;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class N4JEntityRepository implements IEntityRepository {
@@ -30,29 +35,139 @@ public class N4JEntityRepository implements IEntityRepository {
     }
 
     @Override
-    public GraphDTO GetAdjacentNodes(String nodeId) {
+    public GraphDTO GetAdjacentNodes(String nodeId, List<String> nodesIds) {
 
-        String result = "match(n) - [r] - (m:Entity) where id(n) = " +
-                nodeId +
-                " return toString(id(n)) as source, toString(id(m)) as target, type(r) as label, 1 as value;";
-        var links = neo4jTemplate.findAll(result, GraphLinkDTO.class);
+        HashMap<String, String> colors = new HashMap<>();
+        HashMap<String, String> labels = new HashMap<>();
+
+        var nodeTypes = neo4jTemplate.findAll(N4JEntityType.class);
+        nodeTypes.forEach(x -> {
+            colors.put(x.getId(), x.getColor());
+            if (x.getLabel() != null)
+                labels.put(x.getId(), x.getLabel().getName());
+        });
+
+        HashSet<String> existentNodes = new HashSet<>(nodesIds);
+
+        // Get adjacent nodes to the expanded node
+        String adjacentEntitiesQuery = "match(n) - [r] - (m:Entity) where id(n) = "
+                + nodeId +
+                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
+        var adjacentEntities = neo4jTemplate.findAll(adjacentEntitiesQuery, N4JEntity.class);
+
+        // From all adjacent nodes get the ones that are not in the graph already
+        var newEntities = adjacentEntities.stream().filter(x -> !existentNodes.contains(x.getId())).toList();
+        var newEntitiesIds = newEntities.stream().map(N4JEntity::getId).toList();
 
 
-        String result2 = "match(n) - [r] - (m:Entity) where id(n) = " +
-                nodeId +
-                " return toString(id(m)) as id, toString(id(m)) as label, '#0000FF' as color, 1 as count";
-        var nodes = neo4jTemplate.findAll(result2, GraphNodeDTO.class);
+        String newOutgoingLinksQuery =
+                "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
+                "[" + String.join(", ", nodesIds) + "] as nodesIds " +
+                "match(n) - [r] -> (m:Entity) where " +
+                        "(id(n) in newNodesIds or id(n) in nodesIds) and id(m) in newNodesIds " +
+                        "with toString(id(n)) as source, toString(id(m)) as target, type(r) as label, count(r) as value" +
+                " return source, target, label, value;";
 
-        return new GraphDTO(nodes, links);
+        String newIncomingLinksQuery =
+                "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
+                        "[" + String.join(", ", nodesIds) + "] as nodesIds " +
+                        "match (m:Entity) - [r] -> (n) where " +
+                        "(id(n) in newNodesIds or id(n) in nodesIds) and id(m) in newNodesIds " +
+                        "with toString(id(n)) as target, toString(id(m)) as source, type(r) as label, count(r) as value" +
+                        " return source, target, label, value;";
+
+
+        var outgoingLinks = neo4jTemplate.findAll(newOutgoingLinksQuery, GraphLinkDTO.class);
+        var incomingLinks = neo4jTemplate.findAll(newIncomingLinksQuery, GraphLinkDTO.class);
+
+        var links = Stream.concat(outgoingLinks.stream(), incomingLinks.stream()).collect(Collectors.toList());
+
+        var newNodes = newEntities.stream().map(n -> {
+//            var properties = new ArrayList<N4JPropertyValue>();
+            var properties = n.getProperties().stream().map(x ->
+            {
+                var propertyMap = (MapValue)x;
+                return new N4JPropertyValue(propertyMap.asMap());
+            }).toList();
+
+            Map<String, Object> map = properties.stream()
+                    .collect(
+                            Collectors.toMap(N4JPropertyValue::getName, N4JPropertyValue::getValue));
+            var nodeType = (String)map.get("__type");
+            return new GraphNodeDTO(
+                n.getId(),
+                    (String)map.get(labels.get(nodeType)),
+                colors.get(nodeType),
+                1
+            );
+        }).toList();
+
+        return new GraphDTO(newNodes, links);
     }
 
     @Override
-    public GraphNodeDTO GetNode(String nodeId) {
-        return null;
+    public EntityDTO GetNode(String nodeId) {
+        String nodeQuery = "match (m:Entity) where id(m) = "
+                + nodeId +
+                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
+
+        var entity = neo4jTemplate.findOne(nodeQuery,new HashMap<>(), N4JEntity.class);
+
+        if (entity.isEmpty())
+            return null;
+
+        var entityValue = entity.get();
+
+        var properties = entityValue.getProperties().stream().map(x ->
+        {
+            var propertyMap = (MapValue)x;
+            return new N4JPropertyValue(propertyMap.asMap());
+        }).toList();
+
+        Map<String, Object> propertiesMap = properties.stream()
+                .collect(
+                        Collectors.toMap(N4JPropertyValue::getName, N4JPropertyValue::getValue));
+
+        var nodeType = neo4jTemplate.findById(propertiesMap.get("__type"), N4JEntityType.class);
+
+        if (nodeType.isEmpty())
+            return null;
+
+        var nodeTypeValue = nodeType.get();
+
+        var entityDto = new EntityDTO(nodeId, nodeTypeValue.getName(), entityValue.getLabels(), nodeTypeValue.getColor());
+
+        List<PropertyValueDTO> propertyValues = new ArrayList<>();
+
+        for (N4JPropertyInfo p : nodeTypeValue.getProperties().stream().sorted((p1, p2) -> Integer.compare(p1.getPosition(), p2.getPosition())).toList()) {
+            propertyValues.add(
+                    new PropertyValueDTO(
+                            p.getName(),
+                            propertiesMap.get(p.getName()),
+                            p.getDataType(),
+                            p.getPosition()
+                    )
+            );
+        }
+
+        entityDto.setProperties(propertyValues);
+
+        return entityDto;
+
     }
 
     @Override
     public GraphLinkDTO GetLink(String linkId) {
         return null;
+    }
+
+    @Override
+    public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
+        String query = "match (n)-[r]-(m) where id(n) = " + sourceId + " and id(m) = " + targetId;
+        if (type != null)
+            query += " and type(r) = '" + type + "'";
+        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, 'Me' as sourceName, 'http://me.com' as sourceUrl";
+
+        return neo4jTemplate.findAll(query, LinkDTO.class);
     }
 }

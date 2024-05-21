@@ -44,6 +44,11 @@ public class N4JDataSourceRepository implements IDataSourceRepository {
     }
 
     @Override
+    public List<DataSourceDTO> CreateAll(Iterable<DataSourceDTO> dtos) {
+        return List.of();
+    }
+
+    @Override
     public DataSourceDTO Update(DataSourceDTO dto) {
         return null;
     }

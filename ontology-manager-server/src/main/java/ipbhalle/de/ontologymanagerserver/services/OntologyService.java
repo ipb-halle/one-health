@@ -34,17 +34,22 @@ public class OntologyService implements IOntologyService {
     }
 
     @Override
-    public GraphDTO GetAdjacentNodes(String nodeId) {
-        return ontologyRepository.GetAdjacentNodes(nodeId);
+    public GraphDTO GetAdjacentNodes(String nodeId, List<String> nodes) {
+        return ontologyRepository.GetAdjacentNodes(nodeId, nodes);
     }
 
     @Override
-    public GraphNodeDTO GetNode(String nodeId) {
+    public EntityDTO GetNode(String nodeId) {
         return null;
     }
 
     @Override
     public GraphLinkDTO GetLink(String nodeId) {
         return null;
+    }
+
+    @Override
+    public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
+        return List.of();
     }
 }

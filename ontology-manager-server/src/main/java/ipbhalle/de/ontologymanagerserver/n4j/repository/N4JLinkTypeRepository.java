@@ -39,6 +39,11 @@ public class N4JLinkTypeRepository implements ILinkTypeRepository {
     }
 
     @Override
+    public List<LinkTypeDTO> CreateAll(Iterable<LinkTypeDTO> dtos) {
+        return List.of();
+    }
+
+    @Override
     public LinkTypeDTO Update(LinkTypeDTO dto) {
         return null;
     }

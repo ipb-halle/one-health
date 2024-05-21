@@ -10,6 +10,8 @@ public class PropertyInfoDTO extends DTO<String> {
     private Boolean key;
     private DataType dataType;
     private Boolean inherited;
+    private int position;
+    private boolean label;
 
     public PropertyInfoDTO() {};
 
@@ -21,6 +23,30 @@ public class PropertyInfoDTO extends DTO<String> {
         this.dataType = dataType;
         this.inherited = inherited;
     }
+
+    public PropertyInfoDTO(String id, String name, String description, Boolean key, DataType dataType, Boolean inherited, int position) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.key = key;
+        this.dataType = dataType;
+        this.inherited = inherited;
+        this.position = position;
+    }
+
+
+
+    public PropertyInfoDTO(String id, String name, String description, Boolean key, DataType dataType, Boolean inherited, int position, boolean label) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.key = key;
+        this.dataType = dataType;
+        this.inherited = inherited;
+        this.position = position;
+        this.label = label;
+    }
+
 
     public PropertyInfoDTO(String name, String description, Boolean key, DataType dataType, Boolean inherited) {
         this.name = name;
@@ -76,5 +102,21 @@ public class PropertyInfoDTO extends DTO<String> {
 
     public void setInherited(Boolean inherited) {
         this.inherited = inherited;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public boolean isLabel() {
+        return label;
+    }
+
+    public void setLabel(boolean label) {
+        this.label = label;
     }
 }

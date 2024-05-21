@@ -18,6 +18,10 @@ import { dependencyFactory } from '../../../shared/injection';
 import { IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
 import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Divider } from 'primereact/divider';
+import { Badge } from 'primereact/badge';
+import { classNames } from 'primereact/utils';
+import { darkenHexColor } from '../../../../utils';
 
 
 const React = require('react');
@@ -33,6 +37,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [element, setElement] = useState<any>({});
     const [queryHistory, setQueryHistory] = useState<Partial<ISavedGraphVisualization>[]>([]);
     const { messageService } = useContext(MessageServiceContext);
+    const [selectionType, setSelectionType] = useState<"node" | "edge" | null>(null);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -46,6 +51,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     
     const [elements, setElements] = useState<any>([]);
     const [nodeQuery, setNodeQuery] = useState<string>("");
+    const [links, setLinks] = useState<any[]>([]);
+    const [selectedLink, setSelectedLink] = useState<any>(null);
 
     const init = async () => {
         let graph = await graphService.getInitial(messageService!);
@@ -60,11 +67,19 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     }, []);
     
     const onNodeClickHandler = useCallback(
-        async (id:any) => {setElement(await graphService.getNode(id, messageService!));}, []
+        async (id:any) => {
+            setElement(await graphService.getNode(id, messageService!)); 
+            setSelectionType('node');
+        }, []
     )
 
     const onEdgeClickHandler = useCallback(
-        async (id:any) => {setElement(await graphService.getEdge(id, messageService!));}, []
+        async (edge:any) => {
+            const edges = await graphService.getLinksBetween(edge.data('source'),edge.data('target'),edge.data('label'), messageService!);
+            setLinks(edges);
+            setSelectedLink(edge);
+            setSelectionType('edge');
+        }, []
     )
 
     const onNodeExpandHandler = useCallback(
@@ -122,6 +137,65 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         },
     ]
 
+    const nodePropertiesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+        let list = items.sort((a,b) => a - b ).map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6'}}>
+
+                   
+
+                    <span style={{marginLeft: 5}}><b>{query.name}</b>: {query.value}</span>
+                  
+                </div>)
+        });
+
+        return [
+            <div className="grid grid-nogutter">
+                <div style={{ overflow: 'scroll'}}>
+                {/* <Badge value={element.type}/> */}
+
+                <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                </div>
+                <Divider></Divider>
+            {list}
+            </div>];
+    };
+
+    const linkListTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+        let list = items.map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6'}}>
+
+                    <div>
+
+                    <span style={{marginLeft: 5}}>Source: {query.sourceName}</span>
+                    </div>
+                    <div>
+
+                    <span style={{marginLeft: 5}}>URL:</span> <a href={query.sourceUrl}>{query.sourceUrl}</a>
+                    </div>
+                  
+                </div>)
+        });
+
+        return [
+            <div className="grid grid-nogutter">
+                <div style={{ overflow: 'scroll'}}>
+
+                <Badge value={selectedLink.source().data('label')} style={{ background: darkenHexColor(selectedLink.source().data('color'), -140), border: `solid 2px ${selectedLink.source().data('color')}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                <Badge value={selectedLink.data('label')} style={{background: '#E9ECEF', border: 'solid 2px #CED4DA', height: 27, color: 'black' }}/>
+
+
+                <Badge value={selectedLink.target().data('label')} style={{ background: darkenHexColor(selectedLink.target().data('color'), -140), border: `solid 2px ${selectedLink.target().data('color')}`, height: 27, color: 'black'  }}/>
+
+            {/* {selectedLink.source().data('label')} - {selectedLink.data('label')} - {selectedLink.target().data('label')} */}
+                </div>
+                <Divider></Divider>
+            {list}
+            </div>];
+    };
 
     const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
@@ -271,6 +345,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                         }}
                     >
 
+
                         <TabView>
                             <TabPanel header="DB Search">
                                 <p className="m-0">
@@ -282,13 +357,26 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                             </TabPanel>
                             <TabPanel header="Details">
 
+                                {
+                                    !selectionType && <div>nothing</div>
+                                }
+                                {selectionType === "node" && 
+                                    <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
+                                    <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                    </div>
+                                }
+                                {selectionType === "edge" && 
+                                <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
+                                    <DataView value={links} listTemplate={linkListTemplate} />
+                                </div>}
                             </TabPanel>
                             <TabPanel header="History">
-                                <div style={{width: '100%', height:'600px', overflowY: 'scroll'}}>
+                                <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
                                     <DataView value={queryHistory} listTemplate={listTemplate} />
                                 </div>
                             </TabPanel>
                         </TabView>
+
                    
                     </div>
                 </div>

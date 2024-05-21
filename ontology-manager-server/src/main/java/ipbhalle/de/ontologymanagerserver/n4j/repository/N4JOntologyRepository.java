@@ -68,7 +68,7 @@ public class N4JOntologyRepository implements IOntologyRepository {
         }
         result.append(")");
 
-        result.append("WITH type(r) AS label, count(x) AS value, ");
+        result.append("WITH type(r) AS label, count(r) AS value, ");
 
         var leftNodeIdentifier = query.getLeftTypeQuery().getGroupBy() != null ?
                 String.format("x.`%s`", query.getLeftTypeQuery().getGroupBy()) :
@@ -113,17 +113,22 @@ public class N4JOntologyRepository implements IOntologyRepository {
     }
 
     @Override
-    public GraphDTO GetAdjacentNodes(String nodeId) {
+    public GraphDTO GetAdjacentNodes(String nodeId, List<String> nodes) {
         return null;
     }
 
     @Override
-    public GraphNodeDTO GetNode(String nodeId) {
+    public EntityDTO GetNode(String nodeId) {
         return null;
     }
 
     @Override
     public GraphLinkDTO GetLink(String linkId) {
         return null;
+    }
+
+    @Override
+    public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
+        return List.of();
     }
 }

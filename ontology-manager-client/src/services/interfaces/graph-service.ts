@@ -4,6 +4,7 @@ import { BaseDataService } from "./base-data-service";
 import { IHttpResponseHandlerSettings } from "../../features/shared/http/http-responses-handler";
 import { OnReadByIdResponsesHandler } from "../../features/shared/http/http-responses-handler";
 import { MessageService } from "../../features/shared/messages";
+import { constructHttpParams } from "../../utils";
 
 
 /**
@@ -28,7 +29,7 @@ export class GraphService extends BaseDataService {
                 `${this.url}/get-node/${id}`, {}
             ),
             new OnReadByIdResponsesHandler("graph", messageService, httpResponseHandlerSettings)
-        ).then(x => x).catch(x => x);
+        );
     }
 
     getEdge(id: string, messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
@@ -38,6 +39,16 @@ export class GraphService extends BaseDataService {
             ),
             new OnReadByIdResponsesHandler("graph", messageService, httpResponseHandlerSettings)
         ).then(x => x).catch(x => x);
+    }
+
+    getLinksBetween(sourceId: string, targetId: string, type:string, messageService:MessageService, httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
+        const query = {sourceId: sourceId, targetId: targetId, type: type};
+        return this.handleRequest<any>(
+            axios.get<any>(
+                `${this.url}/get-links-between`, { params: constructHttpParams(query), paramsSerializer: { indexes: false } }
+            ),
+            new OnReadByIdResponsesHandler("graph", messageService, httpResponseHandlerSettings)
+        );
     }
 
 

@@ -307,7 +307,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
 
             cytoscapeCore.on('tap', (event:any) => {
                 if (event.target === cytoscapeCore) {
-                  console.log('Tap on empty space');
+
                   // You can execute any logic you need here
                   this.selectedNodes.forEach((node:any) => {
                     node.removeClass("selected"); 
@@ -323,12 +323,31 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                 if (node.id() === HIGHLIGHT)
                 return;
 
+                this.selectedNodes.forEach((n:any) => {
+                    n.removeClass("selected"); 
+                  });
+                node.addClass("selected"); 
+                //node.style('background-color', 'yellow');  // Highlight matching nodes
+
+                this.selectedNodes = [node];
+
                 await this.props.onNodeClickHandler(node.id());
             });
 
           
             cytoscapeCore.on('click', 'edge', async (event:any) => {
-                await this.props.onEdgeClickHandler(event.target.id());
+                var edge = event.target;
+
+                this.selectedNodes.forEach((node:any) => {
+                    node.removeClass("selected"); 
+                });
+
+                edge.target().addClass("selected");
+                edge.source().addClass("selected");
+
+                this.selectedNodes = [edge.target(), edge.source()];
+
+                await this.props.onEdgeClickHandler(event.target);
             });
         }
     }

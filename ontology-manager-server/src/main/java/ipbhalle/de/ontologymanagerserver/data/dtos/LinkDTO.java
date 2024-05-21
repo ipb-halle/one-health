@@ -1,13 +1,61 @@
 package ipbhalle.de.ontologymanagerserver.data.dtos;
+import java.util.List;
 
-import ipbhalle.de.ontologymanagerserver.data.interfaces.DTO;
+public class LinkDTO {
+    private String leftEntity;
+    private String rightEntity;
+    private String type;
+    private List<PropertyValueDTO> properties;
+    private String sourceName;
+    private String sourceUrl;
 
-import java.util.Set;
+    public LinkDTO(){}
 
-public class LinkDTO extends DTO<String> {
-    private Long id;
-    private EntityDTO leftEntity;
-    private EntityDTO rightEntity;
-    private Set<PropertyValueDTO> properties;
-    private Set<DataSourceDTO> sources;
+    public String getLeftEntity() {
+        return leftEntity;
+    }
+
+    public void setLeftEntity(String leftEntity) {
+        this.leftEntity = leftEntity;
+    }
+
+    public String getRightEntity() {
+        return rightEntity;
+    }
+
+    public void setRightEntity(String rightEntity) {
+        this.rightEntity = rightEntity;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<PropertyValueDTO> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<PropertyValueDTO> properties) {
+        this.properties = properties;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
 }

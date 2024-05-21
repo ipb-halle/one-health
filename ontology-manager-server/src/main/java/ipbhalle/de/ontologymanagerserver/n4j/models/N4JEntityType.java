@@ -33,6 +33,9 @@ public class N4JEntityType {
     @Relationship(type = "FROM_DATASOURCE", direction = Relationship.Direction.OUTGOING)
     private Set<N4JDataSource> sources;
 
+    @Relationship(type = "__HAS_LABEL", direction = Relationship.Direction.OUTGOING)
+    private N4JPropertyInfo label;
+
     public N4JEntityType() {};
 
     public N4JEntityType(String id) {
@@ -64,6 +67,19 @@ public class N4JEntityType {
         this.sources = sources;
         this.inheritedProperties = inheritedProperties;
         this.color = color;
+    }
+
+    public N4JEntityType(String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties, Set<N4JDataSource> sources, N4JPropertyInfo label) {
+        this.name = name;
+        this.pluralName = pluralName;
+        this.parent = parent;
+        this.description = description;
+        this.keywords = keywords;
+        this.properties = properties;
+        this.sources = sources;
+        this.inheritedProperties = inheritedProperties;
+        this.color = color;
+        this.label = label;
     }
 
     public String getId() {
@@ -144,5 +160,13 @@ public class N4JEntityType {
 
     public void setInheritedProperties(Set<N4JPropertyInfo> inheritedProperties) {
         this.inheritedProperties = inheritedProperties;
+    }
+
+    public N4JPropertyInfo getLabel() {
+        return label;
+    }
+
+    public void setLabel(N4JPropertyInfo label) {
+        this.label = label;
     }
 }
