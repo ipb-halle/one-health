@@ -4,6 +4,7 @@ import ipbhalle.de.ontologymanagerserver.api.interfaces.GraphController;
 import ipbhalle.de.ontologymanagerserver.data.dtos.CoOcurrenceQuery;
 import ipbhalle.de.ontologymanagerserver.data.dtos.EntityDTO;
 import ipbhalle.de.ontologymanagerserver.data.dtos.GraphDTO;
+import ipbhalle.de.ontologymanagerserver.data.dtos.LinkDTO;
 import ipbhalle.de.ontologymanagerserver.services.interfaces.IOntologyService;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,12 @@ public class OntologyController {
     public GraphDTO FindCoOccurrences(@ModelAttribute CoOcurrenceQuery query)
     {
         return ontologyService.FindCoOccurrences(query);
+    }
+
+    @GetMapping("find-co-occurrences-details")
+    public List<LinkDTO> FindCoOccurrencesDetails(@ModelAttribute CoOcurrenceQuery query)
+    {
+        return ontologyService.FindCoOccurrencesDetails(query);
     }
 
 

@@ -22,6 +22,7 @@ import { Divider } from 'primereact/divider';
 import { Badge } from 'primereact/badge';
 import { classNames } from 'primereact/utils';
 import { darkenHexColor } from '../../../../utils';
+import { CollectionPlaceholderComponent } from '../../../../components';
 
 
 const React = require('react');
@@ -232,10 +233,6 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
     };
 
-    const saveStuff = async ()  => {
-        
-    }
-
     const reject = () => {
         console.log("rejected");
     };
@@ -264,52 +261,71 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     return (
         <div >
                 <ConfirmDialog />
-                <div className="row neighborhood-explorer">
+                <div className='row'>
+                    <div className='col-2' style={{border: '1px solid #dee2e6', padding: 0}}>
+                        <div className='neighborhood-explorer-panel-header'>
+                        <i style={{marginLeft: 5, marginRight: 5}} className='fa fa-history'></i>
+                        History
+                        </div>
+                    <div style={{width: '100%', height:'750px', overflowY: 'scroll', padding: 3}}>
+
+                                    {
+                                        queryHistory.length > 0 && <DataView value={queryHistory} listTemplate={listTemplate} />
+                                    }
+                                    {
+                                        queryHistory.length <= 0 && <CollectionPlaceholderComponent icon='pi pi-history' message='' />
+                                    }
+                                    
+                    
+                    </div>
+                    </div>
+                    <div className='col-10'>
+                    <div className="row neighborhood-explorer">
                     <div className="col-md-9" style={{ padding: '0px', height: '100%' }}>
                         <div className="neighborhood-explorer-toolbar">
 
                             <div className='col-6'>
 
-                            <div className="p-inputgroup flex-1">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-search"></i>
-                                </span>
-                                <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
-                                    if(e.key == 'Enter')
-                                        myComponentRef.current!.findNode(nodeQuery);
-                                }}/>
-                                <Button icon="pi pi-angle-left" onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}/>
-                                <Button icon="pi pi-angle-right" onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}/>
+                                <div className="p-inputgroup flex-1">
+                                    <span className="p-inputgroup-addon">
+                                        <i className="pi pi-search"></i>
+                                    </span>
+                                    <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
+                                        if(e.key == 'Enter')
+                                            myComponentRef.current!.findNode(nodeQuery);
+                                    }}/>
+                                    <Button icon="pi pi-angle-left" onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}/>
+                                    <Button icon="pi pi-angle-right" onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}/>
 
-                            </div>
+                                </div>
                             </div >
                          
 
                           
                             <div style={{marginLeft: 'auto', marginRight: 5}}>
 
-                            <div className="p-inputgroup flex-1" >
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-cog"></i>
-                                </span>
-                                <Button icon="pi pi-file" onClick={(e) => {myComponentRef.current!.reset()}}/>
-                                <Button icon="fa fa-camera-rotate" onClick={(e) => {myComponentRef.current!.resetView();}}/>
-                                <Button icon="pi pi-th-large" onClick={(e) => {myComponentRef.current!.redoLayout();}}/>
-                                <Button icon="pi pi-eraser" onClick={(e) => {myComponentRef.current!.clean();}}/>
-                                <Button icon="pi pi-save" onClick={ async (e) => {
-        const elements = myComponentRef.current!.getElements();
+                                <div className="p-inputgroup flex-1" >
+                                    <span className="p-inputgroup-addon">
+                                        <i className="pi pi-cog"></i>
+                                    </span>
+                                    <Button icon="pi pi-file" onClick={(e) => {myComponentRef.current!.reset()}}/>
+                                    <Button icon="fa fa-camera-rotate" onClick={(e) => {myComponentRef.current!.resetView();}}/>
+                                    <Button icon="pi pi-th-large" onClick={(e) => {myComponentRef.current!.redoLayout();}}/>
+                                    <Button icon="pi pi-eraser" onClick={(e) => {myComponentRef.current!.clean();}}/>
+                                    <Button icon="pi pi-save" onClick={ async (e) => {
+            const elements = myComponentRef.current!.getElements();
 
-                                    savedVisualization = {
-                                        id: "",
-                                        name: "Untitled",
-                                        visualization: elements,
-                                    };
-                                    confirmGraphVisualizationSave();
-                                }}/>
+                                        savedVisualization = {
+                                            id: "",
+                                            name: "Untitled",
+                                            visualization: elements,
+                                        };
+                                        confirmGraphVisualizationSave();
+                                    }}/>
 
 
-                            
-                            </div>
+                                
+                                </div>
                             </div>
 
                             <SplitButton icon="pi pi-download" model={downloadOptions} />
@@ -347,18 +363,10 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
 
                         <TabView>
-                            <TabPanel header="DB Search">
-                                <p className="m-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                            </TabPanel>
                             <TabPanel header="Details">
 
                                 {
-                                    !selectionType && <div>nothing</div>
+                                    !selectionType && <div style={{width: '100%', height:'710px',}}><CollectionPlaceholderComponent icon='pi pi-list' message=''/> </div>
                                 }
                                 {selectionType === "node" && 
                                     <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
@@ -370,16 +378,26 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <DataView value={links} listTemplate={linkListTemplate} />
                                 </div>}
                             </TabPanel>
-                            <TabPanel header="History">
-                                <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
-                                    <DataView value={queryHistory} listTemplate={listTemplate} />
-                                </div>
+
+                            <TabPanel header="DB Search">
+                                <p className="m-0">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
                             </TabPanel>
+                            
                         </TabView>
 
                    
                     </div>
                 </div>
+                    </div>
+
+                </div>
+             
+            
         
         </div>
     );

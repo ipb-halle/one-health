@@ -17,39 +17,6 @@ const Header: React.FC = () => {
             }
         },
         {
-            label: 'Ontology',
-            icon: 'pi pi-sitemap',
-            items: [
-                {
-                    label: 'Overview',
-                    command: () => {
-                        navigate('/ontology/overview/');
-                    }
-                    // icon: 'pi pi-chart-bar'
-                },
-                {
-                    label: 'New Entity Type',
-                    command: () => {
-                        navigate('/entity-type-form');
-                    }
-                    // icon: 'pi pi-box'
-                },
-                {
-                    label: 'New Link Type',
-                    command: () => {
-                        navigate('/link-type-form');
-                    }
-                    // icon: 'pi pi-arrows-h'
-                },
-                {
-                    label: 'Data Load',
-                    command: () => {
-                        navigate('/ontology/data-load/0');
-                    }
-                },
-            ],
-        },
-        {
             label: 'Search',
             icon: 'pi pi-search',
             items: [
@@ -81,25 +48,54 @@ const Header: React.FC = () => {
             icon: 'pi pi-chart-bar',
             items: [
                 {
-                    label: 'Explorer',
+                    // icon: 'pi pi-compass',
+                    label: 'Neighborhood Explorer',
                     command: () => {
                         navigate('/neighborhood-explorer');
                     }
                 },
                 {
+                    // icon: 'fa fa-circle-nodes',
                     label: 'Co-ocurrence Search',
                     command: () => {
                         navigate('/visualization/co-ocurrence-search/');
                     }
-                },
-                {
-                    label: 'test',
-                    command: () => {
-                        navigate('/test');
-                    }
                 }
             ],
         },
+        {
+            label: 'Metadata',
+            icon: 'pi pi-sitemap',
+            items: [
+                {
+                    label: 'Overview',
+                    command: () => {
+                        navigate('/ontology/overview/');
+                    }
+                    // icon: 'pi pi-chart-bar'
+                },
+                {
+                    label: 'New Entity Type',
+                    command: () => {
+                        navigate('/entity-type-form');
+                    }
+                    // icon: 'pi pi-box'
+                },
+                {
+                    label: 'New Link Type',
+                    command: () => {
+                        navigate('/link-type-form');
+                    }
+                    // icon: 'pi pi-arrows-h'
+                },
+                {
+                    label: 'Data Load',
+                    command: () => {
+                        navigate('/ontology/data-load/0');
+                    }
+                },
+            ],
+        },  
         {
             label: 'Documentation',
             icon: 'pi pi-book',

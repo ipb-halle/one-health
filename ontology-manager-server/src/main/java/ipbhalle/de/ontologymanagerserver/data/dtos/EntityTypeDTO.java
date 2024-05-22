@@ -12,6 +12,7 @@ public class EntityTypeDTO extends DTO<String> {
     private String description;
     private String color;
     private Integer objectCount;
+    private PropertyInfoDTO label;
     private Set<KeywordDTO> keywords;
     private Set<PropertyInfoDTO> properties;
     private Set<DataSourceDTO> sources;
@@ -130,4 +131,11 @@ public class EntityTypeDTO extends DTO<String> {
         this.sources = sources;
     }
 
+    public PropertyInfoDTO getLabel() {
+        return label;
+    }
+
+    public void setLabel(PropertyInfoDTO label) {
+        this.label = label;
+    }
 }

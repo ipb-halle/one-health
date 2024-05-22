@@ -1,4 +1,4 @@
-import heroSectionImage from '../../assets/home-bg.png';
+import heroSectionImage from '../../assets/img/hero-section-bg.png';
 import { InputText } from 'primereact/inputtext';
 
 const React = require('react');

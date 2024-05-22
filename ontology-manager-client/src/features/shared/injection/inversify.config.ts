@@ -20,6 +20,7 @@ import {
     MockGraphVisualizationHistoryService,
     SERVICES 
 } from "../../../services";
+import { ICoOcurrenceVisualizationHistoryService, MockCoOcurrenceVisualizationHistoryService } from "../../../services/modules/visualization/co-ocurrence-visualization-history-service";
 
 
 
@@ -33,6 +34,7 @@ dependencyFactory.bind<IMetadataService>(SERVICES.IMetadataService).to(MetadataS
 dependencyFactory.bind<IOntologyService>(SERVICES.IOntologyService).to(OntologyService);
 dependencyFactory.bind<IEntityService>(SERVICES.IEntityService).to(EntityService);
 dependencyFactory.bind<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService).to(MockGraphVisualizationHistoryService).inSingletonScope();
+dependencyFactory.bind<ICoOcurrenceVisualizationHistoryService>(SERVICES.ICoOcurrenceVisualizationHistoryService).to(MockCoOcurrenceVisualizationHistoryService).inSingletonScope();
 
 
 export {dependencyFactory};

@@ -8,6 +8,7 @@ export interface IEntityType {
     parent?: any;
     description: string;
     color: string;
+    label?: IProperty;
     keywords: IKeyword[] = [];
     properties: IProperty[] = [];
 

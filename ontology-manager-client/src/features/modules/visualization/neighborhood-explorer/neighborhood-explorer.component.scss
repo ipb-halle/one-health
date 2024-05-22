@@ -8,13 +8,20 @@
 }
 
 .neighborhood-explorer-toolbar {
-    border-bottom: 1px solid $app-border-color;
+    border-bottom: 2px solid $app-border-color;
     padding: 3px;
-    padding-top: 4px;
     display: flex;
 }
 
 .p-tabview-panels {
     overflow-y: scroll;
     height: 100%;
+}
+
+.neighborhood-explorer-panel-header {
+    border-bottom: 1px solid $app-border-color;
+    height: 49px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
 }

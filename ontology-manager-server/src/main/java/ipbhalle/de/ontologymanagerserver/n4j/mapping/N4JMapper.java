@@ -77,6 +77,7 @@ public interface N4JMapper {
         dto.setDescription(entity.getDescription());
         dto.setParent(map(entity.getParent()));
         dto.setColor(entity.getColor());
+        dto.setLabel(map(entity.getLabel()));
 
 
         var keywords = entity.getKeywords().stream().map(this::map).collect(Collectors.toSet());
