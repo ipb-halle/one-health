@@ -1,5 +1,5 @@
 
-import { useContext, useState } from "react";
+import { Component, useContext, useState } from "react";
 import { Column } from "primereact/column";
 import { ITypeQuery } from "./type-query";
 import { Dropdown } from "primereact/dropdown";
@@ -11,120 +11,192 @@ import { InputText } from "primereact/inputtext";
 import { ScrollPanel } from "primereact/scrollpanel";
 import { dependencyFactory } from "../../../shared/injection";
 import { IEntityTypeService, SERVICES } from "../../../../services";
-import { MessageServiceContext } from "../../../shared/messages";
+import { MessageService, MessageServiceContext } from "../../../shared/messages";
 import { SelectableOption } from "../../../../utils/selectable-option";
-
+import { CollectionPlaceholderComponent } from "../../../../components";
+import { FloatLabel } from 'primereact/floatlabel';
 
 const React = require('react');
 
 interface TypeQueryBuilderProps {
+    messageService: MessageService;
     triggerQuery: boolean;
     parentUpdate: any;
+    height: any;
+    width: any;
+}
+
+interface TypeQueryBuilderState {
+    query: ITypeQuery;
+    groupByOptions: SelectableOption[];
 }
 
 
-const TypeQueryBuilder: React.FC<TypeQueryBuilderProps> = ({triggerQuery, parentUpdate}) => {
-    const entityService = dependencyFactory.get<IEntityTypeService>(SERVICES.IEntityTypeService);
-    const {messageService} = useContext(MessageServiceContext);
+class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilderState> {
 
-    const [query, setQuery] = useState<ITypeQuery>({});
-    const [options, setOptions] = useState<SelectableOption[]>([]);
-    const [groupByOptions, setGroupByOptions] = useState<SelectableOption[]>([]);
+    entityService : IEntityTypeService;
+    messageService : MessageService;
+    options: SelectableOption[] = [];
+    
+
+    constructor(props: TypeQueryBuilderProps) {
+        super(props);
+        this.entityService = dependencyFactory.get<IEntityTypeService>(SERVICES.IEntityTypeService);
+        this.messageService = props.messageService;
 
 
-    useEffect(
-        () => {
-            init();
-        }, []
-    )
+        this.state = {
+            query: {} as ITypeQuery,
+            groupByOptions: [] as SelectableOption[]
+        };
 
-    const init = async () => {
-        setOptions(
-            await entityService.getAllEntityTypesAsOptions(messageService!)
-        );
-
+        this.setQuery = this.setQuery.bind(this);
+        this.setGroupByOptions = this.setGroupByOptions.bind(this);
+        
     }
 
-    useEffect(
-        () => {
-            parentUpdate(query);
-        }, [triggerQuery]
-    )
+    setQuery(newQuery: ITypeQuery) {
+        this.setState((prevState) => ({
+            query: newQuery     
+        }));
+    }
+
+    setGroupByOptions(newGroupByOptions: SelectableOption[]) {
+        this.setState((prevState) => ({
+            groupByOptions: newGroupByOptions      
+        }));
+    } 
+
+    componentDidMount(): void {
+        this.initWidgets();
+    }
 
 
-    useEffect(() => {
-        onTypeChangedHandler();
-    }, [query.type])
 
-    const onTypeChangedHandler = async () => {
-        if (query.type){
+    async initWidgets() {
+        this.options = await this.entityService.getAllEntityTypesAsOptions(this.messageService!);
+    }
+    
 
-           var  entityType = await entityService.get(query.type, messageService!)
+
+    async onTypeChangedHandler () {
+        if (this.state.query.type){
+
+           var  entityType = await this.entityService.get(this.state.query.type, this.messageService!)
            var filters = entityType.properties.map((x) => { return { property: x.name, value: undefined} });
 
-           setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
+           this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
 
-           setQuery({...query, groupBy: undefined, filters: filters});
+           console.log(entityType.label!.name);
+           this.setQuery({...this.state.query, groupBy: entityType.label!.name, filters: filters});
         }
 
 
     };
 
 
-    return <div style={{border: "1px solid #DEE2E6", height:"49.5%", marginBottom: "7px"}}>
+    getQuery() {
+        return this.state.query;
+    }
 
-        <div style={{backgroundColor: "#F8F9FA", padding: "5px", borderBottom: "1px solid #DEE2E6"}}>
-            <Dropdown 
-                style={{width: "100%"}} 
-                options={options} 
-                value={query.type}
-                onChange={(e) => {setQuery({...query, type: e.value});}}
-                filter
-
-            />
-        </div>
-        {
-            query.type &&
-        <ScrollPanel style={{height: "292px"}}>
-
-            <div style={{padding: "5px", borderBottom: "1px solid #DEE2E6"}}>
-                <label style={{minWidth:"122px"}}>Dimension</label>
-                <Dropdown  
-                    style={{width: "58%"}}
-                    value={query.groupBy} 
-                    options={groupByOptions} 
-                    onChange={(e) => {setQuery({...query, groupBy: e.target.value});}}
-                    filter
-                /> 
-
-            </div>
-
-            {query.filters?.map((x:IFilter, i:number)=> {
-                return <div style={{padding:"5px", borderBottom: "1px solid #DEE2E6"}}>
-                    {
-                    query.filters &&
-                    <span>
-                        <label style={{minWidth:"122px"}}>{x.property}</label>
-                        <InputText 
-                            className="p-inputtext-sm"
-                            value={query.filters[i].value} 
-                            onChange={(e) => {
-                                query.filters![i].value = e.target.value;
-                                setQuery({...query});
-                                console.log(query);
-                            }}/>
-                         
-                    </span>
-                    }
-                </div> 
-                
-            })}
+    async loadQuery(query: ITypeQuery) {
+    
+        if (query.type){
             
-        </ScrollPanel>
+            var  entityType = await this.entityService.get(query.type!, this.messageService!)
+            
+            this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
         }
+        
+        this.setQuery({...query});
+    }
 
-       
-    </div>
+    reset() {
+        this.setQuery({});
+        this.setGroupByOptions([]);
+    }
+
+
+
+    render () {
+        
+        return <div style={{border: "1px solid #DEE2E6", height:this.props.height, width: this.props.width, marginBottom: "7px", boxSizing: 'border-box'}}>
+
+            <div style={{backgroundColor: "#F8F9FA", padding: "5px", borderBottom: "1px solid #DEE2E6"}}>
+                <Dropdown 
+                    style={{width: "100%"}} 
+                    options={this.options} 
+                    value={this.state.query.type}
+                    onChange={async (e) => {
+                        var  entityType = await this.entityService.get(e.value, this.messageService!)
+                        var filters = entityType.properties.map((x) => { return { property: x.name, value: undefined} });
+             
+                        this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
+             
+                        this.setQuery({...this.state.query, groupBy: entityType.label!.name, filters: filters, type:e.value});
+                    }}
+                    filter
+
+                />
+            </div>
+           
+            <ScrollPanel style={{padding: 2, height: this.props.height - 53}}>
+            
+            {
+                !this.state.query.type && 
+                <CollectionPlaceholderComponent icon="pi pi-filter" message=""></CollectionPlaceholderComponent>
+            }
+            
+            {
+                this.state.query.type && <>
+
+                <div style={{padding: "5px", borderBottom: "1px solid #DEE2E6"}}>
+                    <label style={{minWidth:"122px"}}>Dimension</label>
+                    <Dropdown  
+                        style={{width: "100%"}}
+                        value={this.state.query.groupBy} 
+                        options={this.state.groupByOptions} 
+                        onChange={(e) => {
+                            this.setQuery({...this.state.query, groupBy: e.target.value}
+
+                        )}}
+                        filter
+                    /> 
+
+                </div>
+
+                {this.state.query.filters?.map((x:IFilter, i:number)=> {
+                    return <div style={{padding:"5px", borderBottom: "1px solid #DEE2E6"}}>
+                        {
+                        this.state.query.filters &&
+                        <div>
+
+                            <small>{x.property}</small>
+                            <div></div>
+                            <InputText 
+                                style={{width: "100%"}}
+                                className="p-inputtext-sm"
+                                value={this.state.query.filters[i].value} 
+                                onChange={(e) => {
+                                    this.state.query.filters![i].value = e.target.value;
+                                    this.setQuery({...this.state.query});
+                                }}/>
+                        </div>
+                            
+
+                        }
+                    </div> 
+                    
+                })}
+                </>
+
+            }
+
+            </ScrollPanel>
+
+        
+        </div>
+    }
 
 };
 

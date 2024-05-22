@@ -29,7 +29,7 @@
         "plotly.js": "^2.29.0",
         "plotly.js-dist": "^2.29.0",
         "primeicons": "^6.0.1",
-        "primereact": "^10.5.0",
+        "primereact": "^10.6.5",
         "qs": "^6.11.2",
         "react": "^18.2.0",
         "react-cytoscapejs": "^2.0.0",

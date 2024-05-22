@@ -21,7 +21,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
 
 
     return (
-        <div className="container">
+        <div className='page-container'>
             <PageTitle icon="fa fa-compass" title="Neighborhood Explorer" help={true}></PageTitle>
             
             <NeighborhoodExplorerComponent graphService={entityService}/>

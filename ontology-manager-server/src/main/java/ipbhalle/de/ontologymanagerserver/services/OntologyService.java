@@ -52,4 +52,9 @@ public class OntologyService implements IOntologyService {
     public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
         return List.of();
     }
+
+    @Override
+    public List<LinkDTO> FindCoOccurrencesDetails(CoOcurrenceQuery query){
+        return ontologyRepository.FindCoOccurrencesDetails(query);
+    }
 }

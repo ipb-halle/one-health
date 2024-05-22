@@ -38,6 +38,28 @@ export class IOntologyService extends BaseDataService{
         ).then(x => x).catch(x => x);
     }
 
+    getCoOccurrencesDetails (query: ICoOcurrenceQuery, messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
+        var qparams = constructHttpParams(query);
+
+        return this.handleRequest<any>(
+            axios.get<any>(
+                `${this.url}/find-co-occurrences-details`, 
+                { 
+                    params: qparams, 
+                    paramsSerializer: { 
+                        serialize: (params) => 
+                        {
+                            return qs.stringify(params)
+                        }
+                    } 
+                }
+            ),
+            new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
+        )
+    
+    }
+
+
 }
 
 @injectable()
