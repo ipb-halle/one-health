@@ -1,6 +1,7 @@
 import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import { faL } from '@fortawesome/free-solid-svg-icons';
+import myGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/node_context_menu.gif';
 
 interface EntityTypeFormTourProps {
     run: boolean;
@@ -21,7 +22,7 @@ const EntityTypeFormTour: React.FC<EntityTypeFormTourProps> = ({run, callback}) 
 
     const steps: Array<Step> = [
         {
-            content: <h2>Let's begin our journey!</h2>,
+            content: <h2><img src={myGif} style={{height: '500px', width: '500px'}}></img> Let's begin our journey!</h2>,
             placement: 'center',
             target: 'body',
             disableBeacon: true

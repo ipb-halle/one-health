@@ -262,7 +262,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         <div >
                 <ConfirmDialog />
                 <div className='row'>
-                    <div className='col-2' style={{border: '1px solid #dee2e6', padding: 0}}>
+                    <div className='col-2' style={{border: '1px solid #dee2e6', padding: 0}} id='neighborhood-explorer-history'>
                         <div className='neighborhood-explorer-panel-header'>
                         <i style={{marginLeft: 5, marginRight: 5}} className='fa fa-history'></i>
                         History
@@ -280,9 +280,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                     </div>
                     </div>
                     <div className='col-10'>
-                    <div className="row neighborhood-explorer">
+                    <div className="row neighborhood-explorer" id='neighborhood-explorer'>
                     <div className="col-md-9" style={{ padding: '0px', height: '100%' }}>
-                        <div className="neighborhood-explorer-toolbar">
+                        <div className="neighborhood-explorer-toolbar" id="neighborhood-explorer-toolbar">
 
                             <div className='col-6'>
 
@@ -364,6 +364,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
                         <TabView>
                             <TabPanel header="Details">
+                                <div id='neighborhood-explorer-details'>
 
                                 {
                                     !selectionType && <div style={{width: '100%', height:'710px',}}><CollectionPlaceholderComponent icon='pi pi-list' message=''/> </div>
@@ -377,6 +378,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
                                     <DataView value={links} listTemplate={linkListTemplate} />
                                 </div>}
+                                </div>
                             </TabPanel>
 
                             <TabPanel header="DB Search">

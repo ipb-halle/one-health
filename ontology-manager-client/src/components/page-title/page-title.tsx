@@ -17,7 +17,7 @@ const PageTitle: React.FC<PageTitleProps> = ( {icon, title, help, helpClickedHan
                 <h3>{title}</h3>
             </div>
             <div hidden={!help} className='col' style={{textAlign: 'right'}}>
-                <i className='pi pi-question-circle' style={{ fontSize: '28px', marginTop: '5px', color:"gray" }} onClick={helpClickedHandler}></i>
+                <i id="page-title-help-button" className='pi pi-question-circle' style={{ fontSize: '28px', marginTop: '5px', color:"gray" }} onClick={helpClickedHandler}></i>
                 
             </div>
         </div>
