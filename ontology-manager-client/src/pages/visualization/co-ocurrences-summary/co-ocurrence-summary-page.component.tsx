@@ -23,7 +23,7 @@ import { DataView } from 'primereact/dataview';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/modules/visualization/co-ocurrence-search/type-query';
-import { link } from 'fs';
+import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
         
 
 
@@ -78,6 +78,15 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const [links, setLinks] = useState<any>([]);
 
+    const [runTutorial, setRunTutorial] = useState<boolean>(false);
+
+    const helpClickedHandler = () => {
+        setRunTutorial(true);
+    }
+
+    const helpTourCallback = () => {
+        setRunTutorial(false);
+    }
 
     let savedVisualization: any = {
         id: "",
@@ -311,8 +320,9 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     return (
         <div className='page-container'>
 
-            <PageTitle title='Co-Ocurrence Summary' icon='fa fa-circle-nodes' help={true}></PageTitle>
+            <PageTitle title='Co-Ocurrence Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
+            <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
             
             <ConfirmDialog/>
 
@@ -321,7 +331,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
             <div className='row g-3 coocurrences-summary'>
 
                 {/* history bar */}
-                <div className='col-2 coocurrences-summary-panel'>
+                <div className='col-2 coocurrences-summary-panel' id='cooccurrences-summary-history'>
 
                     <div className='coocurrences-summary-panel-header'>
                         <i style={{marginLeft: 5, marginRight: 5}} className='fa fa-history'></i>
@@ -338,7 +348,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                 <div className='col-10' style={{}}>
                     <div className='coocurrences-summary-panel'>
 
-                        <div className='coocurrences-summary-panel-header'>
+                        <div className='coocurrences-summary-panel-header' id='cooccurrences-summary-toolbar'>
                             <div className="p-inputgroup flex-1" >
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-cog"></i>
@@ -394,14 +404,14 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     style={{ width: '100%', height: '100%' }}/>
                             </div>
 
-                            <div style={{padding: 4, borderLeft: '1px solid #dee2e6', width: "23%", height: "100%", boxSizing: 'border-box'}}>
+                            <div style={{padding: 4, borderLeft: '1px solid #dee2e6', width: "23%", height: "100%", boxSizing: 'border-box'}} id='cooccurrences-summary-filters'>
                                     <TypeQueryBuilder height={332} width={'calc(100% - 12px)'}  ref={leftQueryBuilder} triggerQuery={runQuery} parentUpdate={(leftQuery:any) => { setLeftTypeQuery(leftQuery)  }} messageService={messageService!}></TypeQueryBuilder>
                                     <TypeQueryBuilder height={332} width={'calc(100% - 12px)'} ref={rightQueryBuilder} triggerQuery={runQuery} parentUpdate={(rightQuery:any) => { setRightTypeQuery(rightQuery) }} messageService={messageService!}></TypeQueryBuilder>
                             </div>
 
                         </div>
 
-                        <div className='row' style={{height: '300px', paddingLeft: "12px", paddingRight: "12px"}}>
+                        <div className='row' style={{height: '300px', paddingLeft: "12px", paddingRight: "12px"}} id='cooccurrences-summary-details'>
                             <div style={{borderTop: '1px solid #dee2e6', padding: 0}}>
                                 <DataTable scrollable scrollHeight="299px" value={links} tableStyle={{ minWidth: '50rem' }}>
                                     <Column field="leftEntity" header="Left Entity"></Column>

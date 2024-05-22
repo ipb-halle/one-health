@@ -35,7 +35,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
 
     const steps: Array<Step> = [
         {
-            content:'This is the neighborhood explorer that allows you to interactively explore the ontology. So lets start with some basic commands',
+            content:'This is the neighborhood explorer that allows you to interactively explore the ontology.',
             styles: {tooltip: {width: '500px'},},
             placement: 'center',
             target: 'body',
@@ -96,7 +96,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
         {
             target: '#neighborhood-explorer',
             content: <div>
-                You can pop up the contextual menu of a node by holding click on it
+                In order to interact with the graph you can pop up the contextual menu of a node by holding click on it
                 <img src={nodeContextMenuGif} style={{width: '230px', height: '230px', }}/>
             </div>,
             styles: {tooltip: {width: '330px', height: '400px'},},
