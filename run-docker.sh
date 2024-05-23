@@ -2,10 +2,6 @@ echo "====================================================================="
 echo "run-docker.sh: Starting script"
 echo "====================================================================="
 
-echo "run-docker.sh: Running update script"
-chmod +x run-update.sh
-./run-update.sh
-
 # Stop all the containers 
 echo "run-docker.sh: Stopping all the containers"
 docker stop one-health-server
