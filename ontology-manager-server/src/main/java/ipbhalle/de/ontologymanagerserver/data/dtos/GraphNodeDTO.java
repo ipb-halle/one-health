@@ -7,6 +7,7 @@ public class GraphNodeDTO {
     private String label;
     private String color;
     private Integer count;
+    private String __type;
 
     public GraphNodeDTO() {
     }
@@ -25,6 +26,14 @@ public class GraphNodeDTO {
         this.label = label;
         this.color = color;
         this.count = count;
+    }
+
+    public GraphNodeDTO(String id, String label, String color, Integer count, String __type) {
+        this.id = id;
+        this.label = label;
+        this.color = color;
+        this.count = count;
+        this.__type = __type;
     }
 
     public String getId() {
@@ -57,5 +66,13 @@ public class GraphNodeDTO {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String get__type() {
+        return __type;
+    }
+
+    public void set__type(String __type) {
+        this.__type = __type;
     }
 }

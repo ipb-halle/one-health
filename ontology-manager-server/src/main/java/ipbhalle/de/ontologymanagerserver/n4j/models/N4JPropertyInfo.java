@@ -15,6 +15,7 @@ public class N4JPropertyInfo {
     private String description;
     private Boolean key;
     private DataType dataType;
+    private int position;
 
     public N4JPropertyInfo() {
     }
@@ -25,6 +26,15 @@ public class N4JPropertyInfo {
         this.description = description;
         this.key = key;
         this.dataType = dataType;
+    }
+
+    public N4JPropertyInfo(String id, String name, String description, Boolean key, DataType dataType, int position) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.key = key;
+        this.dataType = dataType;
+        this.position = position;
     }
 
     public N4JPropertyInfo(String name, String description, Boolean key, DataType dataType) {
@@ -72,5 +82,13 @@ public class N4JPropertyInfo {
 
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

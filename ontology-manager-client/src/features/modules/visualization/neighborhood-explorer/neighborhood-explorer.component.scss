@@ -1,0 +1,27 @@
+@import '../../../../Constants.scss';
+
+.neighborhood-explorer {
+    border: 1px solid $app-border-color;
+    height: 800px;
+    width: 100%;
+    margin: 0;
+}
+
+.neighborhood-explorer-toolbar {
+    border-bottom: 2px solid $app-border-color;
+    padding: 3px;
+    display: flex;
+}
+
+.p-tabview-panels {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.neighborhood-explorer-panel-header {
+    border-bottom: 1px solid $app-border-color;
+    height: 49px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
+}

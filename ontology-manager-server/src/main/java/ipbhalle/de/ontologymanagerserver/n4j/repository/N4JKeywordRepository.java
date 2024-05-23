@@ -29,6 +29,11 @@ public class N4JKeywordRepository implements IKeywordRepository {
     }
 
     @Override
+    public List<KeywordDTO> CreateAll(Iterable<KeywordDTO> dtos) {
+        return List.of();
+    }
+
+    @Override
     public KeywordDTO Update(KeywordDTO dto) {
         return null;
     }

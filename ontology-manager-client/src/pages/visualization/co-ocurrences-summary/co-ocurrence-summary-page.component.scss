@@ -1,0 +1,18 @@
+@import '../../../Constants.scss';
+
+
+$component-height: 1030px;
+
+.coocurrences-summary-panel-header {
+    border-bottom: 1px solid $app-border-color;
+    height: 49px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
+}
+
+.coocurrences-summary-panel {
+    border: 1px solid $app-border-color;
+    padding: 0;
+    height: $component-height;
+}

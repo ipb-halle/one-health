@@ -1,0 +1,1 @@
+export { default as CytoscapeInteractiveChartComponent } from "./cytoscape-interactive-chart.component";

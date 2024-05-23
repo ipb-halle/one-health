@@ -1,6 +1,7 @@
 package ipbhalle.de.ontologymanagerserver.n4j.repository;
 
 import ipbhalle.de.ontologymanagerserver.data.dtos.EntityTypeDTO;
+import ipbhalle.de.ontologymanagerserver.data.dtos.PropertyInfoDTO;
 import ipbhalle.de.ontologymanagerserver.data.dtos.SelectableOption;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IEntityTypeRepository;
 import ipbhalle.de.ontologymanagerserver.n4j.mapping.N4JMapper;
@@ -44,8 +45,20 @@ public class N4JEntityTypeRepository implements IEntityTypeRepository {
             entity.setInheritedProperties(inheritedProperties);
         }
 
+        var label = dto.getProperties().stream().filter(PropertyInfoDTO::isLabel).findFirst();
+
+        N4JPropertyInfo labelprop = N4JMapper.MAPPER.map(label.get());
+
+
+        entity.setLabel(labelprop);
+
         entity = neo4jTemplate.save(entity);
         return N4JMapper.MAPPER.map(entity);
+    }
+
+    @Override
+    public List<EntityTypeDTO> CreateAll(Iterable<EntityTypeDTO> dtos) {
+        return List.of();
     }
 
     @Override

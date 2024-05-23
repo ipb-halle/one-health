@@ -1,30 +1,41 @@
 package ipbhalle.de.ontologymanagerserver.data.dtos;
 
-import ipbhalle.de.ontologymanagerserver.data.interfaces.DTO;
-import org.springframework.data.neo4j.core.schema.Property;
-
-import java.util.Map;
 import java.util.List;
-import java.util.Set;
 
-public class EntityDTO extends DTO<String> {
+public class EntityDTO {
+    private String id;
+    private String type;
     private List<String> labels;
-
-    private Map<String, String> properties;
+    private List<PropertyValueDTO> properties;
+    private String color;
 
     public EntityDTO() {
     }
 
-    public EntityDTO(List<String> labels, Map<String, String> properties) {
+    public EntityDTO(String id, String type, List<String> labels, String color){
+        this.id = id;
+        this.type = type;
+        this.labels = labels;
+        this.color = color;
+
+    }
+
+    public EntityDTO(List<String> labels, List<PropertyValueDTO> properties) {
         this.labels = labels;
         this.properties = properties;
     }
 
-    public Map<String, String> getProperties() {
+    public EntityDTO(String id, List<String> labels, List<PropertyValueDTO> properties) {
+        this.labels = labels;
+        this.properties = properties;
+        this.id = id;
+    }
+
+    public List<PropertyValueDTO> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, String> properties) {
+    public void setProperties(List<PropertyValueDTO> properties) {
         this.properties = properties;
     }
 
@@ -34,5 +45,29 @@ public class EntityDTO extends DTO<String> {
 
     public void setLabels(List<String> labels) {
         this.labels = labels;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

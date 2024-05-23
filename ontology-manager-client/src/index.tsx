@@ -2,14 +2,14 @@ import "reflect-metadata";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './features/layout/app.component';
 import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from "axios";
-
+import { BrowserRouter } from 'react-router-dom';
+import { ToastMessageServiceProvider } from "./features/shared/messages";
+import App from "./layout/app.component";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-console.log(process.env);
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -17,7 +17,11 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <PrimeReactProvider>
-            <App />
+            <ToastMessageServiceProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ToastMessageServiceProvider>
         </PrimeReactProvider>
     </React.StrictMode>,
 );

@@ -44,7 +44,8 @@ public interface N4JMapper {
                     p.getName(),
                     p.getDescription(),
                     p.getKey(),
-                    p.getDataType()
+                    p.getDataType(),
+                    p.getPosition()
             )).collect(Collectors.toSet());
             entity.setProperties(properties);
 
@@ -53,7 +54,8 @@ public interface N4JMapper {
                     p.getName(),
                     p.getDescription(),
                     p.getKey(),
-                    p.getDataType()
+                    p.getDataType(),
+                    p.getPosition()
             )).collect(Collectors.toSet());
             entity.setInheritedProperties(inheritedProperties);
         }
@@ -75,6 +77,7 @@ public interface N4JMapper {
         dto.setDescription(entity.getDescription());
         dto.setParent(map(entity.getParent()));
         dto.setColor(entity.getColor());
+        dto.setLabel(map(entity.getLabel()));
 
 
         var keywords = entity.getKeywords().stream().map(this::map).collect(Collectors.toSet());
@@ -88,7 +91,8 @@ public interface N4JMapper {
                         p.getDescription(),
                         p.getKey(),
                         p.getDataType(),
-                        false
+                        false,
+                        p.getPosition()
                 )),
 
                 entity.getInheritedProperties().stream().map(p -> new PropertyInfoDTO(
@@ -97,7 +101,8 @@ public interface N4JMapper {
                         p.getDescription(),
                         p.getKey(),
                         p.getDataType(),
-                        true
+                        true,
+                        p.getPosition()
                 ))).collect(Collectors.toSet());
 
         dto.setProperties(properties);
@@ -132,7 +137,8 @@ public interface N4JMapper {
                     p.getName(),
                     p.getDescription(),
                     false,
-                    p.getDataType()
+                    p.getDataType(),
+                    p.getPosition()
             )).collect(Collectors.toSet());
             entity.setProperties(properties);
         }

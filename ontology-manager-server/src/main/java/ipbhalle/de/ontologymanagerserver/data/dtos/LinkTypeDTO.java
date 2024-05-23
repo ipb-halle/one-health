@@ -47,6 +47,17 @@ public class LinkTypeDTO extends DTO<String> {
         this.sources = sources;
     }
 
+    public LinkTypeDTO(String id,String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description) {
+        this.id = id;
+        this.name = name;
+        this.direction = direction;
+        this.leftEntityTypeId = leftEntityTypeId;
+        this.leftCardinality = leftCardinality;
+        this.rightEntityTypeId = rightEntityTypeId;
+        this.rightCardinality = rightCardinality;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }
