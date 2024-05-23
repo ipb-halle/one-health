@@ -51,7 +51,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 You can use the search bar to find specific nodes within the current graph.
                 <img src={graphSearchGif} style={{width: '380px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '500px', height: '470px'},},
+            styles: {tooltip: {width: '500px', height: '460px'},},
         },
         {
             target: '#neighborhood-explorer-toolbar',
@@ -89,7 +89,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 The details panel will show the details of the selected node or edge.
                 <img src={nodeDetailsGif} style={{width: '480px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '550px', height: '470px'},},
+            styles: {tooltip: {width: '550px', height: '440px'},},
             placement: 'left'
             
         },
@@ -99,7 +99,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 In order to interact with the graph you can pop up the contextual menu of a node by holding click on it
                 <img src={nodeContextMenuGif} style={{width: '230px', height: '230px', }}/>
             </div>,
-            styles: {tooltip: {width: '330px', height: '400px'},},
+            styles: {tooltip: {width: '330px', height: '410px'},},
             placement: 'center',
 
         },
@@ -109,7 +109,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 The <b>expand</b> (<i className='fa fa-maximize'/>) button allows you to add to the graph all the adjacent nodes to the selected one.
                 <img src={nodeExpandGif} style={{width: '380px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '500px', height: '470px'},},
+            styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
         },
         {
@@ -118,7 +118,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 The <b>contract</b> (<i className='fa fa-minimize'/>) button allows you hide all the adjacents nodes to the selected one.
                 <img src={nodeContractGif} style={{width: '380px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '500px', height: '470px'},},
+            styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
         },
         {
@@ -127,7 +127,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 The <b>lock</b> (<i className='fa fa-lock'/>) button allows you lock the node in the graph preventing this from being deleted until unlocked.
                 <img src={nodeLockGif} style={{width: '380px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '500px', height: '470px'},},
+            styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
         },
         {
@@ -145,7 +145,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 You can access your saved graphs and some examples from the history panel.
                 <img src={graphLoadGif} style={{width: '480px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '550px', height: '470px'},},
+            styles: {tooltip: {width: '550px', height: '460px'},},
             placement: 'right'
           // Add more options if needed
         },

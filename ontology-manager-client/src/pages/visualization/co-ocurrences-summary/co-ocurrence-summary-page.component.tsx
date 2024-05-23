@@ -24,9 +24,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/modules/visualization/co-ocurrence-search/type-query';
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
+import { ITutorialStore, STORES } from '../../../stores';
         
-
-
 const React = require('react');
 
 var data: SankeyData = {
@@ -78,7 +77,9 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const [links, setLinks] = useState<any>([]);
 
-    const [runTutorial, setRunTutorial] = useState<boolean>(false);
+    const tutorialStore = dependencyFactory.get<ITutorialStore>(STORES.ITutorialStore);
+
+    const [runTutorial, setRunTutorial] = useState<boolean>(tutorialStore.getShowCoOccurrencesSummaryTutorial());
 
     const helpClickedHandler = () => {
         setRunTutorial(true);
@@ -86,6 +87,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const helpTourCallback = () => {
         setRunTutorial(false);
+        tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
     }
 
     let savedVisualization: any = {
@@ -157,11 +159,13 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
         setQueryHistory(await coOcurrenceVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        // setSankeyData({...sankeyData, node: {label: nodes}, link: {
-        //     source: [0, 1, 4, 2, 1],
-        //     target: [1, 4, 5, 4, 3],
-        //     value: [4, 2, 3, 1, 2]
-        // }})
+        const loaded = await coOcurrenceVisualizationHistoryService.get("1", messageService!);
+        const newData = JSON.parse(loaded.visualization);
+        setActiveIndex(0);
+        setSankeyData(newData)
+
+        leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
+        rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
 
     }
 

@@ -105,7 +105,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     }
 
     downloadJSON(){
-        var cyJson = this.cytoscapeCore.json();
+        var cyJson = this.cytoscapeCore.json().elements;
       
       // Convert JSON object to string
       var jsonString = JSON.stringify(cyJson, null, 2); // Pretty-print with 2-space indentation
@@ -167,6 +167,8 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.reset();
         const parsed = JSON.parse(elements);
         this.cytoscapeCore.add(parsed);
+        this.redoLayout();
+        this.resetView();
     }
 
     configureCytoscape (cytoscapeCore: any) {

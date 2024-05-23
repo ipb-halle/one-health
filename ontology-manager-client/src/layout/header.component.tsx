@@ -2,7 +2,7 @@ import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate } from 'react-router-dom';
-import logo from '../logo.svg';
+import oneHealthLogo from '../assets/logo_one_health.png';
 import './header.component.scss';
 
 const Header: React.FC = () => {
@@ -16,33 +16,33 @@ const Header: React.FC = () => {
                 navigate('/');
             }
         },
-        {
-            label: 'Search',
-            icon: 'pi pi-search',
-            items: [
-                {
-                    icon: 'fa fa-atom',
-                    label: 'Compound Search',
-                    command: () => {
-                        navigate('/search/structure-search');
-                    }
-                },
-                {
-                    icon: 'fa fa-leaf',
-                    label: 'Plant Search',
-                    command: () => {
-                        navigate('/search/plant-search');
-                    }
-                },
-                {
-                    icon: 'fa fa-virus',
-                    label: 'Disease Search',
-                    command: () => {
-                        navigate('/search/disease-search');
-                    }
-                }
-            ]
-        },
+        // {
+        //     label: 'Search',
+        //     icon: 'pi pi-search',
+        //     items: [
+        //         {
+        //             icon: 'fa fa-atom',
+        //             label: 'Compound Search',
+        //             command: () => {
+        //                 navigate('/search/structure-search');
+        //             }
+        //         },
+        //         {
+        //             icon: 'fa fa-leaf',
+        //             label: 'Plant Search',
+        //             command: () => {
+        //                 navigate('/search/plant-search');
+        //             }
+        //         },
+        //         {
+        //             icon: 'fa fa-virus',
+        //             label: 'Disease Search',
+        //             command: () => {
+        //                 navigate('/search/disease-search');
+        //             }
+        //         }
+        //     ]
+        // },
         {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
@@ -67,13 +67,13 @@ const Header: React.FC = () => {
             label: 'Metadata',
             icon: 'pi pi-sitemap',
             items: [
-                {
-                    label: 'Overview',
-                    command: () => {
-                        navigate('/ontology/overview/');
-                    }
-                    // icon: 'pi pi-chart-bar'
-                },
+                // {
+                //     label: 'Overview',
+                //     command: () => {
+                //         navigate('/ontology/overview/');
+                //     }
+                //     // icon: 'pi pi-chart-bar'
+                // },
                 {
                     label: 'New Entity Type',
                     command: () => {
@@ -96,24 +96,24 @@ const Header: React.FC = () => {
                 },
             ],
         },  
-        {
-            label: 'Documentation',
-            icon: 'pi pi-book',
-            command: () => {
-                navigate('/documentation');
-            }
-        },
-        {
-            label: 'Contact',
-            icon: 'pi pi-envelope',
-            command: () => {
-                navigate('/contact');
-            }
-        }
+        // {
+        //     label: 'Documentation',
+        //     icon: 'pi pi-book',
+        //     command: () => {
+        //         navigate('/documentation');
+        //     }
+        // },
+        // {
+        //     label: 'Contact',
+        //     icon: 'pi pi-envelope',
+        //     command: () => {
+        //         navigate('/contact');
+        //     }
+        // }
     ];
 
     const start = (
-        <img alt="logo" src={logo} height="40" className="mr-2"></img>
+        <img alt="logo" src={oneHealthLogo} height="40" style={{marginLeft: 10}} className="mr-2"></img>
     );
 
     return (

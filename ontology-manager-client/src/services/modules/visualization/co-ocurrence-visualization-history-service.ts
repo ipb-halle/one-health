@@ -3,6 +3,7 @@ import { CrudService } from "../../interfaces/crud-service";
 import { ISavedCoOcurrenceVisualization } from "../../../features/modules/visualization";
 import { IHttpResponseHandlerSettings } from "../../../features/shared/http/http-responses-handler";
 import { MessageService } from "../../../features/shared/messages";
+import data from './cooccurrences-visualization-history.json';
 
 @injectable()
 export class ICoOcurrenceVisualizationHistoryService extends CrudService<ISavedCoOcurrenceVisualization>{
@@ -17,6 +18,11 @@ export class ICoOcurrenceVisualizationHistoryService extends CrudService<ISavedC
 @injectable()
 export class MockCoOcurrenceVisualizationHistoryService extends ICoOcurrenceVisualizationHistoryService {
     private collection: ISavedCoOcurrenceVisualization[] = [];
+    
+    constructor() {
+        super();
+        this.collection = data;
+    }
 
     get(id: string | number, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined): Promise<ISavedCoOcurrenceVisualization> {
         const result = this.collection.find(x => x.id === id);

@@ -37,8 +37,8 @@ public class N4JOntologyRepository implements IOntologyRepository {
 
         result.append("MATCH ");
 
-        query.getLeftTypeQuery().setFilters( query.getLeftTypeQuery().getFilters().stream().filter(x -> !x.getValue().isEmpty()).toList());
-        query.getRightTypeQuery().setFilters( query.getRightTypeQuery().getFilters().stream().filter(x -> !x.getValue().isEmpty()).toList());
+        query.getLeftTypeQuery().setFilters( query.getLeftTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
+        query.getRightTypeQuery().setFilters( query.getRightTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
 
 
         var leftEntityType = neo4jOperations.findById(query.getLeftTypeQuery().getType(), N4JEntityType.class).get();

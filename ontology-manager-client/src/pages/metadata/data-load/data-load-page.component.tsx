@@ -18,6 +18,8 @@ import { IDataSource } from '../../../features/modules/metadata/data-sources';
 import { processChunkAsync, readNextChunk } from '../../../utils/files';
 import { InputText } from 'primereact/inputtext';
 import DatasetList from '../../../features/modules/metadata/data-sources/dataset-list.component';
+import { Messages } from 'primereact/messages';
+import { useMountEffect } from 'primereact/hooks';
 
 
 
@@ -45,6 +47,8 @@ const DataLoadPageComponent: React.FC = () => {
         mapping: {}
     });
 
+    const msgs = useRef<Messages>(null);
+    
     const [element, setElement] = useState<any>({});
 
     const [file, setFile] = useState<any>();
@@ -76,6 +80,22 @@ const DataLoadPageComponent: React.FC = () => {
         onSelectedElementChangeHandler();
     }, [elementId])
 
+    useMountEffect(() => {
+        if (msgs.current) {
+            msgs.current.clear();
+            msgs.current.show([
+                {
+                    severity: 'error',
+                    sticky: true,
+                    content: (
+                        <p>
+                            This feature is currently in beta and is not fully stable. While we encourage you to explore and provide feedback, please be aware that using this feature will lead to bugs, crashes, or unexpected behavior.
+                        </p>
+                    )
+                }
+            ]);
+        }
+    }); 
 
     useEffect(() => {
         console.log("onUploadHandler");
@@ -228,6 +248,7 @@ const DataLoadPageComponent: React.FC = () => {
     return (
         <div className="container">
             <PageTitle icon='pi pi-download' title='Data Load' help={true}/>
+            <Messages ref={msgs} />
 
             <div className='mb-3'>
 

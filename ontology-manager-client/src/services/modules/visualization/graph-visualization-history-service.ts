@@ -3,6 +3,7 @@ import { CrudService } from "../../interfaces/crud-service";
 import { ISavedGraphVisualization } from "../../../features/modules/visualization";
 import { IHttpResponseHandlerSettings } from "../../../features/shared/http/http-responses-handler";
 import { MessageService } from "../../../features/shared/messages";
+import data from './graph-visualization-history.json';
 
 @injectable()
 export class IGraphVisualizationHistoryService extends CrudService<ISavedGraphVisualization>{
@@ -17,6 +18,13 @@ export class IGraphVisualizationHistoryService extends CrudService<ISavedGraphVi
 @injectable()
 export class MockGraphVisualizationHistoryService extends IGraphVisualizationHistoryService {
     private collection: ISavedGraphVisualization[] = [];
+
+    constructor() {
+        super();
+        const newData = data.map((x:any) => {return {...x, visualization: JSON.stringify(x.visualization)}});
+        console.log(newData);
+        this.collection = newData;
+    }
 
     get(id: string | number, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined): Promise<ISavedGraphVisualization> {
         const result = this.collection.find(x => x.id === id);

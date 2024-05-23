@@ -56,10 +56,14 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [selectedLink, setSelectedLink] = useState<any>(null);
 
     const init = async () => {
-        let graph = await graphService.getInitial(messageService!);
-        const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
-        setElements([...newElements]);
+        // let graph = await graphService.getInitial(messageService!);
+        // const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
+        // setElements([...newElements]);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
+
+
+        const viz = await graphVisualizationHistoryService.get("0", messageService!);
+        myComponentRef.current!.setElements(viz.visualization);
     };
 
 
@@ -115,27 +119,6 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             }
         },
 
-    ]
-
-    const actionsOptions = [
-        {
-            label: 'Clean',
-            command: () => {
-               myComponentRef.current!.downloadJSON();
-            }
-        },
-        {
-            label: 'Reset View',
-            command: () => {
-              
-            }
-        },
-        {
-            label: 'Redo Layout',
-            command: () => {
-               
-            }
-        },
     ]
 
     const nodePropertiesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
@@ -214,11 +197,11 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
                     }} />
 
-                    <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
+                    {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await graphVisualizationHistoryService.delete(query.id);
                         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!))
                         
-                        }} />
+                        }} /> */}
                 </div>)
         });
 
@@ -229,6 +212,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         // const elements = myComponentRef.current!.getElements();
         // console.log(savedVisualization);
         // const item : ISavedGraphVisualization = {...savedVisualization, visualization: elements};
+        console.log(savedVisualization);
         await graphVisualizationHistoryService.create(savedVisualization, messageService!);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
     };
@@ -381,14 +365,14 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 </div>
                             </TabPanel>
 
-                            <TabPanel header="DB Search">
+                            {/* <TabPanel header="DB Search">
                                 <p className="m-0">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                                     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
                                     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                 </p>
-                            </TabPanel>
+                            </TabPanel> */}
                             
                         </TabView>
 

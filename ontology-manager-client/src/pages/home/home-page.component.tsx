@@ -5,10 +5,13 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import neighborhoodExplorerImage from "../../assets/img/neighborhood-explorer.png";
 import coocurrencesSummaryImage from "../../assets/img/cooccurrences-summary.png";
+import { useNavigate } from 'react-router-dom';
 
 const React = require('react');
 
 const HomePageComponent: React.FC = () => {
+    const navigate = useNavigate();
+
 
     const neighborhoodExplorerCardHeader = (
         <img alt="Neighborhood Explorer" src={neighborhoodExplorerImage}></img>
@@ -20,13 +23,13 @@ const HomePageComponent: React.FC = () => {
 
     const neighborhoodExplorerCardFooter = (
         <>
-            <Button label='Tutorial'></Button>
+            <Button label='Tutorial' onClick={() => {navigate('/neighborhood-explorer');}}></Button>
         </>
     )
 
     const coOccurrencesSummaryCardFooter = (
         <>
-        <Button label='Tutorial'></Button>
+        <Button label='Tutorial' onClick={() => {navigate('/visualization/co-ocurrence-search/');}}></Button>
         </>
     )
 
@@ -58,7 +61,7 @@ const HomePageComponent: React.FC = () => {
                         <div className='col-4'>
                         <Card footer={coOccurrencesSummaryCardFooter} header={coOccurrencesSummaryCardHeader} className="md:w-25rem">
                                 <p>
-                                Summarize the connections in scientific literature between entities of interest.
+                                Review the connections found in scientific literature between entities of your interest.
                                 </p>
                             </Card>
                         </div>
@@ -91,7 +94,7 @@ For further information, please visit the GLACIER consortium’s official websit
                     <img
                         src={heroSectionImage}
                         alt="Your SVG"
-                        style={{ width: '100%', height: '925px', marginTop: '-50px' }}
+                        style={{ width: '100%', height: '925px', marginTop: '-35px' }}
                     />
                 </div>
             </div>

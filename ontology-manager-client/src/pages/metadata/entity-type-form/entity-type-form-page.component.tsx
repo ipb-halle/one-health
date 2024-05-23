@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { dependencyFactory } from "../../../features/shared/injection";
 import { MessageServiceContext } from "../../../features/shared/messages";
 import { IEntityTypeService, SERVICES } from "../../../services";
@@ -18,13 +18,16 @@ import { KeywordSearch } from "../../../features/modules/metadata/keywords";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import DatasetList from "../../../features/modules/metadata/data-sources/dataset-list.component";
-
+import { Messages } from "primereact/messages";
+import { useMountEffect } from 'primereact/hooks';
 
 const EntityTypeFormPageComponent: React.FC = () => {
     // Services Initialization
     const entityService = dependencyFactory.get<IEntityTypeService>(SERVICES.IEntityTypeService);
     const {messageService} = useContext(MessageServiceContext);
     const navigate = useNavigate();
+
+    const msgs = useRef<Messages>(null);
     
     // Component State
     const {id} = useParams();
@@ -81,6 +84,23 @@ const EntityTypeFormPageComponent: React.FC = () => {
     
     []);
 
+    useMountEffect(() => {
+        if (msgs.current) {
+            msgs.current.clear();
+            msgs.current.show([
+                {
+                    severity: 'error',
+                    sticky: true,
+                    content: (
+                        <p>
+                            This feature is currently in beta and is not fully stable. While we encourage you to explore and provide feedback, please be aware that using this feature will lead to bugs, crashes, or unexpected behavior.
+                        </p>
+                    )
+                }
+            ]);
+        }
+    }); 
+
     useEffect(() => {
        handleParentUpdate();
     }, [entityType.parent?.id])
@@ -133,7 +153,6 @@ const EntityTypeFormPageComponent: React.FC = () => {
     }
 
     const helpClickedHandler = () => {
-        console.log("ayudaaaaaa");
         setRunTutorial(true);
     }
 
@@ -145,11 +164,11 @@ const EntityTypeFormPageComponent: React.FC = () => {
 
     return (
         
-
         <div className="container">
             <EntityTypeFormTour run={runTutorial} callback={helpTourCallback}/>
 
             <PageTitle icon='pi pi-box' title='Entity Type Editor' help={true} helpClickedHandler={helpClickedHandler}/>
+            <Messages ref={msgs} />
         
             <Panel id="definition" header="Definition" className="mb-4">
                 <div className="row mb-4">
@@ -270,3 +289,4 @@ const EntityTypeFormPageComponent: React.FC = () => {
 };
 
 export default EntityTypeFormPageComponent;
+

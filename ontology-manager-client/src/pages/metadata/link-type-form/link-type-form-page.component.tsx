@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { dependencyFactory } from "../../../features/shared/injection";
 import { IEntityTypeService, ILinkTypeService, SERVICES } from "../../../services";
 import { MessageServiceContext } from "../../../features/shared/messages";
@@ -17,6 +17,8 @@ import { KeywordSearch } from "../../../features/modules/metadata/keywords";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import DatasetList from "../../../features/modules/metadata/data-sources/dataset-list.component";
+import { Messages } from "primereact/messages";
+import { useMountEffect } from "primereact/hooks";
 
 
 
@@ -25,6 +27,8 @@ const LinkTypeFormPageComponent: React.FC = () => {
     const linkTypeService = dependencyFactory.get<ILinkTypeService>(SERVICES.ILinkTypeService);
     const {messageService} = useContext(MessageServiceContext);
     const navigate = useNavigate();
+
+    const msgs = useRef<Messages>(null);
 
     const {id} = useParams();
 
@@ -44,6 +48,24 @@ const LinkTypeFormPageComponent: React.FC = () => {
             properties: []
         }
     )
+
+    useMountEffect(() => {
+        if (msgs.current) {
+            msgs.current.clear();
+            msgs.current.show([
+                {
+                    severity: 'error',
+                    sticky: true,
+                    content: (
+                        <p>
+                            This feature is currently in beta and is not fully stable. While we encourage you to explore and provide feedback, please be aware that using this feature will lead to bugs, crashes, or unexpected behavior.
+                        </p>
+                    )
+                }
+            ]);
+        }
+    }); 
+
 
     const [entityTypeOptions, setEntityTypeOptions] = useState<SelectableOption[]>([]);
     const [definitionValid, setDefinitionValid] = useState<boolean>(false);
@@ -92,6 +114,7 @@ const LinkTypeFormPageComponent: React.FC = () => {
     return (
         <div className="container">
             <PageTitle icon='pi pi-arrows-h' title='Link Type Editor' help={true}/>
+            <Messages ref={msgs} />
 
 
 

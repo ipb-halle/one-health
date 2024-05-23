@@ -90,9 +90,15 @@ public class N4JEntityRepository implements IEntityRepository {
                 return new N4JPropertyValue(propertyMap.asMap());
             }).toList();
 
-            Map<String, Object> map = properties.stream()
-                    .collect(
-                            Collectors.toMap(N4JPropertyValue::getName, N4JPropertyValue::getValue));
+
+            Map<String, Object> map = new HashMap<>();
+
+            for (var p : properties){
+                if (!map.containsKey(p.getName())){
+                    map.put(p.getName(), p.getValue());
+                }
+            }
+
             var nodeType = (String)map.get("__type");
             return new GraphNodeDTO(
                 n.getId(),
