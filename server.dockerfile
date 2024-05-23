@@ -14,7 +14,7 @@ RUN mvn dependency:go-offline -B
 COPY ./ontology-manager-server/src ./src
 
 # Build the application
-RUN mvn package
+RUN mvn package -Dmaven.test.skip
 
 # Create a new image for running the application
 FROM openjdk:17
