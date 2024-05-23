@@ -15,7 +15,6 @@ docker rm one-health-client
 docker rm one-health-graphdb
 
 docker run --network one-health-network --name one-health-graphdb -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none -v /data/onehealth/data:/data -d neo4j
-sleep(10)
 
 # Build the server and client images
 echo "run-docker.sh: Building images"
