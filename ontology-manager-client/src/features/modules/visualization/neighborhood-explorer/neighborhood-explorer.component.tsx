@@ -23,6 +23,7 @@ import { Badge } from 'primereact/badge';
 import { classNames } from 'primereact/utils';
 import { darkenHexColor } from '../../../../utils';
 import { CollectionPlaceholderComponent } from '../../../../components';
+import MolecularDrawComponent from '../../../shared/molecular-draw/molecular-draw.component';
 
 
 const React = require('react');
@@ -124,7 +125,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const nodePropertiesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
 
-        let list = items.sort((a,b) => a - b ).map((query, index) => {
+        let list = items.sort((a,b) => a.position - b.position ).map((query, index) => {
             return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6'}}>
 
                    
@@ -134,16 +135,13 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                 </div>)
         });
 
-        return [
-            <div className="grid grid-nogutter">
-                <div style={{ overflow: 'scroll'}}>
-                {/* <Badge value={element.type}/> */}
 
-                <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
-                </div>
-                <Divider></Divider>
+
+        return [
+          <>
             {list}
-            </div>];
+          </>
+            ];
     };
 
     const linkListTemplate = (items: any[]) : ReactNode[] | undefined =>  {
@@ -183,6 +181,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
     const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
+
 
         let list = items.map((query, index) => {
             return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
@@ -353,9 +352,18 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 {
                                     !selectionType && <div style={{width: '100%', height:'710px',}}><CollectionPlaceholderComponent icon='pi pi-list' message=''/> </div>
                                 }
-                                {selectionType === "node" && 
-                                    <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
-                                    <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                {selectionType === "node" &&  <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
+                                        <div className="grid grid-nogutter">
+                                            <div style={{ overflow: 'scroll'}}>
+                                            {/* <Badge value={element.type}/> */}
+
+                                            <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                                            </div>
+                                            <Divider></Divider>
+                                            <MolecularDrawComponent element={element}></MolecularDrawComponent>
+                                            <canvas id="mol_structure" width="500" height="500" style={{display: 'none'}}></canvas>
+                                            <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                        </div>
                                     </div>
                                 }
                                 {selectionType === "edge" && 

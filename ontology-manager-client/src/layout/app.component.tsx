@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import './app.component.scss';
 import Layout from './layout.component';
 import { CoOcurrencesSummaryPageComponent, CompoundSearchPageComponent, DataLoadPageComponent, DocumentationPageComponent, EntityTypeFormPageComponent, HomePageComponent, LinkTypeFormPageComponent, MetadataOverviewPageComponent, NeighborhoodExplorerPageComponent } from '../pages';
+import GeneralSearchPageComponent from '../pages/search/general-search/general-search-page.component';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="ontology/data-load/0" element={<DataLoadPageComponent/>}/>
 
                     <Route path="search/structure-search" element={<CompoundSearchPageComponent/>}/>
+                    <Route path="search/general-search" element={<GeneralSearchPageComponent/>}/>
                 
                     <Route path="neighborhood-explorer" element={<NeighborhoodExplorerPageComponent/>}/>
                     <Route path="visualization/co-ocurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>

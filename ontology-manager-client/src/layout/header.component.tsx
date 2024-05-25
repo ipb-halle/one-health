@@ -16,33 +16,40 @@ const Header: React.FC = () => {
                 navigate('/');
             }
         },
-        // {
-        //     label: 'Search',
-        //     icon: 'pi pi-search',
-        //     items: [
-        //         {
-        //             icon: 'fa fa-atom',
-        //             label: 'Compound Search',
-        //             command: () => {
-        //                 navigate('/search/structure-search');
-        //             }
-        //         },
-        //         {
-        //             icon: 'fa fa-leaf',
-        //             label: 'Plant Search',
-        //             command: () => {
-        //                 navigate('/search/plant-search');
-        //             }
-        //         },
-        //         {
-        //             icon: 'fa fa-virus',
-        //             label: 'Disease Search',
-        //             command: () => {
-        //                 navigate('/search/disease-search');
-        //             }
-        //         }
-        //     ]
-        // },
+        {
+            label: 'Search',
+            icon: 'pi pi-search',
+            items: [
+                {
+                    icon: 'fa fa-atom',
+                    label: 'General Search',
+                    command: () => {
+                        navigate('/search/general-search');
+                    }
+                },
+                {
+                    icon: 'fa fa-atom',
+                    label: 'Compound Search',
+                    command: () => {
+                        navigate('/search/structure-search');
+                    }
+                },
+                // {
+                //     icon: 'fa fa-leaf',
+                //     label: 'Plant Search',
+                //     command: () => {
+                //         navigate('/search/plant-search');
+                //     }
+                // },
+                // {
+                //     icon: 'fa fa-virus',
+                //     label: 'Disease Search',
+                //     command: () => {
+                //         navigate('/search/disease-search');
+                //     }
+                // }
+            ]
+        },
         {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
