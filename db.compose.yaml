@@ -15,6 +15,20 @@ services:
       NEO4J_AUTH: none
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
 
+  postgredb:
+    container_name: one-health-postgredb
+    image: postgres_rdkit
+    ports:
+      - "5433:5432"
+    volumes:
+      -  one_health_postgredb_data:/data
+    environment:
+      POSTGRES_USER: one_healt_huser
+      POSTGRES_PASSWORD: one_health_password
+      POSTGRES_DB: one_health
+
 volumes:
   sources_cu_plants_ontology_data:
     external: true
+  
+  one_health_postgredb_data:

@@ -9,7 +9,8 @@ const SERVICES = {
     IDataSourceService: Symbol.for("IDataSourceService"),
     IEntityService: Symbol.for("IEntityService"),
     IGraphVisualizationHistoryService: Symbol.for("IGraphVisualizationHistoryService"),
-    ICoOcurrenceVisualizationHistoryService: Symbol.for("ICoOcurrenceVisualizationHistoryService")
+    ICoOcurrenceVisualizationHistoryService: Symbol.for("ICoOcurrenceVisualizationHistoryService"),
+    ICompoundService : Symbol.for("ICompoundService")
 }
 
 export {SERVICES};

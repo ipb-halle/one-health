@@ -18,7 +18,9 @@ import {
     PropertyService,
     IGraphVisualizationHistoryService, 
     MockGraphVisualizationHistoryService,
-    SERVICES 
+    SERVICES, 
+    ICompoundService,
+    CompoundService
 } from "../../../services";
 import { ICoOcurrenceVisualizationHistoryService, MockCoOcurrenceVisualizationHistoryService } from "../../../services/modules/visualization/co-ocurrence-visualization-history-service";
 import { ITutorialStore, STORES, TutorialStore } from "../../../stores";
@@ -37,5 +39,6 @@ dependencyFactory.bind<IEntityService>(SERVICES.IEntityService).to(EntityService
 dependencyFactory.bind<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService).to(MockGraphVisualizationHistoryService).inSingletonScope();
 dependencyFactory.bind<ICoOcurrenceVisualizationHistoryService>(SERVICES.ICoOcurrenceVisualizationHistoryService).to(MockCoOcurrenceVisualizationHistoryService).inSingletonScope();
 dependencyFactory.bind<ITutorialStore>(STORES.ITutorialStore).to(TutorialStore).inSingletonScope();
+dependencyFactory.bind<ICompoundService>(SERVICES.ICompoundService).to(CompoundService);
 
 export {dependencyFactory};
