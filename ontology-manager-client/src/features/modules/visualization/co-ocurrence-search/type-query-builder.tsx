@@ -160,6 +160,8 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
                             this.setQuery({...this.state.query, groupBy: e.target.value}
 
                         )}}
+                        tooltip="Select dimension to display"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
                         filter
                     /> 
 
@@ -180,7 +182,10 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
                                 onChange={(e) => {
                                     this.state.query.filters![i].value = e.target.value;
                                     this.setQuery({...this.state.query});
-                                }}/>
+                                }}
+                                tooltip={`Set filter value for ${x.property}`}
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                />
                         </div>
                             
 

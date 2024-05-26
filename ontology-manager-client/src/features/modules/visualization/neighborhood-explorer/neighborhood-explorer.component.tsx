@@ -213,7 +213,10 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                         myComponentRef.current!.addElement({data:{id:query.id, label:query.name, color: query.color}});
                        
 
-                    }} />
+                    }} 
+                    tooltip="Add to graph"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
 
                     {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await graphVisualizationHistoryService.delete(query.id);
@@ -241,13 +244,19 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                         const loaded = await graphVisualizationHistoryService.get(query.id, messageService!);
                         myComponentRef.current!.setElements(loaded.visualization);
 
-                    }} />
+                    }} 
+                    tooltip="Load graph"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
 
-                    {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
+                    <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await graphVisualizationHistoryService.delete(query.id);
                         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!))
                         
-                        }} /> */}
+                        }}
+                        tooltip="Delete graph"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                        />
                 </div>)
         });
 
@@ -323,9 +332,24 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
                                         if(e.key == 'Enter')
                                             myComponentRef.current!.findNode(nodeQuery);
-                                    }}/>
-                                    <Button icon="pi pi-angle-left" onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}/>
-                                    <Button icon="pi pi-angle-right" onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}/>
+
+                                    }}
+                                    tooltip="Find string in node name"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                    <Button 
+                                        icon="pi pi-angle-left" 
+                                        onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}
+                                        tooltip="Previous match"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                        
+                                        />
+                                    <Button 
+                                        icon="pi pi-angle-right" 
+                                        onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}
+                                        tooltip="Next match"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                        />
 
                                 </div>
                             </div >
@@ -338,27 +362,60 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <span className="p-inputgroup-addon">
                                         <i className="pi pi-cog"></i>
                                     </span>
-                                    <Button icon="pi pi-file" onClick={(e) => {myComponentRef.current!.reset()}}/>
-                                    <Button icon="fa fa-camera-rotate" onClick={(e) => {myComponentRef.current!.resetView();}}/>
-                                    <Button icon="pi pi-th-large" onClick={(e) => {myComponentRef.current!.redoLayout();}}/>
-                                    <Button icon="pi pi-eraser" onClick={(e) => {myComponentRef.current!.clean();}}/>
-                                    <Button icon="pi pi-save" onClick={ async (e) => {
-            const elements = myComponentRef.current!.getElements();
+                                    <Button 
+                                        icon="pi pi-file" 
+                                        onClick={(e) => {myComponentRef.current!.reset()}}
+                                        tooltip="New graph"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                    <Button 
+                                        icon="fa fa-camera-rotate" 
+                                        onClick={(e) => {myComponentRef.current!.resetView();}}
+                                        tooltip="Fit graph in camera"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}    
+                                    />
+                                    <Button
+                                         icon="pi pi-th-large" 
+                                         onClick={(e) => {myComponentRef.current!.redoLayout();}}
+                                         tooltip="Redo layout"
+                                         tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    
+                                    />
+                                    <Button 
+                                        icon="pi pi-eraser" 
+                                        onClick={(e) => {myComponentRef.current!.clean();}}
+                                        tooltip="Clean unlocked nodes"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    
+                                    />
+                                    <Button 
+                                        icon="pi pi-save" 
+                                        onClick={ async (e) => {
+                                            const elements = myComponentRef.current!.getElements();
 
-                                        savedVisualization = {
-                                            id: "",
-                                            name: "Untitled",
-                                            visualization: elements,
-                                        };
-                                        confirmGraphVisualizationSave();
-                                    }}/>
+                                            savedVisualization = {
+                                                id: "",
+                                                name: "Untitled",
+                                                visualization: elements,
+                                            };
+                                            confirmGraphVisualizationSave();
+                                        }}
+                                        tooltip="Save graph"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
 
 
                                 
                                 </div>
                             </div>
 
-                            <SplitButton icon="pi pi-download" model={downloadOptions} />
+                            <SplitButton 
+                                icon="pi pi-download" 
+                                model={downloadOptions} 
+                                tooltip="Download graph"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            
+                            />
                         </div>
                         <div className="row" style={{height: "calc(100% - 50px)", padding: 2}}>
                             <div style={{height: "100%"}}>

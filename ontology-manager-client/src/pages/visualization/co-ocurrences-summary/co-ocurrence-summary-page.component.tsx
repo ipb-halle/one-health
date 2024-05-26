@@ -287,13 +287,20 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
                         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
 
-                    }} />
+                    }} 
+                    tooltip="Save query"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    
+                    />
 
                     <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await coOcurrenceVisualizationHistoryService.delete(query.id);
                         setQueryHistory(await coOcurrenceVisualizationHistoryService.getAllAsOptions(messageService!))
                         
-                        }} />
+                        }} 
+                        tooltip="Delete query"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                        />
                 </div>)
         });
 
@@ -362,18 +369,40 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     leftQueryBuilder.current!.reset();
                                     rightQueryBuilder.current!.reset();
 
-                                }}/>
-                                <Button icon="pi pi-filter" onClick={() => {
+                                }}
+                                tooltip="New query"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                />
+                                <Button icon="pi pi-play" onClick={() => {
                                     updateData(
                                         {
                                             leftTypeQuery: {...leftQueryBuilder.current!.getQuery()},
                                             rightTypeQuery: {...rightQueryBuilder.current!.getQuery()}
                                         })
-                                    }}/>
-                                <Button icon="pi pi-save" onClick={() => { confirmCoOcurrenceVisualizationSave()}}/>
+                                    }}
+                                    tooltip="Run query"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                <Button 
+                                    icon="pi pi-save" 
+                                    onClick={() => { confirmCoOcurrenceVisualizationSave()}}
+                                    tooltip="Save query"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                         
+                            </div>
+
+                            <div style={{marginRight: '85%'}}>
+
+                            <SplitButton 
+                                style={{marginLeft: 5, marginRight: 'auto'}}
+                                icon="pi pi-download" 
+                                model={downloadOptions} 
+                                tooltip="Download query results"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            />
                             </div>
                             
-                            <SplitButton icon="pi pi-download" model={downloadOptions} />
                         </div>
 
                         <div className='row' style={{height: 'calc(100% - 349px)'}}>

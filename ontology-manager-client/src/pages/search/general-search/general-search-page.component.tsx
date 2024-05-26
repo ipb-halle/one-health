@@ -49,13 +49,19 @@ export const GeneralSearchPageComponent: React.FC = () => {
                         const loaded = await historyService.get(query.id, messageService!);
                         setElements(loaded.results);
 
-                    }} />
+                    }} 
+                    tooltip="Load results"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
 
                     <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await historyService.delete(query.id);
                         setHistory(await historyService.getAllAsOptions(messageService!))
                         
-                        }} />
+                        }} 
+                        tooltip="Remove from history"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}    
+                    />
 
 
                 </div>)
@@ -98,27 +104,33 @@ export const GeneralSearchPageComponent: React.FC = () => {
                         </div>
 
                         <div className="col-2" style={{paddingLeft: "5px"}}>
-                            <Button label="Search" onClick={async () => {
-                                if (query){
+                            <Button 
+                                label="Search" 
+                                onClick={async () => {
+                                    if (query){
 
-                                    console.log(query);
-                                    const elements = await searchService.findEntities(query, messageService!);
-                                    setElements(elements);
-                                    setSelectedElements([]);
-                                    await historyService.create({id: "0", query: query, datetime: "", results: elements}, messageService!);
-                                    setHistory(await historyService.getAllAsOptions(messageService!))
-                                }
-
-                            }}></Button>
+                                        console.log(query);
+                                        const elements = await searchService.findEntities(query, messageService!);
+                                        setElements(elements);
+                                        setSelectedElements([]);
+                                        await historyService.create({id: "0", query: query, datetime: "", results: elements}, messageService!);
+                                        setHistory(await historyService.getAllAsOptions(messageService!))
+                                    }
+                                }}
+                                tooltip="Search in knowledge base"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            />
                             <Button 
                                 icon="fa fa-compass" 
                                 style={{marginLeft: 5}} 
                                 onClick={() => {
                                     neighborhoodExplorerStore.setIds(selectedElements.map(x => { return {id: x.id, color: x.color, label: x.name }}));
                                     navigate('/neighborhood-explorer');
-                                }}>
+                                }}
+                                tooltip="Show selection in neighborhood explorer"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            />
 
-                            </Button>
                         </div>
                     </div>
                     <div style={{height: "calc(100% - 50px)"}}>
