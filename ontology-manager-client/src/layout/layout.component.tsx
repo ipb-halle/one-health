@@ -5,13 +5,13 @@ import { Outlet } from 'react-router-dom';
 
 const Layout: React.FC = () => {
     return (
-        <div id="layout">
+        <>
             <Header></Header>
             <div className='content'>
                 <Outlet/>
             </div>
             <Footer></Footer>
-        </div>
+        </>
     );
 };
 

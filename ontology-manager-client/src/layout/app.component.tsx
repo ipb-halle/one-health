@@ -8,7 +8,7 @@ import GeneralSearchPageComponent from '../pages/search/general-search/general-s
 
 function App() {
     return (
-        <div className="App">
+        <div className="app">
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<HomePageComponent/>}/>

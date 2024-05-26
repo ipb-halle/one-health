@@ -101,13 +101,13 @@ const Header: React.FC = () => {
                 },
             ],
         },  
-        // {
-        //     label: 'Documentation',
-        //     icon: 'pi pi-book',
-        //     command: () => {
-        //         navigate('/documentation');
-        //     }
-        // },
+        {
+            label: 'Documentation',
+            icon: 'pi pi-book',
+            command: () => {
+                navigate('/documentation');
+            }
+        },
         // {
         //     label: 'Contact',
         //     icon: 'pi pi-envelope',
