@@ -15,7 +15,7 @@ import { DataView } from 'primereact/dataview';
 import { IQueryGraph } from '../../../query-history/query-history-graph/graph-query';
 import { MessageServiceContext } from '../../../shared/messages';
 import { dependencyFactory } from '../../../shared/injection';
-import { IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
+import { IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
 import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
@@ -42,6 +42,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [queryHistory, setQueryHistory] = useState<Partial<ISavedGraphVisualization>[]>([]);
     const { messageService } = useContext(MessageServiceContext);
     const [selectionType, setSelectionType] = useState<"node" | "edge" | null>(null);
+    const [query, setQuery] = useState<string>();
+    const [queryResults, setQueryResults] = useState<any[]>([]);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -49,6 +51,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         visualization: ""
     }
     const graphVisualizationHistoryService = dependencyFactory.get<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService);
+    const searchService = dependencyFactory.get<IGeneralSearchService>(SERVICES.IGeneralSearchService);
+
 
     const myComponentRef : RefObject<CytoscapeInteractiveChartComponent> = useRef<CytoscapeInteractiveChartComponent>(null);
 
@@ -72,7 +76,6 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
             myComponentRef.current!.setElements(JSON.stringify(graph));
         } else {
-
             const viz = await graphVisualizationHistoryService.get("0", messageService!);
             myComponentRef.current!.setElements(viz.visualization);
         }
@@ -81,6 +84,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
     useEffect(() => {
         init();
+
+        return () => {
+        };
     }, []);
     
     const onNodeClickHandler = useCallback(
@@ -188,6 +194,36 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                 <Divider></Divider>
             {list}
             </div>];
+    };
+
+
+    const queryResultsTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+
+        let list = items.map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
+
+                    <span style={{marginLeft: 5}}>{query.name}</span>
+                    <span style={{marginLeft: 5}}>{query.type}</span>
+
+                    
+                    <div style={{marginLeft: 'auto'}}></div>
+                    <Button icon="pi pi-plus" severity='success'  rounded text aria-label="Filter" onClick={async (e) => {
+                        myComponentRef.current!.addElement({data:{id:query.id, label:query.name, color: query.color}});
+                       
+
+                    }} />
+
+                    {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
+                        await graphVisualizationHistoryService.delete(query.id);
+                        setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!))
+                        
+                        }} /> */}
+                </div>)
+        });
+
+        return [<div className="grid grid-nogutter">{list}</div>];
     };
 
     const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
@@ -384,14 +420,29 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 </div>
                             </TabPanel>
 
-                            {/* <TabPanel header="DB Search">
-                                <p className="m-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                            </TabPanel> */}
+                            <TabPanel header="DB Search">
+                                <InputText 
+                                    
+                                    value={query}
+                                    onChange={(e) => {setQuery(e.target.value);}}
+                                    onKeyDown={async (e) => {
+                                        if(e.key == 'Enter'){
+                                            setQueryResults(await searchService.findEntities(query!, messageService!));
+                                        }
+                                            
+                                    }}
+                                    style={{width: "100%"}}
+                                    >
+                                        
+                                    </InputText>
+
+                                    <Divider></Divider>
+                                    <div style={{width: '100%', height:'640px', overflowY: 'scroll'}}>
+                                    <DataView value={queryResults} listTemplate={queryResultsTemplate} />
+                                    </div>
+
+
+                            </TabPanel>
                             
                         </TabView>
 

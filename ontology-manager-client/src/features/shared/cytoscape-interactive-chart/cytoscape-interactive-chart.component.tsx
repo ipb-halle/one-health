@@ -171,6 +171,10 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.resetView();
     }
 
+    addElement(element:any) {
+        this.cytoscapeCore.add(element);
+    }
+
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;
 

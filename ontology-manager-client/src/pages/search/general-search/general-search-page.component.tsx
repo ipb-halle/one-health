@@ -133,8 +133,8 @@ export const GeneralSearchPageComponent: React.FC = () => {
                             onSelectionChange={(e) => setSelectedElements(e.value)}
                             value={elements} 
                             tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="name" header="SMILES"></Column>
-                        <Column field="type" header="Mol. Formula"></Column>
+                        <Column field="name" header="Name"></Column>
+                        <Column field="type" header="Type"></Column>
                     </DataTable>
                     }
                     </div>
