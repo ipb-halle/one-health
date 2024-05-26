@@ -24,6 +24,8 @@ import { classNames } from 'primereact/utils';
 import { darkenHexColor } from '../../../../utils';
 import { CollectionPlaceholderComponent } from '../../../../components';
 import MolecularDrawComponent from '../../../shared/molecular-draw/molecular-draw.component';
+import { INeighborhoodExplorerStore } from '../../../../stores/neighborhood-explorer-store';
+import { STORES } from '../../../../stores';
 
 
 const React = require('react');
@@ -56,15 +58,24 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [links, setLinks] = useState<any[]>([]);
     const [selectedLink, setSelectedLink] = useState<any>(null);
 
+    const neighborhoodExplorerStore = dependencyFactory.get<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore);
+
+
     const init = async () => {
         // let graph = await graphService.getInitial(messageService!);
         // const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
         // setElements([...newElements]);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
+        const nodes = neighborhoodExplorerStore.getIds();
+        if (nodes.length > 0){
+            const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
+            myComponentRef.current!.setElements(JSON.stringify(graph));
+        } else {
 
-        const viz = await graphVisualizationHistoryService.get("0", messageService!);
-        myComponentRef.current!.setElements(viz.visualization);
+            const viz = await graphVisualizationHistoryService.get("0", messageService!);
+            myComponentRef.current!.setElements(viz.visualization);
+        }
     };
 
 

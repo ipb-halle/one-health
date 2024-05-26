@@ -11,6 +11,7 @@ export  { IEntityService, EntityService} from "./modules/visualization/entity-se
 export  { IOntologyService, OntologyService} from "./modules/visualization/visualization-service";
 export  {IGraphVisualizationHistoryService, MockGraphVisualizationHistoryService} from "./modules/visualization/graph-visualization-history-service";
 export  {ICompoundService, CompoundService} from "./modules/search/compound-search/compound-search-service";
-
+export {IGeneralSearchService, GeneralSearchService} from "./modules/search/general-search/general-search-service";
+export {IGeneralSearchHistoryService, MockGeneralSearchHistoryService} from "./modules/search/general-search/general-search-history-service";
 
 export {SERVICES} from "./service-types";

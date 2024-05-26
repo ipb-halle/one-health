@@ -21,14 +21,12 @@ const Header: React.FC = () => {
             icon: 'pi pi-search',
             items: [
                 {
-                    icon: 'fa fa-atom',
                     label: 'General Search',
                     command: () => {
                         navigate('/search/general-search');
                     }
                 },
                 {
-                    icon: 'fa fa-atom',
                     label: 'Compound Search',
                     command: () => {
                         navigate('/search/structure-search');

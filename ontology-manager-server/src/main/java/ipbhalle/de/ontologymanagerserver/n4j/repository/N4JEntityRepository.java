@@ -176,4 +176,56 @@ public class N4JEntityRepository implements IEntityRepository {
 
         return neo4jTemplate.findAll(query, LinkDTO.class);
     }
+
+    @Override
+    public List<EntitySearchResultDTO> GetByIds(List<String> ids) {
+        HashMap<String, String> colors = new HashMap<>();
+        HashMap<String, String> labels = new HashMap<>();
+        HashMap<String, String> types = new HashMap<>();
+
+        var nodeTypes = neo4jTemplate.findAll(N4JEntityType.class);
+        nodeTypes.forEach(x -> {
+            colors.put(x.getId(), x.getColor());
+            if (x.getLabel() != null)
+                labels.put(x.getId(), x.getLabel().getName());
+            types.put(x.getId(), x.getName());
+        });
+
+
+        String query =
+        "with [" + String.join(", ", ids) + "] as matches" +
+                " match(m:Entity) where id(m) in matches" +
+                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
+        var matchedEntities = neo4jTemplate.findAll(query, N4JEntity.class);
+
+
+        var newNodes = matchedEntities.stream().map(n -> {
+//            var properties = new ArrayList<N4JPropertyValue>();
+            var properties = n.getProperties().stream().map(x ->
+            {
+                var propertyMap = (MapValue)x;
+                return new N4JPropertyValue(propertyMap.asMap());
+            }).toList();
+
+
+            Map<String, Object> map = new HashMap<>();
+
+            for (var p : properties){
+                if (!map.containsKey(p.getName())){
+                    map.put(p.getName(), p.getValue());
+                }
+            }
+
+            var nodeType = (String)map.get("__type");
+            return new EntitySearchResultDTO(
+                    n.getId(),
+                    (String)map.get(labels.get(nodeType)),
+                    types.get(nodeType),
+                    colors.get(nodeType),
+                    n.getId()
+            );
+        }).toList();
+
+        return newNodes;
+    }
 }

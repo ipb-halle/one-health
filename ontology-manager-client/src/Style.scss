@@ -53,3 +53,16 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+
+.one-health-panel {
+    border: 1px solid $app-border-color;
+    padding: 0;
+}
+
+.one-health-panel-header {
+    border-bottom: 1px solid $app-border-color;
+    height: 49px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
+}
