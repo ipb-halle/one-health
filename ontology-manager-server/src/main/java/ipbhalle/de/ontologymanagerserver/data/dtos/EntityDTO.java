@@ -7,6 +7,7 @@ public class EntityDTO {
     private String type;
     private List<String> labels;
     private List<PropertyValueDTO> properties;
+    private List<ReferenceDTO> references;
     private String color;
 
     public EntityDTO() {
@@ -69,5 +70,13 @@ public class EntityDTO {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public List<ReferenceDTO> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<ReferenceDTO> references) {
+        this.references = references;
     }
 }

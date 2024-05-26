@@ -119,6 +119,12 @@ public class N4JEntityRepository implements IEntityRepository {
 
         var entity = neo4jTemplate.findOne(nodeQuery,new HashMap<>(), N4JEntity.class);
 
+
+        String referencesQuery = "match (m:Entity) -[r:FROM_SOURCE]-> (n:Source) where id(m) = " + nodeId +
+                " return r.source as source, r.url as sourceUrl, r.externalid as externalId";
+
+        var references = neo4jTemplate.findAll(referencesQuery, ReferenceDTO.class);
+
         if (entity.isEmpty())
             return null;
 
@@ -157,6 +163,7 @@ public class N4JEntityRepository implements IEntityRepository {
         }
 
         entityDto.setProperties(propertyValues);
+        entityDto.setReferences(references);
 
         return entityDto;
 
@@ -172,7 +179,7 @@ public class N4JEntityRepository implements IEntityRepository {
         String query = "match (n)-[r]-(m) where id(n) = " + sourceId + " and id(m) = " + targetId;
         if (type != null)
             query += " and type(r) = '" + type + "'";
-        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, 'Me' as sourceName, 'http://me.com' as sourceUrl";
+        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, r.source as sourceName, r.sourceurl as sourceUrl";
 
         return neo4jTemplate.findAll(query, LinkDTO.class);
     }
@@ -192,9 +199,11 @@ public class N4JEntityRepository implements IEntityRepository {
         });
 
 
+        var stringifyIds = ids.stream().map(x -> "'" + x + "'").toList();
+
         String query =
-        "with [" + String.join(", ", ids) + "] as matches" +
-                " match(m:Entity) where id(m) in matches" +
+        "with [" + String.join(", ", stringifyIds)  + "] as matches" +
+                " match(m:Entity) where m.OHUUID in matches" +
                 " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
         var matchedEntities = neo4jTemplate.findAll(query, N4JEntity.class);
 

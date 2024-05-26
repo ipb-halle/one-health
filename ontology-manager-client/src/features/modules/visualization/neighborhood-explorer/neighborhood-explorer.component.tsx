@@ -21,11 +21,13 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
 import { Badge } from 'primereact/badge';
 import { classNames } from 'primereact/utils';
-import { darkenHexColor } from '../../../../utils';
+import { darkenHexColor, truncateString } from '../../../../utils';
 import { CollectionPlaceholderComponent } from '../../../../components';
 import MolecularDrawComponent from '../../../shared/molecular-draw/molecular-draw.component';
 import { INeighborhoodExplorerStore } from '../../../../stores/neighborhood-explorer-store';
 import { STORES } from '../../../../stores';
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 
 const React = require('react');
@@ -143,7 +145,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         if (!items || items.length === 0) return undefined;
 
         let list = items.sort((a,b) => a.position - b.position ).map((query, index) => {
-            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6'}}>
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', overflowX: 'scroll'} }>
 
                    
 
@@ -156,6 +158,43 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
         return [
           <>
+            <b style={{paddingLeft: "3px"}}>Properties:</b>
+            {list}
+          </>
+            ];
+    };
+
+    const nodeReferencesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+        let list = items.map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', overflowX: 'scroll'} }>
+
+                   
+                    <div>
+
+                    <b style={{marginLeft: 5}}>Source:</b>  <span style={{marginLeft: 5}}>{query.source}</span>
+                    </div>
+                    <div>
+
+                    <b style={{marginLeft: 5}}>Link:</b>
+                    {
+                        !query.sourceUrl && <span style={{marginLeft: 5}}>Not Available</span>
+                    }
+                    {
+
+                        query.sourceUrl && <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={query.sourceUrl} target="_blank"></a>
+                    }
+                    </div>
+                  
+                </div>)
+        });
+
+
+
+        return [
+          <>
+            <b style={{paddingLeft: "3px"}}>References:</b>
             {list}
           </>
             ];
@@ -169,11 +208,18 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
                     <div>
 
-                    <span style={{marginLeft: 5}}>Source: {query.sourceName}</span>
+                    <b style={{marginLeft: 5}}>Source:</b>  <span style={{marginLeft: 5}}>{query.sourceName}</span>
                     </div>
                     <div>
 
-                    <span style={{marginLeft: 5}}>URL:</span> <a href={query.sourceUrl}>{query.sourceUrl}</a>
+                    <b style={{marginLeft: 5}}>Link:</b>
+                    {
+                        !query.sourceUrl && <span style={{marginLeft: 5}}>Not Available</span>
+                    }
+                    {
+
+                        query.sourceUrl && <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={query.sourceUrl} target="_blank"></a>
+                    }
                     </div>
                   
                 </div>)
@@ -183,11 +229,11 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             <div className="grid grid-nogutter">
                 <div style={{ overflow: 'scroll'}}>
 
-                <Badge value={selectedLink.source().data('label')} style={{ background: darkenHexColor(selectedLink.source().data('color'), -140), border: `solid 2px ${selectedLink.source().data('color')}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
-                <Badge value={selectedLink.data('label')} style={{background: '#E9ECEF', border: 'solid 2px #CED4DA', height: 27, color: 'black' }}/>
+                <Badge value={truncateString(selectedLink.source().data('label'), 25)} style={{ background: darkenHexColor(selectedLink.source().data('color'), -140), border: `solid 2px ${selectedLink.source().data('color')}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                <Badge value={truncateString(selectedLink.data('label'), 25)} style={{background: '#E9ECEF', border: 'solid 2px #CED4DA', height: 27, color: 'black' }}/>
 
 
-                <Badge value={selectedLink.target().data('label')} style={{ background: darkenHexColor(selectedLink.target().data('color'), -140), border: `solid 2px ${selectedLink.target().data('color')}`, height: 27, color: 'black'  }}/>
+                <Badge value={truncateString(selectedLink.target().data('label'),25)} style={{ background: darkenHexColor(selectedLink.target().data('color'), -140), border: `solid 2px ${selectedLink.target().data('color')}`, height: 27, color: 'black'  }}/>
 
             {/* {selectedLink.source().data('label')} - {selectedLink.data('label')} - {selectedLink.target().data('label')} */}
                 </div>
@@ -204,8 +250,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         let list = items.map((query, index) => {
             return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
 
-                    <span style={{marginLeft: 5}}>{query.name}</span>
-                    <span style={{marginLeft: 5}}>{query.type}</span>
+                    <b style={{marginLeft: 5, marginRight: 10}}>{truncateString(query.name,25)}</b>
+                    <Badge value={truncateString(query.type, 25)} style={{ background: darkenHexColor(query.color, -140), border: `solid 2px ${query.color}`, height: 27, color: 'black'  }}/>
 
                     
                     <div style={{marginLeft: 'auto'}}></div>
@@ -329,7 +375,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <span className="p-inputgroup-addon">
                                         <i className="pi pi-search"></i>
                                     </span>
-                                    <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
+                                    <InputText placeholder='Search for node...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
                                         if(e.key == 'Enter')
                                             myComponentRef.current!.findNode(nodeQuery);
 
@@ -458,7 +504,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 }
                                 {selectionType === "node" &&  <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
                                         <div className="grid grid-nogutter">
-                                            <div style={{ overflow: 'scroll'}}>
+                                            <div >
                                             {/* <Badge value={element.type}/> */}
 
                                             <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
@@ -467,17 +513,23 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                             <MolecularDrawComponent element={element}></MolecularDrawComponent>
                                             <canvas id="mol_structure" width="500" height="500" style={{display: 'none'}}></canvas>
                                             <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
-                                        </div>
+                                            <DataView value={element.references} listTemplate={nodeReferencesTemplate} />
+                                            </div>
                                     </div>
                                 }
                                 {selectionType === "edge" && 
                                 <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
                                     <DataView value={links} listTemplate={linkListTemplate} />
                                 </div>}
+                                
                                 </div>
                             </TabPanel>
 
                             <TabPanel header="DB Search">
+
+                                <IconField iconPosition="left">
+                                    <InputIcon className="pi pi-search"> </InputIcon>
+                                    
                                 <InputText 
                                     
                                     value={query}
@@ -488,10 +540,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                         }
                                             
                                     }}
+                                    placeholder='Search in knowledge base...'
                                     style={{width: "100%"}}
                                     >
                                         
                                     </InputText>
+                                </IconField>
 
                                     <Divider></Divider>
                                     <div style={{width: '100%', height:'640px', overflowY: 'scroll'}}>

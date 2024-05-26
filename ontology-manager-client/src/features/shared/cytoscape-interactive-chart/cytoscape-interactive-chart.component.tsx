@@ -176,7 +176,14 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     }
 
     addElement(element:any) {
+        const result = this.cytoscapeCore.getElementById(element.data.id);
+        if (result.length > 0){
+            this.messageService?.show({severity: 'error', summary: 'Error', detail: "The node is already in the network"});
+            return;
+        }
         this.cytoscapeCore.add(element);
+        const node = this.cytoscapeCore.getElementById(element.data.id);
+        this.cytoscapeCore.center(node);
     }
 
     configureCytoscape (cytoscapeCore: any) {

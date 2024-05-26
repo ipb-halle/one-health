@@ -48,13 +48,15 @@ public class OntologyInitializerService implements IOntologyInitializerService {
         };
 
         PropertyInfoDTO[] npProperties = {
-            new PropertyInfoDTO("np_inchi", "InChI", "", true, DataType.STRING, false, 0, false),
-            new PropertyInfoDTO("np_inchikey", "InChI Key", "", true, DataType.STRING, false, 1, true),
-            new PropertyInfoDTO("np_smiles", "SMILES", "", true, DataType.STRING, false, 2, false),
-            new PropertyInfoDTO("np_molformula", "Molecular Formula", "", false, DataType.STRING, false, 3, false),
-            new PropertyInfoDTO("np_molweight", "Molecular Weight", "", false, DataType.STRING, false, 4, false),
-            new PropertyInfoDTO("np_cas", "Cas Registry Number", "", false, DataType.STRING, false, 5, false),
-            new PropertyInfoDTO("np_iupac", "IUPAC Name", "", false, DataType.STRING, false, 6, false),
+                new PropertyInfoDTO("np_name", "Name", "", false, DataType.STRING,false, 0, true),
+            new PropertyInfoDTO("np_inchi", "InChI", "", true, DataType.STRING, false, 1, false),
+            new PropertyInfoDTO("np_inchikey", "InChI Key", "", true, DataType.STRING, false, 2, false),
+            new PropertyInfoDTO("np_smiles", "SMILES", "", true, DataType.STRING, false, 3, false),
+            new PropertyInfoDTO("np_molformula", "Molecular Formula", "", false, DataType.STRING, false, 4, false),
+            new PropertyInfoDTO("np_molweight", "Molecular Weight", "", false, DataType.STRING, false, 5, false),
+            new PropertyInfoDTO("np_cas", "Cas Registry Number", "", false, DataType.STRING, false, 6, false),
+            new PropertyInfoDTO("np_iupac", "IUPAC Name", "", false, DataType.STRING, false, 7, false),
+
         };
 
         PropertyInfoDTO[] diseaseProperties = {
