@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { StructureFilterMatchMode } from "../../../features/filters/enums/structure-filter-match-mode";
-import { CollectionPlaceholderComponent, PageTitle } from "../../../components";
+import { CollectionPlaceholderComponent, LoadingPlaceholderComponent, PageTitle } from "../../../components";
 import { Panel } from "primereact/panel";
 import StructureEditor from "../../../features/filters/structure-editor.component";
 import { Dropdown } from "primereact/dropdown";
@@ -20,6 +20,9 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { RadioButton } from "primereact/radiobutton";
 import { InputTextarea } from "primereact/inputtextarea";
+import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
+import { STORES } from "../../../stores";
+import { useNavigate } from "react-router-dom";
 const OpenChemLib = require("openchemlib/full");
 
 
@@ -39,10 +42,12 @@ export interface ExactSearchQuery {
 
 
 export const CompoundSearchPageComponent: React.FC = () => {
+    const navigate = useNavigate();
 
     const maxResultsOptions = [50, 100, 150, 200, 250, 500, 1000].map(x => { return { label: x, value: x }; });
     const structureFilterMatchModes = Object.entries(StructureFilterMatchMode).map(([key, value]) => { return { label: value, value: key }; });
 
+    const  neighborhoodExplorerStore = dependencyFactory.get<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore);
     const compoundService = dependencyFactory.get<ICompoundService>(SERVICES.ICompoundService);
     const {messageService} = useContext(MessageServiceContext);
 
@@ -183,7 +188,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
 
     const structureDrawTemplate = (compound:any) => {
-        console.log(compound);
         return <>
             <MolecularDrawComponent element={compound}/>
         </>
@@ -209,7 +213,8 @@ export const CompoundSearchPageComponent: React.FC = () => {
                                     uploadHandler={(e:FileUploadHandlerEvent) => {e.options.clear()}}  
                                     onSelect={onMolFileUpload} 
                                     chooseLabel="Load file"  
-                                    chooseOptions={chooseOptions}/>
+                                    chooseOptions={chooseOptions}
+                                />
                                 {/* <SplitButton label="Load" icon="pi pi-upload" model={uploadOptions} /> */}
                             </div>
                             <div className="col-2">
@@ -362,9 +367,23 @@ export const CompoundSearchPageComponent: React.FC = () => {
         </div>
 
             <div style={{border: '1px solid #DEE2E6'}}>
+                <div style={{borderBottom:'1px solid #DEE2E6', padding: "5px", display: 'flex', alignItems: 'center' }}>
+
+                    <Button 
+                        icon="fa fa-compass" 
+                        tooltip="Show selected records in neighborhood explorer" 
+                        tooltipOptions={{showDelay: 800, position: 'bottom'}}
+                        onClick={() => {
+                            neighborhoodExplorerStore.setIds(selectedCompounds.map(x => { return {id: x.id, color: "#343ea0", label: x.name }}));
+                            navigate('/neighborhood-explorer');
+                        }}
+                    ></Button>
+                    <span style={{marginLeft: 10}}>{items.length > 0 ? `Showing ${items.length} results` : "No results"}</span>
+                    
+                </div>
                 {/* <CollectionPlaceholderComponent icon='pi pi-list' message=''/> */}
                 {
-                    loading && <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+                    loading && <LoadingPlaceholderComponent></LoadingPlaceholderComponent>
                 }{
                     !loading &&   
                     <DataTable 

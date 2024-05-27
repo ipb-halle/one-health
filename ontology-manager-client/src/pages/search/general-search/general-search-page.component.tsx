@@ -1,6 +1,6 @@
 import { ReactNode, useContext, useState } from "react";
 import { StructureFilterMatchMode } from "../../../features/filters/enums/structure-filter-match-mode";
-import { CollectionPlaceholderComponent, PageTitle } from "../../../components";
+import { CollectionPlaceholderComponent, LoadingPlaceholderComponent, PageTitle } from "../../../components";
 import { Panel } from "primereact/panel";
 import StructureEditor from "../../../features/filters/structure-editor.component";
 import { Dropdown } from "primereact/dropdown";
@@ -16,6 +16,11 @@ import { DataView } from "primereact/dataview";
 import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
 import { STORES } from "../../../stores";
 import { useNavigate } from "react-router-dom";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import { Badge } from "primereact/badge";
+import { darkenHexColor, truncateString } from "../../../utils";
 
 
 
@@ -32,6 +37,7 @@ export const GeneralSearchPageComponent: React.FC = () => {
 
     const [history, setHistory] = useState<Partial<ISavedGeneralSearch>[]>([]);
     const {messageService} = useContext(MessageServiceContext);
+    const [searching, setSearching] = useState<boolean>(false);
 
 
     const listTemplate = (items: ISavedGeneralSearch[]) : ReactNode[] | undefined =>  {
@@ -70,6 +76,27 @@ export const GeneralSearchPageComponent: React.FC = () => {
         return [<div className="grid grid-nogutter">{list}</div>];
     };
 
+    const runQuery = async () => {
+        if (!searching && query){
+            setSearching(true);
+            const elements = await searchService.findEntities(query, messageService!);
+            setElements(elements);
+            setSelectedElements([]);
+            setSearching(false);
+            await historyService.create({id: "0", query: query, datetime: "", results: elements}, messageService!);
+            setHistory(await historyService.getAllAsOptions(messageService!))
+        }
+    }
+
+    const typeColumnTemplate = (result:any) => {
+        return <Badge value={truncateString(result.type, 25)} style={{ background: darkenHexColor(result.color, -140), border: `solid 2px ${result.color}`, height: 27, color: 'black'  }}/>
+        
+    }
+
+    const nameColumnTemplate = (result:any) => {
+        return <span>{truncateString(result.name, 150)}</span>
+    }
+
     return <div className="container">
         <PageTitle icon="fa fa-search" title="General Search" help={true}></PageTitle>
         
@@ -94,29 +121,31 @@ export const GeneralSearchPageComponent: React.FC = () => {
                 <div  className="one-health-panel" style={{height: "100%"}}>
                     <div className="ro one-health-panel-header" style={{padding: "3px"}}>
                         <div className="col-10">
+                            <IconField iconPosition="left">
+                                    <InputIcon className="pi pi-search"> </InputIcon>
                             <InputText 
                                 style={{width: "100%"}} 
                                 value={query}
                                 onChange={(e) => {setQuery(e.target.value)}}
+                                onKeyDown={(e) => {
+                                    if(e.key == 'Enter'){
+                                        runQuery();
+                                    }
+                                }}
+                                placeholder="Search in knowledge base (e.g. disease name, plant name, compound name, InChI key, ...)"
                                 >
 
                             </InputText>
+                            </IconField>
                         </div>
 
                         <div className="col-2" style={{paddingLeft: "5px"}}>
                             <Button 
                                 label="Search" 
                                 onClick={async () => {
-                                    if (query){
-
-                                        console.log(query);
-                                        const elements = await searchService.findEntities(query, messageService!);
-                                        setElements(elements);
-                                        setSelectedElements([]);
-                                        await historyService.create({id: "0", query: query, datetime: "", results: elements}, messageService!);
-                                        setHistory(await historyService.getAllAsOptions(messageService!))
-                                    }
+                                    runQuery();
                                 }}
+                               
                                 tooltip="Search in knowledge base"
                                 tooltipOptions={{position: 'bottom', showDelay: 1000}}
                             />
@@ -134,9 +163,10 @@ export const GeneralSearchPageComponent: React.FC = () => {
                         </div>
                     </div>
                     <div style={{height: "calc(100% - 50px)"}}>
-                    {elements.length === 0 && <CollectionPlaceholderComponent icon="pi pi-list" message=""></CollectionPlaceholderComponent> }
+                    { searching && <LoadingPlaceholderComponent></LoadingPlaceholderComponent>}
+                    {!searching && elements.length === 0 && <CollectionPlaceholderComponent icon="pi pi-list" message=""></CollectionPlaceholderComponent> }
                     {
-                        elements.length > 0 && <DataTable 
+                       !searching && elements.length > 0 && <DataTable 
                             scrollable 
                             scrollHeight="650px"
                             selectionMode="multiple"
@@ -145,8 +175,8 @@ export const GeneralSearchPageComponent: React.FC = () => {
                             onSelectionChange={(e) => setSelectedElements(e.value)}
                             value={elements} 
                             tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="name" header="Name"></Column>
-                        <Column field="type" header="Type"></Column>
+                        <Column field="name" style={{width: "75%"}} sortable body={nameColumnTemplate} header="Name"></Column>
+                        <Column field="type" sortable header="Type" body={typeColumnTemplate}></Column>
                     </DataTable>
                     }
                     </div>

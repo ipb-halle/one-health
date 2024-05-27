@@ -22,7 +22,7 @@ import { Divider } from 'primereact/divider';
 import { Badge } from 'primereact/badge';
 import { classNames } from 'primereact/utils';
 import { darkenHexColor, truncateString } from '../../../../utils';
-import { CollectionPlaceholderComponent } from '../../../../components';
+import { CollectionPlaceholderComponent, LoadingPlaceholderComponent } from '../../../../components';
 import MolecularDrawComponent from '../../../shared/molecular-draw/molecular-draw.component';
 import { INeighborhoodExplorerStore } from '../../../../stores/neighborhood-explorer-store';
 import { STORES } from '../../../../stores';
@@ -46,6 +46,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [selectionType, setSelectionType] = useState<"node" | "edge" | null>(null);
     const [query, setQuery] = useState<string>();
     const [queryResults, setQueryResults] = useState<any[]>([]);
+    const [searching, setSearching] = useState<boolean>(false);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -535,8 +536,10 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     value={query}
                                     onChange={(e) => {setQuery(e.target.value);}}
                                     onKeyDown={async (e) => {
-                                        if(e.key == 'Enter'){
+                                        if(e.key == 'Enter' && !searching){
+                                            setSearching(true);
                                             setQueryResults(await searchService.findEntities(query!, messageService!));
+                                            setSearching(false);
                                         }
                                             
                                     }}
@@ -549,7 +552,15 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
                                     <Divider></Divider>
                                     <div style={{width: '100%', height:'640px', overflowY: 'scroll'}}>
-                                    <DataView value={queryResults} listTemplate={queryResultsTemplate} />
+                                        {
+                                            searching && <LoadingPlaceholderComponent></LoadingPlaceholderComponent>
+                                        }
+                                    {
+                                        !searching && queryResults.length <= 0 && <CollectionPlaceholderComponent icon='pi pi-list' message=''></CollectionPlaceholderComponent>
+                                    }
+                                    {
+                                      !searching && queryResults.length > 0 && <DataView value={queryResults} listTemplate={queryResultsTemplate} />
+                                    }
                                     </div>
 
 

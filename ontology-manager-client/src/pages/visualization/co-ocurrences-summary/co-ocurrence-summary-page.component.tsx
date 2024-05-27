@@ -25,6 +25,7 @@ import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/modules/visualization/co-ocurrence-search/type-query';
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
 import { ITutorialStore, STORES } from '../../../stores';
+import * as XLSX from 'xlsx';
         
 const React = require('react');
 
@@ -159,13 +160,16 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
         setQueryHistory(await coOcurrenceVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        const loaded = await coOcurrenceVisualizationHistoryService.get("1", messageService!);
+        const loaded = await coOcurrenceVisualizationHistoryService.get("0", messageService!);
         const newData = JSON.parse(loaded.visualization);
         setActiveIndex(0);
         setSankeyData(newData)
 
         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
+
+        setLeftTypeQuery(loaded.query.leftTypeQuery);
+        setRightTypeQuery(loaded.query.rightTypeQuery);
 
     }
 
@@ -239,17 +243,44 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const downloadOptions = [
         {
-            label: 'JSON',
-            command: () => {
-            }
-        },
-        {
-            label: 'PNG',
-            command: () => {
+            label: 'XLSX',
+            command: async () => {
 
-            }
-        },
+            
+                const results = await ontologyService.getCoOccurrencesDetails({leftTypeQuery: leftTypeQuery, rightTypeQuery: rightTypeQuery}, messageService!);
 
+                const ws = XLSX.utils.json_to_sheet(results);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+
+
+                // var cyJson = { query: {leftTypeQuery: leftTypeQuery, rightTypeQuery : rightTypeQuery}, visualization:JSON.stringify(sankeyData, null, 2)}
+                
+                // // Convert JSON object to string
+                // var jsonString = JSON.stringify(cyJson, null, 2); // Pretty-print with 2-space indentation
+                
+                
+                // // Create a blob from the JSON string
+                // var blob = new Blob([jsonString], { type: 'application/json' });
+                
+                // // Create a link element
+                // var link = document.createElement('a');
+                
+                // // Set link's href to point to the Blob URL
+                // link.href = URL.createObjectURL(blob);
+                // link.download = 'graph.json';
+                
+                // // Append link to the body (required for Firefox)
+                // document.body.appendChild(link);
+                
+                // // Trigger the download by simulating a click
+                // link.click();
+                
+                // // Remove link from the body
+                // document.body.removeChild(link);
+            }
+        }
     ]
 
     const accept =  async() => {
@@ -284,8 +315,13 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                         setActiveIndex(0);
                         setSankeyData(newData)
 
+                        console.log(loaded);
+
                         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
                         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
+
+                        setLeftTypeQuery(loaded.query.leftTypeQuery);
+                        setRightTypeQuery(loaded.query.rightTypeQuery);
 
                     }} 
                     tooltip="Save query"
@@ -327,13 +363,18 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         });
     };
 
+    const sourceColumnTemplate = (edge:any) => {
+        return <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={edge.sourceUrl} target="_blank"></a>
+    }
+
 
     return (
+        <>
+            <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
         <div className='page-container'>
 
             <PageTitle title='Co-Ocurrence Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
-            <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
             
             <ConfirmDialog/>
 
@@ -418,6 +459,9 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                             console.log(event.points[0].target.label);
                                             const newLeftQuery: ITypeQuery = {...leftTypeQuery};
                                             const newRightQuery: ITypeQuery = {...rightTypeQuery};
+
+                                            console.log(leftTypeQuery);
+                                            console.log(rightTypeQuery);
                                             
                                             if (newLeftQuery.filters){
                                                 newLeftQuery.filters = [...newLeftQuery.filters!, {property: newLeftQuery.groupBy!, value: event.points[0].source.label}];
@@ -451,7 +495,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     <Column field="type" header="Relationship"></Column>
                                     <Column field="rightEntity" header="Right Entity"></Column>
                                     <Column field="sourceName" header="Source Name"></Column>
-                                    <Column field="sourceUrl" header="Source URL"></Column>
+                                    <Column field="sourceUrl" header="Source URL" body={sourceColumnTemplate}></Column>
                                 </DataTable>
                             </div>
                         </div>
@@ -467,6 +511,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
           
         </div>
+        </>
     );
 };
 

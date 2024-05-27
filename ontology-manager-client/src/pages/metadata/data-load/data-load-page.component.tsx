@@ -246,7 +246,7 @@ const DataLoadPageComponent: React.FC = () => {
 
 
     return (
-        <div className="container">
+        <div className="container" style={{pointerEvents: 'none', cursor: 'not-allowed'}} >
             <PageTitle icon='pi pi-download' title='Data Load' help={true}/>
             <Messages ref={msgs} />
 

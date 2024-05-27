@@ -112,7 +112,7 @@ const LinkTypeFormPageComponent: React.FC = () => {
 
 
     return (
-        <div className="container">
+        <div className="container" style={{pointerEvents: 'none', cursor: 'not-allowed'}}>
             <PageTitle icon='pi pi-arrows-h' title='Link Type Editor' help={true}/>
             <Messages ref={msgs} />
 

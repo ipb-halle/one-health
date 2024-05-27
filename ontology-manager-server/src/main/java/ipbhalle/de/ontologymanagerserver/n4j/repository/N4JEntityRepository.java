@@ -8,6 +8,7 @@ import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntityType;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyInfo;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyValue;
 import org.neo4j.driver.internal.value.MapValue;
+import org.neo4j.driver.util.Pair;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -72,7 +73,7 @@ public class N4JEntityRepository implements IEntityRepository {
                 "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
                         "[" + String.join(", ", nodesIds) + "] as nodesIds " +
                         "match (m:Entity) - [r] -> (n) where " +
-                        "(id(n) in newNodesIds or id(n) in nodesIds) and id(m) in newNodesIds " +
+                        "id(n) in nodesIds and id(m) in newNodesIds " +
                         "with toString(id(n)) as target, toString(id(m)) as source, type(r) as label, count(r) as value" +
                         " return source, target, label, value;";
 
@@ -198,7 +199,6 @@ public class N4JEntityRepository implements IEntityRepository {
             types.put(x.getId(), x.getName());
         });
 
-
         var stringifyIds = ids.stream().map(x -> "'" + x + "'").toList();
 
         String query =
@@ -236,5 +236,18 @@ public class N4JEntityRepository implements IEntityRepository {
         }).toList();
 
         return newNodes;
+    }
+
+    public List<NaturalProductDTO> GetIds(List<String> uuids){
+        var stringifyIds = uuids.stream().map(x -> "'" + x + "'").toList();
+
+        var query =
+              "with [" + String.join(", ", stringifyIds)  + "] as matches" +
+                      " match(m:`Natural Product`) where m.OHUUID in matches" +
+                      " return m.Name as name, m.InChI as inChI, m.`InChI Key` as inChIKey, m.`SMILES` as smiles, m.`Molecular Formula` as molecularFormula, toFloat(m.`Molecular Weight`) as molecularWeight, m.`Cas Registry Number` as casRegistryNumber, m.`IUPAC Name` as iupacName , toString(id(m)) as id";
+
+
+        return neo4jTemplate.findAll(query, NaturalProductDTO.class);
+
     }
 }

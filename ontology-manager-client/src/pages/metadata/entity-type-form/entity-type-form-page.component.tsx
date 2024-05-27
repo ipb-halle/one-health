@@ -164,7 +164,7 @@ const EntityTypeFormPageComponent: React.FC = () => {
 
     return (
         
-        <div className="container">
+        <div className="container" style={{pointerEvents: 'none', cursor: 'not-allowed'}}>
             <EntityTypeFormTour run={runTutorial} callback={helpTourCallback}/>
 
             <PageTitle icon='pi pi-box' title='Entity Type Editor' help={true} helpClickedHandler={helpClickedHandler}/>

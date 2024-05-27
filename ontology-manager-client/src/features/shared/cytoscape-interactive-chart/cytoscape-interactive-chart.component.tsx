@@ -510,11 +510,10 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     edgeStyle: cytoscape.Stylesheet = {
         selector: 'edge',
         style: {
-            "text-background-opacity": 1,
+            "text-background-opacity": 0,
             "text-background-padding": "3px",
-            "text-background-color": this.props.backgroundColor,
             "line-color": () => {return this.props.edgeLineColor},
-            // label : (ele:any) => { return ele.data("label")},
+            label : (ele:any) => { return ele.data("label")},
             'width': 2,
             "text-rotation": "autorotate",
             color: this.props.edgeLabelColor,

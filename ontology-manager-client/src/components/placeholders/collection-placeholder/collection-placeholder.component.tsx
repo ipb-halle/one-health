@@ -1,12 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faQuoteRight,
-    faSquareCheck,
-    faListNumeric,
-    faCalendar,
-    faList,
-} from '@fortawesome/free-solid-svg-icons';
-
 const React = require('react');
 
 

@@ -52,6 +52,8 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({run,
                 </div>
             </div>,
             styles: {tooltip: {width: '550px', height: '250px'},},
+            disableBeacon: true,
+
         },
         {
             target: '#cooccurrences-summary-filters',
@@ -60,7 +62,9 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({run,
                 <img src={coOcurrencesFiltersGif} style={{width: '480px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '550px', height: '450px'},},
-            placement: 'left'
+            placement: 'left',
+            disableBeacon: true,
+
             
         },
         {
@@ -70,7 +74,9 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({run,
                 <img src={coOcurrencesDetailsGif} style={{width: '480px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '550px', height: '470px'},},
-            placement: 'top'
+            placement: 'top',
+            disableBeacon: true,
+
             
         },
         {
@@ -80,13 +86,17 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({run,
                 <img src={coOcurrencesLoadGif} style={{width: '480px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '550px', height: '470px'},},
-            placement: 'right'
+            placement: 'right',
+            disableBeacon: true,
+
           // Add more options if needed
         },
         {
             target: '#page-title-help-button',
 
             content: 'You can access this tutorial any time by clicking the help button.',
+            disableBeacon: true,
+
           // Add more options if needed
         },
         // Add more steps as necessary

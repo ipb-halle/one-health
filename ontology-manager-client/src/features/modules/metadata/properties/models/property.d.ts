@@ -7,5 +7,6 @@ export interface IPropertyInfo {
     key: boolean;
     dataType: string; 
     inherited: boolean;
+    position?: number;
     
 }

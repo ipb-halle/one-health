@@ -138,7 +138,7 @@ public class N4JOntologyRepository implements IOntologyRepository {
         }
         result.append(")");
 
-        result.append("WITH type(r) AS type, 'Me' as sourceName, 'http://me.com' as sourceUrl, ");
+        result.append("WITH type(r) AS type, r.source as sourceName, r.sourceurl as sourceUrl, ");
 
         var leftNodeIdentifier =
                 String.format("x.`%s`", leftEntityType.getLabel().getName());
