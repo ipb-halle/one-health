@@ -1,3 +1,4 @@
+import { Button } from 'primereact/button';
 import React from 'react';
 
 interface PageTitleProps {
@@ -17,7 +18,16 @@ const PageTitle: React.FC<PageTitleProps> = ( {icon, title, help, helpClickedHan
                 <h3>{title}</h3>
             </div>
             <div hidden={!help} className='col' style={{textAlign: 'right'}}>
-                <i id="page-title-help-button" className='pi pi-question-circle' style={{ fontSize: '28px', marginTop: '5px', color:"gray" }} onClick={helpClickedHandler}></i>
+                <Button  
+                    rounded
+                    id="page-title-help-button" 
+                    icon='pi pi-question-circle'
+                    severity='secondary'
+                    // style={{ fontSize: '28px', marginTop: '5px', color:"gray" }} 
+                    onClick={helpClickedHandler}
+                    tooltip={`Watch tutorial`}
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
                 
             </div>
         </div>

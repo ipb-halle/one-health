@@ -15,14 +15,19 @@ import { DataView } from 'primereact/dataview';
 import { IQueryGraph } from '../../../query-history/query-history-graph/graph-query';
 import { MessageServiceContext } from '../../../shared/messages';
 import { dependencyFactory } from '../../../shared/injection';
-import { IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
+import { IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
 import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
 import { Badge } from 'primereact/badge';
 import { classNames } from 'primereact/utils';
-import { darkenHexColor } from '../../../../utils';
-import { CollectionPlaceholderComponent } from '../../../../components';
+import { darkenHexColor, truncateString } from '../../../../utils';
+import { CollectionPlaceholderComponent, LoadingPlaceholderComponent } from '../../../../components';
+import MolecularDrawComponent from '../../../shared/molecular-draw/molecular-draw.component';
+import { INeighborhoodExplorerStore } from '../../../../stores/neighborhood-explorer-store';
+import { STORES } from '../../../../stores';
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 
 const React = require('react');
@@ -39,6 +44,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [queryHistory, setQueryHistory] = useState<Partial<ISavedGraphVisualization>[]>([]);
     const { messageService } = useContext(MessageServiceContext);
     const [selectionType, setSelectionType] = useState<"node" | "edge" | null>(null);
+    const [query, setQuery] = useState<string>();
+    const [queryResults, setQueryResults] = useState<any[]>([]);
+    const [searching, setSearching] = useState<boolean>(false);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -46,6 +54,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         visualization: ""
     }
     const graphVisualizationHistoryService = dependencyFactory.get<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService);
+    const searchService = dependencyFactory.get<IGeneralSearchService>(SERVICES.IGeneralSearchService);
+
 
     const myComponentRef : RefObject<CytoscapeInteractiveChartComponent> = useRef<CytoscapeInteractiveChartComponent>(null);
 
@@ -55,20 +65,31 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [links, setLinks] = useState<any[]>([]);
     const [selectedLink, setSelectedLink] = useState<any>(null);
 
+    const neighborhoodExplorerStore = dependencyFactory.get<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore);
+
+
     const init = async () => {
         // let graph = await graphService.getInitial(messageService!);
         // const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
         // setElements([...newElements]);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
-
-        const viz = await graphVisualizationHistoryService.get("0", messageService!);
-        myComponentRef.current!.setElements(viz.visualization);
+        const nodes = neighborhoodExplorerStore.getIds();
+        if (nodes.length > 0){
+            const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
+            myComponentRef.current!.setElements(JSON.stringify(graph));
+        } else {
+            const viz = await graphVisualizationHistoryService.get("0", messageService!);
+            myComponentRef.current!.setElements(viz.visualization);
+        }
     };
 
 
     useEffect(() => {
         init();
+
+        return () => {
+        };
     }, []);
     
     const onNodeClickHandler = useCallback(
@@ -124,8 +145,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const nodePropertiesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
 
-        let list = items.sort((a,b) => a - b ).map((query, index) => {
-            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6'}}>
+        let list = items.sort((a,b) => a.position - b.position ).map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', overflowX: 'scroll'} }>
 
                    
 
@@ -134,16 +155,50 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                 </div>)
         });
 
-        return [
-            <div className="grid grid-nogutter">
-                <div style={{ overflow: 'scroll'}}>
-                {/* <Badge value={element.type}/> */}
 
-                <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
-                </div>
-                <Divider></Divider>
+
+        return [
+          <>
+            <b style={{paddingLeft: "3px"}}>Properties:</b>
             {list}
-            </div>];
+          </>
+            ];
+    };
+
+    const nodeReferencesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+        let list = items.map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', overflowX: 'scroll'} }>
+
+                   
+                    <div>
+
+                    <b style={{marginLeft: 5}}>Source:</b>  <span style={{marginLeft: 5}}>{query.source}</span>
+                    </div>
+                    <div>
+
+                    <b style={{marginLeft: 5}}>Link:</b>
+                    {
+                        !query.sourceUrl && <span style={{marginLeft: 5}}>Not Available</span>
+                    }
+                    {
+
+                        query.sourceUrl && <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={query.sourceUrl} target="_blank"></a>
+                    }
+                    </div>
+                  
+                </div>)
+        });
+
+
+
+        return [
+          <>
+            <b style={{paddingLeft: "3px"}}>References:</b>
+            {list}
+          </>
+            ];
     };
 
     const linkListTemplate = (items: any[]) : ReactNode[] | undefined =>  {
@@ -154,11 +209,18 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
                     <div>
 
-                    <span style={{marginLeft: 5}}>Source: {query.sourceName}</span>
+                    <b style={{marginLeft: 5}}>Source:</b>  <span style={{marginLeft: 5}}>{query.sourceName}</span>
                     </div>
                     <div>
 
-                    <span style={{marginLeft: 5}}>URL:</span> <a href={query.sourceUrl}>{query.sourceUrl}</a>
+                    <b style={{marginLeft: 5}}>Link:</b>
+                    {
+                        !query.sourceUrl && <span style={{marginLeft: 5}}>Not Available</span>
+                    }
+                    {
+
+                        query.sourceUrl && <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={query.sourceUrl} target="_blank"></a>
+                    }
                     </div>
                   
                 </div>)
@@ -168,11 +230,11 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             <div className="grid grid-nogutter">
                 <div style={{ overflow: 'scroll'}}>
 
-                <Badge value={selectedLink.source().data('label')} style={{ background: darkenHexColor(selectedLink.source().data('color'), -140), border: `solid 2px ${selectedLink.source().data('color')}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
-                <Badge value={selectedLink.data('label')} style={{background: '#E9ECEF', border: 'solid 2px #CED4DA', height: 27, color: 'black' }}/>
+                <Badge value={truncateString(selectedLink.source().data('label'), 25)} style={{ background: darkenHexColor(selectedLink.source().data('color'), -140), border: `solid 2px ${selectedLink.source().data('color')}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                <Badge value={truncateString(selectedLink.data('label'), 25)} style={{background: '#E9ECEF', border: 'solid 2px #CED4DA', height: 27, color: 'black' }}/>
 
 
-                <Badge value={selectedLink.target().data('label')} style={{ background: darkenHexColor(selectedLink.target().data('color'), -140), border: `solid 2px ${selectedLink.target().data('color')}`, height: 27, color: 'black'  }}/>
+                <Badge value={truncateString(selectedLink.target().data('label'),25)} style={{ background: darkenHexColor(selectedLink.target().data('color'), -140), border: `solid 2px ${selectedLink.target().data('color')}`, height: 27, color: 'black'  }}/>
 
             {/* {selectedLink.source().data('label')} - {selectedLink.data('label')} - {selectedLink.target().data('label')} */}
                 </div>
@@ -181,21 +243,27 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             </div>];
     };
 
-    const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
+
+    const queryResultsTemplate = (items: any[]) : ReactNode[] | undefined =>  {
         if (!items || items.length === 0) return undefined;
+
 
         let list = items.map((query, index) => {
             return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
 
-                    <span style={{marginLeft: 5}}>{query.name}</span>
+                    <b style={{marginLeft: 5, marginRight: 10}}>{truncateString(query.name,25)}</b>
+                    <Badge value={truncateString(query.type, 25)} style={{ background: darkenHexColor(query.color, -140), border: `solid 2px ${query.color}`, height: 27, color: 'black'  }}/>
+
                     
                     <div style={{marginLeft: 'auto'}}></div>
-                    <Button icon="pi pi-upload" rounded text aria-label="Filter" onClick={async (e) => {
+                    <Button icon="pi pi-plus" severity='success'  rounded text aria-label="Filter" onClick={async (e) => {
+                        myComponentRef.current!.addElement({data:{id:query.id, label:query.name, color: query.color}});
+                       
 
-                        const loaded = await graphVisualizationHistoryService.get(query.id, messageService!);
-                        myComponentRef.current!.setElements(loaded.visualization);
-
-                    }} />
+                    }} 
+                    tooltip="Add to graph"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
 
                     {/* <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await graphVisualizationHistoryService.delete(query.id);
@@ -208,17 +276,49 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         return [<div className="grid grid-nogutter">{list}</div>];
     };
 
+    const listTemplate = (items: ISavedGraphVisualization[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+
+        let list = items.map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', display: 'flex', alignItems: 'center'}}>
+
+                    <span style={{marginLeft: 5}}>{query.name}</span>
+                    
+                    <div style={{marginLeft: 'auto'}}></div>
+                    <Button icon="pi pi-upload" rounded text aria-label="Filter" onClick={async (e) => {
+
+                        const loaded = await graphVisualizationHistoryService.get(query.id, messageService!);
+                        myComponentRef.current!.setElements(loaded.visualization);
+
+                    }} 
+                    tooltip="Load graph"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    />
+
+                    <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
+                        await graphVisualizationHistoryService.delete(query.id);
+                        setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!))
+                        
+                        }}
+                        tooltip="Delete graph"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                        />
+                </div>)
+        });
+
+        return [<div className="grid grid-nogutter">{list}</div>];
+    };
+
     const accept =  async() => {
         // const elements = myComponentRef.current!.getElements();
         // console.log(savedVisualization);
         // const item : ISavedGraphVisualization = {...savedVisualization, visualization: elements};
-        console.log(savedVisualization);
         await graphVisualizationHistoryService.create(savedVisualization, messageService!);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
     };
 
     const reject = () => {
-        console.log("rejected");
     };
 
     const confirmGraphVisualizationSave = () => {
@@ -274,12 +374,27 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <span className="p-inputgroup-addon">
                                         <i className="pi pi-search"></i>
                                     </span>
-                                    <InputText placeholder='Search in graph...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
+                                    <InputText placeholder='Search for node...' onChange={(e) => setNodeQuery(e.target.value)} onKeyDown={(e) => {
                                         if(e.key == 'Enter')
                                             myComponentRef.current!.findNode(nodeQuery);
-                                    }}/>
-                                    <Button icon="pi pi-angle-left" onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}/>
-                                    <Button icon="pi pi-angle-right" onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}/>
+
+                                    }}
+                                    tooltip="Find string in node name"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                    <Button 
+                                        icon="pi pi-angle-left" 
+                                        onClick={(e) => {myComponentRef.current!.previousSelectedNode()}}
+                                        tooltip="Previous match"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                        
+                                        />
+                                    <Button 
+                                        icon="pi pi-angle-right" 
+                                        onClick={(e) => {myComponentRef.current!.nextSelectedNode()}}
+                                        tooltip="Next match"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                        />
 
                                 </div>
                             </div >
@@ -292,27 +407,60 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                     <span className="p-inputgroup-addon">
                                         <i className="pi pi-cog"></i>
                                     </span>
-                                    <Button icon="pi pi-file" onClick={(e) => {myComponentRef.current!.reset()}}/>
-                                    <Button icon="fa fa-camera-rotate" onClick={(e) => {myComponentRef.current!.resetView();}}/>
-                                    <Button icon="pi pi-th-large" onClick={(e) => {myComponentRef.current!.redoLayout();}}/>
-                                    <Button icon="pi pi-eraser" onClick={(e) => {myComponentRef.current!.clean();}}/>
-                                    <Button icon="pi pi-save" onClick={ async (e) => {
-            const elements = myComponentRef.current!.getElements();
+                                    <Button 
+                                        icon="pi pi-file" 
+                                        onClick={(e) => {myComponentRef.current!.reset()}}
+                                        tooltip="New graph"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                    <Button 
+                                        icon="fa fa-camera-rotate" 
+                                        onClick={(e) => {myComponentRef.current!.resetView();}}
+                                        tooltip="Fit graph in camera"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}    
+                                    />
+                                    <Button
+                                         icon="pi pi-th-large" 
+                                         onClick={(e) => {myComponentRef.current!.redoLayout();}}
+                                         tooltip="Redo layout"
+                                         tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    
+                                    />
+                                    <Button 
+                                        icon="pi pi-eraser" 
+                                        onClick={(e) => {myComponentRef.current!.clean();}}
+                                        tooltip="Clean unlocked nodes"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    
+                                    />
+                                    <Button 
+                                        icon="pi pi-save" 
+                                        onClick={ async (e) => {
+                                            const elements = myComponentRef.current!.getElements();
 
-                                        savedVisualization = {
-                                            id: "",
-                                            name: "Untitled",
-                                            visualization: elements,
-                                        };
-                                        confirmGraphVisualizationSave();
-                                    }}/>
+                                            savedVisualization = {
+                                                id: "",
+                                                name: "Untitled",
+                                                visualization: elements,
+                                            };
+                                            confirmGraphVisualizationSave();
+                                        }}
+                                        tooltip="Save graph"
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
 
 
                                 
                                 </div>
                             </div>
 
-                            <SplitButton icon="pi pi-download" model={downloadOptions} />
+                            <SplitButton 
+                                icon="pi pi-download" 
+                                model={downloadOptions} 
+                                tooltip="Download graph"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            
+                            />
                         </div>
                         <div className="row" style={{height: "calc(100% - 50px)", padding: 2}}>
                             <div style={{height: "100%"}}>
@@ -353,26 +501,68 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 {
                                     !selectionType && <div style={{width: '100%', height:'710px',}}><CollectionPlaceholderComponent icon='pi pi-list' message=''/> </div>
                                 }
-                                {selectionType === "node" && 
-                                    <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
-                                    <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                {selectionType === "node" &&  <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
+                                        <div className="grid grid-nogutter">
+                                            <div >
+                                            {/* <Badge value={element.type}/> */}
+
+                                            <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
+                                            </div>
+                                            <Divider></Divider>
+                                            <MolecularDrawComponent element={element}></MolecularDrawComponent>
+                                            <canvas id="mol_structure" width="500" height="500" style={{display: 'none'}}></canvas>
+                                            <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                            <DataView value={element.references} listTemplate={nodeReferencesTemplate} />
+                                            </div>
                                     </div>
                                 }
                                 {selectionType === "edge" && 
                                 <div style={{width: '100%', height:'710px', overflowY: 'scroll'}}>
                                     <DataView value={links} listTemplate={linkListTemplate} />
                                 </div>}
+                                
                                 </div>
                             </TabPanel>
 
-                            {/* <TabPanel header="DB Search">
-                                <p className="m-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                            </TabPanel> */}
+                            <TabPanel header="DB Search">
+
+                                <IconField iconPosition="left">
+                                    <InputIcon className="pi pi-search"> </InputIcon>
+                                    
+                                <InputText 
+                                    
+                                    value={query}
+                                    onChange={(e) => {setQuery(e.target.value);}}
+                                    onKeyDown={async (e) => {
+                                        if(e.key == 'Enter' && !searching){
+                                            setSearching(true);
+                                            setQueryResults(await searchService.findEntities(query!, messageService!));
+                                            setSearching(false);
+                                        }
+                                            
+                                    }}
+                                    placeholder='Search in knowledge base...'
+                                    style={{width: "100%"}}
+                                    >
+                                        
+                                    </InputText>
+                                </IconField>
+
+                                    <Divider></Divider>
+                                    <div style={{width: '100%', height:'640px', overflowY: 'scroll'}}>
+                                        {
+                                            searching && <LoadingPlaceholderComponent></LoadingPlaceholderComponent>
+                                        }
+                                    {
+                                        !searching && queryResults.length <= 0 && <CollectionPlaceholderComponent icon='pi pi-list' message=''></CollectionPlaceholderComponent>
+                                    }
+                                    {
+                                      !searching && queryResults.length > 0 && <DataView value={queryResults} listTemplate={queryResultsTemplate} />
+                                    }
+                                    </div>
+
+
+                            </TabPanel>
                             
                         </TabView>
 

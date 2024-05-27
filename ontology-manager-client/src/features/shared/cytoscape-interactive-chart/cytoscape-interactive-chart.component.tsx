@@ -40,7 +40,11 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     selectedNodes : any[] = [];
     currentSelectedNode: number = 0;
 
+    expandedNode: any = null;
+
     lockedNodes: Map<string, boolean> = new Map();
+    lastTapTime = 0;
+
 
 
 
@@ -171,10 +175,31 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.resetView();
     }
 
+    addElement(element:any) {
+        const result = this.cytoscapeCore.getElementById(element.data.id);
+        if (result.length > 0){
+            this.messageService?.show({severity: 'error', summary: 'Error', detail: "The node is already in the network"});
+            return;
+        }
+        this.cytoscapeCore.add(element);
+        const node = this.cytoscapeCore.getElementById(element.data.id);
+        this.cytoscapeCore.center(node);
+    }
+
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;
 
         if (cytoscapeCore){
+
+            cytoscapeCore.on('layoutstop',() => {
+
+                if (this.expandedNode !== null){
+
+                    cytoscapeCore.zoom(1); // Set the desired zoom level
+                    cytoscapeCore.center(this.expandedNode); // Optionally center the graph
+                    this.expandedNode = null;
+                }
+              });
 
             // Configuration for highlighting the nodes when the user moves the mouse over a node
             cytoscapeCore.on('mouseover', 'node', function (event:any) {
@@ -224,9 +249,14 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                         {
                             content: `<span class="fa fa-lock" style="font-size:20px;"></span>`,
                             select: (node: any) => { 
-                                if (this.lockedNodes.has(node.id()))
+                                if (this.lockedNodes.has(node.id())){
                                     this.lockedNodes.delete(node.id());
-                                else this.lockedNodes.set(node.id(), true);
+                                    node.removeClass('locked');
+                                }
+                                else {
+                                    this.lockedNodes.set(node.id(), true);
+                                    node.addClass('locked');
+                                } 
                             }
                         },
                         {
@@ -295,7 +325,17 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                                     })
                                 })
 
+                                this.expandedNode = node;
+
+                                
                                 cytoscapeCore.layout(this.layout).run(); 
+
+                                this.selectedNodes = [
+                                    node
+                                ]
+                                
+                                node.addClass('selected');
+
 
                                 // cytoscapeCore.nodes().forEach((node:any) => {
                                 //     node.unlock();
@@ -316,6 +356,27 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                   });
                   this.selectedNodes = [];
                 }
+              });
+
+            
+            cytoscapeCore.on('tap', 'node', (event:any) => {
+                const currentTime = new Date().getTime();
+                const node = event.target;
+              
+                if (currentTime - this.lastTapTime < 300) {
+                  // Double-click detected
+                  if (this.lockedNodes.has(node.id())){
+                    this.lockedNodes.delete(node.id());
+                    node.removeClass('locked');
+                }
+                else {
+                    this.lockedNodes.set(node.id(), true);
+                    node.addClass('locked');
+                } 
+                  // Place your custom code here
+                }
+              
+                this.lastTapTime = currentTime;
               });
 
             // Configuration for user input events
@@ -396,6 +457,16 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         }
     }
 
+    lockeStyles: cytoscape.Stylesheet = {
+        selector: '.locked',
+        style: {
+           'border-style': 'double',
+           "border-width": "8px",
+           "border-color": "blue"
+            // "background-opacity" : 0.5,
+        }
+    }
+
     highlightedStyle: cytoscape.Stylesheet = {
         selector: '.highlight',
         style: {
@@ -439,11 +510,10 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     edgeStyle: cytoscape.Stylesheet = {
         selector: 'edge',
         style: {
-            "text-background-opacity": 1,
+            "text-background-opacity": 0,
             "text-background-padding": "3px",
-            "text-background-color": this.props.backgroundColor,
             "line-color": () => {return this.props.edgeLineColor},
-            // label : (ele:any) => { return ele.data("label")},
+            label : (ele:any) => { return ele.data("label")},
             'width': 2,
             "text-rotation": "autorotate",
             color: this.props.edgeLabelColor,
@@ -460,7 +530,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
              elements={this.props.elements}
              styleEnabled={true}
              maxZoom={1}
-             stylesheet={[this.styles, this.edgeStyle, this.highlightedStyle, this.test, this.buttonStyle, this.selectedStyle]}
+             stylesheet={[this.styles, this.edgeStyle, this.highlightedStyle, this.test, this.buttonStyle, this.selectedStyle, this.lockeStyles]}
              layout={this.layout}
              // "#343843"
              style={{ width: '100%', height: '100%', backgroundColor: this.props.backgroundColor }}/>

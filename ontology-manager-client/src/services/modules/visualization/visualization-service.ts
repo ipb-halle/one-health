@@ -16,10 +16,6 @@ export class IOntologyService extends BaseDataService{
 
     getCoOcurrences(query: ICoOcurrenceQuery, messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings) : any {
         var qparams = constructHttpParams(query);
-        console.log(qparams);
-        console.log("ahora no");
-        console.log(qs.stringify(qparams));
-        console.log("ahora si");
         
         return this.handleRequest<any>(
             axios.get<any>(

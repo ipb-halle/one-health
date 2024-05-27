@@ -18,10 +18,17 @@ import {
     PropertyService,
     IGraphVisualizationHistoryService, 
     MockGraphVisualizationHistoryService,
-    SERVICES 
+    SERVICES, 
+    ICompoundService,
+    CompoundService,
+    IGeneralSearchService,
+    GeneralSearchService,
+    IGeneralSearchHistoryService,
+    MockGeneralSearchHistoryService
 } from "../../../services";
 import { ICoOcurrenceVisualizationHistoryService, MockCoOcurrenceVisualizationHistoryService } from "../../../services/modules/visualization/co-ocurrence-visualization-history-service";
 import { ITutorialStore, STORES, TutorialStore } from "../../../stores";
+import { INeighborhoodExplorerStore, NeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
 
 
 
@@ -37,5 +44,9 @@ dependencyFactory.bind<IEntityService>(SERVICES.IEntityService).to(EntityService
 dependencyFactory.bind<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService).to(MockGraphVisualizationHistoryService).inSingletonScope();
 dependencyFactory.bind<ICoOcurrenceVisualizationHistoryService>(SERVICES.ICoOcurrenceVisualizationHistoryService).to(MockCoOcurrenceVisualizationHistoryService).inSingletonScope();
 dependencyFactory.bind<ITutorialStore>(STORES.ITutorialStore).to(TutorialStore).inSingletonScope();
+dependencyFactory.bind<ICompoundService>(SERVICES.ICompoundService).to(CompoundService);
+dependencyFactory.bind<IGeneralSearchService>(SERVICES.IGeneralSearchService).to(GeneralSearchService);
+dependencyFactory.bind<IGeneralSearchHistoryService>(SERVICES.IGeneralSearchHistoryService).to(MockGeneralSearchHistoryService).inSingletonScope();
+dependencyFactory.bind<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore).to(NeighborhoodExplorerStore).inSingletonScope();
 
 export {dependencyFactory};

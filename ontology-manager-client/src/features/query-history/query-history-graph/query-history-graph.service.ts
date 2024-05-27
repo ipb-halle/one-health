@@ -18,7 +18,6 @@ export class QueryHistoryGraphService extends IQueryHistoryGraphService {
 
     constructor(){
         super();
-        console.log("a new query history service");
     }
 
     private queries: IQueryGraph[] = [

@@ -3,4 +3,8 @@
 
 .app-footer {
     border: solid 1px c.$app-border-color;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
 }

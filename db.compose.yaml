@@ -10,11 +10,25 @@ services:
       - "7474:7474"
       - "7687:7687"
     volumes:
-      - sources_cu_plants_ontology_data:/data
+      - sources_one_health_ontology_data:/data
     environment:
       NEO4J_AUTH: none
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
 
+  postgredb:
+    container_name: one-health-postgredb
+    image: postgres_rdkit
+    ports:
+      - "5433:5432"
+    volumes:
+      -  one_health_postgredb_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: one_healt_huser
+      POSTGRES_PASSWORD: one_health_password
+      POSTGRES_DB: one_health
+
 volumes:
-  sources_cu_plants_ontology_data:
+  sources_one_health_ontology_data:
     external: true
+
+  one_health_postgredb_data:

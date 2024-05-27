@@ -29,7 +29,7 @@
         "plotly.js": "^2.29.0",
         "plotly.js-dist": "^2.29.0",
         "primeicons": "^6.0.1",
-        "primereact": "^10.6.5",
+        "primereact": "^10.6.6",
         "qs": "^6.11.2",
         "react": "^18.2.0",
         "react-cytoscapejs": "^2.0.0",
@@ -42,7 +42,8 @@
         "rxjs": "^7.8.1",
         "sass": "^1.70.0",
         "typescript": "^4.9.5",
-        "web-vitals": "^2.1.4"
+        "web-vitals": "^2.1.4",
+        "xlsx": "^0.18.5"
     },
     "scripts": {
         "start": "react-scripts start",

@@ -43,7 +43,9 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
         },
         {
             target: "#neighborhood-explorer-toolbar",
-            content: <div> In the toolbar you will find different utilities.</div>,   
+            content: <div> In the toolbar you will find different utilities.</div>,
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer-toolbar',
@@ -52,6 +54,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 <img src={graphSearchGif} style={{width: '380px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '500px', height: '460px'},},
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer-toolbar',
@@ -90,7 +94,9 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 <img src={nodeDetailsGif} style={{width: '480px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '550px', height: '440px'},},
-            placement: 'left'
+            placement: 'left',
+            disableBeacon: true,
+
             
         },
         {
@@ -101,6 +107,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             </div>,
             styles: {tooltip: {width: '330px', height: '410px'},},
             placement: 'center',
+            disableBeacon: true,
+
 
         },
         {
@@ -111,6 +119,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             </div>,
             styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer',
@@ -120,6 +130,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             </div>,
             styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer',
@@ -129,6 +141,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             </div>,
             styles: {tooltip: {width: '500px', height: '460px'},},
             placement: 'center',
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer',
@@ -138,6 +152,8 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             </div>,
             styles: {tooltip: {width: '400px', height: '380px'},},
             placement: 'center',
+            disableBeacon: true,
+
         },
         {
             target: '#neighborhood-explorer-history',
@@ -146,13 +162,17 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
                 <img src={graphLoadGif} style={{width: '480px', height: '300px'}}/>
             </div>,
             styles: {tooltip: {width: '550px', height: '460px'},},
-            placement: 'right'
+            placement: 'right',
+            disableBeacon: true,
+
           // Add more options if needed
         },
         {
             target: '#page-title-help-button',
 
             content: 'You can access this tutorial any time by clicking the help button.',
+            disableBeacon: true,
+
           // Add more options if needed
         },
         // Add more steps as necessary

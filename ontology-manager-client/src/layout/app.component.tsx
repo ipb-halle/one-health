@@ -4,10 +4,11 @@ import { Routes, Route } from 'react-router-dom';
 import './app.component.scss';
 import Layout from './layout.component';
 import { CoOcurrencesSummaryPageComponent, CompoundSearchPageComponent, DataLoadPageComponent, DocumentationPageComponent, EntityTypeFormPageComponent, HomePageComponent, LinkTypeFormPageComponent, MetadataOverviewPageComponent, NeighborhoodExplorerPageComponent } from '../pages';
+import GeneralSearchPageComponent from '../pages/search/general-search/general-search-page.component';
 
 function App() {
     return (
-        <div className="App">
+        <div className="app">
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<HomePageComponent/>}/>
@@ -21,9 +22,10 @@ function App() {
                     <Route path="ontology/data-load/0" element={<DataLoadPageComponent/>}/>
 
                     <Route path="search/structure-search" element={<CompoundSearchPageComponent/>}/>
+                    <Route path="search/general-search" element={<GeneralSearchPageComponent/>}/>
                 
                     <Route path="neighborhood-explorer" element={<NeighborhoodExplorerPageComponent/>}/>
-                    <Route path="visualization/co-ocurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
+                    <Route path="visualization/co-occurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
 
                     <Route path="documentation" element={<DocumentationPageComponent/>}/>
                 </Route>

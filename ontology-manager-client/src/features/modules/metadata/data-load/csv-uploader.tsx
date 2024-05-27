@@ -51,9 +51,7 @@ export default function TemplateDemo() {
     };
 
     const onTemplateSelect = async (e:any) => {
-        console.log("here");
         var chunk = readNextChunk(e.files[0], 0, 1024 * 1024);
-        console.log("here");
         var lines: any = await processChunkAsync(chunk);
         var dataset = lines.slice(0,5).map((x:any) => {return x.split(',')})
         var header = dataset[0];

@@ -25,6 +25,7 @@ import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/modules/visualization/co-ocurrence-search/type-query';
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
 import { ITutorialStore, STORES } from '../../../stores';
+import * as XLSX from 'xlsx';
         
 const React = require('react');
 
@@ -159,7 +160,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
         setQueryHistory(await coOcurrenceVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        const loaded = await coOcurrenceVisualizationHistoryService.get("1", messageService!);
+        const loaded = await coOcurrenceVisualizationHistoryService.get("0", messageService!);
         const newData = JSON.parse(loaded.visualization);
         setActiveIndex(0);
         setSankeyData(newData)
@@ -167,28 +168,25 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
 
+        setLeftTypeQuery(loaded.query.leftTypeQuery);
+        setRightTypeQuery(loaded.query.rightTypeQuery);
+
     }
 
 
     const updateData = async (query:any) => {
-        console.log("repingaaaaa");
-        console.log(query);
 
         if (!(query?.leftTypeQuery?.type) || !(query?.rightTypeQuery?.type)){
-            console.log("aquiii");
             return;
         }
 
         
-        console.log("cojoneee siiiii");
 
         var graph = await ontologyService.getCoOcurrences(query, messageService!);
 
         if (!graph.nodes || !graph.links)
             return;
 
-        console.log("here");
-        console.log(graph);
 
         var nodesMap = new Map();
         var nodes: string[] = [];
@@ -205,7 +203,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         var valuex: number[] = [];
         var labelx: string[] = [];
 
-        console.log(nodesMap);
 
         graph.links.forEach((x:any) => {
             sourcex.push(nodesMap.get(x.source));
@@ -216,8 +213,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
         // labelx.push(`${x.source} - ${x.label} - ${x.target}`);
 
-
-        console.log(sourcex);
 
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);
@@ -239,17 +234,44 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const downloadOptions = [
         {
-            label: 'JSON',
-            command: () => {
-            }
-        },
-        {
-            label: 'PNG',
-            command: () => {
+            label: 'XLSX',
+            command: async () => {
 
-            }
-        },
+            
+                const results = await ontologyService.getCoOccurrencesDetails({leftTypeQuery: leftTypeQuery, rightTypeQuery: rightTypeQuery}, messageService!);
 
+                const ws = XLSX.utils.json_to_sheet(results);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+
+
+                // var cyJson = { query: {leftTypeQuery: leftTypeQuery, rightTypeQuery : rightTypeQuery}, visualization:JSON.stringify(sankeyData, null, 2)}
+                
+                // // Convert JSON object to string
+                // var jsonString = JSON.stringify(cyJson, null, 2); // Pretty-print with 2-space indentation
+                
+                
+                // // Create a blob from the JSON string
+                // var blob = new Blob([jsonString], { type: 'application/json' });
+                
+                // // Create a link element
+                // var link = document.createElement('a');
+                
+                // // Set link's href to point to the Blob URL
+                // link.href = URL.createObjectURL(blob);
+                // link.download = 'graph.json';
+                
+                // // Append link to the body (required for Firefox)
+                // document.body.appendChild(link);
+                
+                // // Trigger the download by simulating a click
+                // link.click();
+                
+                // // Remove link from the body
+                // document.body.removeChild(link);
+            }
+        }
     ]
 
     const accept =  async() => {
@@ -265,7 +287,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     };
 
     const reject = () => {
-        console.log("rejected");
+
     };
 
     const listTemplate = (items: ISavedCoOcurrenceVisualization[]) : ReactNode[] | undefined =>  {
@@ -284,16 +306,27 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                         setActiveIndex(0);
                         setSankeyData(newData)
 
+
                         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
                         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
 
-                    }} />
+                        setLeftTypeQuery(loaded.query.leftTypeQuery);
+                        setRightTypeQuery(loaded.query.rightTypeQuery);
+
+                    }} 
+                    tooltip="Save query"
+                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                    
+                    />
 
                     <Button icon="pi pi-trash" rounded text severity="danger" aria-label="Cancel" onClick={async (e) => {
                         await coOcurrenceVisualizationHistoryService.delete(query.id);
                         setQueryHistory(await coOcurrenceVisualizationHistoryService.getAllAsOptions(messageService!))
                         
-                        }} />
+                        }} 
+                        tooltip="Delete query"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                        />
                 </div>)
         });
 
@@ -320,13 +353,18 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         });
     };
 
+    const sourceColumnTemplate = (edge:any) => {
+        return <a style={{textDecoration: 'none', fontSize: 14, paddingLeft: 5}} className='pi pi-external-link' href={edge.sourceUrl} target="_blank"></a>
+    }
+
 
     return (
+        <>
+            <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
         <div className='page-container'>
 
             <PageTitle title='Co-Ocurrence Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
-            <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
             
             <ConfirmDialog/>
 
@@ -362,18 +400,40 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     leftQueryBuilder.current!.reset();
                                     rightQueryBuilder.current!.reset();
 
-                                }}/>
-                                <Button icon="pi pi-filter" onClick={() => {
+                                }}
+                                tooltip="New query"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                />
+                                <Button icon="pi pi-play" onClick={() => {
                                     updateData(
                                         {
                                             leftTypeQuery: {...leftQueryBuilder.current!.getQuery()},
                                             rightTypeQuery: {...rightQueryBuilder.current!.getQuery()}
                                         })
-                                    }}/>
-                                <Button icon="pi pi-save" onClick={() => { confirmCoOcurrenceVisualizationSave()}}/>
+                                    }}
+                                    tooltip="Run query"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                                <Button 
+                                    icon="pi pi-save" 
+                                    onClick={() => { confirmCoOcurrenceVisualizationSave()}}
+                                    tooltip="Save query"
+                                    tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
+                         
+                            </div>
+
+                            <div style={{marginRight: '85%'}}>
+
+                            <SplitButton 
+                                style={{marginLeft: 5, marginRight: 'auto'}}
+                                icon="pi pi-download" 
+                                model={downloadOptions} 
+                                tooltip="Download query results"
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                            />
                             </div>
                             
-                            <SplitButton icon="pi pi-download" model={downloadOptions} />
                         </div>
 
                         <div className='row' style={{height: 'calc(100% - 349px)'}}>
@@ -385,10 +445,11 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     useResizeHandler={true}
                                     onClick={async (event:any) => 
                                         {
-                                            console.log(event.points[0].source.label);
-                                            console.log(event.points[0].target.label);
+
                                             const newLeftQuery: ITypeQuery = {...leftTypeQuery};
                                             const newRightQuery: ITypeQuery = {...rightTypeQuery};
+
+            
                                             
                                             if (newLeftQuery.filters){
                                                 newLeftQuery.filters = [...newLeftQuery.filters!, {property: newLeftQuery.groupBy!, value: event.points[0].source.label}];
@@ -399,9 +460,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                                 newRightQuery.filters = [...newRightQuery.filters!, {property: newRightQuery.groupBy!, value: event.points[0].target.label}];
                                             }
                                             else newRightQuery.filters = [{property: newRightQuery.groupBy!, value: event.points[0].target.label}];
-                                            
-                                            console.log(newLeftQuery);
-                                            console.log(newRightQuery);
+         
                                             setLinks(await ontologyService.getCoOccurrencesDetails({leftTypeQuery: newLeftQuery, rightTypeQuery: newRightQuery}, messageService!));
                                         
                                         }}
@@ -422,7 +481,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     <Column field="type" header="Relationship"></Column>
                                     <Column field="rightEntity" header="Right Entity"></Column>
                                     <Column field="sourceName" header="Source Name"></Column>
-                                    <Column field="sourceUrl" header="Source URL"></Column>
+                                    <Column field="sourceUrl" header="Source URL" body={sourceColumnTemplate}></Column>
                                 </DataTable>
                             </div>
                         </div>
@@ -438,6 +497,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
           
         </div>
+        </>
     );
 };
 

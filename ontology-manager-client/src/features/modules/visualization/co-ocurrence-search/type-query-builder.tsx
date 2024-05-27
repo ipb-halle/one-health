@@ -15,6 +15,7 @@ import { MessageService, MessageServiceContext } from "../../../shared/messages"
 import { SelectableOption } from "../../../../utils/selectable-option";
 import { CollectionPlaceholderComponent } from "../../../../components";
 import { FloatLabel } from 'primereact/floatlabel';
+import { Divider } from "primereact/divider";
 
 const React = require('react');
 
@@ -83,11 +84,14 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
         if (this.state.query.type){
 
            var  entityType = await this.entityService.get(this.state.query.type, this.messageService!)
-           var filters = entityType.properties.map((x) => { return { property: x.name, value: undefined} });
+           
+           let properties = entityType.properties; 
+           properties = properties.sort((a,b) => a.position! - b.position! );
+           
+           var filters = properties.map((x) => { return { property: x.name, value: undefined} });
 
-           this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
+           this.setGroupByOptions(properties.map((x) => { return { label: x.name, value: x.name};}));
 
-           console.log(entityType.label!.name);
            this.setQuery({...this.state.query, groupBy: entityType.label!.name, filters: filters});
         }
 
@@ -105,7 +109,7 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
             
             var  entityType = await this.entityService.get(query.type!, this.messageService!)
             
-            this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
+            this.setGroupByOptions(entityType.properties.sort((a,b) => a.position! - b.position! ).map((x) => { return { label: x.name, value: x.name};}));
         }
         
         this.setQuery({...query});
@@ -129,9 +133,9 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
                     value={this.state.query.type}
                     onChange={async (e) => {
                         var  entityType = await this.entityService.get(e.value, this.messageService!)
-                        var filters = entityType.properties.map((x) => { return { property: x.name, value: undefined} });
+                        var filters = entityType.properties.sort((a,b) => a.position! - b.position! ).map((x) => { return { property: x.name, value: undefined} });
              
-                        this.setGroupByOptions(entityType.properties.map((x) => { return { label: x.name, value: x.name};}));
+                        this.setGroupByOptions(entityType.properties.sort((a,b) => a.position! - b.position! ).map((x) => { return { label: x.name, value: x.name};}));
              
                         this.setQuery({...this.state.query, groupBy: entityType.label!.name, filters: filters, type:e.value});
                     }}
@@ -160,10 +164,17 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
                             this.setQuery({...this.state.query, groupBy: e.target.value}
 
                         )}}
+                        tooltip="Select dimension to display"
+                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
                         filter
                     /> 
 
                 </div>
+
+                {/* <div style={{display: 'flex', padding: 8, borderBottom: "1px solid #DEE2E6", backgroundColor:"#DEE2E6" }}>
+
+                <i className="pi pi-filter" style={{marginLeft: 5}}></i> <span>Filters:</span>
+                </div> */}
 
                 {this.state.query.filters?.map((x:IFilter, i:number)=> {
                     return <div style={{padding:"5px", borderBottom: "1px solid #DEE2E6"}}>
@@ -180,7 +191,10 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
                                 onChange={(e) => {
                                     this.state.query.filters![i].value = e.target.value;
                                     this.setQuery({...this.state.query});
-                                }}/>
+                                }}
+                                tooltip={`Set filter value for ${x.property}`}
+                                tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                />
                         </div>
                             
 

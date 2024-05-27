@@ -15,6 +15,7 @@ public class LinkDTO {
         return leftEntity;
     }
 
+
     public void setLeftEntity(String leftEntity) {
         this.leftEntity = leftEntity;
     }

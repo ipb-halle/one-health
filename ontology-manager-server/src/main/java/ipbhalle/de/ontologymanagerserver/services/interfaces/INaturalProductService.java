@@ -6,7 +6,9 @@ import ipbhalle.de.ontologymanagerserver.data.query.NaturalProductStructureQuery
 import java.util.List;
 
 public interface INaturalProductService {
-    NaturalProductDTO Get(String id);
-    List<NaturalProductDTO> GetByStructure(NaturalProductStructureQuery query);
-    List<NaturalProductDTO> GetByProperties();
+    NaturalProductDTO GetBySMILES(String value);
+    NaturalProductDTO GetByInChI(String value);
+    NaturalProductDTO GetByInChIKey(String value);
+    List<NaturalProductDTO> GetBySubstructure(String smiles, int take, int page);
+    List<NaturalProductDTO> GetBySimilarity(String smiles, int threshold, int limit);
 }

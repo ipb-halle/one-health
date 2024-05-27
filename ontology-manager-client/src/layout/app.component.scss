@@ -3,7 +3,15 @@
 .content {
     background-color: white;
     padding-top: $app-header-height + 30px;
-    padding-bottom: 50px;
+    padding-bottom: 90px;
     max-width: 1920px;
-    border-left-color: white;
+    flex: 1;
+}
+
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-wrap: 1;
 }

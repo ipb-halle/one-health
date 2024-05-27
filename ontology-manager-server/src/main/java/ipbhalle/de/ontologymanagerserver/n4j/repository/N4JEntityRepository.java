@@ -8,6 +8,7 @@ import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntityType;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyInfo;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyValue;
 import org.neo4j.driver.internal.value.MapValue;
+import org.neo4j.driver.util.Pair;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -72,7 +73,7 @@ public class N4JEntityRepository implements IEntityRepository {
                 "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
                         "[" + String.join(", ", nodesIds) + "] as nodesIds " +
                         "match (m:Entity) - [r] -> (n) where " +
-                        "(id(n) in newNodesIds or id(n) in nodesIds) and id(m) in newNodesIds " +
+                        "id(n) in nodesIds and id(m) in newNodesIds " +
                         "with toString(id(n)) as target, toString(id(m)) as source, type(r) as label, count(r) as value" +
                         " return source, target, label, value;";
 
@@ -119,6 +120,12 @@ public class N4JEntityRepository implements IEntityRepository {
 
         var entity = neo4jTemplate.findOne(nodeQuery,new HashMap<>(), N4JEntity.class);
 
+
+        String referencesQuery = "match (m:Entity) -[r:FROM_SOURCE]-> (n:Source) where id(m) = " + nodeId +
+                " return r.source as source, r.url as sourceUrl, r.externalid as externalId";
+
+        var references = neo4jTemplate.findAll(referencesQuery, ReferenceDTO.class);
+
         if (entity.isEmpty())
             return null;
 
@@ -157,6 +164,7 @@ public class N4JEntityRepository implements IEntityRepository {
         }
 
         entityDto.setProperties(propertyValues);
+        entityDto.setReferences(references);
 
         return entityDto;
 
@@ -172,8 +180,74 @@ public class N4JEntityRepository implements IEntityRepository {
         String query = "match (n)-[r]-(m) where id(n) = " + sourceId + " and id(m) = " + targetId;
         if (type != null)
             query += " and type(r) = '" + type + "'";
-        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, 'Me' as sourceName, 'http://me.com' as sourceUrl";
+        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, r.source as sourceName, r.sourceurl as sourceUrl";
 
         return neo4jTemplate.findAll(query, LinkDTO.class);
+    }
+
+    @Override
+    public List<EntitySearchResultDTO> GetByIds(List<String> ids) {
+        HashMap<String, String> colors = new HashMap<>();
+        HashMap<String, String> labels = new HashMap<>();
+        HashMap<String, String> types = new HashMap<>();
+
+        var nodeTypes = neo4jTemplate.findAll(N4JEntityType.class);
+        nodeTypes.forEach(x -> {
+            colors.put(x.getId(), x.getColor());
+            if (x.getLabel() != null)
+                labels.put(x.getId(), x.getLabel().getName());
+            types.put(x.getId(), x.getName());
+        });
+
+        var stringifyIds = ids.stream().map(x -> "'" + x + "'").toList();
+
+        String query =
+        "with [" + String.join(", ", stringifyIds)  + "] as matches" +
+                " match(m:Entity) where m.OHUUID in matches" +
+                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
+        var matchedEntities = neo4jTemplate.findAll(query, N4JEntity.class);
+
+
+        var newNodes = matchedEntities.stream().map(n -> {
+//            var properties = new ArrayList<N4JPropertyValue>();
+            var properties = n.getProperties().stream().map(x ->
+            {
+                var propertyMap = (MapValue)x;
+                return new N4JPropertyValue(propertyMap.asMap());
+            }).toList();
+
+
+            Map<String, Object> map = new HashMap<>();
+
+            for (var p : properties){
+                if (!map.containsKey(p.getName())){
+                    map.put(p.getName(), p.getValue());
+                }
+            }
+
+            var nodeType = (String)map.get("__type");
+            return new EntitySearchResultDTO(
+                    n.getId(),
+                    (String)map.get(labels.get(nodeType)),
+                    types.get(nodeType),
+                    colors.get(nodeType),
+                    n.getId()
+            );
+        }).toList();
+
+        return newNodes;
+    }
+
+    public List<NaturalProductDTO> GetIds(List<String> uuids){
+        var stringifyIds = uuids.stream().map(x -> "'" + x + "'").toList();
+
+        var query =
+              "with [" + String.join(", ", stringifyIds)  + "] as matches" +
+                      " match(m:`Natural Product`) where m.OHUUID in matches" +
+                      " return m.Name as name, m.InChI as inChI, m.`InChI Key` as inChIKey, m.`SMILES` as smiles, m.`Molecular Formula` as molecularFormula, toFloat(m.`Molecular Weight`) as molecularWeight, m.`Cas Registry Number` as casRegistryNumber, m.`IUPAC Name` as iupacName , toString(id(m)) as id";
+
+
+        return neo4jTemplate.findAll(query, NaturalProductDTO.class);
+
     }
 }

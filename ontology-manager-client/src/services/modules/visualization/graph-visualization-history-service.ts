@@ -22,7 +22,6 @@ export class MockGraphVisualizationHistoryService extends IGraphVisualizationHis
     constructor() {
         super();
         const newData = data.map((x:any) => {return {...x, visualization: JSON.stringify(x.visualization)}});
-        console.log(newData);
         this.collection = newData;
     }
 

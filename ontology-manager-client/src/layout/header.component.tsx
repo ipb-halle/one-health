@@ -16,33 +16,38 @@ const Header: React.FC = () => {
                 navigate('/');
             }
         },
-        // {
-        //     label: 'Search',
-        //     icon: 'pi pi-search',
-        //     items: [
-        //         {
-        //             icon: 'fa fa-atom',
-        //             label: 'Compound Search',
-        //             command: () => {
-        //                 navigate('/search/structure-search');
-        //             }
-        //         },
-        //         {
-        //             icon: 'fa fa-leaf',
-        //             label: 'Plant Search',
-        //             command: () => {
-        //                 navigate('/search/plant-search');
-        //             }
-        //         },
-        //         {
-        //             icon: 'fa fa-virus',
-        //             label: 'Disease Search',
-        //             command: () => {
-        //                 navigate('/search/disease-search');
-        //             }
-        //         }
-        //     ]
-        // },
+        {
+            label: 'Search',
+            icon: 'pi pi-search',
+            items: [
+                {
+                    label: 'General Search',
+                    command: () => {
+                        navigate('/search/general-search');
+                    }
+                },
+                {
+                    label: 'Compound Search',
+                    command: () => {
+                        navigate('/search/structure-search');
+                    }
+                },
+                // {
+                //     icon: 'fa fa-leaf',
+                //     label: 'Plant Search',
+                //     command: () => {
+                //         navigate('/search/plant-search');
+                //     }
+                // },
+                // {
+                //     icon: 'fa fa-virus',
+                //     label: 'Disease Search',
+                //     command: () => {
+                //         navigate('/search/disease-search');
+                //     }
+                // }
+            ]
+        },
         {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
@@ -56,9 +61,9 @@ const Header: React.FC = () => {
                 },
                 {
                     // icon: 'fa fa-circle-nodes',
-                    label: 'Co-ocurrence Search',
+                    label: 'Co-occurrences Search',
                     command: () => {
-                        navigate('/visualization/co-ocurrence-search/');
+                        navigate('/visualization/co-occurrence-search/');
                     }
                 }
             ],
@@ -96,13 +101,13 @@ const Header: React.FC = () => {
                 },
             ],
         },  
-        // {
-        //     label: 'Documentation',
-        //     icon: 'pi pi-book',
-        //     command: () => {
-        //         navigate('/documentation');
-        //     }
-        // },
+        {
+            label: 'Documentation',
+            icon: 'pi pi-book',
+            command: () => {
+                navigate('/documentation');
+            }
+        },
         // {
         //     label: 'Contact',
         //     icon: 'pi pi-envelope',
