@@ -96,7 +96,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
     const onStructureSearch = async () => {
         const smiles = editor.getSmiles();
 
-        console.log(smiles);
 
         setSelectedCompounds([]);
         
@@ -418,14 +417,12 @@ const MolecularDrawComponent: React.FC<MolecularDrawComponentProps> = ({element}
     
     useEffect(() => {
         const smiles = element.smiles;
-        console.log(smiles);
 
         if (smiles){
             setHidden(false);
             const canvas = document.getElementById(`molecular-draw-${element.id}`) as HTMLCanvasElement;
             const molecule = OpenChemLib.Molecule.fromSmiles(smiles);
         
-            console.log("cojoneee aquiiii");
             OpenChemLib.StructureView.drawMolecule(canvas, molecule);
             // renderer.draw(molecule, 'molecular-draw');
         } else {

@@ -25,7 +25,7 @@ function App() {
                     <Route path="search/general-search" element={<GeneralSearchPageComponent/>}/>
                 
                     <Route path="neighborhood-explorer" element={<NeighborhoodExplorerPageComponent/>}/>
-                    <Route path="visualization/co-ocurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
+                    <Route path="visualization/co-occurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
 
                     <Route path="documentation" element={<DocumentationPageComponent/>}/>
                 </Route>

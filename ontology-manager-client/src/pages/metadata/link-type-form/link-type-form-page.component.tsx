@@ -102,7 +102,6 @@ const LinkTypeFormPageComponent: React.FC = () => {
     
 
     const onSaveHandler = async () => {
-        console.log(linkType);
         await linkTypeService.create(linkType, messageService!).then(
             x => {
                 navigate("/ontology/overview/")

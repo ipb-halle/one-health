@@ -314,13 +314,11 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         // const elements = myComponentRef.current!.getElements();
         // console.log(savedVisualization);
         // const item : ISavedGraphVisualization = {...savedVisualization, visualization: elements};
-        console.log(savedVisualization);
         await graphVisualizationHistoryService.create(savedVisualization, messageService!);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
     };
 
     const reject = () => {
-        console.log("rejected");
     };
 
     const confirmGraphVisualizationSave = () => {

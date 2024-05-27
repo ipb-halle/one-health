@@ -175,24 +175,18 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
 
     const updateData = async (query:any) => {
-        console.log("repingaaaaa");
-        console.log(query);
 
         if (!(query?.leftTypeQuery?.type) || !(query?.rightTypeQuery?.type)){
-            console.log("aquiii");
             return;
         }
 
         
-        console.log("cojoneee siiiii");
 
         var graph = await ontologyService.getCoOcurrences(query, messageService!);
 
         if (!graph.nodes || !graph.links)
             return;
 
-        console.log("here");
-        console.log(graph);
 
         var nodesMap = new Map();
         var nodes: string[] = [];
@@ -209,7 +203,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         var valuex: number[] = [];
         var labelx: string[] = [];
 
-        console.log(nodesMap);
 
         graph.links.forEach((x:any) => {
             sourcex.push(nodesMap.get(x.source));
@@ -220,8 +213,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
         // labelx.push(`${x.source} - ${x.label} - ${x.target}`);
 
-
-        console.log(sourcex);
 
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);
@@ -296,7 +287,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     };
 
     const reject = () => {
-        console.log("rejected");
+
     };
 
     const listTemplate = (items: ISavedCoOcurrenceVisualization[]) : ReactNode[] | undefined =>  {
@@ -315,7 +306,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                         setActiveIndex(0);
                         setSankeyData(newData)
 
-                        console.log(loaded);
 
                         leftQueryBuilder.current!.loadQuery(loaded.query.leftTypeQuery);
                         rightQueryBuilder.current!.loadQuery(loaded.query.rightTypeQuery);
@@ -455,13 +445,11 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                     useResizeHandler={true}
                                     onClick={async (event:any) => 
                                         {
-                                            console.log(event.points[0].source.label);
-                                            console.log(event.points[0].target.label);
+
                                             const newLeftQuery: ITypeQuery = {...leftTypeQuery};
                                             const newRightQuery: ITypeQuery = {...rightTypeQuery};
 
-                                            console.log(leftTypeQuery);
-                                            console.log(rightTypeQuery);
+            
                                             
                                             if (newLeftQuery.filters){
                                                 newLeftQuery.filters = [...newLeftQuery.filters!, {property: newLeftQuery.groupBy!, value: event.points[0].source.label}];
@@ -472,9 +460,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                                 newRightQuery.filters = [...newRightQuery.filters!, {property: newRightQuery.groupBy!, value: event.points[0].target.label}];
                                             }
                                             else newRightQuery.filters = [{property: newRightQuery.groupBy!, value: event.points[0].target.label}];
-                                            
-                                            console.log(newLeftQuery);
-                                            console.log(newRightQuery);
+         
                                             setLinks(await ontologyService.getCoOccurrencesDetails({leftTypeQuery: newLeftQuery, rightTypeQuery: newRightQuery}, messageService!));
                                         
                                         }}

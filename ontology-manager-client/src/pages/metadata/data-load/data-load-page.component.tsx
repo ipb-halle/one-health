@@ -71,12 +71,10 @@ const DataLoadPageComponent: React.FC = () => {
     }
 
     useEffect(() => {
-        console.log( "init");
         init()
     }, [])
 
     useEffect(() => {
-        console.log("onSelectedElementHandler");
         onSelectedElementChangeHandler();
     }, [elementId])
 
@@ -98,18 +96,15 @@ const DataLoadPageComponent: React.FC = () => {
     }); 
 
     useEffect(() => {
-        console.log("onUploadHandler");
         if (uploading)
             onUploadHandler();
     }, [uploading])
 
     useEffect(() => {
         setOptions(header.map((x:any) => {return {label: x, value: x}}));
-        console.log(header);
     }, [header])
 
     useEffect(() => {
-        console.log(mapping);
     }, [mapping])
 
     const onSelectedElementChangeHandler = async () => {
@@ -119,18 +114,15 @@ const DataLoadPageComponent: React.FC = () => {
         
         let newType = elementOptions.find(x => x.value === elementId)?.data.type;
 
-        console.log(newType);
         
 
 
         if (newType === "entity"){
-            console.log("requesting entity");
             let newElement = await entityTypeService.get(elementId, messageService!);
             setElement(newElement);
         }
 
         if (newType === "link"){
-            console.log("requesting link");
             let newElement = await linkTypeService.get(elementId, messageService!);
             setElement(newElement);
         }
@@ -138,7 +130,6 @@ const DataLoadPageComponent: React.FC = () => {
 
 
     const onTemplateSelect = async (e:any) => {
-        console.log("onTemplateSelect");
         setFile(e.files[0]);
 
         var chunk = readNextChunk(e.files[0], 0, 1024 * 1024);
@@ -180,14 +171,11 @@ const DataLoadPageComponent: React.FC = () => {
 
     const onUploadHandler = async () => 
     {
-        console.log("here");
-        console.log("siuuuuu")
         const result = await dataSourceService.create(dataSource, messageService!);
         setDataSource(result);
 
         var offset = 0;
         var i = 0;
-        console.log(file)
         while (offset < file.size){
             const chunk = readNextChunk(file, offset, 1024*1024);
             
@@ -195,8 +183,6 @@ const DataLoadPageComponent: React.FC = () => {
             var text: any = await processChunkAsync(chunk);
             if (result.id)
                 await dataSourceService.writeFile(result.id, text, messageService!);
-            console.log(chunk);
-            console.log(`reading chunk ${i}`);
             offset += chunk.size;
             i++;
         }
@@ -281,7 +267,7 @@ const DataLoadPageComponent: React.FC = () => {
                                 options={elementOptions} 
                                 style={{ width: '240px' }}
                                 filter
-                                onChange={(e) => {console.log(e.target.value);setElementId(e.target.value)}}
+                                onChange={(e) => {setElementId(e.target.value)}}
                                 
                             />}}>
 

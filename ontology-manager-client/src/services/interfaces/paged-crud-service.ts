@@ -19,7 +19,6 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
        
         // filters = filters.filter((x : any) => { return x.value});
         var query = { first: queryCommand.first, rows: queryCommand.rows, page: queryCommand.page, sortField: queryCommand.sortField, sortOrder: queryCommand.sortOrder };
-        console.log(constructHttpParams(query));
         return this.handleRequest<IPagedData<TEntity>>(
             axios.get<any>(`${this.url}/getPage`, { params: constructHttpParams(query), paramsSerializer: { indexes: false } }),
             new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)

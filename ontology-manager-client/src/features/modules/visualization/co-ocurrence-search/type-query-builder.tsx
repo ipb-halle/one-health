@@ -90,10 +90,8 @@ class TypeQueryBuilder extends Component<TypeQueryBuilderProps, TypeQueryBuilder
            
            var filters = properties.map((x) => { return { property: x.name, value: undefined} });
 
-           console.log(filters);
            this.setGroupByOptions(properties.map((x) => { return { label: x.name, value: x.name};}));
 
-           console.log(entityType.label!.name);
            this.setQuery({...this.state.query, groupBy: entityType.label!.name, filters: filters});
         }
 

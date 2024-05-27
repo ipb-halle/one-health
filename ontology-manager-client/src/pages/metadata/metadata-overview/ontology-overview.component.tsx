@@ -63,7 +63,6 @@ const MetadataOverviewPageComponent: React.FC = () => {
 
     const init = async () => {
         setSummary(await metadataService.getSummary(messageService!));
-        console.log(summary);
     }
 
     useEffect(() => {

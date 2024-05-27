@@ -67,7 +67,6 @@ const EntityTypeFormPageComponent: React.FC = () => {
     };
 
     const handleParentUpdate = async () => {
-        console.log("updating parent of entity type")
         entityType.properties = entityType.properties?.filter(x => !x.inherited);
 
         if (entityType.parent?.id){
@@ -75,7 +74,6 @@ const EntityTypeFormPageComponent: React.FC = () => {
             setEntityType({ ...entityType, properties: [...entityType.properties, ...parent.properties.map(x => { return {...x, inherited: true} } )] });
         }
 
-        console.log(entityType);
     }
 
     useEffect(() => {
@@ -107,13 +105,11 @@ const EntityTypeFormPageComponent: React.FC = () => {
 
     useEffect(() => {
         setDefinitionValid(checkDefinitionValidity());
-        console.log(definitionValid);
 
     }, [entityType.name, entityType.pluralName])
 
     useEffect(() => {
         setPropertiesValid(checkPropertiesValidity());
-        console.log(propertiesValid);
 
     }, [entityType.properties])
 
@@ -142,7 +138,6 @@ const EntityTypeFormPageComponent: React.FC = () => {
    
 
     const onSaveHandler = async () => {
-        console.log(entityType);
         await entityService.create(entityType, messageService!).then(
             x => {
                 navigate("/ontology/overview/")

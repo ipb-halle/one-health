@@ -38,7 +38,6 @@ export const LazyLoadGrid: React.FC<ILazyLoadGrid> = ({columns, filters, service
     const loadLazyData = async (lazyState: IQueryCommand) => {
         // setLoading(true);
 
-        console.log("cojone");
         var result = await service.getPage(lazyState, toast);
 
         // setLoading(false)

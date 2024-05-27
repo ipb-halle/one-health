@@ -61,9 +61,9 @@ const Header: React.FC = () => {
                 },
                 {
                     // icon: 'fa fa-circle-nodes',
-                    label: 'Co-ocurrence Search',
+                    label: 'Co-occurrences Search',
                     command: () => {
-                        navigate('/visualization/co-ocurrence-search/');
+                        navigate('/visualization/co-occurrence-search/');
                     }
                 }
             ],
