@@ -21,7 +21,7 @@ import { faL } from "@fortawesome/free-solid-svg-icons";
 import { RadioButton } from "primereact/radiobutton";
 import { InputTextarea } from "primereact/inputtextarea";
 import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
-import { STORES } from "../../../stores";
+import { ITutorialStore, STORES } from "../../../stores";
 import { useNavigate } from "react-router-dom";
 import CompoundSearchPageTourComponent from "./compound-search-page-tour.component";
 const OpenChemLib = require("openchemlib/full");
@@ -66,14 +66,17 @@ export const CompoundSearchPageComponent: React.FC = () => {
     const [exactQuery, setExactQuery] = useState<ExactSearchQuery>({});
     const [selectedCompounds, setSelectedCompounds] = useState<any[]>([]);
 
+    const tutorialStore = dependencyFactory.get<ITutorialStore>(STORES.ITutorialStore);
 
-    const [runTutorial, setRunTutorial] = useState<boolean>(false);
+
+    const [runTutorial, setRunTutorial] = useState<boolean>(tutorialStore.getShowCompoundSearchTutorial());
 
     const helpClickedHandler = () => {
         setRunTutorial(true);
     }
-
+    
     const helpTourCallback = () => {
+        tutorialStore.setShowCompoundSearchTutorial(false);
         setRunTutorial(false);
         // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
     }

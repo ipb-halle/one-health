@@ -14,13 +14,14 @@ import { IGeneralSearchHistoryService, IGeneralSearchService, SERVICES } from ".
 import { ISavedGeneralSearch } from "../../../features/modules/search/search-history/saved-general-search";
 import { DataView } from "primereact/dataview";
 import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
-import { STORES } from "../../../stores";
+import { ITutorialStore, STORES } from "../../../stores";
 import { useNavigate } from "react-router-dom";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { Badge } from "primereact/badge";
 import { darkenHexColor, truncateString } from "../../../utils";
+import GeneralSearchPageTourComponent from "./general-search-page-tour.component";
 
 
 
@@ -34,10 +35,24 @@ export const GeneralSearchPageComponent: React.FC = () => {
     const searchService = dependencyFactory.get<IGeneralSearchService>(SERVICES.IGeneralSearchService);
     const historyService = dependencyFactory.get<IGeneralSearchHistoryService>(SERVICES.IGeneralSearchHistoryService);
     const neighborhoodExplorerStore = dependencyFactory.get<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore);
+    const tutorialStore = dependencyFactory.get<ITutorialStore>(STORES.ITutorialStore);
 
     const [history, setHistory] = useState<Partial<ISavedGeneralSearch>[]>([]);
     const {messageService} = useContext(MessageServiceContext);
     const [searching, setSearching] = useState<boolean>(false);
+
+
+    const [runTutorial, setRunTutorial] = useState<boolean>(tutorialStore.getShowGeneralSearchTutorial());
+
+    const helpClickedHandler = () => {
+        setRunTutorial(true);
+    }
+
+    const helpTourCallback = () => {
+        setRunTutorial(false);
+        tutorialStore.setShowGeneralSearchTutorial(false);
+        // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
+    }
 
 
     const listTemplate = (items: ISavedGeneralSearch[]) : ReactNode[] | undefined =>  {
@@ -98,10 +113,12 @@ export const GeneralSearchPageComponent: React.FC = () => {
     }
 
     return <div className="container">
-        <PageTitle icon="fa fa-search" title="General Search" help={true}></PageTitle>
+        <PageTitle icon="fa fa-search" title="General Search" help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
         
+        <GeneralSearchPageTourComponent run={runTutorial} callback={helpTourCallback}></GeneralSearchPageTourComponent>
+
         <div className="row">
-            <div className="col-3 one-health-panel" style={{height: "700px"}}>
+            <div className="col-3 one-health-panel" style={{height: "700px"}} id="general-search-history">
             <div className='one-health-panel-header'>
                         <i style={{marginLeft: 5, marginRight: 5}} className='fa fa-history'></i>
                         History
@@ -118,8 +135,8 @@ export const GeneralSearchPageComponent: React.FC = () => {
             </div>
 
             <div className="col-9" style={{height: "700px", paddingLeft: "10px"}} >
-                <div  className="one-health-panel" style={{height: "100%"}}>
-                    <div className="ro one-health-panel-header" style={{padding: "3px"}}>
+                <div  className="one-health-panel" style={{height: "100%"}} id="general-search-panel">
+                    <div className="ro one-health-panel-header" style={{padding: "3px"}} id="general-search-header">
                         <div className="col-10">
                             <IconField iconPosition="left">
                                     <InputIcon className="pi pi-search"> </InputIcon>
