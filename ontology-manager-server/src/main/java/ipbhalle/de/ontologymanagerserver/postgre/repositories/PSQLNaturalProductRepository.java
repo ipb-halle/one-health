@@ -26,8 +26,14 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
             select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name 
             from compounds_index 
             where canonical_smiles = mol_to_smiles(mol_from_smiles(?))::text limit 1""";
-        var result =  template.queryForObject(query, new PSQLNaturalProductRowMapper(), value);
-        return PSQLMapper.MAPPER.map(result);
+
+        // TODO: Make this a helper method
+        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
+
+        if (result.isEmpty())
+            return null;
+
+        return PSQLMapper.MAPPER.map(result.get(0));
     }
 
     @Override
@@ -36,17 +42,24 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
                 select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name 
                 from compounds_index where inchi = ? limit 1""";
 
-        var result =  template.queryForObject(query, new PSQLNaturalProductRowMapper(), value);
+        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
 
-        return PSQLMapper.MAPPER.map(result);
+        if (result.isEmpty())
+            return null;
+
+        return PSQLMapper.MAPPER.map(result.get(0));
     }
 
     @Override
     public NaturalProductDTO GetByInChIKey(String value) {
         var query = "select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name from compounds_index where inchikey = ? limit 1";
-        var result =  template.queryForObject(query, new PSQLNaturalProductRowMapper(), value);
 
-        return PSQLMapper.MAPPER.map(result);
+        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
+
+        if (result.isEmpty())
+            return null;
+
+        return PSQLMapper.MAPPER.map(result.get(0));
     }
 
     @Override

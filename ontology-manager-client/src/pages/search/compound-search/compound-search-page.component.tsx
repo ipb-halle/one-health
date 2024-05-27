@@ -23,6 +23,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
 import { STORES } from "../../../stores";
 import { useNavigate } from "react-router-dom";
+import CompoundSearchPageTourComponent from "./compound-search-page-tour.component";
 const OpenChemLib = require("openchemlib/full");
 
 
@@ -61,9 +62,21 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
     const [items, setItems] = useState<any[]>([]);
 
-    const [structureQuery, setStructureQuery] = useState<CompoundSearchQuery>({threshold: 80});
+    const [structureQuery, setStructureQuery] = useState<CompoundSearchQuery>({threshold: 80, matchMode: "EXACT_SMILES"});
     const [exactQuery, setExactQuery] = useState<ExactSearchQuery>({});
     const [selectedCompounds, setSelectedCompounds] = useState<any[]>([]);
+
+
+    const [runTutorial, setRunTutorial] = useState<boolean>(false);
+
+    const helpClickedHandler = () => {
+        setRunTutorial(true);
+    }
+
+    const helpTourCallback = () => {
+        setRunTutorial(false);
+        // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
+    }
 
     useEffect(() => {
         let newEditor = OpenChemLib.StructureEditor.createSVGEditor("structureSearchEditor", 1);
@@ -94,17 +107,21 @@ export const CompoundSearchPageComponent: React.FC = () => {
     }
 
     const onStructureSearch = async () => {
+        
         const smiles = editor.getSmiles();
 
-
-        setSelectedCompounds([]);
+        if (!smiles) { // verify the smiles is valid
+            messageService?.show({severity: 'error', summary: 'ERROR: Invalid input', detail: 'The provide structure is either empty or invalid'});
+            return;
+        }
         
-        if (!smiles) messageService?.show({severity: 'error', summary: 'Error!', detail: 'Empty structure'})
+        setSelectedCompounds([]);
 
         setFirst(0);
         const newStructureQuery = {...structureQuery, value: smiles};
         setStructureQuery(newStructureQuery);
         
+        setLoading(true);
         if (structureQuery.matchMode === "SUBSTRUCTURE"){
             await runSubstructureSearch(newStructureQuery);    
         } else if (structureQuery.matchMode === "TAN_SIMILARITY"){
@@ -112,19 +129,55 @@ export const CompoundSearchPageComponent: React.FC = () => {
         } else if (structureQuery.matchMode === "EXACT_SMILES"){
             await runSMILESSearch(newStructureQuery.value);
         }
+        setLoading(false);
 
     }
 
     const onExactSearch = async () => {
-        if (!exactQuery.matchMode)
+        if (!exactQuery.matchMode){
+            messageService?.show({severity: 'error', summary: "Error", detail: "Please select a match mode for exact search."})
             return;
+        }
 
+       
         if (exactQuery.matchMode === "smiles"){
-            runSMILESSearch(exactQuery.smiles!);
+            if (!exactQuery.smiles){
+                messageService?.show({severity: 'error', summary: "Error", detail: "Please provide a SMILES to search for."});
+                return;
+            }
+
+            try{
+                OpenChemLib.Molecule.fromSmiles(exactQuery.smiles);
+            } catch {
+                messageService?.show({severity: 'error', summary: "Error", detail: "Please provide a valid SMILES."});
+                return;
+            }
+
+            setSelectedCompounds([]);
+            setLoading(true);
+            await runSMILESSearch(exactQuery.smiles!);
+            setLoading(false);
+
         } else if (exactQuery.matchMode === "inchi"){
-            runInChISeach(exactQuery.inchi!);
+            if (!exactQuery.inchi){
+                messageService?.show({severity: 'error', summary: "Error", detail: "Please provide an InChI to search for."});
+                return;
+            }
+            setSelectedCompounds([]);
+            setLoading(true);
+            await runInChISeach(exactQuery.inchi!);
+            setLoading(false);
+
         } else if (exactQuery.matchMode === "inchikey"){
-            runInChIKeySeach(exactQuery.inchikey!);
+            if (!exactQuery.inchikey){
+                messageService?.show({severity: 'error', summary: "Error", detail: "Please provide an InChI Key to search for."});
+                return;
+            }
+            setSelectedCompounds([]);
+            setLoading(true);
+            await runInChIKeySeach(exactQuery.inchikey!);
+            setLoading(false);
+
         }
     } 
 
@@ -132,17 +185,13 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
 
     const runSubstructureSearch = async (structureQuery:any) => {
-        setLoading(true);
         const page = await compoundService.getBySubstructure(structureQuery.value!, rows, first, messageService!);
-        setLoading(false);
         setTotal(page.total);
         setItems(page.items);
     }
 
     const runSimilaritySearch = async (structureQuery:any) => {
-        setLoading(true);
         const page = await compoundService.getBySimilarity(structureQuery.value!, structureQuery.threshold, rows, messageService!);
-        setLoading(false);
         setTotal(page.total);
         setItems(page.items);
     }
@@ -193,11 +242,13 @@ export const CompoundSearchPageComponent: React.FC = () => {
     }
 
     return <div className="container">
-        <PageTitle icon='fa fa-atom' title='Compound Search' help={true} />
+        <PageTitle icon='fa fa-atom' title='Compound Search' help={true} helpClickedHandler={helpClickedHandler}/>
+
+        <CompoundSearchPageTourComponent run={runTutorial} callback={helpTourCallback}></CompoundSearchPageTourComponent>
 
         <div className="row" style={{ marginBottom: 20 }}>
             <div className="col-6">
-                <Panel header="Search by structure">
+                <Panel header="Search by structure" id="compound-search-structure-panel">
                     <div style={{ height: '540px' }}>
                         <div className="row" style={{marginBottom: 10, paddingRight: "20px"}}>
                             <div className="col-3">
@@ -293,7 +344,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                 </Panel>
             </div>
             <div className="col-6">
-                <Panel header="Search by attribute (exact match)">
+                <Panel header="Search by attribute (exact match)" id="compound-search-exact-panel">
                     <div style={{ height: '540px' }}>
                         <div style={{ height: '500px' }}>
 
@@ -310,6 +361,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                                     onChange={(e) => {setExactQuery({...exactQuery, smiles: e.target.value})}}
                                     style={{resize: 'none'}}
                                     className="form-control"
+                                    placeholder="e.g. O=C(O)C=1C=CC=CC1OC(=O)C"
                                     id="exactSearchQuery.smiles" />
                             </div>
 
@@ -324,6 +376,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                                     onChange={(e) => {setExactQuery({...exactQuery, inchi: e.target.value})}}
                                     style={{resize: 'none'}}
                                     className="form-control"
+                                    placeholder="e.g. InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)"
                                     id="exactSearchQuery.inchi" />
                             </div>
 
@@ -337,6 +390,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                                     value={exactQuery.inchikey}
                                     onChange={(e) => {setExactQuery({...exactQuery, inchikey: e.target.value})}}
                                     className="form-control"
+                                    placeholder="e.g. BSYNRYMUTXBXSQ-UHFFFAOYSA-N"
                                     id="exactSearchQuery.inchikey" />
                             </div>
                         </div>
@@ -365,7 +419,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
         </div>
 
-            <div style={{border: '1px solid #DEE2E6'}}>
+            <div style={{border: '1px solid #DEE2E6'}} id="compound-search-results">
                 <div style={{borderBottom:'1px solid #DEE2E6', padding: "5px", display: 'flex', alignItems: 'center' }}>
 
                     <Button 

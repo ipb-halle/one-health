@@ -27,6 +27,8 @@ public class NaturalProductService implements INaturalProductService {
     @Override
     public NaturalProductDTO GetBySMILES(String value) {
         var result =  this.naturalProductRepository.GetBySMILES(value);
+        if (result == null)
+            return null;
         var ids = new String[] { result.getId()} ;
         return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
     }
@@ -34,6 +36,8 @@ public class NaturalProductService implements INaturalProductService {
     @Override
     public NaturalProductDTO GetByInChI(String value) {
         var result = this.naturalProductRepository.GetByInChI(value);
+        if (result == null)
+            return null;
         var ids = new String[] { result.getId()} ;
         return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
     }
@@ -41,6 +45,8 @@ public class NaturalProductService implements INaturalProductService {
     @Override
     public NaturalProductDTO GetByInChIKey(String value) {
         var result = this.naturalProductRepository.GetByInChIKey(value);
+        if (result == null)
+            return null;
         var ids = new String[] { result.getId()} ;
         return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
     }
