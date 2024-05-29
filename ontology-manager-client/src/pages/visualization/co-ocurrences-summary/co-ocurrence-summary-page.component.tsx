@@ -24,41 +24,13 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/modules/visualization/co-ocurrence-search/type-query';
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
-import { ITutorialStore, STORES } from '../../../stores';
+import { ILocalStorageStore, ITutorialStore, LOCAL_STORAGE_KEYS, STORES } from '../../../stores';
+        
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
         
 const React = require('react');
 
-var data: SankeyData = {
-    node: {
-        label: ['0', '1', '2', '3', '4', '5'],
-    },
-    link: {
-        source: [0, 1, 4, 2, 1,0],
-        target: [1, 4, 5, 4, 3,1],
-        value: [4, 2, 3, 1, 2,10],
-    },
-    type: 'sankey',
-    name: 'myplot',
-    orientation: 'h',
-    visible: true,
-    legend: 'jdflkjd',
-    legendrank: 1,
-    legendgrouptitle: {},
-    legendwidth: 123,
-    ids: [],
-    hoverinfo: 'kdjfld',
-    meta: 123,
-    customdata: [],
-    domain: {},
-    textfont: {},
-    selectpoints: 13,
-    arrangement: 'freeform',
-    hoverlabel: {},
-    valueformat: 'dfdf',
-    valuesuffix: 'dfdf',
-    uirevision: 23,
-};
 
 const CoOcurrenceSummaryPageComponent: React.FC = () => {
     const ontologyService = dependencyFactory.get<IOntologyService>(SERVICES.IOntologyService);
@@ -73,14 +45,16 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     const [typeOptions, setTypeOptions] = useState<SelectableOption[]>([]);
     const [visible, setVisible] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
     const leftQueryBuilder : RefObject<TypeQueryBuilder> = useRef<TypeQueryBuilder>(null);
     const rightQueryBuilder : RefObject<TypeQueryBuilder> = useRef<TypeQueryBuilder>(null);
 
     const [links, setLinks] = useState<any>([]);
 
-    const tutorialStore = dependencyFactory.get<ITutorialStore>(STORES.ITutorialStore);
+    const localStorageStore = dependencyFactory.get<ILocalStorageStore>(STORES.ILocalStorageStore);
 
-    const [runTutorial, setRunTutorial] = useState<boolean>(tutorialStore.getShowCoOccurrencesSummaryTutorial());
+    const [runTutorial, setRunTutorial] = useState<boolean>(localStorageStore.getBooleanKeyValue(LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryTutorial));
 
     const helpClickedHandler = () => {
         setRunTutorial(true);
@@ -88,8 +62,29 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const helpTourCallback = () => {
         setRunTutorial(false);
-        tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
+        localStorageStore.setBooleanKeyValue(LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryTutorial, false);
     }
+
+    const confirmTermsAndConditions = () => {
+        confirmDialog({
+            header: 'Disclaimer',
+            icon: 'pi pi-exclamation-triangle',
+            message: (
+                <p>
+                    This tool shows connections of existing data which could be <b>erroneous</b>, <b>biased</b> <br/> and <b>not necessarily the most relevant</b> one for your scientific question since  it <br/>  was <b>generated with an automatic process</b>. <br/> We are actively working to improve the data quality in the platform.
+                </p>
+            ),
+            acceptLabel: "Understood",
+            rejectLabel: "Back",
+            accept: () => {
+                localStorageStore.setBooleanKeyValue(LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryWarning, false);    
+            },
+            reject: () => {
+                navigate('/');
+            },
+            closable: false
+        });
+    };
 
     let savedVisualization: any = {
         id: "",
@@ -135,19 +130,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
 
 
-
-    const [query, setQuery] = useState<ICoOcurrenceQuery>( {
-        leftTypeQuery : {
-            type: "Plant",
-            groupBy: "Family"
-        },
-        rightTypeQuery : {
-            type: "Location",
-            groupBy: "Name"
-        }
-    });
-
-
     const [leftTypeQuery, setLeftTypeQuery] = useState<any>({});
     const [rightTypeQuery, setRightTypeQuery] = useState<any>({});
 
@@ -171,7 +153,12 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         setLeftTypeQuery(loaded.query.leftTypeQuery);
         setRightTypeQuery(loaded.query.rightTypeQuery);
 
+
+        if (localStorageStore.getBooleanKeyValue(LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryWarning))
+            confirmTermsAndConditions();
+
     }
+
 
 
     const updateData = async (query:any) => {
@@ -245,31 +232,6 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                 XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
                 XLSX.writeFile(wb, 'co-ocurrences.xlsx');
 
-
-                // var cyJson = { query: {leftTypeQuery: leftTypeQuery, rightTypeQuery : rightTypeQuery}, visualization:JSON.stringify(sankeyData, null, 2)}
-                
-                // // Convert JSON object to string
-                // var jsonString = JSON.stringify(cyJson, null, 2); // Pretty-print with 2-space indentation
-                
-                
-                // // Create a blob from the JSON string
-                // var blob = new Blob([jsonString], { type: 'application/json' });
-                
-                // // Create a link element
-                // var link = document.createElement('a');
-                
-                // // Set link's href to point to the Blob URL
-                // link.href = URL.createObjectURL(blob);
-                // link.download = 'graph.json';
-                
-                // // Append link to the body (required for Firefox)
-                // document.body.appendChild(link);
-                
-                // // Trigger the download by simulating a click
-                // link.click();
-                
-                // // Remove link from the body
-                // document.body.removeChild(link);
             }
         }
     ]
@@ -363,7 +325,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
             <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
         <div className='page-container'>
 
-            <PageTitle title='Co-Ocurrence Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
+            <PageTitle title='Co-Occurrences Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
             
             <ConfirmDialog/>

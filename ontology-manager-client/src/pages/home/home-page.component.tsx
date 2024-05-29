@@ -73,14 +73,14 @@ A platform for biochemical data exchange and virtual repository to empower drug 
                         <div className='col-4'>
                         <Card title="Discover" footer={coOccurrencesSummaryCardFooter} header={coOccurrencesSummaryCardHeader} className="md:w-25rem">
                                 <p>
-                                    Discover co-occurrences of scientific concepts found in literature and datasets.
+                                    Discover co-occurrences of scientific concepts found in literature and datasets
                                 </p>
                             </Card>
                         </div>
                         <div className='col-4'>
                         <Card title="Contribute" footer={contributeCardFooter} header={contributeCardHeader} className="md:w-25rem">
                                 <p>
-                                   Contribute to the platform by uploading and analyzing your publications and datasets.
+                                   Contribute to the platform by uploading and analyzing your publications and datasets
                                 </p>
                                 <Tag severity="danger" value="Under development"></Tag>
                             </Card>

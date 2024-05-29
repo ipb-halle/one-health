@@ -23,7 +23,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({run,
 
     const steps: Array<Step> = [
         {
-            content:'The Co-Occurrences summary allows you to aggregate the co-occurrences in the scientific literature between two entities or entity groups.',
+            content:'The Co-Occurrences summary allows you to aggregate the co-occurrences in the scientific literature between two entities or entity groups. The width of the link between two entities in the chart represents the amount of co-occurrences found in the data.',
             styles: {tooltip: {width: '500px'},},
             placement: 'center',
             target: 'body',
