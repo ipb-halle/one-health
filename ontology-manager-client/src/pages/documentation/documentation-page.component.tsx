@@ -74,6 +74,10 @@ For further information, please visit the GLACIER consortium’s official websit
         David S. Wishart, Craig Knox, An Chi Guo, Dean Cheng, Savita Shrivastava, Dan Tzur, Bijaya Gautam, Murtaza Hassanali, DrugBank: a knowledgebase for drugs, drug actions and drug targets, Nucleic Acids Research, Volume 36, Issue suppl_1, 1 January 2008, Pages D901–D906, <a href='https://doi.org/10.1093/nar/gkm958'>https://doi.org/10.1093/nar/gkm958</a>
         </p>
 
+        <b>Vascular plants for Cuba. Inventory. Third Edition</b>
+        <p>
+        Greuter W. & Rankin Rodríguez R. 2022: Vascular Plants of Cuba. Inventory. Third edition, updated, of Espermatophytes from Cuba. Vascular Plants of Cuba. A checklist. Third, updated edition of The Spermatophyta of Cuba. – Berlin: Botanical Garden and Botanical Museum Berlin; Havana: National Botanical Garden, University of Havana. – ISBN 978-3-946292-42-5, <a href='https://doi.org/10.3372/cubalist.2022.1'>https://doi.org/10.3372/cubalist.2022.1</a>
+        </p>
 
 
 
