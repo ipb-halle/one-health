@@ -23,7 +23,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
     @Override
     public NaturalProductDTO GetBySMILES(String value) {
         var query = """
-            select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name 
+            select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name 
             from compounds_index 
             where canonical_smiles = mol_to_smiles(mol_from_smiles(?))::text limit 1""";
 
@@ -39,7 +39,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
     @Override
     public NaturalProductDTO GetByInChI(String value) {
         var query = """
-                select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name 
+                select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name 
                 from compounds_index where inchi = ? limit 1""";
 
         var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
@@ -52,7 +52,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
 
     @Override
     public NaturalProductDTO GetByInChIKey(String value) {
-        var query = "select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name from compounds_index where inchikey = ? limit 1";
+        var query = "select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name from compounds_index where inchikey = ? limit 1";
 
         var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
 
@@ -64,7 +64,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
 
     @Override
     public List<NaturalProductDTO> GetBySubstructure(String smiles, int take, int page) {
-        var query = "select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name from compounds_index ci  where m@> ? offset ? limit ?;";
+        var query = "select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name from compounds_index ci  where m@> ? order by molweight offset ? limit ? ;";
         var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), smiles, take * page, take);
 
         return  result.map(PSQLMapper.MAPPER::map).toList();
@@ -73,7 +73,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
     @Override
     public List<NaturalProductDTO> GetBySimilarity(String smiles, int threshold, int limit) {
         var query = """
-                select __id::text, inchi, inchikey, smiles, molformula, molweight, cas,iupac, name
+                select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name
                         FROM compounds_index ci
                         WHERE morganbv_fp(m) % morganbv_fp(mol_from_smiles(?)) and tanimoto_sml(morgan_fp, morganbv_fp(mol_from_smiles(?))) >= ?
                         ORDER BY tanimoto_sml(morgan_fp, morganbv_fp(mol_from_smiles(?))) desc

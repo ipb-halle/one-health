@@ -21,20 +21,20 @@ public class NaturalProductController {
         this.naturalProductService = naturalProductService;
     }
 
-    @GetMapping("by-smiles/{value}")
-    public ResponseEntity<NaturalProductDTO> GetBySMILES(@PathVariable String value){
+    @GetMapping("by-smiles")
+    public ResponseEntity<NaturalProductDTO> GetBySMILES(@RequestParam String value){
         return new ResponseEntity<>(naturalProductService.GetBySMILES(value), HttpStatus.OK);
 
     }
 
-    @GetMapping("by-inchi/{value}")
-    public ResponseEntity<NaturalProductDTO> GetByInChI(@PathVariable String value){
+    @GetMapping("by-inchi")
+    public ResponseEntity<NaturalProductDTO> GetByInChI(@RequestParam String value){
         return new ResponseEntity<>(naturalProductService.GetByInChI(value), HttpStatus.OK);
 
     }
 
-    @GetMapping("by-inchikey/{value}")
-    public ResponseEntity<NaturalProductDTO> GetByInChIKey(@PathVariable String value){
+    @GetMapping("by-inchikey")
+    public ResponseEntity<NaturalProductDTO> GetByInChIKey(@RequestParam String value){
         return new ResponseEntity<>(naturalProductService.GetByInChIKey(value), HttpStatus.OK);
     }
 
