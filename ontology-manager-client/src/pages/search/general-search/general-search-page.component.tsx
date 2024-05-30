@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { StructureFilterMatchMode } from "../../../features/filters/enums/structure-filter-match-mode";
 import { CollectionPlaceholderComponent, LoadingPlaceholderComponent, PageTitle } from "../../../components";
 import { Panel } from "primereact/panel";
@@ -52,6 +52,14 @@ export const GeneralSearchPageComponent: React.FC = () => {
         setRunTutorial(false);
         tutorialStore.setShowGeneralSearchTutorial(false);
         // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
+    }
+
+    useEffect(() => {
+        initWidgets();
+    },[])
+
+    const initWidgets = async () => {
+        setHistory(await historyService.getAllAsOptions(messageService!));
     }
 
 
