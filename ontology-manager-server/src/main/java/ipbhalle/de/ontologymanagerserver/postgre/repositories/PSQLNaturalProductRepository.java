@@ -2,23 +2,21 @@ package ipbhalle.de.ontologymanagerserver.postgre.repositories;
 
 import ipbhalle.de.ontologymanagerserver.data.dtos.NaturalProductDTO;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.INaturalProductRepository;
-import ipbhalle.de.ontologymanagerserver.data.query.NaturalProductStructureQuery;
 import ipbhalle.de.ontologymanagerserver.postgre.mapping.PSQLMapper;
 import ipbhalle.de.ontologymanagerserver.postgre.mapping.PSQLNaturalProductRowMapper;
-import ipbhalle.de.ontologymanagerserver.postgre.models.PSQLNaturalProduct;
+import jakarta.annotation.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class PSQLNaturalProductRepository implements INaturalProductRepository {
 
-    private final JdbcTemplate template;
-
-    public PSQLNaturalProductRepository(JdbcTemplate template){
-        this.template = template;
-    }
+    @Autowired
+    private JdbcTemplate template;
 
     @Override
     public NaturalProductDTO GetBySMILES(String value) {
@@ -26,14 +24,7 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
             select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name 
             from compounds_index 
             where canonical_smiles = mol_to_smiles(mol_from_smiles(?))::text limit 1""";
-
-        // TODO: Make this a helper method
-        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
-
-        if (result.isEmpty())
-            return null;
-
-        return PSQLMapper.MAPPER.map(result.get(0));
+        return QueryForCompound(query, value);
     }
 
     @Override
@@ -41,33 +32,19 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
         var query = """
                 select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name 
                 from compounds_index where inchi = ? limit 1""";
-
-        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
-
-        if (result.isEmpty())
-            return null;
-
-        return PSQLMapper.MAPPER.map(result.get(0));
+        return QueryForCompound(query, value);
     }
 
     @Override
     public NaturalProductDTO GetByInChIKey(String value) {
         var query = "select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name from compounds_index where inchikey = ? limit 1";
-
-        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), value).toList();
-
-        if (result.isEmpty())
-            return null;
-
-        return PSQLMapper.MAPPER.map(result.get(0));
+        return QueryForCompound(query, value);
     }
 
     @Override
     public List<NaturalProductDTO> GetBySubstructure(String smiles, int take, int page) {
         var query = "select __id::text, inchi, inchikey, smiles, molformula, ROUND(molweight::numeric, 2) as molweight, cas,iupac, name from compounds_index ci  where m@> ? order by molweight offset ? limit ? ;";
-        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), smiles, take * page, take);
-
-        return  result.map(PSQLMapper.MAPPER::map).toList();
+        return QueryForCompoundList(query, smiles, take * page, take);
     }
 
     @Override
@@ -80,8 +57,29 @@ public class PSQLNaturalProductRepository implements INaturalProductRepository {
                         LIMIT ?;
         """;
         double t = (double) threshold / 100;
-        var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), smiles, smiles,  t, smiles, limit);
-        return  result.map(PSQLMapper.MAPPER::map).toList();
+        return QueryForCompoundList(query, smiles, smiles,  t, smiles, limit);
+
+    }
+
+    private NaturalProductDTO QueryForCompound(String query, @Nullable Object... args) {
+        try (var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), args)){
+            var first = result.findFirst();
+            if (first.isEmpty())
+                return null;
+            return PSQLMapper.MAPPER.map(first.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private List<NaturalProductDTO> QueryForCompoundList(String query, @Nullable Object... args){
+        try (var result =  template.queryForStream(query, new PSQLNaturalProductRowMapper(), args)){
+            return  result.map(PSQLMapper.MAPPER::map).toList();
+        } catch ( Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
 }
