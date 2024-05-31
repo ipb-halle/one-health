@@ -6,6 +6,7 @@ import ipbhalle.de.ontologymanagerserver.postgre.mapping.PSQLNaturalProductRowMa
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,8 +23,11 @@ public class PSQLEntitySearchRepository implements IEntitySearchRepository {
         var sql = "select distinct entityid from entity_string_index where key ilike ?";
 
 //        var result = template.queryForList(sql, String.class, query);
-        var result = template.queryForStream(sql, (rs, rowNum) -> rs.getString("entityid"), "%" + query + "%");
-
-        return  result.toList();
+        try(var result = template.queryForStream(sql, (rs, rowNum) -> rs.getString("entityid"), "%" + query + "%")){
+            return result.toList();
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

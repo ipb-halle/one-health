@@ -27,7 +27,7 @@ import {
     MockGeneralSearchHistoryService
 } from "../../../services";
 import { ICoOcurrenceVisualizationHistoryService, MockCoOcurrenceVisualizationHistoryService } from "../../../services/modules/visualization/co-ocurrence-visualization-history-service";
-import { ITutorialStore, STORES, TutorialStore } from "../../../stores";
+import { ILocalStorageStore, ITutorialStore, LocalStorageStore, STORES, TutorialStore } from "../../../stores";
 import { INeighborhoodExplorerStore, NeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
 
 
@@ -48,5 +48,6 @@ dependencyFactory.bind<ICompoundService>(SERVICES.ICompoundService).to(CompoundS
 dependencyFactory.bind<IGeneralSearchService>(SERVICES.IGeneralSearchService).to(GeneralSearchService);
 dependencyFactory.bind<IGeneralSearchHistoryService>(SERVICES.IGeneralSearchHistoryService).to(MockGeneralSearchHistoryService).inSingletonScope();
 dependencyFactory.bind<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore).to(NeighborhoodExplorerStore).inSingletonScope();
+dependencyFactory.bind<ILocalStorageStore>(STORES.ILocalStorageStore).to(LocalStorageStore);
 
 export {dependencyFactory};

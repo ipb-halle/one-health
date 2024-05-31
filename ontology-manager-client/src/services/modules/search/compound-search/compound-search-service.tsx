@@ -4,6 +4,7 @@ import { MessageService } from "../../../../features/shared/messages";
 import { IHttpResponseHandlerSettings, OnReadByIdResponsesHandler } from "../../../../features/shared/http/http-responses-handler";
 import axios from "axios";
 import { constructHttpParams } from "../../../../utils";
+const qs = require('qs');
 
 @injectable()
 export class ICompoundService extends BaseDataService{
@@ -38,33 +39,59 @@ export class CompoundService extends ICompoundService {
 
 
     getBySMILES(value: string, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined): Promise<any> {
-        const query = { query: value};
-        const parsed = constructHttpParams(query);
+        const query = { value: value};
         
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-smiles/${parsed.query}`),
+            axios.get<any>(`${this.url}/by-smiles`,
+            {
+                params: query, 
+                    paramsSerializer: { 
+                        serialize: (params:any) => 
+                        {
+                            return qs.stringify(params)
+                        }
+                    } 
+            }),
             new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
-        ).then(x => x).catch(x => x);
+        );
     }
 
     getByInChI(value: string, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined): Promise<any> {
-        const query = { query: value};
-        const parsed = constructHttpParams(query);
+        const query = { value: value};
         
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchi/${query.query}}`),
+            axios.get<any>(`${this.url}/by-inchi`,
+            {
+                params: query, 
+                    paramsSerializer: { 
+                        serialize: (params:any) => 
+                        {
+                            return qs.stringify(params)
+                        }
+                    } 
+            }),
             new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
-        ).then(x => x).catch(x => x);
+        );
+
+       
     }
 
     getByInChIKey(value: string, messageService: MessageService, httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined): Promise<any> {
-        const query = { query: value};
-        const parsed = constructHttpParams(query);
+        const query = { value: value};
         
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchikey/${parsed.query}`),
+            axios.get<any>(`${this.url}/by-inchikey`,
+            {
+                params: query, 
+                    paramsSerializer: { 
+                        serialize: (params:any) => 
+                        {
+                            return qs.stringify(params)
+                        }
+                    } 
+            }),
             new OnReadByIdResponsesHandler(this.entityTitle, messageService, httpResponseHandlerSettings)
-        ).then(x => x).catch(x => x);
+        );
     }
 
     getBySubstructure(smiles: string, take: number, page: number, messageService: MessageService,  httpResponseHandlerSettings? : IHttpResponseHandlerSettings): Promise<any> {

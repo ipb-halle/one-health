@@ -62,7 +62,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
     const [items, setItems] = useState<any[]>([]);
 
-    const [structureQuery, setStructureQuery] = useState<CompoundSearchQuery>({threshold: 80, matchMode: "EXACT_SMILES"});
+    const [structureQuery, setStructureQuery] = useState<CompoundSearchQuery>({threshold: 80, matchMode: "SUBSTRUCTURE"});
     const [exactQuery, setExactQuery] = useState<ExactSearchQuery>({});
     const [selectedCompounds, setSelectedCompounds] = useState<any[]>([]);
 
@@ -252,8 +252,66 @@ export const CompoundSearchPageComponent: React.FC = () => {
         <div className="row" style={{ marginBottom: 20 }}>
             <div className="col-6">
                 <Panel header="Search by structure" id="compound-search-structure-panel">
-                    <div style={{ height: '540px' }}>
-                        <div className="row" style={{marginBottom: 10, paddingRight: "20px"}}>
+                    <div style={{ height: '570px' }}>
+                        <div style={{marginBottom: 10, height: '70px', display: 'flex', gap: "15px"}}>
+
+                            <div style={{width: "16%"}}>
+                                <label>Max results:</label>
+                                <Dropdown
+                                    style={{ width: '100%' }}
+                                    options={maxResultsOptions}
+                                    value={rows}
+                                    onChange={x => setRows(x.value)}>
+                                </Dropdown>
+                            </div>
+
+                            <div style={{width: "55%"}}>
+                                <label>Search mode:</label>
+                                <Dropdown
+                                    style={{ width: "100%" }}
+                                    options={structureFilterMatchModes}
+                                    placeholder="Select structure match mode..."
+                                    value={structureQuery.matchMode}
+                                    onChange={x => setStructureQuery({ ...structureQuery, matchMode: x.value })}
+                                >
+                                </Dropdown>
+                            </div>
+
+                              
+                          
+                                {
+                                    structureQuery.matchMode === "TAN_SIMILARITY" && <div style={{width: "25%"}}>
+                                    <label>Similarity threshold:</label>
+                                    <div>
+                                    <InputNumber 
+                                    inputStyle={{width: "100%"}}
+                                    value={structureQuery.threshold} 
+                                    onChange={(e) => setStructureQuery({...structureQuery, threshold: e.value})}
+                                    min={0}
+                                    max={100}
+                                    suffix="%"
+                                     />
+                                        </div>
+                                <Slider 
+                                    style={{width: "100%"}}  
+                                    value={structureQuery.threshold} 
+                                    onChange={(e:any) => setStructureQuery({...structureQuery, threshold: e.value})} 
+                                    min={0}
+                                    max={100}
+                                />
+                                    </div>
+                                }
+                             
+
+
+
+                        </div>
+                        <div style={{ height: "450px", paddingBottom: "10px" }}>
+
+                            <div style={{width: "100%", height: "100%", border: "1px solid #DEE2E6"}} id="structureSearchEditor"/>
+                        </div>
+                        <div className="row" style={{ paddingRight: "5px" }}>
+
                             <div className="col-3">
                                 <FileUpload  
                                     mode="basic" 
@@ -270,62 +328,8 @@ export const CompoundSearchPageComponent: React.FC = () => {
                                 />
                                 {/* <SplitButton label="Load" icon="pi pi-upload" model={uploadOptions} /> */}
                             </div>
-                            <div className="col-2">
-
-                            </div>
-
+                          
                             <div className="col-7">
-
-                                <Dropdown
-                                    style={{ width: "350px" }}
-                                    options={structureFilterMatchModes}
-                                    placeholder="Select structure match mode..."
-                                    value={structureQuery.matchMode}
-                                    onChange={x => setStructureQuery({ ...structureQuery, matchMode: x.value })}
-                                >
-                                </Dropdown>
-                            </div>
-
-
-                        </div>
-                        <div style={{ height: "450px", paddingBottom: "10px" }}>
-
-                            <div style={{width: "100%", height: "100%", border: "1px solid #DEE2E6"}} id="structureSearchEditor"/>
-                        </div>
-                        <div className="row" style={{ paddingRight: "5px" }}>
-                            
-                            <div className="col-4">
-                                <label>Max results:</label>&nbsp;
-                                <Dropdown
-                                    style={{ width: '85px' }}
-                                    options={maxResultsOptions}
-                                    value={rows}
-                                    onChange={x => setRows(x.value)}>
-                                </Dropdown>
-                            </div>
-                            <div className="col-3">
-                                {
-                                    structureQuery.matchMode === "TAN_SIMILARITY" && <>
-                                    
-                                    <InputNumber 
-                                    value={structureQuery.threshold} 
-                                    onChange={(e) => setStructureQuery({...structureQuery, threshold: e.value})}
-                                    min={0}
-                                    max={100}
-                                    suffix="% similar"
-                                     />
-                                <Slider 
-                                    style={{width: "193px"}}  
-                                    value={structureQuery.threshold} 
-                                    onChange={(e:any) => setStructureQuery({...structureQuery, threshold: e.value})} 
-                                    min={0}
-                                    max={100}
-                                />
-                                    </>
-                                }
-                             
-                            </div>
-                            <div className="col-3">
 
                             </div>
 
@@ -348,8 +352,8 @@ export const CompoundSearchPageComponent: React.FC = () => {
             </div>
             <div className="col-6">
                 <Panel header="Search by attribute (exact match)" id="compound-search-exact-panel">
-                    <div style={{ height: '540px' }}>
-                        <div style={{ height: '500px' }}>
+                    <div style={{ height: '570px' }}>
+                        <div style={{ height: '530px' }}>
 
 
 
@@ -423,8 +427,12 @@ export const CompoundSearchPageComponent: React.FC = () => {
         </div>
 
             <div style={{border: '1px solid #DEE2E6'}} id="compound-search-results">
-                <div style={{borderBottom:'1px solid #DEE2E6', padding: "5px", display: 'flex', alignItems: 'center' }}>
+                <div style={{borderBottom:'1px solid #DEE2E6', padding: "5px", display: 'flex', alignItems: 'center', gap: "10px" }}>
 
+                  
+                    <span style={{marginLeft: 10}}>{items.length > 0 ? `Showing ${items.length} results` : "No results"}</span>
+
+                    <span style={{marginLeft: 'auto'}}>Show selected compounds in neighborhood explorer</span>
                     <Button 
                         icon="fa fa-compass" 
                         tooltip="Show selected records in neighborhood explorer" 
@@ -434,7 +442,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
                             navigate('/neighborhood-explorer');
                         }}
                     ></Button>
-                    <span style={{marginLeft: 10}}>{items.length > 0 ? `Showing ${items.length} results` : "No results"}</span>
                     
                 </div>
                 {/* <CollectionPlaceholderComponent icon='pi pi-list' message=''/> */}
@@ -445,6 +452,8 @@ export const CompoundSearchPageComponent: React.FC = () => {
                     <DataTable 
                         scrollable 
                         scrollHeight="500px"
+                        sortField="molecularWeight"
+                        sortOrder={1}
                         selectionMode="multiple"
                         metaKeySelection={false}
                         selection={selectedCompounds}
@@ -452,9 +461,9 @@ export const CompoundSearchPageComponent: React.FC = () => {
                         value={items} 
                         tableStyle={{ minWidth: '50rem' }}>
                     <Column field="" header="Structure" body={structureDrawTemplate}></Column>
-                    <Column field="smiles" header="SMILES"></Column>
                     <Column field="molecularFormula" header="Mol. Formula"></Column>
-                    <Column field="molecularWeight" header="Mol. Weight"></Column>
+                    <Column field="molecularWeight" header="Mol. Weight" body={(row:any) => {return <>{Math.round(row.molecularWeight * 100) / 100}</>}}></Column>
+                    <Column field="smiles" header="SMILES"></Column>
                 </DataTable>
                 }
               

@@ -8,7 +8,7 @@ import nodeLockGif from '../../../../assets/tutorials/visualization/neighborhood
 import graphSearchGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/graph_search.gif';
 import nodeDetailsGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/node_details.gif';
 import graphLoadGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/graph_load.gif';
-
+import dbSearchGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/neighborhood_explorer_search.gif';
 
 
 
@@ -90,10 +90,23 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
         {
             target: '#neighborhood-explorer-details',
             content: <div>
-                The details panel will show the details of the selected node or edge.
+                The <b>Details</b> tab on the right panel will show the details of the selected node or edge.
                 <img src={nodeDetailsGif} style={{width: '480px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '550px', height: '440px'},},
+            styles: {tooltip: {width: '550px', height: '460px'},},
+            placement: 'left',
+            disableBeacon: true,
+
+            
+        },
+        {
+            target: '#neighborhood-explorer-details',
+            content: <div>
+                The <b>DB Search</b> tab on the right panel allows you to search in the knowledge base for new entities and add them 
+                to the current graph.
+                <img src={dbSearchGif} style={{width: '480px', height: '300px'}}/>
+            </div>,
+            styles: {tooltip: {width: '550px', height: '460px'},},
             placement: 'left',
             disableBeacon: true,
 
@@ -137,9 +150,10 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({run,
             target: '#neighborhood-explorer',
             content: <div>
                 The <b>lock</b> (<i className='fa fa-lock'/>) button allows you lock the node in the graph preventing this from being deleted until unlocked.
+                You can also do this by double clicking on the node.
                 <img src={nodeLockGif} style={{width: '380px', height: '300px'}}/>
             </div>,
-            styles: {tooltip: {width: '500px', height: '460px'},},
+            styles: {tooltip: {width: '500px', height: '480px'},},
             placement: 'center',
             disableBeacon: true,
 

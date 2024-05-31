@@ -8,7 +8,9 @@ import { PageTitle } from "../../../components";
 import { Panel } from "primereact/panel";
 import { NeighborhoodExplorerComponent } from "../../../features/modules/visualization";
 import NeighborhoodExplorerTour from "../../../features/modules/visualization/neighborhood-explorer/neighborhood-explorer-tour.component";
-import { ITutorialStore, STORES } from "../../../stores";
+import { ILocalStorageStore, ITutorialStore, LOCAL_STORAGE_KEYS, STORES } from "../../../stores";
+import { confirmDialog } from "primereact/confirmdialog";
+import { useNavigate } from "react-router-dom";
 
 const React = require('react');
 
@@ -21,8 +23,12 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     const entityService = dependencyFactory.get<IEntityService>(SERVICES.IEntityService);
     const tutorialStore = dependencyFactory.get<ITutorialStore>(STORES.ITutorialStore);
     const { messageService } = useContext(MessageServiceContext);
+    const localStorageStore = dependencyFactory.get<ILocalStorageStore>(STORES.ILocalStorageStore);
+    const navigate = useNavigate();
 
-    const [runTutorial, setRunTutorial] = useState<boolean>(false);
+    const [runTutorial, setRunTutorial] = useState<boolean>(localStorageStore.getBooleanKeyValue(LOCAL_STORAGE_KEYS.showNeighborhoodExplorerTutorial));
+
+
 
     const helpClickedHandler = () => {
         setRunTutorial(true);
@@ -30,14 +36,34 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
 
     const helpTourCallback = () => {
         setRunTutorial(false);
-        tutorialStore.setShowNeighborhoodExplorerTutorial(false);
+        localStorageStore.setBooleanKeyValue(LOCAL_STORAGE_KEYS.showNeighborhoodExplorerTutorial, false);
     }
 
-    
     useEffect(() => {
-        setRunTutorial(tutorialStore.getShowNeighborhoodExplorerTutorial());
-    }, []);
+        if (localStorageStore.getBooleanKeyValue(LOCAL_STORAGE_KEYS.showNeighborhoodExplorerWarning))
+            confirmTermsAndConditions();
+    }, [])
 
+    const confirmTermsAndConditions = () => {
+        confirmDialog({
+            header: 'Disclaimer',
+            icon: 'pi pi-exclamation-triangle',
+            message: (
+                <p>
+                    This tool shows connections of existing data which could be <b>erroneous</b>, <b>biased</b> <br/> and <b>not necessarily the most relevant</b> one for your scientific question since  it <br/>  was <b>generated with an automatic process</b>. <br/> We are actively working to improve the data quality in the platform.
+                </p>
+            ),
+            acceptLabel: "Understood",
+            rejectLabel: "Back",
+            accept: () => {
+                localStorageStore.setBooleanKeyValue(LOCAL_STORAGE_KEYS.showNeighborhoodExplorerWarning, false);    
+            },
+            reject: () => {
+                navigate('/');
+            },
+            closable: false
+        });
+    };
 
     return (
         <div className='page-container'>

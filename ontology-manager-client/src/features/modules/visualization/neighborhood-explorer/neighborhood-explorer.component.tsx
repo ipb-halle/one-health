@@ -15,7 +15,7 @@ import { DataView } from 'primereact/dataview';
 import { IQueryGraph } from '../../../query-history/query-history-graph/graph-query';
 import { MessageServiceContext } from '../../../shared/messages';
 import { dependencyFactory } from '../../../shared/injection';
-import { IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
+import { IEntityTypeService, IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
 import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
@@ -28,6 +28,8 @@ import { INeighborhoodExplorerStore } from '../../../../stores/neighborhood-expl
 import { STORES } from '../../../../stores';
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import { IEntityType } from '../../metadata/entity-types';
+import { Checkbox } from 'primereact/checkbox';
 
 
 const React = require('react');
@@ -47,6 +49,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [query, setQuery] = useState<string>();
     const [queryResults, setQueryResults] = useState<any[]>([]);
     const [searching, setSearching] = useState<boolean>(false);
+    const [types, setTypes] = useState<any[]>([]);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -54,6 +57,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         visualization: ""
     }
     const graphVisualizationHistoryService = dependencyFactory.get<IGraphVisualizationHistoryService>(SERVICES.IGraphVisualizationHistoryService);
+    const entityTypeService = dependencyFactory.get<IEntityTypeService>(SERVICES.IEntityTypeService);
     const searchService = dependencyFactory.get<IGeneralSearchService>(SERVICES.IGeneralSearchService);
 
 
@@ -82,6 +86,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             const viz = await graphVisualizationHistoryService.get("0", messageService!);
             myComponentRef.current!.setElements(viz.visualization);
         }
+
+        const entityTypes = await entityTypeService.getAll(messageService!);
+        setTypes(entityTypes.map(x => {return {name: x.name, id: x.id, color: x.color}}));
     };
 
 
@@ -310,6 +317,24 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         return [<div className="grid grid-nogutter">{list}</div>];
     };
 
+    const typeListTemplate = (items: IEntityType[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+
+        let list = items.map((query, index) => {
+            return (
+            
+                <div style={{padding: 5, marginBottom: 5, display: 'flex', alignItems: 'center', gap:"10px"}}>
+
+                    <Checkbox checked></Checkbox>
+                    <Badge value={query.name} style={{ background: darkenHexColor(query.color, -140), border: `solid 2px ${query.color}`, height: 27, color: 'black'  }}/>
+
+                </div>)
+        });
+
+        return [<div className="grid grid-nogutter">{list}</div>];
+    };
+
     const accept =  async() => {
         // const elements = myComponentRef.current!.getElements();
         // console.log(savedVisualization);
@@ -495,6 +520,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
 
                         <TabView>
+                            <TabPanel header="Legend">
+                                <DataView value={types} listTemplate={typeListTemplate}>
+
+                                </DataView>
+                            </TabPanel>
+
                             <TabPanel header="Details">
                                 <div id='neighborhood-explorer-details'>
 
@@ -563,6 +594,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
 
                             </TabPanel>
+
+                         
                             
                         </TabView>
 

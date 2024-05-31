@@ -40,7 +40,7 @@ public class EntityTypeService implements IEntityTypeService {
     @Override
     public List<EntityTypeDTO> GetAll() {
 
-        return null;
+        return entityRepository.GetAll();
     }
 
     @Override
