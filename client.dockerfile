@@ -13,6 +13,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY ./ontology-manager-client/ .
 
+COPY ./config/.env.production ./.env.production
+
 # Build the React app
 RUN npm run build
 
