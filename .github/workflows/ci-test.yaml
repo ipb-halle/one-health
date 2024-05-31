@@ -18,4 +18,4 @@ jobs:
     - name: Install Node.js dependencies
       run: cd ontology-manager-client && npm install
     - name: Audit Node.js dependencies
-      run: npm audit --omit=dev
+      run: cd ontology-manager-client && npm audit --omit=dev
