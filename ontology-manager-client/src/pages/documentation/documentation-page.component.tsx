@@ -23,7 +23,7 @@ const DocumentationPageComponent: React.FC = () => {
     </AccordionTab>
     <AccordionTab header="Funding">
         <p className="m-0">
-            <b>One Health</b> is developed and curated by <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
+            <b>One Health</b> is developed and curated by <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
 For further information, please visit the GLACIER consortium’s official website <a href='https://glacieronehealth.org/about/'>About | GLACIER One Health Project</a>
         </p>
     </AccordionTab>
