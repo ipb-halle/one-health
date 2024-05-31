@@ -9,7 +9,7 @@ import './footer.component.scss';
 
 const Footer: React.FC = () => {
     return (
-        <div className='row app-footer' style={{paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px', paddingRight: '10px'}}>
+        <div className='row app-footer col-12' style={{paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px', paddingRight: '10px'}}>
             <div className='col-8'>
                 <div className='row'>
                     <div className='col-2'>
@@ -17,9 +17,8 @@ const Footer: React.FC = () => {
                     </div>
                     <div className='col-8'>
                         <p style={{fontSize: '8px', paddingTop: '20px'}}>
-                            Dolore proident ex qui. Proident voluptate consectetur ea culpa id. Elit aliqua magna veniam dolor laboris elit elit elit dolor. 
-                            Cillum sit velit pariatur eiusmod ad Lorem sunt exercitation sunt Cillum sit velit pariatur eiusmod ad Lorem sunt exercitation sunt
-                            m sit velit pariatur eiusmod ad Lorem sunt exercitation sunt Cillum sit velit pariatur eiusmod ad Lorem sunt exercitation sunt
+                            The Natural-One-Health service (n1h.org) is developed and operated by the Leibniz Institute of Plant Biochemistry. See
+                            the <a href="https://www.ipb-halle.de/kontakt/impressum">imprint</a> for legal details.
                         </p>
                     </div>
                 </div>
