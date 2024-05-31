@@ -6,6 +6,7 @@ import ipbhalle.de.ontologymanagerserver.data.interfaces.IEntitySearchRepository
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IEntityTypeRepository;
 import ipbhalle.de.ontologymanagerserver.services.interfaces.IEntitySearchService;
 import ipbhalle.de.ontologymanagerserver.services.interfaces.IEntityService;
+import ipbhalle.de.ontologymanagerserver.utils.security.StringProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class EntitySearchService implements IEntitySearchService {
 
     @Override
     public List<EntitySearchResultDTO> FindEntities(String query) {
+        if (StringProcessing.isSQLInjection(query)) {
+            throw new RuntimeException();
+        }
         var ids = entitySearchRepository.FindMatchingEntityIds(query);
         return entityRepository.GetByIds(ids);
     }
