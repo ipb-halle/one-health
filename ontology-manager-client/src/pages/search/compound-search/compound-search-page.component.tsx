@@ -244,7 +244,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
         </>
     }
 
-    return <div className="container">
+    return <div className="page-container-narrow">
         <PageTitle icon='fa fa-atom' title='Compound Search' help={true} helpClickedHandler={helpClickedHandler}/>
 
         <CompoundSearchPageTourComponent run={runTutorial} callback={helpTourCallback}></CompoundSearchPageTourComponent>

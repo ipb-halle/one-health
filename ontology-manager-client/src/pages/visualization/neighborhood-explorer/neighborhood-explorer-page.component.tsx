@@ -66,7 +66,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     };
 
     return (
-        <div className='page-container'>
+        <div className='page-container-wide'>
             <PageTitle icon="fa fa-compass" title="Neighborhood Explorer" help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
             <NeighborhoodExplorerTour run={runTutorial} callback={helpTourCallback}></NeighborhoodExplorerTour>

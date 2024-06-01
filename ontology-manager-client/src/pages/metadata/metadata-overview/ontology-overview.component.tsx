@@ -111,7 +111,7 @@ const MetadataOverviewPageComponent: React.FC = () => {
 
 
     return (
-        <div className="container">
+        <div className="page-container-narrow">
             <div className="row mb-3">
                 <div className="col pt-1" style={{ maxWidth: '50px' }}>
                     <i

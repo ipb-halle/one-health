@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                     <div className='col-10' style={{display: "flex", alignItems: 'center'}}>
                         <p style={{fontSize: '8px', paddingTop: '20px'}}>
                             The Natural-One-Health service (n1h.org) is developed and operated by the Leibniz Institute of Plant Biochemistry. See
-                            the <a href="https://www.ipb-halle.de/kontakt/impressum">imprint</a> for legal details.
+                            the <a href="https://www.ipb-halle.de/kontakt/impressum" target='_blank'>imprint</a> for legal details.
                         </p>
                     </div>
                 </div>

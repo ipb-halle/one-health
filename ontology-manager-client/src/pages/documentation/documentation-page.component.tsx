@@ -5,7 +5,7 @@ import { PageTitle } from '../../components';
 const React = require('react');
 
 const DocumentationPageComponent: React.FC = () => {
-    return <div className='container'>
+    return <div className='page-container-narrow'>
     
     <PageTitle icon='pi pi-book' title='Documentation' help={false}></PageTitle>
     

@@ -323,7 +323,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     return (
         <>
             <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
-        <div className='page-container'>
+        <div className='page-container-wide'>
 
             <PageTitle title='Co-Occurrences Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 

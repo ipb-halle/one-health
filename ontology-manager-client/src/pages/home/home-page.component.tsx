@@ -99,7 +99,7 @@ const HomePageComponent: React.FC = () => {
                     
                     </div>
                 </div>
-                <div className='col-6'>
+                <div className='col-6' style={{padding: 0}}>
                     <img
                         src={heroSectionImage}
                         alt="Your SVG"
