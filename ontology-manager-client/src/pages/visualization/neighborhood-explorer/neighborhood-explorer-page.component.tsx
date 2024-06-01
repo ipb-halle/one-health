@@ -11,6 +11,7 @@ import NeighborhoodExplorerTour from "../../../features/modules/visualization/ne
 import { ILocalStorageStore, ITutorialStore, LOCAL_STORAGE_KEYS, STORES } from "../../../stores";
 import { confirmDialog } from "primereact/confirmdialog";
 import { useNavigate } from "react-router-dom";
+import { toolDisclaimer } from "../../../utils";
 
 const React = require('react');
 
@@ -48,11 +49,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
         confirmDialog({
             header: 'Disclaimer',
             icon: 'pi pi-exclamation-triangle',
-            message: (
-                <p>
-                    This tool shows connections of existing data which could be <b>erroneous</b>, <b>biased</b> <br/> and <b>not necessarily the most relevant</b> one for your scientific question since  it <br/>  was <b>generated with an automatic process</b>. <br/> We are actively working to improve the data quality in the platform.
-                </p>
-            ),
+            message: toolDisclaimer,
             acceptLabel: "Understood",
             rejectLabel: "Back",
             accept: () => {
