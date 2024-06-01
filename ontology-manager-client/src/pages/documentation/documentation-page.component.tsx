@@ -13,17 +13,20 @@ const DocumentationPageComponent: React.FC = () => {
              
     <AccordionTab header="Mission">
         <p className="m-0">
-        Create a digital data exchange platform and a virtual repository for the surveillance of emerging infectious diseases and anti-infectives
+        The creation of an advanced data collection and analysis software tool dedicated to empower the joined research and knowledge exchange of the <b>GLACIER</b> consortium (and beyond) on plant-derived natural products and their usage for the treatment of infectious diseases, with focus on the flora and epidemiological needs of Latin-America. <br/><br/>
+        <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
+For further information, please visit the GLACIER consortium’s official website <a href='https://glacieronehealth.org/about/'>About | GLACIER One Health Project</a>
         </p>
     </AccordionTab>
     <AccordionTab header="Location">
         <p className="m-0">
-            <b>One Health</b> is a project of the <a href='https://www.ipb-halle.de/'>Leibniz Institute for Plant Biochemistry</a> at Weinberg 3,  06120 Halle (Saale), Germany
+            This data collection and analysis software tool is a project developed and curated by the Leibniz Institute of Plant Biochemistry (IPB, Weinberg 3, D-06120 Halle (Saale), Germany) in scope of the GLACIER consortium.
         </p>
     </AccordionTab>
     <AccordionTab header="Funding">
         <p className="m-0">
-            <b>One Health</b> is developed and curated by <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
+            The development of this tool, as part of the activities of the <b>GLACIER</b> consortium, is funded by the <b>DAAD</b>, Germany (Deutscher Akademischer Austauschdienst/German Academic Exchange Service; funding code DAAD 57592717).<br/><br/>
+            <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
 For further information, please visit the GLACIER consortium’s official website <a href='https://glacieronehealth.org/about/'>About | GLACIER One Health Project</a>
         </p>
     </AccordionTab>
