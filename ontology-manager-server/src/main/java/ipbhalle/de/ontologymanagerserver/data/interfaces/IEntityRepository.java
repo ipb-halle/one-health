@@ -8,5 +8,4 @@ import java.util.Map;
 
 public interface IEntityRepository extends IGraphRepository{
     List<EntitySearchResultDTO> GetByIds(List<String> ids);
-    List<NaturalProductDTO> GetIds(List<String> uuids);
 }

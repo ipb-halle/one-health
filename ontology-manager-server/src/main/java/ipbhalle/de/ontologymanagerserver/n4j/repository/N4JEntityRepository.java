@@ -7,8 +7,8 @@ import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntity;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntityType;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyInfo;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JPropertyValue;
+import org.neo4j.cypherdsl.core.*;
 import org.neo4j.driver.internal.value.MapValue;
-import org.neo4j.driver.util.Pair;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -50,33 +50,61 @@ public class N4JEntityRepository implements IEntityRepository {
 
         HashSet<String> existentNodes = new HashSet<>(nodesIds);
 
-        // Get adjacent nodes to the expanded node
-        String adjacentEntitiesQuery = "match(n) - [r] - (m:Entity) where id(n) = "
-                + nodeId +
-                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
-        var adjacentEntities = neo4jTemplate.findAll(adjacentEntitiesQuery, N4JEntity.class);
+
+        Parameter<String> nodeIdParam = Cypher.parameter("nodeId", nodeId);
+        Node nodeX = Cypher.node("Entity").named("x");
+        Node nodeY = Cypher.node("Entity").named("y");
+
+        Statement adjacentEntitiesQueryDSL = Cypher
+                .match(nodeX.relationshipBetween(nodeY))
+                .where(nodeX.property("OHUUID").isEqualTo(nodeIdParam))
+                .with(
+                        nodeY,
+                        Functions.keys(Functions.properties(nodeY)).as("attributeKeys")
+                )
+                .unwind(Cypher.name("attributeKeys")).as("key")
+                .returning(
+                        nodeY.property("OHUUID").as("id"),
+                        Functions.labels(nodeY).as("labels"),
+                        Functions.collect(Cypher.mapOf("name", Cypher.name("key"), "value", nodeY.property(Cypher.name("key")))).as("properties")
+                )
+                .build();
+
+        var adjacentEntities = neo4jTemplate.findAll(adjacentEntitiesQueryDSL, N4JEntity.class);
 
         // From all adjacent nodes get the ones that are not in the graph already
         var newEntities = adjacentEntities.stream().filter(x -> !existentNodes.contains(x.getId())).toList();
         var newEntitiesIds = newEntities.stream().map(N4JEntity::getId).toList();
 
+        Parameter<List<String>> newNodesIdsParam = Cypher.parameter("newNodesIds", newEntitiesIds);
+        Parameter<List<String>> oldNodesIdsParam = Cypher.parameter("oldNodesIds", nodesIds);
+        Relationship linkR = nodeX.relationshipTo(nodeY).named("r");
 
-        String newOutgoingLinksQuery =
-                "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
-                "[" + String.join(", ", nodesIds) + "] as nodesIds " +
-                "match(n) - [r] -> (m:Entity) where " +
-                        "(id(n) in newNodesIds or id(n) in nodesIds) and id(m) in newNodesIds " +
-                        "with toString(id(n)) as source, toString(id(m)) as target, type(r) as label, count(r) as value" +
-                " return source, target, label, value;";
+        Statement newOutgoingLinksQuery = Cypher
+                .match(linkR)
+                .where(
+                        (nodeX.property("OHUUID").in(newNodesIdsParam).or(nodeX.property("OHUUID").in(oldNodesIdsParam)))
+                                .and(nodeY.property("OHUUID").in(newNodesIdsParam))
+                )
+                .returning(
+                        nodeX.property("OHUUID").as("source"),
+                        nodeY.property("OHUUID").as("target"),
+                        Functions.type(linkR).as("label"),
+                        Functions.count(nodeX).as("value")
+                ).build();
 
-        String newIncomingLinksQuery =
-                "with [" + String.join(", ", newEntitiesIds) + "] as newNodesIds, " +
-                        "[" + String.join(", ", nodesIds) + "] as nodesIds " +
-                        "match (m:Entity) - [r] -> (n) where " +
-                        "id(n) in nodesIds and id(m) in newNodesIds " +
-                        "with toString(id(n)) as target, toString(id(m)) as source, type(r) as label, count(r) as value" +
-                        " return source, target, label, value;";
-
+        Statement newIncomingLinksQuery = Cypher
+                .match(linkR)
+                .where(
+                        nodeX.property("OHUUID").in(newNodesIdsParam)
+                                .and(nodeY.property("OHUUID").in(oldNodesIdsParam))
+                )
+                .returning(
+                        nodeX.property("OHUUID").as("source"),
+                        nodeY.property("OHUUID").as("target"),
+                        Functions.type(linkR).as("label"),
+                        Functions.count(nodeX).as("value")
+                ).build();
 
         var outgoingLinks = neo4jTemplate.findAll(newOutgoingLinksQuery, GraphLinkDTO.class);
         var incomingLinks = neo4jTemplate.findAll(newIncomingLinksQuery, GraphLinkDTO.class);
@@ -114,17 +142,39 @@ public class N4JEntityRepository implements IEntityRepository {
 
     @Override
     public EntityDTO GetNode(String nodeId) {
-        String nodeQuery = "match (m:Entity) where id(m) = "
-                + nodeId +
-                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
 
-        var entity = neo4jTemplate.findOne(nodeQuery,new HashMap<>(), N4JEntity.class);
+        Parameter<String> nodeIdParam = Cypher.parameter("nodeId", nodeId);
+        Node entityNode = Cypher.node("Entity").named("e");
+        Statement getNodeQuery = Cypher
+                .match(entityNode)
+                .where(entityNode.property("OHUUID").isEqualTo(nodeIdParam))
+                .with(
+                        entityNode,
+                        Functions.keys(Functions.properties(entityNode)).as("attributeKeys")
+                )
+                .unwind(Cypher.name("attributeKeys")).as("key")
+                .returning(
+                        entityNode.property("OHUUID").as("id"),
+                        Functions.labels(entityNode).as("labels"),
+                        Functions.collect(Cypher.mapOf("name", Cypher.name("key"), "value", entityNode.property(Cypher.name("key")))).as("properties")
+                )
+                .build();
 
+        var entity = neo4jTemplate.findOne(getNodeQuery, new HashMap<>(), N4JEntity.class);
 
-        String referencesQuery = "match (m:Entity) -[r:FROM_SOURCE]-> (n:Source) where id(m) = " + nodeId +
-                " return r.source as source, r.url as sourceUrl, r.externalid as externalId";
+        Node sourceNode = Cypher.node("Source").named("s");
+        Relationship fromSourceRelationship = entityNode.relationshipTo(sourceNode, "FROM_SOURCE").named("r");
 
-        var references = neo4jTemplate.findAll(referencesQuery, ReferenceDTO.class);
+        Statement getReferencesQuery = Cypher
+                .match(fromSourceRelationship)
+                .where(entityNode.property("OHUUID").isEqualTo(nodeIdParam))
+                .returning(
+                        fromSourceRelationship.property("source").as("source"),
+                        fromSourceRelationship.property("url").as("sourceUrl"),
+                        fromSourceRelationship.property("externalid").as("externalId")
+                ).build();
+
+        var references = neo4jTemplate.findAll(getReferencesQuery, ReferenceDTO.class);
 
         if (entity.isEmpty())
             return null;
@@ -177,12 +227,26 @@ public class N4JEntityRepository implements IEntityRepository {
 
     @Override
     public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
-        String query = "match (n)-[r]-(m) where id(n) = " + sourceId + " and id(m) = " + targetId;
-        if (type != null)
-            query += " and type(r) = '" + type + "'";
-        query += " return toString(id(n)) as rightEntity, toString(id(m)) as leftEntity, type(r) as type, r.source as sourceName, r.sourceurl as sourceUrl";
 
-        return neo4jTemplate.findAll(query, LinkDTO.class);
+        Parameter<String> sourceIdParam = Cypher.parameter("sourceId", sourceId);
+        Parameter<String> targetIdParam = Cypher.parameter("targetId", targetId);
+
+        Node sourceNode = Cypher.node("Entity").named("x");
+        Node targetNode = Cypher.node("Entity").named("y");
+        Relationship referenceRelationship = sourceNode.relationshipBetween(targetNode).named("r");
+
+        Statement getLinkReferencesQuery = Cypher
+                .match(referenceRelationship)
+                .where(sourceNode.property("OHUUID").isEqualTo(sourceIdParam).and(targetNode.property("OHUUID").isEqualTo(targetIdParam)))
+                .returning(
+                        sourceNode.property("OHUUID").as("leftEntity"),
+                        sourceNode.property("OHUUID").as("rightEntity"),
+                        Functions.type(referenceRelationship).as("type"),
+                        referenceRelationship.property("source").as("sourceName"),
+                        referenceRelationship.property("sourceurl").as("sourceUrl")
+                ).build();
+
+        return neo4jTemplate.findAll(getLinkReferencesQuery, LinkDTO.class);
     }
 
     @Override
@@ -199,13 +263,26 @@ public class N4JEntityRepository implements IEntityRepository {
             types.put(x.getId(), x.getName());
         });
 
-        var stringifyIds = ids.stream().map(x -> "'" + x + "'").toList();
 
-        String query =
-        "with [" + String.join(", ", stringifyIds)  + "] as matches" +
-                " match(m:Entity) where m.OHUUID in matches" +
-                " with m, keys(properties(m)) AS attributeKeys UNWIND attributeKeys AS key return toString(id(m)) as id, labels(m) as labels,   collect({name: key, value: properties(m)[key]}) AS properties;";
-        var matchedEntities = neo4jTemplate.findAll(query, N4JEntity.class);
+
+        Parameter<List<String>> nodeIdsParam = Cypher.parameter("nodeIds", ids);
+        Node node = Cypher.node("Entity").named("n");
+        Statement queryDSL = Cypher
+                .match(node)
+                .where(node.property("OHUUID").in(nodeIdsParam))
+                .with(
+                        node,
+                        Functions.keys(Functions.properties(node)).as("attributeKeys")
+                )
+                .unwind(Cypher.name("attributeKeys")).as("key")
+                .returning(
+                        node.property("OHUUID").as("id"),
+                        Functions.labels(node).as("labels"),
+                        Functions.collect(Cypher.mapOf("name", Cypher.name("key"), "value", node.property(Cypher.name("key")))).as("properties")
+                )
+                .build();
+
+        var matchedEntities = neo4jTemplate.findAll(queryDSL, N4JEntity.class);
 
 
         var newNodes = matchedEntities.stream().map(n -> {
@@ -238,16 +315,4 @@ public class N4JEntityRepository implements IEntityRepository {
         return newNodes;
     }
 
-    public List<NaturalProductDTO> GetIds(List<String> uuids){
-        var stringifyIds = uuids.stream().map(x -> "'" + x + "'").toList();
-
-        var query =
-              "with [" + String.join(", ", stringifyIds)  + "] as matches" +
-                      " match(m:`Natural Product`) where m.OHUUID in matches" +
-                      " return m.Name as name, m.InChI as inChI, m.`InChI Key` as inChIKey, m.`SMILES` as smiles, m.`Molecular Formula` as molecularFormula, toFloat(m.`Molecular Weight`) as molecularWeight, m.`Cas Registry Number` as casRegistryNumber, m.`IUPAC Name` as iupacName , toString(id(m)) as id";
-
-
-        return neo4jTemplate.findAll(query, NaturalProductDTO.class);
-
-    }
 }
