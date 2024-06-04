@@ -141,6 +141,48 @@ public class N4JEntityRepository implements IEntityRepository {
     }
 
     @Override
+    public List<LinkDTO> GetGraphReferences(List<String> nodesIds){
+        HashMap<String, String> labels = new HashMap<>();
+
+        var nodeTypes = neo4jTemplate.findAll(N4JEntityType.class);
+
+        Parameter<List<String>> nodesIdsParam = Cypher.parameter("nodesIds", nodesIds);
+        Node nodeX = Cypher.node("Entity").named("x");
+        Node nodeY = Cypher.node("Entity").named("y");
+        Relationship referenceRelationship = nodeX.relationshipTo(nodeY).named("r");
+
+        Case nodeXLabelCaseStatement =
+                Case.create(nodeX.property("__type"));
+
+        Case nodeYLabelCaseStatement =
+                Case.create(nodeY.property("__type"));
+
+        for (var entityType: nodeTypes) {
+            nodeXLabelCaseStatement = nodeXLabelCaseStatement
+                    .when(Cypher.literalOf(entityType.getId()))
+                    .then(nodeX.property(entityType.getLabel().getName()));
+
+            nodeYLabelCaseStatement = nodeYLabelCaseStatement
+                    .when(Cypher.literalOf(entityType.getId()))
+                    .then(nodeY.property(entityType.getLabel().getName()));
+        }
+
+        Statement getGraphReferencesQuery = Cypher
+                .match(referenceRelationship)
+                .where(nodeX.property("OHUUID").in(nodesIdsParam).and(nodeY.property("OHUUID").in(nodesIdsParam)))
+                .returning(
+                        nodeXLabelCaseStatement.as("leftEntity"),
+                        nodeYLabelCaseStatement.as("rightEntity"),
+                        Functions.type(referenceRelationship).as("type"),
+                        referenceRelationship.property("source").as("sourceName"),
+                        referenceRelationship.property("sourceurl").as("sourceUrl")
+                ).build();
+
+        return neo4jTemplate.findAll(getGraphReferencesQuery, LinkDTO.class);
+
+    }
+
+    @Override
     public EntityDTO GetNode(String nodeId) {
 
         Parameter<String> nodeIdParam = Cypher.parameter("nodeId", nodeId);

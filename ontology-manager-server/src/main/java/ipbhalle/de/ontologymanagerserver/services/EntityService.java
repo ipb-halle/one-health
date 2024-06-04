@@ -44,4 +44,9 @@ public class EntityService implements IEntityService {
     public List<LinkDTO> GetLinks(String sourceId, String targetId, String type) {
         return entityRepository.GetLinks(sourceId, targetId, type);
     }
+
+    @Override
+    public List<LinkDTO> GetGraphReferences(List<String> nodesIds){
+        return entityRepository.GetGraphReferences(nodesIds);
+    }
 }
