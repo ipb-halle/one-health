@@ -390,6 +390,17 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                 model={downloadOptions} 
                                 tooltip="Download query results"
                                 tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                onClick={async () => {
+
+            
+                                    const results = await ontologyService.getCoOccurrencesDetails({leftTypeQuery: leftTypeQuery, rightTypeQuery: rightTypeQuery}, messageService!);
+                    
+                                    const ws = XLSX.utils.json_to_sheet(results);
+                                    const wb = XLSX.utils.book_new();
+                                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                                    XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+                    
+                                }}
                             />
                             </div>
                             

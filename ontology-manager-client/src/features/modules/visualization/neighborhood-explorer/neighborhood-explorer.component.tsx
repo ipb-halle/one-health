@@ -479,6 +479,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                         onClick={ async (e) => {
                                             const elements = myComponentRef.current!.getElements();
 
+
+
                                             savedVisualization = {
                                                 id: "",
                                                 name: "Untitled",
@@ -500,6 +502,17 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 model={downloadOptions} 
                                 tooltip="Download graph"
                                 tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                onClick={async () => {
+
+                                    const results = await entityService.getGraphReferences(myComponentRef.current!.getNodes(), messageService!);
+                    
+                    
+                                    const ws = XLSX.utils.json_to_sheet(results);
+                                    const wb = XLSX.utils.book_new();
+                                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                                    XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+                    
+                                }}
                             
                             />
                         </div>
