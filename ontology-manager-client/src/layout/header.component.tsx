@@ -3,6 +3,7 @@ import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate } from 'react-router-dom';
 import oneHealthLogo from '../assets/logo_one_health.png';
+import logo from '../assets/oh_logo.svg';
 import './header.component.scss';
 
 const Header: React.FC = () => {
@@ -118,7 +119,7 @@ const Header: React.FC = () => {
     ];
 
     const start = (
-        <img alt="logo" src={oneHealthLogo} height="40" style={{marginLeft: 10}} className="mr-2"></img>
+        <img alt="logo" src={logo} height="40" style={{marginLeft: 10}} className="mr-2"></img>
     );
 
     return (

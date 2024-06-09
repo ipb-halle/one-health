@@ -15,7 +15,7 @@ import { DataView } from 'primereact/dataview';
 import { IQueryGraph } from '../../../query-history/query-history-graph/graph-query';
 import { MessageServiceContext } from '../../../shared/messages';
 import { dependencyFactory } from '../../../shared/injection';
-import { IEntityTypeService, IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
+import { IEntityService, IEntityTypeService, IGeneralSearchService, IGraphVisualizationHistoryService, SERVICES } from '../../../../services';
 import { ISavedGraphVisualization } from '../visualization-history/models/saved-graph-visualization';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Divider } from 'primereact/divider';
@@ -30,6 +30,7 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { IEntityType } from '../../metadata/entity-types';
 import { Checkbox } from 'primereact/checkbox';
+import * as XLSX from 'xlsx';
 
 
 const React = require('react');
@@ -62,6 +63,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
 
     const myComponentRef : RefObject<CytoscapeInteractiveChartComponent> = useRef<CytoscapeInteractiveChartComponent>(null);
+    const entityService = dependencyFactory.get<IEntityService>(SERVICES.IEntityService);
 
     
     const [elements, setElements] = useState<any>([]);
@@ -134,6 +136,20 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     )
 
     const downloadOptions = [
+        {
+            label: 'XLXS',
+            command: async () => {
+
+                const results = await entityService.getGraphReferences(myComponentRef.current!.getNodes(), messageService!);
+
+
+                const ws = XLSX.utils.json_to_sheet(results);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+
+            }
+        },
         {
             label: 'Cytoscape JSON',
             command: () => {
@@ -463,6 +479,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                         onClick={ async (e) => {
                                             const elements = myComponentRef.current!.getElements();
 
+
+
                                             savedVisualization = {
                                                 id: "",
                                                 name: "Untitled",
@@ -484,6 +502,17 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 model={downloadOptions} 
                                 tooltip="Download graph"
                                 tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                onClick={async () => {
+
+                                    const results = await entityService.getGraphReferences(myComponentRef.current!.getNodes(), messageService!);
+                    
+                    
+                                    const ws = XLSX.utils.json_to_sheet(results);
+                                    const wb = XLSX.utils.book_new();
+                                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                                    XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+                    
+                                }}
                             
                             />
                         </div>
