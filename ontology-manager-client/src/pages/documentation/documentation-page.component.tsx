@@ -1,6 +1,7 @@
 
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { PageTitle } from '../../components';
+import { toolDisclaimer } from '../../utils';
         
 const React = require('react');
 
@@ -83,6 +84,12 @@ For further information, please visit the GLACIER consortium’s official websit
         </p>
 
 
+
+    </AccordionTab>
+    <AccordionTab header="Disclaimer">
+    At the moment, this tool is still primarily focused on the analysis of data of Cuban plants. Hence, the output for plants from other geographical regions might be weaker.
+This tool shows connections of available data which could be <b>erroneous</b>, <b>biased</b>  and <b>not necessarily the most relevant</b> one for your scientific question since  it  was <b>extracted from available data sources with an automatic process</b>. 
+We are actively working to expand the data basis (please contribute!) and improve the data quality of the platform.
 
     </AccordionTab>
     </Accordion>
