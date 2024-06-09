@@ -28,6 +28,7 @@ import { ILocalStorageStore, ITutorialStore, LOCAL_STORAGE_KEYS, STORES } from '
         
 import * as XLSX from 'xlsx';
 import { useNavigate } from 'react-router-dom';
+import { toolDisclaimer } from '../../../utils';
         
 const React = require('react');
 
@@ -69,11 +70,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         confirmDialog({
             header: 'Disclaimer',
             icon: 'pi pi-exclamation-triangle',
-            message: (
-                <p>
-                    This tool shows connections of existing data which could be <b>erroneous</b>, <b>biased</b> <br/> and <b>not necessarily the most relevant</b> one for your scientific question since  it <br/>  was <b>generated with an automatic process</b>. <br/> We are actively working to improve the data quality in the platform.
-                </p>
-            ),
+            message: toolDisclaimer,
             acceptLabel: "Understood",
             rejectLabel: "Back",
             accept: () => {
@@ -323,7 +320,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
     return (
         <>
             <CoOccurrencesSummaryTour run={runTutorial} callback={helpTourCallback}></CoOccurrencesSummaryTour>
-        <div className='page-container'>
+        <div className='page-container-wide'>
 
             <PageTitle title='Co-Occurrences Summary' icon='fa fa-circle-nodes' help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
 
@@ -393,6 +390,17 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                                 model={downloadOptions} 
                                 tooltip="Download query results"
                                 tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                onClick={async () => {
+
+            
+                                    const results = await ontologyService.getCoOccurrencesDetails({leftTypeQuery: leftTypeQuery, rightTypeQuery: rightTypeQuery}, messageService!);
+                    
+                                    const ws = XLSX.utils.json_to_sheet(results);
+                                    const wb = XLSX.utils.book_new();
+                                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                                    XLSX.writeFile(wb, 'co-ocurrences.xlsx');
+                    
+                                }}
                             />
                             </div>
                             

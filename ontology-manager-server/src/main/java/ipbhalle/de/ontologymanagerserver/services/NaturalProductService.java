@@ -31,11 +31,7 @@ public class NaturalProductService implements INaturalProductService {
             throw new RuntimeException();
         }
 
-        var result =  this.naturalProductRepository.GetBySMILES(value);
-        if (result == null)
-            return null;
-        var ids = new String[] { result.getId()} ;
-        return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
+        return this.naturalProductRepository.GetBySMILES(value);
     }
 
     @Override
@@ -43,11 +39,7 @@ public class NaturalProductService implements INaturalProductService {
         if (StringProcessing.isSQLInjection(value)) {
             throw new RuntimeException();
         }
-        var result = this.naturalProductRepository.GetByInChI(value);
-        if (result == null)
-            return null;
-        var ids = new String[] { result.getId()} ;
-        return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
+        return this.naturalProductRepository.GetByInChI(value);
     }
 
     @Override
@@ -55,11 +47,7 @@ public class NaturalProductService implements INaturalProductService {
         if (StringProcessing.isSQLInjection(value)) {
             throw new RuntimeException();
         }
-        var result = this.naturalProductRepository.GetByInChIKey(value);
-        if (result == null)
-            return null;
-        var ids = new String[] { result.getId()} ;
-        return this.entityRepository.GetIds(Arrays.stream(ids).toList()).get(0);
+        return this.naturalProductRepository.GetByInChIKey(value);
     }
 
     @Override
@@ -69,9 +57,7 @@ public class NaturalProductService implements INaturalProductService {
         }
         page = 0;
         take = Math.min(take, 1000);
-        var result = this.naturalProductRepository.GetBySubstructure(smiles, take, page);
-        var ids = result.stream().map(NaturalProductDTO::getId);
-        return this.entityRepository.GetIds(ids.toList());
+        return this.naturalProductRepository.GetBySubstructure(smiles, take, page);
     }
 
     @Override
@@ -82,8 +68,6 @@ public class NaturalProductService implements INaturalProductService {
         if (threshold < 0 || threshold > 100)
             threshold = 80;
         limit = Math.min(limit, 1000);
-        var result = this.naturalProductRepository.GetBySimilarity(smiles, threshold, limit);
-        var ids = result.stream().map(NaturalProductDTO::getId);
-        return this.entityRepository.GetIds(ids.toList());
+        return this.naturalProductRepository.GetBySimilarity(smiles, threshold, limit);
     }
 }

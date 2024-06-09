@@ -162,6 +162,13 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         })
     }
 
+    getNodes() {
+        const nodes = this.cytoscapeCore.elements().jsons()
+                                        .filter((x:any) => x.group==="nodes" && x.data.id !== HIGHLIGHT)
+                                        .map((x:any) => x.data.id);
+        return nodes;
+    }
+
     getElements() {
         const elements = this.cytoscapeCore.json().elements;
         return JSON.stringify(elements);

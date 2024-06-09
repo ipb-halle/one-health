@@ -3,13 +3,11 @@ package ipbhalle.de.ontologymanagerserver.n4j.repository;
 import ipbhalle.de.ontologymanagerserver.data.dtos.*;
 import ipbhalle.de.ontologymanagerserver.data.interfaces.IOntologyRepository;
 import ipbhalle.de.ontologymanagerserver.n4j.models.N4JEntityType;
-import org.neo4j.driver.QueryConfig;
+import org.neo4j.cypherdsl.core.*;
+
 import org.springframework.data.neo4j.core.Neo4jOperations;
 import org.springframework.stereotype.Repository;
-
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,7 +15,7 @@ import java.util.stream.Stream;
 @Repository
 public class N4JOntologyRepository implements IOntologyRepository {
 
-    private Neo4jOperations neo4jOperations;
+    private final Neo4jOperations neo4jOperations;
 
     public N4JOntologyRepository(Neo4jOperations neo4jOperations) {
         this.neo4jOperations = neo4jOperations;
@@ -33,65 +31,44 @@ public class N4JOntologyRepository implements IOntologyRepository {
     @Override
     public GraphDTO FindCoOccurrences(CoOcurrenceQuery query) {
 
-        StringBuilder result = new StringBuilder();
-
-        result.append("MATCH ");
-
+        // TODO: Move this input sanitation to service layer :)
         query.getLeftTypeQuery().setFilters( query.getLeftTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
         query.getRightTypeQuery().setFilters( query.getRightTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
-
 
         var leftEntityType = neo4jOperations.findById(query.getLeftTypeQuery().getType(), N4JEntityType.class).get();
         var rightEntityType = neo4jOperations.findById(query.getRightTypeQuery().getType(), N4JEntityType.class).get();
 
+        Node nodeX = Cypher.node(leftEntityType.getName()).named("x");
+        Node nodeY = Cypher.node(rightEntityType.getName()).named("y");
+        Relationship coOccurrenceRelationship = nodeX.relationshipBetween(nodeY).named("r");
 
-        // match the type
-        result.append("(x:`").append(leftEntityType.getName()).append("`");
-        result.append(")");
-        // add the relationship
-        result.append("- [r] - ");
-        result.append("(y:`").append(rightEntityType.getName()).append("`");
-        result.append(")");
+        var conditions = Conditions.isTrue();
 
-        if ((query.getLeftTypeQuery().getFilters() != null && !query.getLeftTypeQuery().getFilters().isEmpty())
-                || (query.getRightTypeQuery().getFilters() != null && !query.getRightTypeQuery().getFilters().isEmpty()))
-            result.append(" WHERE ");
-
-        Stream<String> leftEntityCriteria = Stream.empty();
-
-        if (query.getLeftTypeQuery().getFilters() != null && !query.getLeftTypeQuery().getFilters().isEmpty()){
-            leftEntityCriteria = query.getLeftTypeQuery().getFilters().stream().map(
-                    x -> String.format("x.`%s` =~ '(?i).*%s.*'", x.getProperty(), x.getValue()));
+        for (var filter: query.getLeftTypeQuery().getFilters()){
+            conditions = conditions.and(
+                    nodeX.property(filter.getProperty()).matches("(?i).*" + filter.getValue() + ".*")
+            );
         }
 
-        Stream<String> rightEntityCriteria = Stream.empty();
-        if (query.getRightTypeQuery().getFilters() != null && !query.getRightTypeQuery().getFilters().isEmpty()){
-            rightEntityCriteria = query.getRightTypeQuery().getFilters().stream().map(
-                    x -> String.format("y.`%s` =~ '(?i).*%s.*'", x.getProperty(), x.getValue()));
+        for (var filter: query.getRightTypeQuery().getFilters()){
+            conditions = conditions.and(
+                    nodeY.property(filter.getProperty()).matches("(?i).*" + filter.getValue() + ".*")
+            );
         }
 
-        var filters = Stream.concat(leftEntityCriteria, rightEntityCriteria).toList();
-
-        result.append(String.join(" AND ", filters));
-
-        result.append(" WITH type(r) AS label, count(r) AS value, ");
-
-        var leftNodeIdentifier = !query.getLeftTypeQuery().getGroupBy().isEmpty() ?
-                String.format("x.`%s`", query.getLeftTypeQuery().getGroupBy()) :
-                String.format("x.`%s`", leftEntityType.getLabel().getName());
-
-        var rightNodeIdentifier = !query.getRightTypeQuery().getGroupBy().isEmpty() ?
-                String.format("y.`%s`", query.getRightTypeQuery().getGroupBy()) :
-                String.format("y.`%s`", rightEntityType.getLabel().getName());
-
-        result.append(leftNodeIdentifier).append(" AS source, ");
-        result.append(rightNodeIdentifier).append(" AS target ");
+        var getCoOccurrencesQuery = Cypher
+                .match(coOccurrenceRelationship)
+                .where(conditions)
+                .returning(
+                        Functions.type(coOccurrenceRelationship).as("label"),
+                        Functions.count(coOccurrenceRelationship.asExpression()).as("value"),
+                        nodeX.property(query.getLeftTypeQuery().getGroupBy().isEmpty() ? leftEntityType.getLabel().getName() : query.getLeftTypeQuery().getGroupBy()).as("source"),
+                        nodeY.property(query.getRightTypeQuery().getGroupBy().isEmpty() ? rightEntityType.getLabel().getName() : query.getRightTypeQuery().getGroupBy()).as("target")
+                ).build();
 
 
-        result.append("RETURN source, target, label, value");
 
-
-        var links = neo4jOperations.findAll(result.toString(), GraphLinkDTO.class);
+        var links = neo4jOperations.findAll(getCoOccurrencesQuery, GraphLinkDTO.class);
 
         var sourceNodeLabels = new HashSet<>(links.stream().map(GraphLinkDTO::getSource).toList());
         var targetNodeLabels = new HashSet<>(links.stream().map(GraphLinkDTO::getTarget).toList());
@@ -109,65 +86,46 @@ public class N4JOntologyRepository implements IOntologyRepository {
     }
 
     public List<LinkDTO> FindCoOccurrencesDetails(CoOcurrenceQuery query) {
-        StringBuilder result = new StringBuilder();
-
-        result.append("MATCH ");
-
-        query.getLeftTypeQuery().setFilters( query.getLeftTypeQuery().getFilters().stream().filter(x -> !x.getValue().isEmpty()).toList());
-        query.getRightTypeQuery().setFilters( query.getRightTypeQuery().getFilters().stream().filter(x -> !x.getValue().isEmpty()).toList());
+        query.getLeftTypeQuery().setFilters( query.getLeftTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
+        query.getRightTypeQuery().setFilters( query.getRightTypeQuery().getFilters().stream().filter(x -> x.getValue() != null && !x.getValue().isEmpty()).toList());
 
 
         var leftEntityType = neo4jOperations.findById(query.getLeftTypeQuery().getType(), N4JEntityType.class).get();
         var rightEntityType = neo4jOperations.findById(query.getRightTypeQuery().getType(), N4JEntityType.class).get();
 
-        // match the type
-        result.append("(x:`").append(leftEntityType.getName()).append("`");
-        result.append(")");
-        // add the relationship
-        result.append("- [r] - ");
-        result.append("(y:`").append(rightEntityType.getName()).append("`");
-        result.append(")");
+        Node nodeX = Cypher.node(leftEntityType.getName()).named("x");
+        Node nodeY = Cypher.node(rightEntityType.getName()).named("y");
+        Relationship coOccurrenceRelationship = nodeX.relationshipBetween(nodeY).named("r");
 
-        if ((query.getLeftTypeQuery().getFilters() != null && !query.getLeftTypeQuery().getFilters().isEmpty())
-            || (query.getRightTypeQuery().getFilters() != null && !query.getRightTypeQuery().getFilters().isEmpty()))
-            result.append(" WHERE ");
 
-        Stream<String> leftEntityCriteria = Stream.empty();
+        var conditions = Conditions.isTrue();
 
-        if (query.getLeftTypeQuery().getFilters() != null && !query.getLeftTypeQuery().getFilters().isEmpty()){
-            leftEntityCriteria = query.getLeftTypeQuery().getFilters().stream().map(
-                    x -> String.format("x.`%s` =~ '(?i).*%s.*'", x.getProperty(), x.getValue()));
+        for (var filter: query.getLeftTypeQuery().getFilters()){
+            conditions = conditions.and(
+                    nodeX.property(filter.getProperty()).matches("(?i).*" + filter.getValue() + ".*")
+            );
         }
 
-        Stream<String> rightEntityCriteria = Stream.empty();
-        if (query.getRightTypeQuery().getFilters() != null && !query.getRightTypeQuery().getFilters().isEmpty()){
-            rightEntityCriteria = query.getRightTypeQuery().getFilters().stream().map(
-                    x -> String.format("y.`%s` =~ '(?i).*%s.*'", x.getProperty(), x.getValue()));
+        for (var filter: query.getRightTypeQuery().getFilters()){
+            conditions = conditions.and(
+                    nodeY.property(filter.getProperty()).matches("(?i).*" + filter.getValue() + ".*")
+            );
         }
 
-        var filters = Stream.concat(leftEntityCriteria, rightEntityCriteria).toList();
+        var getCoOccurrencesDetailsQuery = Cypher
+                .match(coOccurrenceRelationship)
+                .where(conditions)
+                .returning(
+                        nodeX.property(leftEntityType.getLabel().getName()).as("leftEntity"),
+                        nodeY.property(rightEntityType.getLabel().getName()).as("rightEntity"),
+                        Functions.type(coOccurrenceRelationship).as("type"),
+                        coOccurrenceRelationship.property("source").as("sourceName"),
+                        coOccurrenceRelationship.property("sourceurl").as("sourceUrl")
 
-        result.append(String.join(" AND ", filters));
-
-
-        result.append(" WITH type(r) AS type, r.source as sourceName, r.sourceurl as sourceUrl, ");
-
-        var leftNodeIdentifier =
-                String.format("x.`%s`", leftEntityType.getLabel().getName());
-
-        var rightNodeIdentifier =
-                String.format("y.`%s`", rightEntityType.getLabel().getName());
-
-        result.append(leftNodeIdentifier).append(" AS leftEntity, ");
-        result.append(rightNodeIdentifier).append(" AS rightEntity ");
+                ).build();
 
 
-        result.append("RETURN leftEntity, rightEntity, type, sourceName, sourceUrl");
-
-        var query2 = result.toString();
-
-
-        var links = neo4jOperations.findAll(query2, LinkDTO.class);
+        var links = neo4jOperations.findAll(getCoOccurrencesDetailsQuery, LinkDTO.class);
 
         return links;
     }

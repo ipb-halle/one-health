@@ -1,11 +1,12 @@
 
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { PageTitle } from '../../components';
+import { toolDisclaimer } from '../../utils';
         
 const React = require('react');
 
 const DocumentationPageComponent: React.FC = () => {
-    return <div className='container'>
+    return <div className='page-container-narrow'>
     
     <PageTitle icon='pi pi-book' title='Documentation' help={false}></PageTitle>
     
@@ -13,17 +14,20 @@ const DocumentationPageComponent: React.FC = () => {
              
     <AccordionTab header="Mission">
         <p className="m-0">
-        Create a digital data exchange platform and a virtual repository for the surveillance of emerging infectious diseases and anti-infectives
+        The creation of an advanced data collection and analysis software tool dedicated to empower the joined research and knowledge exchange of the <b>GLACIER</b> consortium (and beyond) on plant-derived natural products and their usage for the treatment of infectious diseases, with focus on the flora and epidemiological needs of Latin-America. <br/><br/>
+        <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
+For further information, please visit the GLACIER consortium’s official website <a href='https://glacieronehealth.org/about/'>About | GLACIER One Health Project</a>
         </p>
     </AccordionTab>
     <AccordionTab header="Location">
         <p className="m-0">
-            <b>One Health</b> is a project of the <a href='https://www.ipb-halle.de/'>Leibniz Institute for Plant Biochemistry</a> at Weinberg 3,  06120 Halle (Saale), Germany
+            This data collection and analysis software tool is a project developed and curated by the Leibniz Institute of Plant Biochemistry (IPB, Weinberg 3, D-06120 Halle (Saale), Germany) in scope of the GLACIER consortium.
         </p>
     </AccordionTab>
     <AccordionTab header="Funding">
         <p className="m-0">
-            <b>One Health</b> is developed and curated by <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
+            The development of this tool, as part of the activities of the <b>GLACIER</b> consortium, is funded by the <b>DAAD</b>, Germany (Deutscher Akademischer Austauschdienst/German Academic Exchange Service; funding code DAAD 57592717).<br/><br/>
+            <b>GLACIER</b> (German Latin-American Center for Infection and Epidemiology Research &amp; Training) is an international multidisciplinary consortium that aims to level regional disparities in Latin America by strengthening surveillance and response to emerging infectious diseases and developing new vaccines and therapies. GLACIER is made up of more than 30 cooperating institutions from nine countries (Germany, Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El Salvador, Panama, and Guatemala).
 For further information, please visit the GLACIER consortium’s official website <a href='https://glacieronehealth.org/about/'>About | GLACIER One Health Project</a>
         </p>
     </AccordionTab>
@@ -80,6 +84,12 @@ For further information, please visit the GLACIER consortium’s official websit
         </p>
 
 
+
+    </AccordionTab>
+    <AccordionTab header="Disclaimer">
+    At the moment, this tool is still primarily focused on the analysis of data of Cuban plants. Hence, the output for plants from other geographical regions might be weaker.
+This tool shows connections of available data which could be <b>erroneous</b>, <b>biased</b>  and <b>not necessarily the most relevant</b> one for your scientific question since  it  was <b>extracted from available data sources with an automatic process</b>. 
+We are actively working to expand the data basis (please contribute!) and improve the data quality of the platform.
 
     </AccordionTab>
     </Accordion>

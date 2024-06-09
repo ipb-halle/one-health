@@ -120,7 +120,7 @@ export const GeneralSearchPageComponent: React.FC = () => {
         return <span>{truncateString(result.name, 150)}</span>
     }
 
-    return <div className="container">
+    return <div className="page-container-narrow">
         <PageTitle icon="fa fa-search" title="General Search" help={true} helpClickedHandler={helpClickedHandler}></PageTitle>
         
         <GeneralSearchPageTourComponent run={runTutorial} callback={helpTourCallback}></GeneralSearchPageTourComponent>
