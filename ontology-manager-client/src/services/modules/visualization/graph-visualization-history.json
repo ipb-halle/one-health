@@ -6,146 +6,184 @@
           "nodes": [
             {
               "data": {
-                "id": "8031",
-                "label": "malaria",
-                "color": "#b1002a"
-              },
-              "position": {
-                "x": 376.8996603227056,
-                "y": 395.81241482002997
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "150078",
-                "label": "glycerin",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 338.12261230941306,
-                "y": 750.4206476564732
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "211831",
-                "label": "L-Arg",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 507.29342980985217,
-                "y": 142.9496552926918
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "2619",
-                "label": "Cucurbita moschata",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": 287.15561964266,
-                "y": -32.57795752089416
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "4775",
-                "label": "Khaya senegalensis",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": 638.405969465079,
-                "y": 561.233196526216
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "34643",
-                "label": "aspol",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 91.9217786212215,
-                "y": 213.6878220447044
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "7313",
-                "label": "Cardiospermum halicacabum",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": -22.59401173504402,
-                "y": 782.218230164037
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "178225",
-                "label": "mannitol",
+                "id": "1b4c13b9-18cc-4782-89a7-7e4f5ad33b8f",
+                "label": "C19H28O8",
                 "color": "#343ea0"
               },
               "position": {
                 "x": 41.5,
-                "y": 464.2060299687389
+                "y": 567.2158480163604
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "05a2c83b-ffd7-4ccd-9f41-8545ed143a50",
+                "label": "C15H22O5",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 523.9135719528861,
+                "y": 365.7931340481713
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "7cfd68c6-ace3-43f1-8e45-79fdde5e32cb",
+                "label": "C16H26O5",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 479.7655815986486,
+                "y": 1042.5518321151746
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "d78bc4db-06ee-4b58-8910-3e8322b3b5fb",
+                "label": "C12H14N4O4S",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 242.99212243296827,
+                "y": 367.04816148734744
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "dbeeb316-9e82-489d-8cb4-ab5b3a06f160",
+                "label": "Momordica charantia",
+                "color": "#297e00"
+              },
+              "position": {
+                "x": 68.51051390710077,
+                "y": 854.1028009104185
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "d78efc11-575a-4406-9bff-ad53132675be",
+                "label": "Trichospira verticillata",
+                "color": "#297e00"
+              },
+              "position": {
+                "x": 786.3009397188227,
+                "y": 447.29950617998696
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "label": "malaria",
+                "color": "#b1002a"
+              },
+              "position": {
+                "x": 371.67691358000934,
+                "y": 689.8671975638774
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "0d94fdb5-aedb-4afb-934e-ab056031019e",
+                "label": "Carica papaya",
+                "color": "#297e00"
+              },
+              "position": {
+                "x": 613.3107082058767,
+                "y": 899.6683628038467
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "f2837fee-1520-4014-aed4-2482b3350bd4",
+                "label": "C19H19N7O6",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 234.0419047241443,
+                "y": 983.8768622639892
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "77413b41-559a-4dfe-a57e-2f1c2b3f5faa",
+                "label": "C6H14N4O2",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 704.4906877896271,
+                "y": 680.2990314125565
               },
               "group": "nodes",
               "removed": false,
@@ -160,10 +198,90 @@
           "edges": [
             {
               "data": {
+                "label": "PRODUCES",
+                "source": "d78efc11-575a-4406-9bff-ad53132675be",
+                "target": "05a2c83b-ffd7-4ccd-9f41-8545ed143a50",
+                "id": "37d3bfe1-7651-4c75-b119-3ff064dc5a02"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
                 "label": "TREATS",
-                "source": "2619",
-                "target": "8031",
-                "id": "71fa62d2-c632-4573-88f8-376958520978"
+                "source": "d78bc4db-06ee-4b58-8910-3e8322b3b5fb",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "df1b60a2-159f-45cd-a2d5-43802dc01c0d"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "7cfd68c6-ace3-43f1-8e45-79fdde5e32cb",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "43e8e959-3bee-40bc-a5fa-3c58c636f969"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "1b4c13b9-18cc-4782-89a7-7e4f5ad33b8f",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "5ee7eb76-03af-4943-9d8b-3fc87f1e644b"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "05a2c83b-ffd7-4ccd-9f41-8545ed143a50",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "15fe079a-8215-4a1f-a1f0-55a9d5fa5ee2"
               },
               "position": {
                 "x": 0,
@@ -181,9 +299,9 @@
             {
               "data": {
                 "label": "PRODUCES",
-                "source": "2619",
-                "target": "211831",
-                "id": "e14bf689-c7fd-4b84-8053-695e5d04fd1c"
+                "source": "0d94fdb5-aedb-4afb-934e-ab056031019e",
+                "target": "f2837fee-1520-4014-aed4-2482b3350bd4",
+                "id": "958f0207-941b-4b5d-bda0-b0786be534fd"
               },
               "position": {
                 "x": 0,
@@ -201,9 +319,9 @@
             {
               "data": {
                 "label": "TREATS",
-                "source": "211831",
-                "target": "8031",
-                "id": "863c837b-4bd9-4b13-a6c2-23ade9820d63"
+                "source": "dbeeb316-9e82-489d-8cb4-ab5b3a06f160",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "21f8de8d-efe4-4dce-a8f2-62c70e1e5f22"
               },
               "position": {
                 "x": 0,
@@ -221,89 +339,9 @@
             {
               "data": {
                 "label": "PRODUCES",
-                "source": "7313",
-                "target": "178225",
-                "id": "3a3e08b6-a1b6-416d-8e6b-d272918d8b74"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "34643",
-                "target": "8031",
-                "id": "7280200e-a785-42ed-b52a-277270b60a64"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "7313",
-                "target": "8031",
-                "id": "f7d04b88-98dc-44f0-bfca-5c99cb09be13"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "4775",
-                "target": "8031",
-                "id": "f577a8a2-c1c5-4160-8f99-9d9b67a2599b"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "IN_SAME_DOCUMENT",
-                "source": "150078",
-                "target": "8031",
-                "id": "d2e19f90-f3b2-4135-902c-c956fc90af45"
+                "source": "dbeeb316-9e82-489d-8cb4-ab5b3a06f160",
+                "target": "f2837fee-1520-4014-aed4-2482b3350bd4",
+                "id": "94452829-1df8-4600-af01-90d829dc510d"
               },
               "position": {
                 "x": 0,
@@ -321,29 +359,9 @@
             {
               "data": {
                 "label": "PRODUCES",
-                "source": "2619",
-                "target": "34643",
-                "id": "46f522a7-87b9-4f29-815e-1f95ade32a4a"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "7313",
-                "target": "150078",
-                "id": "ebef8b7a-80a4-451e-94b4-da6cb3687fcf"
+                "source": "0d94fdb5-aedb-4afb-934e-ab056031019e",
+                "target": "77413b41-559a-4dfe-a57e-2f1c2b3f5faa",
+                "id": "d92be4a9-a466-4fea-9e97-9cdba273dc07"
               },
               "position": {
                 "x": 0,
@@ -361,9 +379,49 @@
             {
               "data": {
                 "label": "TREATS",
-                "source": "178225",
-                "target": "8031",
-                "id": "652fc447-3d56-4ee8-8ba4-d882b4b69b62"
+                "source": "0d94fdb5-aedb-4afb-934e-ab056031019e",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "c755176b-3383-4e91-89f6-4de26ad3000f"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "77413b41-559a-4dfe-a57e-2f1c2b3f5faa",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "330d8ce5-c33e-46e7-984f-c0475c9b9078"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "f2837fee-1520-4014-aed4-2482b3350bd4",
+                "target": "2fc16c86-2db2-40d1-b846-4a599cefe2c0",
+                "id": "73f13119-b4b7-44de-a0a9-56f58f3ce56d"
               },
               "position": {
                 "x": 0,
@@ -381,6 +439,7 @@
           ]
         }
     },
+
     {
         "id": "1",
         "name": "HIV sample graph",
@@ -388,13 +447,108 @@
           "nodes": [
             {
               "data": {
-                "id": "7997",
+                "id": "1d956bdf-0072-47a4-b155-e6a7bbf387be",
+                "label": "C37H48N6O5S2",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 689.8549604057805,
+                "y": 526.6745647051043
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "acbeade3-4c05-495e-a9da-952acd42b941",
+                "label": "C31H33F3N2O5S",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 230.75179036986674,
+                "y": 695.4304362459718
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "ef612b00-61d5-4339-a982-5ff76061a797",
+                "label": "C38H52N6O7",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 478.9439457077243,
+                "y": 703.4475047838575
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "84b5b6a7-8170-4f4a-be3f-e04182065ef1",
+                "label": "C15H14N4O",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 701.2003273014063,
+                "y": 266.5936837020424
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "07762887-7b6f-4b37-8acc-e743e2e49f17",
+                "label": "C27H37N3O7S",
+                "color": "#343ea0"
+              },
+              "position": {
+                "x": 41.5,
+                "y": 483.69212257413324
+              },
+              "group": "nodes",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": false,
+              "classes": ""
+            },
+            {
+              "data": {
+                "id": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
                 "label": "hiv",
                 "color": "#b1002a"
               },
               "position": {
-                "x": 389.3414513823003,
-                "y": 391.90222935014606
+                "x": 371.57560682956023,
+                "y": 373.7017767675775
               },
               "group": "nodes",
               "removed": false,
@@ -407,32 +561,13 @@
             },
             {
               "data": {
-                "id": "300018",
-                "label": "acticort",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 103.2029378337744,
-                "y": 633.3108162947277
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "2518",
-                "label": "Ipomoea batatas",
+                "id": "98e606f5-4af8-453a-add3-c1f4e686b1ae",
+                "label": "Punica granatum",
                 "color": "#297e00"
               },
               "position": {
-                "x": 741.2504578811679,
-                "y": 71.8106672814863
+                "x": 68.64304000438864,
+                "y": 207.38867013656355
               },
               "group": "nodes",
               "removed": false,
@@ -445,89 +580,13 @@
             },
             {
               "data": {
-                "id": "874",
-                "label": "Annona squamosa",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": 673.6672550662307,
-                "y": 776.2457717445083
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "500281",
-                "label": "adermin",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 957.299027178499,
-                "y": 517.7671917397129
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "34643",
-                "label": "aspol",
-                "color": "#343ea0"
-              },
-              "position": {
-                "x": 1060.0584032057632,
-                "y": 125.00191353346685
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "5269",
-                "label": "Ximenia americana",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": 133.34149104360114,
-                "y": 100.27414688158251
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "1336",
+                "id": "6988a336-1d10-4ce2-97fa-1ffbad72b0cc",
                 "label": "Aloe vera",
                 "color": "#297e00"
               },
               "position": {
-                "x": 41.5,
-                "y": 347.8539275533301
+                "x": 498.76557982486565,
+                "y": 49.836569608774916
               },
               "group": "nodes",
               "removed": false,
@@ -540,32 +599,13 @@
             },
             {
               "data": {
-                "id": "7929",
-                "label": "Guaiacum officinale",
-                "color": "#297e00"
+                "id": "e862ca7e-016a-42bd-8555-a68a70485470",
+                "label": "C3H8O3",
+                "color": "#343ea0"
               },
               "position": {
-                "x": 395.6376873423908,
+                "x": 216.80809346213448,
                 "y": 41.5
-              },
-              "group": "nodes",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": false,
-              "classes": ""
-            },
-            {
-              "data": {
-                "id": "809",
-                "label": "Allium sativum",
-                "color": "#297e00"
-              },
-              "position": {
-                "x": 375.1820263224331,
-                "y": 662.8466351219153
               },
               "group": "nodes",
               "removed": false,
@@ -581,9 +621,9 @@
             {
               "data": {
                 "label": "TREATS",
-                "source": "1336",
-                "target": "7997",
-                "id": "935215f6-338c-4e6c-a379-9a915da341d3"
+                "source": "acbeade3-4c05-495e-a9da-952acd42b941",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "93ff8518-dfcf-4940-ba17-10fe9d8f46ab"
               },
               "position": {
                 "x": 0,
@@ -601,9 +641,89 @@
             {
               "data": {
                 "label": "TREATS",
-                "source": "2518",
-                "target": "7997",
-                "id": "75e9ef8a-5435-412c-be6a-792fdd14c3e7"
+                "source": "1d956bdf-0072-47a4-b155-e6a7bbf387be",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "bb789484-36ec-4502-a282-50e0f8fe4076"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "ef612b00-61d5-4339-a982-5ff76061a797",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "306e6592-fbed-45a2-8c0e-16e1db4f5e8e"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "07762887-7b6f-4b37-8acc-e743e2e49f17",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "5e1e6cb1-7d4b-4d48-9679-de63a7d81afe"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "84b5b6a7-8170-4f4a-be3f-e04182065ef1",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "f89f7112-a6d9-4cf8-b4b1-4bdbe9da542d"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "6988a336-1d10-4ce2-97fa-1ffbad72b0cc",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "dee76547-28a9-4950-b876-4f403a679fa6"
               },
               "position": {
                 "x": 0,
@@ -621,9 +741,29 @@
             {
               "data": {
                 "label": "PRODUCES",
-                "source": "2518",
-                "target": "500281",
-                "id": "4cf9ed85-80de-4ec4-8882-8e8594da137e"
+                "source": "6988a336-1d10-4ce2-97fa-1ffbad72b0cc",
+                "target": "e862ca7e-016a-42bd-8555-a68a70485470",
+                "id": "04abc729-9221-4c66-a605-1cef92118291"
+              },
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "group": "edges",
+              "removed": false,
+              "selected": false,
+              "selectable": true,
+              "locked": false,
+              "grabbable": true,
+              "pannable": true,
+              "classes": ""
+            },
+            {
+              "data": {
+                "label": "TREATS",
+                "source": "98e606f5-4af8-453a-add3-c1f4e686b1ae",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "7ffc4333-6cb4-4fd8-8d94-0c5d5def487f"
               },
               "position": {
                 "x": 0,
@@ -641,9 +781,9 @@
             {
               "data": {
                 "label": "PRODUCES",
-                "source": "809",
-                "target": "500281",
-                "id": "3ceafd36-a341-4aa0-b027-9c3a30f70b13"
+                "source": "98e606f5-4af8-453a-add3-c1f4e686b1ae",
+                "target": "e862ca7e-016a-42bd-8555-a68a70485470",
+                "id": "14ee9fb8-38a8-4786-bd62-99efd485c7b0"
               },
               "position": {
                 "x": 0,
@@ -661,229 +801,9 @@
             {
               "data": {
                 "label": "TREATS",
-                "source": "300018",
-                "target": "7997",
-                "id": "fdb51013-7883-4706-8fe6-881cf88dbda3"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "5269",
-                "target": "7997",
-                "id": "04f83a53-84fa-41c0-a920-ec20355bacc6"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "809",
-                "target": "7997",
-                "id": "819374a8-6a36-4ad3-9c12-275dbb0fc5f7"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "874",
-                "target": "7997",
-                "id": "208bb156-4ea6-42f1-a8c7-22309606ffb7"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "874",
-                "target": "500281",
-                "id": "1a445167-b2fe-4bc8-8404-fca574483602"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "2518",
-                "target": "34643",
-                "id": "6ca167a7-b25a-4226-a94a-46c168db8beb"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "500281",
-                "target": "7997",
-                "id": "74622cba-1549-49e4-920a-8c1d0958b73c"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "809",
-                "target": "34643",
-                "id": "ce6023b4-821a-4712-8114-08bd62488933"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "874",
-                "target": "34643",
-                "id": "eb0b24f3-4f69-49b7-924b-5d1392b329b9"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "7929",
-                "target": "7997",
-                "id": "58428877-a27b-40a4-bd9f-7bf694978415"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "PRODUCES",
-                "source": "1336",
-                "target": "300018",
-                "id": "2e4f65d5-a287-4c3f-9d6d-a1d8246315da"
-              },
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "group": "edges",
-              "removed": false,
-              "selected": false,
-              "selectable": true,
-              "locked": false,
-              "grabbable": true,
-              "pannable": true,
-              "classes": ""
-            },
-            {
-              "data": {
-                "label": "TREATS",
-                "source": "34643",
-                "target": "7997",
-                "id": "a2e4a920-abbe-4e08-b993-107b34b0862c"
+                "source": "e862ca7e-016a-42bd-8555-a68a70485470",
+                "target": "18cb8200-e8a0-4ff3-9c6d-6da6b4344b19",
+                "id": "ac65c454-72cf-4869-848a-b2456624ffca"
               },
               "position": {
                 "x": 0,
@@ -908,13 +828,13 @@
         "nodes": [
           {
             "data": {
-              "id": "8093",
-              "label": "asthma",
-              "color": "#b1002a"
+              "id": "a0c195fd-0372-4ba1-a3cb-7065ee10baff",
+              "label": "C13H21NO3",
+              "color": "#343ea0"
             },
             "position": {
-              "x": 401.25517411812825,
-              "y": 407.5671161825013
+              "x": 61.74597845068829,
+              "y": 194.5673299381158
             },
             "group": "nodes",
             "removed": false,
@@ -927,12 +847,50 @@
           },
           {
             "data": {
-              "id": "936",
-              "label": "Foeniculum vulgare",
-              "color": "#297e00"
+              "id": "788761a8-8252-4bc9-a7ef-f99bbc438313",
+              "label": "C7H8N4O2",
+              "color": "#343ea0"
             },
             "position": {
-              "x": 402.1741138620819,
+              "x": 280.7360899696192,
+              "y": 702.3578602600385
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "629eb842-3a1c-4011-b165-43d7f85be400",
+              "label": "C11H12N2O2S",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 41.5,
+              "y": 488.33092837313046
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "1bdf1371-8198-46e8-9679-85cd6036fd69",
+              "label": "C23H16O11",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 318.7694431562723,
               "y": 41.5
             },
             "group": "nodes",
@@ -946,13 +904,13 @@
           },
           {
             "data": {
-              "id": "291390",
-              "label": "eramin",
-              "color": "#343ea0"
+              "id": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "label": "asthma",
+              "color": "#b1002a"
             },
             "position": {
-              "x": 143.35169904340333,
-              "y": 579.7639045640032
+              "x": 363.90203019089046,
+              "y": 373.08378666457844
             },
             "group": "nodes",
             "removed": false,
@@ -965,13 +923,32 @@
           },
           {
             "data": {
-              "id": "7520",
-              "label": "Solanum melongena",
+              "id": "6d7a639d-25e1-4dc3-864c-545af100ffcd",
+              "label": "C19H16ClNO4",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 698.7578345989797,
+              "y": 381.1986564719297
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "487b1ab4-f9a2-46dd-b918-a7d619f4d9be",
+              "label": "Physalis angulata",
               "color": "#297e00"
             },
             "position": {
-              "x": 253.42013022276956,
-              "y": 242.9660210245387
+              "x": 581.6381698788255,
+              "y": 658.4657539886402
             },
             "group": "nodes",
             "removed": false,
@@ -984,13 +961,222 @@
           },
           {
             "data": {
-              "id": "106694",
-              "label": "vitamin c",
+              "id": "7de1a0b8-f0e7-4567-b739-3c33c189d9d5",
+              "label": "Plantago major",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 605.8098348839262,
+              "y": 99.1785216563004
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          }
+        ],
+        "edges": [
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "788761a8-8252-4bc9-a7ef-f99bbc438313",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "d88ac147-0012-45f1-b748-db300bc95ed6"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "629eb842-3a1c-4011-b165-43d7f85be400",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "74d89d44-94d0-4b75-b861-349ee437e49e"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "a0c195fd-0372-4ba1-a3cb-7065ee10baff",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "afc39ae8-ca9a-4287-b547-19451cc1b7da"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "1bdf1371-8198-46e8-9679-85cd6036fd69",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "a68bdaad-7bbe-4cf4-ac55-326cf20b9ebc"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "PRODUCES",
+              "source": "487b1ab4-f9a2-46dd-b918-a7d619f4d9be",
+              "target": "6d7a639d-25e1-4dc3-864c-545af100ffcd",
+              "id": "4717dd4f-db4d-4fb9-bfca-a62fb40a2390"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "PRODUCES",
+              "source": "7de1a0b8-f0e7-4567-b739-3c33c189d9d5",
+              "target": "6d7a639d-25e1-4dc3-864c-545af100ffcd",
+              "id": "120dd2d0-63ee-4020-877c-aade0069ee19"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "7de1a0b8-f0e7-4567-b739-3c33c189d9d5",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "8ef142da-8340-49a2-98a2-2720e10d62c1"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "487b1ab4-f9a2-46dd-b918-a7d619f4d9be",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "a2719368-6120-479e-b809-72bc908a5e7c"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "6d7a639d-25e1-4dc3-864c-545af100ffcd",
+              "target": "61cdc9ce-97f7-483a-9376-08bd5451d4b8",
+              "id": "0e4f9461-2bac-4bfc-a73f-5e14d96d3542"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "name": "covid 19 example graph",
+      "visualization": {
+        "nodes": [
+          {
+            "data": {
+              "id": "614b6626-418a-4a23-a526-43728a6894ce",
+              "label": "C16H17N7O2S",
               "color": "#343ea0"
             },
             "position": {
-              "x": 548.1622162838311,
-              "y": 243.1103459595589
+              "x": 687.5557733866057,
+              "y": 541.5264816671302
             },
             "group": "nodes",
             "removed": false,
@@ -1003,13 +1189,127 @@
           },
           {
             "data": {
-              "id": "3715",
-              "label": "Senna alata",
+              "id": "3f8067b4-a958-4134-9330-043d2fee276c",
+              "label": "C16H20N6O",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 568.0727734034806,
+              "y": 897.567243200666
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "9aa90ffd-e8a3-466a-ab00-1b126a67c48c",
+              "label": "C22H29FO5",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 360.34186501425614,
+              "y": 285.4763823529221
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "label": "covid 19",
+              "color": "#b1002a"
+            },
+            "position": {
+              "x": 366.3556066436322,
+              "y": 614.0635296099839
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "5a5c4410-bc63-410f-9d8c-1637df68c07e",
+              "label": "Pongamia pinnata",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 98.63917759440261,
+              "y": 52.3024873461091
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "487b1ab4-f9a2-46dd-b918-a7d619f4d9be",
+              "label": "Physalis angulata",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 618.1670958809997,
+              "y": 41.5
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "ea3866ee-800f-49d9-a67d-1b99bd03ae02",
+              "label": "Azadirachta indica",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 179.19350483166923,
+              "y": 904.4804325008868
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "4a043718-bb29-42d5-a596-5c5c268734f7",
+              "label": "Curcuma longa",
               "color": "#297e00"
             },
             "position": {
               "x": 41.5,
-              "y": 337.72507061101953
+              "y": 554.2977165399818
             },
             "group": "nodes",
             "removed": false,
@@ -1019,35 +1319,542 @@
             "grabbable": true,
             "pannable": false,
             "classes": ""
-          },
+          }
+        ],
+        "edges": [
           {
             "data": {
-              "id": "4096",
-              "label": "Ocimum basilicum",
-              "color": "#297e00"
+              "label": "TREATS",
+              "source": "9aa90ffd-e8a3-466a-ab00-1b126a67c48c",
+              "target": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "id": "93b252e8-2f8b-405f-a48f-92c0db78f879"
             },
             "position": {
-              "x": 714.6601735747179,
-              "y": 329.7628752250756
+              "x": 0,
+              "y": 0
             },
-            "group": "nodes",
+            "group": "edges",
             "removed": false,
             "selected": false,
             "selectable": true,
             "locked": false,
             "grabbable": true,
-            "pannable": false,
+            "pannable": true,
             "classes": ""
           },
           {
             "data": {
-              "id": "211831",
-              "label": "L-Arg",
+              "label": "TREATS",
+              "source": "614b6626-418a-4a23-a526-43728a6894ce",
+              "target": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "id": "7d32646d-1092-4ece-8e99-476c6c3b07a3"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "3f8067b4-a958-4134-9330-043d2fee276c",
+              "target": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "id": "a7f6f92e-931b-4766-8d28-9fcca2d9ddc8"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "PRODUCES",
+              "source": "5a5c4410-bc63-410f-9d8c-1637df68c07e",
+              "target": "9aa90ffd-e8a3-466a-ab00-1b126a67c48c",
+              "id": "334805dd-233c-416b-8c33-bbc5f4cb7358"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "PRODUCES",
+              "source": "487b1ab4-f9a2-46dd-b918-a7d619f4d9be",
+              "target": "9aa90ffd-e8a3-466a-ab00-1b126a67c48c",
+              "id": "6c036d93-b52b-4d15-b0c3-a4fe4ea677c4"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "4a043718-bb29-42d5-a596-5c5c268734f7",
+              "target": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "id": "ee2167af-5f87-4f46-9d55-d41eb5d20a3b"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "ea3866ee-800f-49d9-a67d-1b99bd03ae02",
+              "target": "0e7fff7d-e7e1-493e-bb63-3cc0784b0924",
+              "id": "a18af7be-e305-46d0-910b-bb34276e6011"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "name": "Hepatitis B sample graph",
+      "visualization" : {
+        "nodes": [
+          {
+            "data": {
+              "id": "4df49b69-d94b-4171-b169-37083d10e002",
+              "label": "C9H14N5O4P",
               "color": "#343ea0"
             },
             "position": {
-              "x": 568.1929068516064,
-              "y": 57.523303569523364
+              "x": 383.105914318433,
+              "y": 41.5
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "d456ab19-6eb7-4927-a8ce-6bd94204cc7f",
+              "label": "C8H10FN3O3S",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 96.70849417513371,
+              "y": 624.4119919157179
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "e7c77187-9d13-49cc-beb1-ec813e3e62d1",
+              "label": "C20H32N5O8P",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 671.8649618936074,
+              "y": 323.859427705494
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "95cd6cbf-567c-4de3-b6c3-734edf303f8e",
+              "label": "C8H11N3O3S",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 41.5,
+              "y": 231.5940333207922
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "label": "hepatitis b",
+              "color": "#b1002a"
+            },
+            "position": {
+              "x": 347.5025797559991,
+              "y": 366.5049431301421
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "9a09cbbf-a369-473d-8db3-3b2072a02f0b",
+              "label": "Zingiber officinale",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 491.01310464686804,
+              "y": 669.8019277194363
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          }
+        ],
+        "edges": [
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "d456ab19-6eb7-4927-a8ce-6bd94204cc7f",
+              "target": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "id": "fc8805bc-40be-45ca-99d9-4cd73de4604d"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "4df49b69-d94b-4171-b169-37083d10e002",
+              "target": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "id": "e5864fdb-1e9d-476f-a759-5f8fc31fe6d1"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "e7c77187-9d13-49cc-beb1-ec813e3e62d1",
+              "target": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "id": "63b6589b-f99c-4415-b168-4fc68bf7176c"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "95cd6cbf-567c-4de3-b6c3-734edf303f8e",
+              "target": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "id": "1270856e-8c8a-4f6f-91ad-ea2f921b9021"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          },
+          {
+            "data": {
+              "label": "TREATS",
+              "source": "9a09cbbf-a369-473d-8db3-3b2072a02f0b",
+              "target": "42d49432-76a8-44e6-b07c-cb67e39234ef",
+              "id": "279a6cc1-3314-48d0-be4d-1a31d2783040"
+            },
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "group": "edges",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": true,
+            "classes": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "name": "Diabetes sample graph",
+      "visualization": {
+        "nodes": [
+          {
+            "data": {
+              "id": "9c73bf30-da6d-401d-9894-32836bebb108",
+              "label": "C18H25NO",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 319.3350308169675,
+              "y": 41.5
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "7f25fc3d-05c2-4b0d-8c1f-465c3b375569",
+              "label": "C24H27NO5S",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 602.4592485800147,
+              "y": 92.24520011230248
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "05c43e48-5a95-4bcd-bdd9-3f87f182e442",
+              "label": "C27H33N3O6S",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 802.4911389579293,
+              "y": 173.4751605678642
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "b4455259-e77e-4f16-8c74-55b237f19d4a",
+              "label": "C24H29ClO7",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 713.469964360043,
+              "y": 359.1164449330229
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "d0085984-cba1-4ccd-b06b-7bd2bd2f560b",
+              "label": "Erigeron canadensis",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 166.82691965199876,
+              "y": 663.4747410567179
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "fe851780-e40c-4ed5-affd-4f130fc67c0d",
+              "label": "C18H22O2",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 581.7695735383351,
+              "y": 676.8569285904157
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "4b8f6102-012d-4af5-9ebf-d6b15a0a455a",
+              "label": "Satureja hortensis",
+              "color": "#297e00"
+            },
+            "position": {
+              "x": 65.17592364552532,
+              "y": 238.04232890168547
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "2cd9f5ac-a65c-4e86-b785-e2d7c6d236cb",
+              "label": "C6H5NO2",
+              "color": "#343ea0"
+            },
+            "position": {
+              "x": 41.5,
+              "y": 404.0440531942596
+            },
+            "group": "nodes",
+            "removed": false,
+            "selected": false,
+            "selectable": true,
+            "locked": false,
+            "grabbable": true,
+            "pannable": false,
+            "classes": ""
+          },
+          {
+            "data": {
+              "id": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "label": "diabetes",
+              "color": "#b1002a"
+            },
+            "position": {
+              "x": 378.99152693205195,
+              "y": 373.7680401889387
             },
             "group": "nodes",
             "removed": false,
@@ -1063,49 +1870,9 @@
           {
             "data": {
               "label": "PRODUCES",
-              "source": "4096",
-              "target": "106694",
-              "id": "eb9e5aae-c3e5-4e4c-a849-c5370f4dbe50"
-            },
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "group": "edges",
-            "removed": false,
-            "selected": false,
-            "selectable": true,
-            "locked": false,
-            "grabbable": true,
-            "pannable": true,
-            "classes": ""
-          },
-          {
-            "data": {
-              "label": "TREATS",
-              "source": "3715",
-              "target": "8093",
-              "id": "da3d64a0-7336-4c13-9f70-608043d61a97"
-            },
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "group": "edges",
-            "removed": false,
-            "selected": false,
-            "selectable": true,
-            "locked": false,
-            "grabbable": true,
-            "pannable": true,
-            "classes": ""
-          },
-          {
-            "data": {
-              "label": "TREATS",
-              "source": "7520",
-              "target": "8093",
-              "id": "8644020f-335e-441d-a7e8-da23956ae07f"
+              "source": "4b8f6102-012d-4af5-9ebf-d6b15a0a455a",
+              "target": "2cd9f5ac-a65c-4e86-b785-e2d7c6d236cb",
+              "id": "c00ac344-1cc9-4543-9c4a-8ce0427aee64"
             },
             "position": {
               "x": 0,
@@ -1123,49 +1890,9 @@
           {
             "data": {
               "label": "PRODUCES",
-              "source": "7520",
-              "target": "211831",
-              "id": "c5883377-c0d9-4465-80f9-ee5d9efa5905"
-            },
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "group": "edges",
-            "removed": false,
-            "selected": false,
-            "selectable": true,
-            "locked": false,
-            "grabbable": true,
-            "pannable": true,
-            "classes": ""
-          },
-          {
-            "data": {
-              "label": "PRODUCES",
-              "source": "7520",
-              "target": "291390",
-              "id": "ce2ca512-0142-430f-83a5-71a7b999e096"
-            },
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "group": "edges",
-            "removed": false,
-            "selected": false,
-            "selectable": true,
-            "locked": false,
-            "grabbable": true,
-            "pannable": true,
-            "classes": ""
-          },
-          {
-            "data": {
-              "label": "PRODUCES",
-              "source": "4096",
-              "target": "211831",
-              "id": "ca0d658b-0edb-42e4-99eb-1a20def10180"
+              "source": "d0085984-cba1-4ccd-b06b-7bd2bd2f560b",
+              "target": "fe851780-e40c-4ed5-affd-4f130fc67c0d",
+              "id": "9fcca6b9-25ff-4e78-9a55-166682acd19a"
             },
             "position": {
               "x": 0,
@@ -1183,9 +1910,9 @@
           {
             "data": {
               "label": "TREATS",
-              "source": "936",
-              "target": "8093",
-              "id": "62d08e4b-e748-4de7-8bc1-92185e417dd9"
+              "source": "4b8f6102-012d-4af5-9ebf-d6b15a0a455a",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "389075f8-975d-45c7-a5c8-5201eb71f65e"
             },
             "position": {
               "x": 0,
@@ -1203,9 +1930,9 @@
           {
             "data": {
               "label": "TREATS",
-              "source": "106694",
-              "target": "8093",
-              "id": "21c8e723-21f4-42e3-8e88-502e952856c4"
+              "source": "9c73bf30-da6d-401d-9894-32836bebb108",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "1e3ff1c7-6927-4bb2-9da9-298d63e8d9a0"
             },
             "position": {
               "x": 0,
@@ -1223,9 +1950,9 @@
           {
             "data": {
               "label": "TREATS",
-              "source": "4096",
-              "target": "8093",
-              "id": "b3434469-4019-4f7e-9d33-5eaa1ac5d0ee"
+              "source": "fe851780-e40c-4ed5-affd-4f130fc67c0d",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "aeb891d8-8b83-4403-804e-eab103b068ee"
             },
             "position": {
               "x": 0,
@@ -1243,9 +1970,9 @@
           {
             "data": {
               "label": "TREATS",
-              "source": "211831",
-              "target": "8093",
-              "id": "7e3aba09-3325-4578-b53c-3733c7b946f2"
+              "source": "05c43e48-5a95-4bcd-bdd9-3f87f182e442",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "96001037-e2cd-45c6-979a-63441ddb21c7"
             },
             "position": {
               "x": 0,
@@ -1263,9 +1990,9 @@
           {
             "data": {
               "label": "TREATS",
-              "source": "291390",
-              "target": "8093",
-              "id": "f87a367e-b86c-47bf-b955-85ea22a5a0e9"
+              "source": "7f25fc3d-05c2-4b0d-8c1f-465c3b375569",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "4892d0bd-6add-4275-bee3-b0f5f5936408"
             },
             "position": {
               "x": 0,
@@ -1282,10 +2009,10 @@
           },
           {
             "data": {
-              "label": "PRODUCES",
-              "source": "7520",
-              "target": "106694",
-              "id": "89b66f80-4e00-4bbc-9a4a-2979cf35db8b"
+              "label": "TREATS",
+              "source": "b4455259-e77e-4f16-8c74-55b237f19d4a",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "b7665681-dee7-42fe-9735-0d9c076591a1"
             },
             "position": {
               "x": 0,
@@ -1302,10 +2029,10 @@
           },
           {
             "data": {
-              "label": "PRODUCES",
-              "source": "936",
-              "target": "211831",
-              "id": "532b7ce2-28e5-4b8b-86ca-6a331e9d1659"
+              "label": "TREATS",
+              "source": "2cd9f5ac-a65c-4e86-b785-e2d7c6d236cb",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "e9720c84-0dde-4b2a-9adf-57cff5448630"
             },
             "position": {
               "x": 0,
@@ -1322,10 +2049,10 @@
           },
           {
             "data": {
-              "label": "PRODUCES",
-              "source": "936",
-              "target": "106694",
-              "id": "73e5167a-b1ea-49c3-8290-f889a628a60a"
+              "label": "TREATS",
+              "source": "d0085984-cba1-4ccd-b06b-7bd2bd2f560b",
+              "target": "33f0e8d9-f0a2-4cd3-a6a8-d1e17eb29131",
+              "id": "4813873c-eb97-43ee-b639-f81b336d8b85"
             },
             "position": {
               "x": 0,
