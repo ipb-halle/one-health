@@ -51,6 +51,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [queryResults, setQueryResults] = useState<any[]>([]);
     const [searching, setSearching] = useState<boolean>(false);
     const [types, setTypes] = useState<any[]>([]);
+    const [tabPanelActiveIndex, setTabPanelActiveIndex] = useState<number>(0);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -112,6 +113,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         async (id:any) => {
             setElement(await graphService.getNode(id, messageService!)); 
             setSelectionType('node');
+            setTabPanelActiveIndex(1);
         }, []
     )
 
@@ -121,6 +123,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             setLinks(edges);
             setSelectedLink(edge);
             setSelectionType('edge');
+            setTabPanelActiveIndex(1);
+
         }, []
     )
 
@@ -557,7 +561,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                     >
 
 
-                        <TabView>
+                        <TabView activeIndex={tabPanelActiveIndex} onTabChange={(e) => setTabPanelActiveIndex(e.index)}>
                             <TabPanel header="Legend">
                                 <DataView value={types} listTemplate={typeListTemplate}>
 
