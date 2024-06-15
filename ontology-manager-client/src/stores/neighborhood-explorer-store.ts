@@ -6,6 +6,10 @@ import { injectable } from "inversify";
 @injectable()
 export class INeighborhoodExplorerStore {
 
+    nodes: any[] = [];
+    edges: any[] = [];
+    elements: any;
+
     getIds(): any[] {
         throw Error();
     }

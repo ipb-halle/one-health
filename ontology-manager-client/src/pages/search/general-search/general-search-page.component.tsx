@@ -178,7 +178,8 @@ export const GeneralSearchPageComponent: React.FC = () => {
                                 icon="fa fa-compass" 
                                 style={{marginLeft: 5}} 
                                 onClick={() => {
-                                    neighborhoodExplorerStore.setIds(selectedElements.map(x => { return {id: x.id, color: x.color, label: x.name }}));
+                                    neighborhoodExplorerStore.nodes = neighborhoodExplorerStore.nodes.concat(selectedElements.map(x => { return {data: {id: x.id, color: x.color, label: x.name }}}));
+
                                     navigate('/neighborhood-explorer');
                                 }}
                                 tooltip="Show selection in neighborhood explorer"

@@ -80,25 +80,32 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         // setElements([...newElements]);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        const nodes = neighborhoodExplorerStore.getIds();
-        if (nodes.length > 0){
-            const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
-            myComponentRef.current!.setElements(JSON.stringify(graph));
-        } else {
-            const viz = await graphVisualizationHistoryService.get("0", messageService!);
-            myComponentRef.current!.setElements(viz.visualization);
-        }
+        // const nodes = neighborhoodExplorerStore.getIds();
+        // if (nodes.length > 0){
+        //     const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
+        //     myComponentRef.current!.setElements(JSON.stringify(graph));
+        // } else {
+        //     const viz = await graphVisualizationHistoryService.get("0", messageService!);
+        //     myComponentRef.current!.setElements(viz.visualization);
+        // }
+
+        // console.log(neighborhoodExplorerStore.elements);
+        // if (neighborhoodExplorerStore.elements?.nodes){
+        //     console.log("here");
+        //     console.log(neighborhoodExplorerStore.elements.nodes);
+        //     myComponentRef.current!.setElements(JSON.stringify(neighborhoodExplorerStore.elements))
+        // }
 
         const entityTypes = await entityTypeService.getAll(messageService!);
         setTypes(entityTypes.map(x => {return {name: x.name, id: x.id, color: x.color}}));
     };
 
 
+
+
     useEffect(() => {
         init();
 
-        return () => {
-        };
     }, []);
     
     const onNodeClickHandler = useCallback(
@@ -520,8 +527,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                             <div style={{height: "100%"}}>
 
                             <MemoChart 
+                                key="cytoscapeChart"
                                 ref={myComponentRef}
-                                elements={elements} 
+                                elements={[]} 
                                 contextMenu={true}
                                 onNodeClickHandler={onNodeClickHandler} 
                                 onEdgeClickHandler={onEdgeClickHandler}
@@ -531,7 +539,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 edgeLineColor="black"
                                 edgeLabelColor="black"   
                                 graphService={graphService}  
-                                messageService={messageService!}                      
+                                messageService={messageService!}   
+                                store={neighborhoodExplorerStore}                   
                                 >
                             </MemoChart>
                             </div>

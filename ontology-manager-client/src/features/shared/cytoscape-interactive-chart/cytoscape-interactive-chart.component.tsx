@@ -6,6 +6,8 @@ import Cytoscape from 'cytoscape';
 import { MessageService } from "../messages";
 import { GraphService } from "../../../services";
 import { darkenHexColor } from "../../../utils";
+import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explorer-store";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 Cytoscape.use(cxtmenu);
 
@@ -27,6 +29,7 @@ interface CytoscapeInteractiveChartProps{
     edgeLabelColor: any;
     graphService: GraphService;
     messageService: MessageService;
+    store: INeighborhoodExplorerStore;
 };
 
 const HIGHLIGHT = "__highlight";
@@ -36,6 +39,8 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     messageService : MessageService | undefined;
     graphService : GraphService;
     cytoscapeCore: any;
+    store: INeighborhoodExplorerStore;
+    elements: any;
 
     selectedNodes : any[] = [];
     currentSelectedNode: number = 0;
@@ -45,17 +50,54 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     lockedNodes: Map<string, boolean> = new Map();
     lastTapTime = 0;
 
+    rendered: boolean = false;
 
 
+    // Component life cycle
 
     constructor(props: CytoscapeInteractiveChartProps) {
         super(props);
 
         this.graphService = props.graphService;
         this.messageService = props.messageService;
+        this.store = props.store;
+        console.log("running constructor");
+
+        this.elements = [];
+
+
+        if (props.store.nodes){
+            this.elements = [...props.store.nodes];
+        } 
+        if (props.store.edges){
+            this.elements = [...this.elements, ...props.store.edges];
+        }
         // Initialize state if needed
 
+    }  
+
+    componentDidMount(): void {
+        this.configureCytoscape(this.cytoscapeCore);
     }
+
+    componentWillUnmount() {
+        console.log("saving");
+        this.store.elements = this.cytoscapeCore.json().elements;
+
+
+        const nodes = this.cytoscapeCore.elements().jsons()
+                                        .filter((x:any) => x.group==="nodes" && x.data.id !== HIGHLIGHT);
+             
+        const edges = this.cytoscapeCore.elements().jsons()
+                                        .filter((x:any) => x.group==="edges");
+
+        this.store.nodes = nodes;
+        this.store.edges = edges;
+        console.log(this.store.elements);
+
+    }
+
+
 
     findNode (query: string) {
         this.cytoscapeCore.nodes().forEach((node:any) => {
@@ -143,10 +185,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.cytoscapeCore.layout(this.layout).run(); 
     }
 
-    componentDidMount(): void {
-        this.configureCytoscape(this.cytoscapeCore);
-    }
-
+    
 
     reset(): void {
         this.selectedNodes = [];
@@ -166,6 +205,11 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         const nodes = this.cytoscapeCore.elements().jsons()
                                         .filter((x:any) => x.group==="nodes" && x.data.id !== HIGHLIGHT)
                                         .map((x:any) => x.data.id);
+        return nodes;
+    }
+
+    getEles() {
+        const nodes = this.cytoscapeCore.json().elements;
         return nodes;
     }
 
@@ -195,8 +239,26 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
 
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;
+        const store = this.props.store;
+
+        const x = () => {
+            this.rendered = true;
+        }
+
+
 
         if (cytoscapeCore){
+
+
+            cytoscapeCore.ready(function() {
+                console.log('Cytoscape canvas has been rendered');
+                // Your code to run after the graph has been rendered
+                // if (store.elements?.nodes){
+                //         cytoscapeCore.add(store.elements);
+                // };
+
+                x();
+              });
 
             cytoscapeCore.on('layoutstop',() => {
 
@@ -534,11 +596,11 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
 
         return <CytoscapeComponent
              cy={(cy) => { this.cytoscapeCore = cy }}
-             elements={this.props.elements}
+             elements={this.elements}
              styleEnabled={true}
              maxZoom={1}
              stylesheet={[this.styles, this.edgeStyle, this.highlightedStyle, this.test, this.buttonStyle, this.selectedStyle, this.lockeStyles]}
-             layout={this.layout}
+            //  layout={this.layout}
              // "#343843"
              style={{ width: '100%', height: '100%', backgroundColor: this.props.backgroundColor }}/>
     }
