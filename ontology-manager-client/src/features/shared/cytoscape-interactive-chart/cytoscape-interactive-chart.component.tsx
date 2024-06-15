@@ -51,6 +51,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     lastTapTime = 0;
 
     rendered: boolean = false;
+    allLock = false;
 
 
     // Component life cycle
@@ -236,6 +237,25 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         const node = this.cytoscapeCore.getElementById(element.data.id);
         this.cytoscapeCore.center(node);
     }
+
+
+    // Lock/Unlock functionality
+
+    toggleAllLock() {
+        this.allLock = !this.allLock;
+        this.lockedNodes = new Map();
+        if (this.allLock) {
+            this.cytoscapeCore.elements().nodes().forEach((node:any) => {
+                node.addClass('locked');
+                this.lockedNodes.set(node.id(), true);
+            });
+        } else {
+            this.cytoscapeCore.elements().nodes().forEach((node:any) => {
+                node.removeClass('locked');
+            })
+        }
+    }
+
 
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;

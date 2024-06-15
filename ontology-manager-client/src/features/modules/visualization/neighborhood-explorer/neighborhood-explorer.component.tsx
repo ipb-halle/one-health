@@ -485,6 +485,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                         tooltipOptions={{position: 'bottom', showDelay: 1000}}
                                     
                                     />
+                                    <Button
+                                        icon="pi pi-lock"
+                                        tooltip='Lock/Unlock all nodes'
+                                        onClick={(e) => {myComponentRef.current!.toggleAllLock();}}
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
                                     <Button 
                                         icon="pi pi-save" 
                                         onClick={ async (e) => {
