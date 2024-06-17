@@ -438,8 +438,12 @@ export const CompoundSearchPageComponent: React.FC = () => {
                         tooltip="Show selected records in neighborhood explorer" 
                         tooltipOptions={{showDelay: 800, position: 'bottom'}}
                         onClick={() => {
-                            neighborhoodExplorerStore.setIds(selectedCompounds.map(x => { return {id: x.id, color: "#343ea0", label: x.name }}));
+                            console.log(selectedCompounds);
+                            neighborhoodExplorerStore.setIds(selectedCompounds.map(x => { return {id: x.id, color: "#343ea0", label: x.molformula }}));
+                            neighborhoodExplorerStore.nodes = neighborhoodExplorerStore.nodes.concat(selectedCompounds.map(x => { return {data: {id: x.id, color: "#343ea0", label: x.molecularFormula }}}));
                             navigate('/neighborhood-explorer');
+
+
                         }}
                     ></Button>
                     

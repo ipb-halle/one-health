@@ -51,6 +51,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
     const [queryResults, setQueryResults] = useState<any[]>([]);
     const [searching, setSearching] = useState<boolean>(false);
     const [types, setTypes] = useState<any[]>([]);
+    const [tabPanelActiveIndex, setTabPanelActiveIndex] = useState<number>(0);
 
     let savedVisualization: ISavedGraphVisualization = {
         id: "",
@@ -80,31 +81,39 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
         // setElements([...newElements]);
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        const nodes = neighborhoodExplorerStore.getIds();
-        if (nodes.length > 0){
-            const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
-            myComponentRef.current!.setElements(JSON.stringify(graph));
-        } else {
-            const viz = await graphVisualizationHistoryService.get("0", messageService!);
-            myComponentRef.current!.setElements(viz.visualization);
-        }
+        // const nodes = neighborhoodExplorerStore.getIds();
+        // if (nodes.length > 0){
+        //     const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
+        //     myComponentRef.current!.setElements(JSON.stringify(graph));
+        // } else {
+        //     const viz = await graphVisualizationHistoryService.get("0", messageService!);
+        //     myComponentRef.current!.setElements(viz.visualization);
+        // }
+
+        // console.log(neighborhoodExplorerStore.elements);
+        // if (neighborhoodExplorerStore.elements?.nodes){
+        //     console.log("here");
+        //     console.log(neighborhoodExplorerStore.elements.nodes);
+        //     myComponentRef.current!.setElements(JSON.stringify(neighborhoodExplorerStore.elements))
+        // }
 
         const entityTypes = await entityTypeService.getAll(messageService!);
         setTypes(entityTypes.map(x => {return {name: x.name, id: x.id, color: x.color}}));
     };
 
 
+
+
     useEffect(() => {
         init();
 
-        return () => {
-        };
     }, []);
     
     const onNodeClickHandler = useCallback(
         async (id:any) => {
             setElement(await graphService.getNode(id, messageService!)); 
             setSelectionType('node');
+            setTabPanelActiveIndex(1);
         }, []
     )
 
@@ -114,6 +123,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             setLinks(edges);
             setSelectedLink(edge);
             setSelectionType('edge');
+            setTabPanelActiveIndex(1);
+
         }, []
     )
 
@@ -474,6 +485,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                         tooltipOptions={{position: 'bottom', showDelay: 1000}}
                                     
                                     />
+                                    <Button
+                                        icon="pi pi-lock"
+                                        tooltip='Lock/Unlock all nodes'
+                                        onClick={(e) => {myComponentRef.current!.toggleAllLock();}}
+                                        tooltipOptions={{position: 'bottom', showDelay: 1000}}
+                                    />
                                     <Button 
                                         icon="pi pi-save" 
                                         onClick={ async (e) => {
@@ -520,8 +537,9 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                             <div style={{height: "100%"}}>
 
                             <MemoChart 
+                                key="cytoscapeChart"
                                 ref={myComponentRef}
-                                elements={elements} 
+                                elements={[]} 
                                 contextMenu={true}
                                 onNodeClickHandler={onNodeClickHandler} 
                                 onEdgeClickHandler={onEdgeClickHandler}
@@ -531,7 +549,8 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                 edgeLineColor="black"
                                 edgeLabelColor="black"   
                                 graphService={graphService}  
-                                messageService={messageService!}                      
+                                messageService={messageService!}   
+                                store={neighborhoodExplorerStore}                   
                                 >
                             </MemoChart>
                             </div>
@@ -548,7 +567,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                     >
 
 
-                        <TabView>
+                        <TabView activeIndex={tabPanelActiveIndex} onTabChange={(e) => setTabPanelActiveIndex(e.index)}>
                             <TabPanel header="Legend">
                                 <DataView value={types} listTemplate={typeListTemplate}>
 
