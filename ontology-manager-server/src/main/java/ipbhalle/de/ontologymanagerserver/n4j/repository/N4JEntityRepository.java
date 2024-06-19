@@ -204,6 +204,9 @@ public class N4JEntityRepository implements IEntityRepository {
 
         var entity = neo4jTemplate.findOne(getNodeQuery, new HashMap<>(), N4JEntity.class);
 
+        if (entity.isEmpty())
+            return null;
+
         Node sourceNode = Cypher.node("Source").named("s");
         Relationship fromSourceRelationship = entityNode.relationshipTo(sourceNode, "FROM_SOURCE").named("r");
 
@@ -218,8 +221,17 @@ public class N4JEntityRepository implements IEntityRepository {
 
         var references = neo4jTemplate.findAll(getReferencesQuery, ReferenceDTO.class);
 
-        if (entity.isEmpty())
-            return null;
+
+        Node synonymNode = Cypher.node("Synonym").named("s");
+        Relationship hasSynonymRelationship = entityNode.relationshipTo(synonymNode, "HAS_SYNONYM").named("r");
+        Statement getSynonymsQuery = Cypher
+                .match(hasSynonymRelationship)
+                .where(entityNode.property("OHUUID").isEqualTo(nodeIdParam))
+                .returning(
+                        synonymNode.property("name").as("name")
+                ).build();
+
+        var synonyms = neo4jTemplate.findAll(getSynonymsQuery, SynonymDTO.class);
 
         var entityValue = entity.get();
 
@@ -257,6 +269,7 @@ public class N4JEntityRepository implements IEntityRepository {
 
         entityDto.setProperties(propertyValues);
         entityDto.setReferences(references);
+        entityDto.setSynonyms(synonyms.stream().map(SynonymDTO::getName).toList());
 
         return entityDto;
 

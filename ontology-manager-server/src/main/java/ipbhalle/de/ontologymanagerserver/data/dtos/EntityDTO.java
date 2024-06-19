@@ -8,6 +8,7 @@ public class EntityDTO {
     private List<String> labels;
     private List<PropertyValueDTO> properties;
     private List<ReferenceDTO> references;
+    private List<String> synonyms;
     private String color;
 
     public EntityDTO() {
@@ -78,5 +79,13 @@ public class EntityDTO {
 
     public void setReferences(List<ReferenceDTO> references) {
         this.references = references;
+    }
+
+    public List<String> getSynonyms() {
+        return synonyms;
+    }
+
+    public void setSynonyms(List<String> synonyms) {
+        this.synonyms = synonyms;
     }
 }
