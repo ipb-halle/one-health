@@ -259,25 +259,17 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
 
     configureCytoscape (cytoscapeCore: any) {
         const contextMenu = this.props.contextMenu;
-        const store = this.props.store;
-
-        const x = () => {
-            this.rendered = true;
-        }
-
-
 
         if (cytoscapeCore){
 
 
-            cytoscapeCore.ready(function() {
+            cytoscapeCore.ready(() => {
                 console.log('Cytoscape canvas has been rendered');
                 // Your code to run after the graph has been rendered
                 // if (store.elements?.nodes){
                 //         cytoscapeCore.add(store.elements);
                 // };
-
-                x();
+                cytoscapeCore.fit();
               });
 
             cytoscapeCore.on('layoutstop',() => {

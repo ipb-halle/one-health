@@ -76,26 +76,13 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
 
 
     const init = async () => {
-        // let graph = await graphService.getInitial(messageService!);
-        // const newElements = [...graph.nodes.map((x:any)=>{ return {data: x}}), ...graph.links?.map((x:any)=>{ return {data: x}})];
-        // setElements([...newElements]);
+       
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        // const nodes = neighborhoodExplorerStore.getIds();
-        // if (nodes.length > 0){
-        //     const graph = {nodes:  nodes.map(x => {return {data: x}}), edges: []};
-        //     myComponentRef.current!.setElements(JSON.stringify(graph));
-        // } else {
-        //     const viz = await graphVisualizationHistoryService.get("0", messageService!);
-        //     myComponentRef.current!.setElements(viz.visualization);
-        // }
-
-        // console.log(neighborhoodExplorerStore.elements);
-        // if (neighborhoodExplorerStore.elements?.nodes){
-        //     console.log("here");
-        //     console.log(neighborhoodExplorerStore.elements.nodes);
-        //     myComponentRef.current!.setElements(JSON.stringify(neighborhoodExplorerStore.elements))
-        // }
+        if (!neighborhoodExplorerStore.nodes || neighborhoodExplorerStore.nodes.length <= 0){
+            const viz = await graphVisualizationHistoryService.get("0", messageService!);
+            myComponentRef.current!.setElements(viz.visualization);
+        }
 
         const entityTypes = await entityTypeService.getAll(messageService!);
         setTypes(entityTypes.map(x => {return {name: x.name, id: x.id, color: x.color}}));
@@ -197,6 +184,25 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
             {list}
           </>
             ];
+    };
+
+    const nodeSynonymsTemplate = (items: any[]) : ReactNode[] | undefined =>  {
+        if (!items || items.length === 0) return undefined;
+
+        let list = items.sort().map((query, index) => {
+            return (<div style={{padding: 5, backgroundColor: "#F8F9FA", marginBottom: 5, borderRadius: 10, border: '1px solid #DEE2E6', overflowX: 'scroll'} }>
+
+                    <span style={{marginLeft: 5}}>{query}</span>
+                  
+                </div>)
+        });
+
+        return [
+          <>
+            <b style={{paddingLeft: "3px"}}>Synonyms:</b>
+            {list}
+          </>
+        ];
     };
 
     const nodeReferencesTemplate = (items: any[]) : ReactNode[] | undefined =>  {
@@ -591,6 +597,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                             <MolecularDrawComponent element={element}></MolecularDrawComponent>
                                             <canvas id="mol_structure" width="500" height="500" style={{display: 'none'}}></canvas>
                                             <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
+                                            <DataView value={element.synonyms} listTemplate={nodeSynonymsTemplate}/>
                                             <DataView value={element.references} listTemplate={nodeReferencesTemplate} />
                                             </div>
                                     </div>
