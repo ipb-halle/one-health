@@ -79,7 +79,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
        
         setQueryHistory(await graphVisualizationHistoryService.getAllAsOptions(messageService!));
 
-        if (!neighborhoodExplorerStore.elements?.nodes){
+        if (!neighborhoodExplorerStore.nodes){
             const viz = await graphVisualizationHistoryService.get("0", messageService!);
             myComponentRef.current!.setElements(viz.visualization);
         }
