@@ -92,6 +92,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
 
     const emptySankey : Partial<SankeyData> =    {
         node: {
+            pad: 30,
             label: [],
         },
         link: {
@@ -103,6 +104,7 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         name: 'myplot',
         orientation: 'h',
         visible: true,
+        arrangement: "fixed"
         // legend: '',
         // legendrank: 1,
         // legendgrouptitle: {},
@@ -120,6 +122,18 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         // valuesuffix: '',
         // uirevision: 23,
     }
+
+    const chartConfig : Partial<Plotly.Config> = {
+        toImageButtonOptions : {
+            format: "svg",
+            filename: "co-occurrences.svg"
+        },
+    }
+
+    const chartLayout: Partial<Plotly.Layout> = {
+        autosize: true
+    }
+
     const [sankeyData, setSankeyData] = useState<Partial<SankeyData>>(
      emptySankey
     )
@@ -201,12 +215,22 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);
 
-        setSankeyData({...sankeyData, node: {label: nodes, color: colors}, link: {
-            source: sourcex,
-            target: targetx,
-            value: valuex,
-            label: labelx
-        }})
+        setSankeyData(
+            {
+                ...sankeyData,
+                arrangement:"fixed",
+                node: {
+                    label: nodes, 
+                    color: colors
+                }, 
+                link: {
+                    source: sourcex,
+                    target: targetx,
+                    value: valuex,
+                    label: labelx
+                }
+            }
+        );
 
     }
 
@@ -410,11 +434,15 @@ const CoOcurrenceSummaryPageComponent: React.FC = () => {
                             
                             <div style={{height: "100%", width: "77%",  paddingLeft: 15, paddingRight: 1}}>
                                 <Plot
+                                    config={chartConfig}
                                     data={[sankeyData]}
-                                    layout={{ autosize: true }}
+                                    layout={chartLayout}
                                     useResizeHandler={true}
                                     onClick={async (event:any) => 
                                         {
+
+                                            if (!event.points[0].source || !event.points[0].target)
+                                                return;
 
                                             const newLeftQuery: ITypeQuery = {...leftTypeQuery};
                                             const newRightQuery: ITypeQuery = {...rightTypeQuery};
