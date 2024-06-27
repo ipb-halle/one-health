@@ -1,6 +1,7 @@
 import heroSectionImage from '../../assets/img/hero-section-bg.png';
 import logoGlacier from '../../assets/logo_glacier.png';
 import logoIpb from '../../assets/logo_ipb.png';
+import logoForeign from "../../assets/logo_foreign_office.png";
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import neighborhoodExplorerImage from "../../assets/img/neighborhood-explorer.png";
@@ -87,6 +88,13 @@ const HomePageComponent: React.FC = () => {
                             <small style={{textAlign: 'center'}}>developed and curated by</small>
                             <img alt="logo" src={logoGlacier} height="80" style={{marginRight: '3px', marginLeft: '50px'}}></img>
                             <img alt="logo" src={logoIpb} height="80" style={{marginRight: '3px', marginLeft: '50px'}}></img>
+
+                            <div style={{marginTop: "15px"}}>
+
+                            <small style={{textAlign: 'center'}}>funded by the German Federal Foreign Office</small>
+                            <img alt="logo" src={logoForeign} height="100" style={{marginRight: '3px', marginLeft: '50px'}}></img>
+                            </div>
+
 
                             
                             <div style={{height: "20px"}}></div>
