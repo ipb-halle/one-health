@@ -595,7 +595,6 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                             </div>
                                             <Divider></Divider>
                                             <MolecularDrawComponent element={element}></MolecularDrawComponent>
-                                            <canvas id="mol_structure" width="500" height="500" style={{display: 'none'}}></canvas>
                                             <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
                                             <DataView value={element.synonyms} listTemplate={nodeSynonymsTemplate}/>
                                             <DataView value={element.references} listTemplate={nodeReferencesTemplate} />
