@@ -24,6 +24,7 @@ import { INeighborhoodExplorerStore } from "../../../stores/neighborhood-explore
 import { ITutorialStore, STORES } from "../../../stores";
 import { useNavigate } from "react-router-dom";
 import CompoundSearchPageTourComponent from "./compound-search-page-tour.component";
+import MolecularDrawComponent from "../../../features/shared/molecular-draw/molecular-draw.component";
 const OpenChemLib = require("openchemlib/full");
 
 
@@ -238,10 +239,8 @@ export const CompoundSearchPageComponent: React.FC = () => {
     }
 
 
-    const structureDrawTemplate = (compound:any) => {
-        return <>
-            <MolecularDrawComponent element={compound}/>
-        </>
+    const structureDrawTemplate = (compound:any, options:any) => {
+        return <MolecularDrawComponent smiles={compound.smiles} xkey={options.rowIndex}/>
     }
 
     return <div className="page-container-narrow">
@@ -475,36 +474,5 @@ export const CompoundSearchPageComponent: React.FC = () => {
 
     </div>;
 };
-
-
-interface MolecularDrawComponentProps {
-    element:any
-}
-
-const MolecularDrawComponent: React.FC<MolecularDrawComponentProps> = ({element}) => {
-    
-    const [hidden, setHidden] = useState<boolean>(false);
-    
-    useEffect(() => {
-        const smiles = element.smiles;
-
-        if (smiles){
-            setHidden(false);
-            const canvas = document.getElementById(`molecular-draw-${element.id}`) as HTMLCanvasElement;
-            const molecule = OpenChemLib.Molecule.fromSmiles(smiles);
-        
-            OpenChemLib.StructureView.drawMolecule(canvas, molecule);
-            // renderer.draw(molecule, 'molecular-draw');
-        } else {
-            setHidden(true);
-        }
-    }, [element])
-
-
-    return (
-        <canvas id={`molecular-draw-${element.id}`} hidden={hidden}></canvas>
-    );
-};
-
 
 export default CompoundSearchPageComponent;

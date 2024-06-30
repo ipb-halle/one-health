@@ -29,7 +29,7 @@ function App() {
                     <Route path="visualization/co-occurrence-search/" element={<CoOcurrencesSummaryPageComponent/>}/>
 
                     <Route path="documentation" element={<DocumentationPageComponent/>}/>
-                    <Route path="test" element={<TestPageComponent/>}/>
+                    {/* <Route path="test" element={<TestPageComponent/>}/> */}
 
                 </Route>
             </Routes>

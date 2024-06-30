@@ -594,7 +594,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({graphServi
                                             <Badge value={element.type} style={{ background: darkenHexColor(element.color, -140), border: `solid 2px ${element.color}`, height: 27, color: 'black', marginRight: 3, marginBottom: 3 }}/>
                                             </div>
                                             <Divider></Divider>
-                                            <MolecularDrawComponent element={element}></MolecularDrawComponent>
+                                            <MolecularDrawComponent smiles={element?.properties.find((x:any) => x.name === "SMILES")?.value} xkey={0}></MolecularDrawComponent>
                                             <DataView value={element.properties} listTemplate={nodePropertiesTemplate} />
                                             <DataView value={element.synonyms} listTemplate={nodeSynonymsTemplate}/>
                                             <DataView value={element.references} listTemplate={nodeReferencesTemplate} />

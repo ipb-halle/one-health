@@ -109,13 +109,13 @@ const Header: React.FC = () => {
                 navigate('/documentation');
             }
         },
-        {
-            label: 'Contact',
-            icon: 'pi pi-envelope',
-            command: () => {
-                navigate('/test');
-            }
-        }
+        // {
+        //     label: 'Contact',
+        //     icon: 'pi pi-envelope',
+        //     command: () => {
+        //         navigate('/test');
+        //     }
+        // }
     ];
 
     const start = (
