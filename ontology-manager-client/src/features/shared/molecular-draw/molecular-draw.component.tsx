@@ -1,35 +1,42 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 const OpenChemLib = require("openchemlib/full");
+const SmilesDrawerLib = require('smiles-drawer');
+
+
 
 interface MolecularDrawComponentProps {
-    element:any
+    smiles: string,
+    xkey: number,
 }
 
 
 
-const MolecularDrawComponent: React.FC<MolecularDrawComponentProps> = ({element}) => {
-    
+const MolecularDrawComponent: React.FC<MolecularDrawComponentProps> = ({smiles, xkey}) => {    
     const [hidden, setHidden] = useState<boolean>(false);
-    
-    useEffect(() => {
-        const smiles = element.properties.find((x:any) => x.name === "SMILES")
 
-        if (smiles){
-            setHidden(false);
-            const canvas = document.getElementById('molecular-draw') as HTMLCanvasElement;
-            const molecule = OpenChemLib.Molecule.fromSmiles(smiles.value);
+    useEffect(() => {
+        const svg = document.getElementById('svg-canvas-' + xkey.toString());
         
-            OpenChemLib.StructureView.drawMolecule(canvas, molecule);
-            // renderer.draw(molecule, 'molecular-draw');
+        if (smiles && svg){
+            setHidden(false);
+            let smilesDrawer = new SmilesDrawerLib.SvgDrawer({compactDrawing: false});
+
+            SmilesDrawerLib.parse(smiles, (tree:any) => {
+                smilesDrawer.draw(tree, svg, "light", false);
+              }, (error:any) => {
+                console.error(error);
+              });
         } else {
             setHidden(true);
         }
-    }, [element])
+    }, [smiles])
 
 
     return (
-        <canvas id="molecular-draw" hidden={hidden}></canvas>
+        <div hidden={hidden}>
+        <svg id={"svg-canvas-" + xkey.toString()} ></svg>
+        </div>
     );
 };
 
