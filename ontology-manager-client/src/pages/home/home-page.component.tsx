@@ -19,7 +19,7 @@ const HomePageComponent: React.FC = () => {
     const heroSectionRow = () => {
 
         const neighborhoodExplorerCardHeader = (
-            <img alt="Neighborhood Explorer" src={neighborhoodExplorerImage} style={{height: "100%"}}></img>
+            <img alt="Neighborhood Explorer" src={neighborhoodExplorerImage} style={{height: "15rem"}}></img>
         );
     
         const neighborhoodExplorerCardFooter = (
@@ -28,7 +28,7 @@ const HomePageComponent: React.FC = () => {
 
 
         const coOccurrencesSummaryCardHeader = (
-            <img alt="Co-Occurrences Summary" src={coocurrencesSummaryImage} style={{height: "100%"}}></img>
+            <img alt="Co-Occurrences Summary" src={coocurrencesSummaryImage} style={{height: "15rem"}}></img>
         );
         
         const coOccurrencesSummaryCardFooter = (
@@ -37,7 +37,7 @@ const HomePageComponent: React.FC = () => {
     
 
         const contributeCardHeader = (
-            <img alt="Contribute" src={contributeImage} style={{height: "100%"}}></img>
+            <img alt="Contribute" src={contributeImage} style={{height: "15rem"}}></img>
         );
     
         const contributeCardFooter = (
@@ -46,7 +46,14 @@ const HomePageComponent: React.FC = () => {
     
         return (
             <div className='row' id='hero-section'>
-                <div className='col-6'>
+                <div className='home-hero-section-background-mobile'>
+                <img
+                        src={heroSectionImage}
+                        alt="Your SVG"
+                        style={{ width: '100%', height: '100%'}}
+                    />
+                </div>
+                <div className='col-lg-6'>
                     <div style={{width: '100%', height: '100%',paddingLeft: '10%', paddingRight: '10%', paddingTop: '30px', paddingBottom: '30px' }} >
 
                         <h2 style={{textAlign: 'center'}}>
@@ -57,29 +64,27 @@ const HomePageComponent: React.FC = () => {
                             using an advanced data collection, exchange and analysis platform, with focus on the flora and epidemiological needs of Latin-America
                         </p>
                         
-                        <div className='row home-card-section' style={{marginTop: "30px"}} >
-                            <div className='col-4'>
-                                <Card title="Explore" footer={neighborhoodExplorerCardFooter} header={neighborhoodExplorerCardHeader} className="md:w-25rem">
+                        <div className='home-hero-section-card-container' style={{marginTop: "30px"}} >
+                
+                                <Card title="Explore" footer={neighborhoodExplorerCardFooter} header={neighborhoodExplorerCardHeader}>
                                     <p>
                                         Explore the connections found in scientific data between species, natural products and diseases
                                     </p>
                                 </Card>
-                            </div>
-                            <div className='col-4'>
-                                <Card title="Discover" footer={coOccurrencesSummaryCardFooter} header={coOccurrencesSummaryCardHeader} className="md:w-25rem">
+
+
+                                <Card title="Discover" footer={coOccurrencesSummaryCardFooter} header={coOccurrencesSummaryCardHeader}>
                                     <p>
                                         Discover co-occurrences of scientific concepts found in literature and datasets
                                     </p>
                                 </Card>
-                            </div>
-                            <div className='col-4'>
-                                <Card title="Contribute" footer={contributeCardFooter} header={contributeCardHeader} className="md:w-25rem">
+
+                                <Card title="Contribute" footer={contributeCardFooter} header={contributeCardHeader}>
                                     <p>
                                         Contribute to the platform by uploading and analyzing your publications and datasets
                                     </p>
                                     <Tag severity="danger" value="Under development"></Tag>
                                 </Card>
-                            </div>
                         </div>
 
 
@@ -107,7 +112,7 @@ const HomePageComponent: React.FC = () => {
                     
                     </div>
                 </div>
-                <div className='col-6' style={{padding: 0}}>
+                <div className='col-lg-6 home-hero-section-background' style={{padding: 0}}>
                     <img
                         src={heroSectionImage}
                         alt="Your SVG"
