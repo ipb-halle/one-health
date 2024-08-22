@@ -50,7 +50,7 @@ const HomePageComponent: React.FC = () => {
                 <img
                         src={heroSectionImage}
                         alt="Your SVG"
-                        style={{ width: '100%', height: '100%'}}
+                        style={{ width: '100vw', height: '100%'}}
                     />
                 </div>
                 <div className='col-lg-6'>

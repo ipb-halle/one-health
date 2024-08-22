@@ -1,7 +1,7 @@
 @import '../../Constants.scss';
 
-.home-card-section .p-card {
-    height: 470px;
+.home-hero-section-card-container .p-card {
+    max-width: 350px;
 }
 
 .home-hero-section-card-container .p-card-content {
@@ -22,7 +22,7 @@
     gap: 15px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .home-hero-section-card-container {
         grid-template-rows: repeat(3, 1fr);
         grid-template-columns: none;
@@ -34,7 +34,7 @@
 }
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .home-hero-section-background-mobile {
         display: block;
     }
