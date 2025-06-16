@@ -110,8 +110,8 @@ const Header: React.FC = () => {
             }
         },
         {
-            label: 'Legal ...',
-            icon: 'pi pi-hand-o-up',
+            label: 'Legal Information',
+            icon: 'pi pi-exclamation-triangle',
             command: () => {
                 navigate('/legal');
             }
