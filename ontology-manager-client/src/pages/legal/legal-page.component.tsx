@@ -55,7 +55,7 @@ const LegalPageComponent: React.FC = () => {
         <div className="text-container">
             <h1>Privacy policy / GDPR declaration</h1>
             <p><i>Please note: This text is an automatic translation from a German original text. Its purpose is to inform you about 
-            your rights - not to deny any rights to you.</i></p>
+            your rights - not to deny any rights to you. This declaration applies to N1H.org, naturalonehealth.org and their sub-domains (hereinafter N1H.org).</i></p>
 
             <h2>Responsible Body</h2>
             <p>Responsible body for the purpose of the General Data Protection Regulation and other national data protection laws of the 
@@ -74,7 +74,7 @@ const LegalPageComponent: React.FC = () => {
 
         <div className="text-container">
             <h2>General information on data processing</h2>
-            <p>CRIMSY.ORG is aimed at the interested public (scientists, technical staff, students, etc.). The offer 
+            <p>N1H.org is aimed at the interested public (scientists, technical staff, students, etc.). The offer 
             can be used anonymously - there is no mechanism for registration or personalization. Even with anonymous use, however, 
             the processing of personal information (namely IP address, time of call, operating system and browser version, URL of 
             the requested resource and referrer) takes place. The temporary storage and processing of this data is 
@@ -91,14 +91,14 @@ const LegalPageComponent: React.FC = () => {
 
         <div className="text-container">
             <h2>Cookies, log files, ...</h2>
-            <p>CRIMSY.ORG does not use cookies. There is no (external) advertising, tracking pixels, browser fingerprinting, 
-            analytics or profiling on CRIMSY.org. We do not load resources from external servers. On CRIMSY.ORG you cannot buy 
+            <p>N1H.org does not use cookies. There is no (external) advertising, tracking pixels, browser fingerprinting, 
+            analytics or profiling on N1H.org. We do not load resources from external servers. On N1H.org you cannot buy 
             goods or services and you cannot register personally. There is no transfer of personal data to third parties.</p>
 
             <p>To monitor the servers and to support troubleshooting, anonymized log files are created by the servers. The log 
             files are deleted after 7 days at the latest.</p>
 
-            <p>The CRIMSY.ORG servers are operated in German data centers.</p>
+            <p>The N1H.org servers are operated in German data centers.</p>
         </div>
 
         <div className="text-container">
