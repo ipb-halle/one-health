@@ -11,3 +11,4 @@ export {default as NeighborhoodExplorerPageComponent} from "./visualization/neig
 export {default as CoOcurrencesSummaryPageComponent} from "./visualization/co-ocurrences-summary/co-ocurrence-summary-page.component";
 
 export {default as DocumentationPageComponent} from "./documentation/documentation-page.component";
+export {default as LegalPageComponent} from "./legal/legal-page.component";

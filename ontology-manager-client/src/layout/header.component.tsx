@@ -109,6 +109,14 @@ const Header: React.FC = () => {
                 navigate('/documentation');
             }
         },
+        {
+            label: 'Legal Information',
+            icon: 'pi pi-exclamation-triangle',
+            command: () => {
+                navigate('/legal');
+            }
+        },
+
         // {
         //     label: 'Contact',
         //     icon: 'pi pi-envelope',
