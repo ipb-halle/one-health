@@ -311,7 +311,7 @@ const LegalPageComponent: React.FC = () => {
         N1H.org is primarily targeted at and a tool for international scientists. As such, it is neither appropriate nor possible to adhere to the full extent of accessibility standards.
         Please also note that the N1H.org web application is work in progress. We're currently re-working our code to improve security, add new functionality and to boost accessibility. We need to ask for your 
         patience, because our manpower is limited.
-        We are aware of several accessibility issues in this version of N1H.org. Among them:
+        We have assessed this service according to <a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a> and are aware of several accessibility issues in this version of N1H.org. Among them:
         <ul>
         <li>page elements with poor contrasts</li>
         <li>very small font sizes</li>
@@ -341,7 +341,10 @@ const LegalPageComponent: React.FC = () => {
         39261 Zerbst/Anhalt<br/>
         Phone: 49 3923 751 - 175
         </p>
-
+        <p>
+        <b>Topicality</b>
+        We have assessed this service in June 2025. Next assessment is due in one year.
+       </p>
     </AccordionTab>
     </Accordion>
     
