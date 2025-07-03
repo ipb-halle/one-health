@@ -342,7 +342,7 @@ const LegalPageComponent: React.FC = () => {
         Phone: 49 3923 751 - 175
         </p>
         <p>
-        <b>Topicality</b>
+        <b>Topicality</b><br/>
         We have assessed this service in June 2025. Next assessment is due in one year.
        </p>
     </AccordionTab>
