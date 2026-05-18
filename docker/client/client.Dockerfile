@@ -1,6 +1,7 @@
 # Use a base image with Node.js pre-installed
 FROM node:22-slim AS build
 # Set the working directory inside the container
+
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if exists)

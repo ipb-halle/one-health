@@ -38,21 +38,15 @@ services:
       dockerfile: ./docker/client/client.Dockerfile
     ports:
       - "80:80"
+      - "5180:80"
     # - "443:443"
     hostname: www.example.com
     networks:
       - one-health-network
+      #- frontend
     volumes:
       - /srv/www/conf:/usr/local/apache2/conf
       - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
-      - "5180:80"
-    hostname: www.example.com
-    networks:
-      - frontend
-      # volumes:
-      #   - /srv/www/conf:/usr/local/apache2/conf
-      #   - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
-
     depends_on:
       - server
 
@@ -85,8 +79,8 @@ services:
     networks:
       - one-health-network
     volumes:
-      -  onehealth_pgsql:/var/lib/postgresql/data
-      - pg_data:/var/lib/postgresql/data
+      - onehealth_pgsql:/var/lib/postgresql/data
+      #- pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: one_health_user
       POSTGRES_PASSWORD: one_health_password
@@ -102,7 +96,6 @@ networks:
   one-health-network:
     driver: bridge
 
-
 volumes:
   onehealth_pgsql:
     external: true
@@ -110,4 +103,3 @@ volumes:
   onehealth_neo4j:
     external: true
     name: onehealth_neo4j
-
