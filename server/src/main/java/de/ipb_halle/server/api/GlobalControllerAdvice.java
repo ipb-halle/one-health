@@ -17,6 +17,7 @@ public class GlobalControllerAdvice {
     }
 
     private static class StringPropertyEditor extends java.beans.PropertyEditorSupport {
+
         @Override
         public void setAsText(String text) {
             try {
