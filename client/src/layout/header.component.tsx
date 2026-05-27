@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from 'primereact/button';
 
 import oneHealthLogo from '../assets/logo-n1h.png';
+
 import './header.component.scss';
 import { RootStoreContext } from '@/app/providers/store-provider';
 import { observer } from 'mobx-react-lite';
 import { PanelMenu } from 'primereact/panelmenu';
 import { Sidebar } from 'primereact/sidebar';
-import { Button } from 'primereact/button';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
 
     const baseItems: MenuItem[] = [
         {
