@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate, useLocation } from 'react-router-dom';
+
 import oneHealthLogo from '../assets/logo-n1h.png';
 import './header.component.scss';
 import { RootStoreContext } from '@/app/providers/store-provider';
@@ -14,62 +15,91 @@ const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const legalItems: MenuItem =
-    {
-        label: 'Legal',
-        icon: 'pi pi-file',
-        items: [
-            {
-                // icon: 'pi pi-compass',
-                label: 'Documentation',
-                command: () => {
-                    navigate('/documentation');
+    const baseItems: MenuItem[] = [
+        {
+            label: 'Visualization',
+            icon: 'pi pi-chart-bar',
+            items: [
+                {
+                    // icon: 'pi pi-compass',
+                    label: 'Neighborhood Explorer',
+                    command: () => {
+                        navigate('/neighborhood-explorer');
+                    },
                 },
-            },
-            {
-                // icon: 'fa pi-exclamation-triangle',
-                label: 'Legal Information',
-                command: () => {
-                    navigate('/legal/');
+                {
+                    // icon: 'fa fa-circle-nodes',
+                    label: 'Co-occurrences Search',
+                    command: () => {
+                        navigate('/visualization/co-occurrence-search/');
+                    },
                 },
-            },
-        ]
-    };
-
-
-    const visItems: MenuItem = {
-        label: 'Visualization',
-        icon: 'pi pi-chart-bar',
-        items: [
-            {
-                // icon: 'pi pi-compass',
-                label: 'Neighborhood Explorer',
-                command: () => {
-                    navigate('/neighborhood-explorer');
+            ],
+        },
+        {
+            label: 'Contribute',
+            icon: 'pi pi-sitemap',
+            items: [
+                // {
+                //     label: 'Overview',
+                //     command: () => {
+                //         navigate('/ontology/overview/');
+                //     }
+                //     // icon: 'pi pi-chart-bar'
+                // },
+                {
+                    label: 'New Entity Type',
+                    command: () => {
+                        navigate('/entity-type-form');
+                    },
+                    // icon: 'pi pi-box'
                 },
-            },
-            {
-                // icon: 'fa fa-circle-nodes',
-                label: 'Co-occurrences Search',
-                command: () => {
-                    navigate('/visualization/co-occurrence-search/');
+                {
+                    label: 'New Link Type',
+                    command: () => {
+                        navigate('/link-type-form');
+                    },
+                    // icon: 'pi pi-arrows-h'
                 },
-            },
-        ],
-    };
+                {
+                    label: 'Data Load',
+                    command: () => {
+                        navigate('/ontology/data-load/0');
+                    },
+                },
+            ],
+        },
+        // {
+        //     label: 'Documentation',
+        //     icon: 'pi pi-book',
+        //     command: () => {
+        //         navigate('/documentation');
+        //     },
+        // },
+        // {
+        //     label: 'Legal Information',
+        //     icon: 'pi pi-exclamation-triangle',
+        //     command: () => {
+        //         navigate('/legal');
+        //     },
+        // },
 
-    const items: MenuItem[] = [legalItems];
-    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+        // {
+        //     label: 'Contact',
+        //     icon: 'pi pi-envelope',
+        //     command: () => {
+        //         navigate('/test');
+        //     }
+        // }
+    ];
 
-    if (!screenDeviceStore.isMobile) {
-        items.push(visItems);
-    }
+    const items: MenuItem[] = [...baseItems];
 
     if (location.pathname !== '/') {
         items.unshift({
             label: 'General Search',
             icon: 'pi pi-search',
-            command: () => {screenDeviceStore.setMenuVisibility(false); navigate('/')},
+            command: () => { screenDeviceStore.setMenuVisibility(false); navigate('/') },
         });
     }
 
