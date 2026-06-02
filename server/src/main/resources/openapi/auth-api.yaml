@@ -3,8 +3,7 @@ openapi: 3.0.3
 info:
   title: N1H Authentication API
   version: 1.0.0
-  description: |
-    Authentication and authorization API for the N1H platform.
+  description: Authentication and authorization API for the N1H platform.
 
 servers:
   - url: http://localhost:8080/api
@@ -24,8 +23,7 @@ paths:
       tags:
         - Auth
       summary: Authenticate user
-      description: |
-        Validates user credentials and returns a JWT bearer token.
+      description: Validates user credentials and returns a JWT bearer token.
       operationId: login
 
       security: []
@@ -256,9 +254,7 @@ components:
       bearerFormat: JWT
       description: |
         JWT Bearer Token authentication.
-
         Example:
-
         Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 
   schemas:
