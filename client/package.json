@@ -10,6 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
     "@fortawesome/react-fontawesome": "0.2.2",
+    "@tanstack/react-query": "^5.100.14",
     "@testing-library/user-event": "13.5.0",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
@@ -48,9 +49,9 @@
     "start": "vite --mode development",
     "build": "vite build --mode production",
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "preview": "vite preview"
+    "test": "vitest",
+    "preview": "vite preview",
+    "generate:api": "npx orval --config orval.config.ts"
   },
   "browserslist": {
     "production": [
@@ -85,14 +86,14 @@
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
-    "jest": "30.0.5",
-    "jest-environment-jsdom": "30.0.5",
     "jsdom": "26.1.0",
     "prettier": "3.6.2",
     "ts-jest": "29.4.4",
     "typescript": "4.9.5",
     "typescript-eslint": "8.37.0",
-    "vite": "8.1.5",
-    "vite-plugin-eslint": "1.8.1"
+    "vite": "7.3.3",
+    "vite-plugin-eslint": "1.8.1",
+    "vitest": "3.2.4",
+    "orval": "^7.13.2"
   }
 }
