@@ -9,6 +9,8 @@ import './header.component.scss';
 
 
 import LoginDialog from '../app/components/auth/LoginDialog';
+import RegisterDialog from '../app/components/auth/RegisterDialog';
+
 import { authService } from '../app/services/auth.service';
 
 const Header: React.FC = () => {
@@ -16,6 +18,8 @@ const Header: React.FC = () => {
     const location = useLocation();
 
     const [loginVisible, setLoginVisible] = useState(false);
+    const [registerVisible, setRegisterVisible] = useState(false);
+
     const [isLoggedIn, setIsLoggedIn] = useState(
         authService.isAuthenticated(),
     );
@@ -132,7 +136,6 @@ const Header: React.FC = () => {
         });
     }
 
-
     const start = (
         <div
             className="col"
@@ -174,10 +177,27 @@ const Header: React.FC = () => {
                 />
             </div>
 
+            {/* LOGIN DIALOG */}
             <LoginDialog
                 visible={loginVisible}
                 onHide={() => setLoginVisible(false)}
-                onLoginSuccess={refreshAuth}
+                onSuccess={() => {
+                    refreshAuth();
+                    setLoginVisible(false);
+                }}
+                onRegisterClick={() => {
+                    setLoginVisible(false);
+                    setRegisterVisible(true);
+                }}
+            />
+
+            <RegisterDialog
+                visible={registerVisible}
+                onHide={() => setRegisterVisible(false)}
+                onSuccess={() => {
+                    setRegisterVisible(false);
+                    setLoginVisible(true);
+                }}
             />
         </>
 
