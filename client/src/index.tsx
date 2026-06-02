@@ -11,21 +11,25 @@ import { StoreProvider } from './app/providers/store-provider';
 import App from './app/app.component';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
 );
+
+const queryClient = new QueryClient();
 root.render(
     <React.StrictMode>
-        <PrimeReactProvider>
-            <ToastMessageServiceProvider>
-                <BrowserRouter>
-                    <StoreProvider>
+        <QueryClientProvider client={queryClient}>
+            <PrimeReactProvider>
+                <ToastMessageServiceProvider>
+                    <BrowserRouter>
                         <App />
-                    </StoreProvider>
-                </BrowserRouter>
-            </ToastMessageServiceProvider>
-        </PrimeReactProvider>
+                    </BrowserRouter>
+                </ToastMessageServiceProvider>
+            </PrimeReactProvider>
+        </QueryClientProvider>
     </React.StrictMode>,
 );
 
