@@ -10,7 +10,6 @@ import { PanelMenu } from 'primereact/panelmenu';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 
-
 //import LoginDialog from '../app/components/auth/LoginDialog';
 //import { authService } from '../app/services/auth.service';
 
@@ -18,17 +17,6 @@ const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    /* const [loginVisible, setLoginVisible] = useState(false);
-  
-      const refreshAuth = () => {
-          setIsLoggedIn(authService.isAuthenticated());
-      };
-  
-      const handleLogout = () => {
-          authService.logout();
-          refreshAuth();
-          navigate('/');
-      };*/
 
     const legalItems: MenuItem =
     {
@@ -36,25 +24,26 @@ const Header: React.FC = () => {
         icon: 'pi pi-file',
         items: [
             {
-                // icon: 'pi pi-compass',
+                //    icon: 'pi pi-compass',
                 label: 'Documentation',
                 command: () => {
                     navigate('/documentation');
                 },
             },
             {
-                // icon: 'fa pi-exclamation-triangle',
+                //     icon: 'pi pi-exclamation-triangle',
                 label: 'Legal Information',
                 command: () => {
-                    navigate('/legal/');
+                    navigate('/legal');
                 },
             },
         ]
     };
 
+
     const visItems: MenuItem = {
         label: 'Visualization',
-        icon: 'pi pi-chart-bar',
+        icon: 'pi pi-chart-line',
         items: [
             {
                 // icon: 'pi pi-compass',
@@ -73,13 +62,13 @@ const Header: React.FC = () => {
         ],
     };
 
-
     const items: MenuItem[] = [legalItems];
     const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
 
     if (!screenDeviceStore.isMobile) {
         items.push(visItems);
     }
+
     if (location.pathname !== '/') {
         items.unshift({
             label: 'General Search',
@@ -88,14 +77,14 @@ const Header: React.FC = () => {
         });
     }
 
-
     const start = (
         <div
             className="col"
             style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '40px'
+                gap: '40px',
+                justifyContent: 'space-between',
             }}
         >
             <a href="/">
@@ -129,20 +118,20 @@ const Header: React.FC = () => {
 
     return (
         <div className="fluid fixed-top">
-            <Menubar
-                model={items}
-                start={start}
-                pt={{
-                    start: {
-                        style: {
-                            marginRight: 'auto',
+            {/* <Menubar
+                    model={items}
+                    start={start}
+                    pt={{
+                        start: {
+                            style: {
+                                marginRight: 'auto',
+                            },
                         },
-                    },
-                }}
-            />
+                    }}
+                />*/}
+            {menuBar}
         </div>
     );
 };
-
 
 export default observer(Header);
