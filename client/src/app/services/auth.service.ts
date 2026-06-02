@@ -1,46 +1,26 @@
-import axios from 'axios';
+import { LoginResponse, User } from '@/generated/auth/model';
 
-export interface LoginRequest {
-    username: string;
-    password: string;
-}
-
-export interface User {
-    id: string;
-    username: string;
-    email?: string;
-    role: 'VIEWER' | 'CURATOR' | 'ADMIN';
-    enabled: boolean;
-}
-
-export interface LoginResponse {
-    token: string;
-    expiresInSeconds: number;
-    user: User;
-}
 
 class AuthService {
-    async login(payload: LoginRequest): Promise<LoginResponse> {
-        const res = await axios.post<LoginResponse>('/auth/login', payload);
-        return res.data;
+    private TOKEN_KEY = 'token';
+    private USER_KEY = 'user';
+
+    setSession(data: LoginResponse) {
+        localStorage.setItem(this.TOKEN_KEY, data.token);
+        localStorage.setItem(this.USER_KEY, JSON.stringify(data.user));
     }
 
     logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-    }
-
-    setSession(data: LoginResponse) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.removeItem(this.TOKEN_KEY);
+        localStorage.removeItem(this.USER_KEY);
     }
 
     getToken(): string | null {
-        return localStorage.getItem('token');
+        return localStorage.getItem(this.TOKEN_KEY);
     }
 
     getUser(): User | null {
-        const raw = localStorage.getItem('user');
+        const raw = localStorage.getItem(this.USER_KEY);
         return raw ? JSON.parse(raw) : null;
     }
 
