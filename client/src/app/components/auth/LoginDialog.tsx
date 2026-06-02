@@ -3,17 +3,26 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
+
+import { login } from '@/generated/auth/auth/auth';
 import { authService } from '../../services/auth.service';
 
 interface Props {
     visible: boolean;
     onHide: () => void;
-    onLoginSuccess: () => void;
+    onSuccess: () => void;
+    onRegisterClick: () => void;
 }
 
-const LoginDialog: React.FC<Props> = ({ visible, onHide, onLoginSuccess }) => {
+const LoginDialog: React.FC<Props> = ({
+    visible,
+    onHide,
+    onSuccess,
+    onRegisterClick
+}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -22,17 +31,20 @@ const LoginDialog: React.FC<Props> = ({ visible, onHide, onLoginSuccess }) => {
         setError(null);
 
         try {
-            const res = await authService.login({ username, password });
+            const res = await login({
+                username, password
+            });
+
             authService.setSession(res);
 
             setUsername('');
             setPassword('');
 
-            onLoginSuccess();
+            onSuccess();
             onHide();
         } catch (e: any) {
             setError(
-                e?.response?.data?.message || 'Login failed. Please try again.',
+                e?.response?.data?.message ?? 'Login failed. Please try again.',
             );
         } finally {
             setLoading(false);
@@ -45,7 +57,6 @@ const LoginDialog: React.FC<Props> = ({ visible, onHide, onLoginSuccess }) => {
             visible={visible}
             onHide={onHide}
             style={{ width: '400px' }}
-            modal
         >
             <div className="p-fluid">
                 <div className="field">
@@ -76,6 +87,14 @@ const LoginDialog: React.FC<Props> = ({ visible, onHide, onLoginSuccess }) => {
                     onClick={handleLogin}
                     loading={loading}
                     className="mt-3"
+                />
+
+
+                <Button
+                    label="Register"
+                    icon="pi pi-user-in"
+                    onClick={onRegisterClick}
+                    className="p-buttob-text mt-2"
                 />
             </div>
         </Dialog>
