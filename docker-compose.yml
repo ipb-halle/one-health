@@ -22,7 +22,7 @@ services:
       dockerfile: ./docker/server/server.Dockerfile
     # TODO: expose for debuging purposes only 
     ports:
-      - "5174:8080"
+      - "5173:8080"
     networks:
       - one-health-network
     depends_on:
