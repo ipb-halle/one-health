@@ -11,12 +11,14 @@ interface Props {
     visible: boolean;
     onHide: () => void;
     onSuccess: () => void;
+    onLoginClick: () => void;
 }
 
 const RegisterDialog: React.FC<Props> = ({
     visible,
     onHide,
     onSuccess,
+    onLoginClick
 }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -133,6 +135,13 @@ const RegisterDialog: React.FC<Props> = ({
                     icon="pi pi-user-plus"
                     loading={loading}
                     onClick={handleRegister}
+                />
+
+                <Button
+                    label="Login"
+                    icon="pi pi-sign-in"
+                    onClick={onLoginClick}
+                    className="mt-3"
                 />
             </div>
         </Dialog>
