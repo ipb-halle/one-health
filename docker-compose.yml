@@ -23,7 +23,7 @@ services:
       dockerfile: ./docker/server/server.Dockerfile
     # TODO: expose for debuging purposes only 
     ports:
-      - "5174:8080"
+      - "5173:8080"
     networks:
       - frontend
       - backend
@@ -84,11 +84,11 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: one_healt_huser
+      POSTGRES_USER: one_health_user
       POSTGRES_PASSWORD: one_health_password
       POSTGRES_DB: one_health
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U one_healt_huser -d one_health" ]
+      test: [ "CMD-SHELL", "pg_isready -U one_health_user -d one_health" ]
       interval: 30s
       timeout: 30s
       retries: 5
