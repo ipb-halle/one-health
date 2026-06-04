@@ -191,12 +191,17 @@ const Header: React.FC = () => {
                 }}
             />
 
+            {/* REGISTER DIALOG */}
             <RegisterDialog
                 visible={registerVisible}
                 onHide={() => setRegisterVisible(false)}
                 onSuccess={() => {
                     setRegisterVisible(false);
                     setLoginVisible(true);
+                }}
+                onLoginClick={() => {
+                    setLoginVisible(true);
+                    setRegisterVisible(false);
                 }}
             />
         </>
