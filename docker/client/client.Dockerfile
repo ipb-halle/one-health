@@ -1,6 +1,5 @@
 # Use a base image with Node.js pre-installed
-FROM node:18-alpine AS build
-
+FROM node:22-slim AS build
 # Set the working directory inside the container
 WORKDIR /app
 

@@ -1,21 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
-import { CytoscapeInteractiveChartComponent } from '../../../features/shared/cytoscape-interactive-chart';
-import { dependencyFactory } from '../../../features/shared/injection';
-import { IEntityService, SERVICES } from '../../../services';
-import { MessageServiceContext } from '../../../features/shared/messages';
-import { PageTitle } from '../../../components';
-import { Panel } from 'primereact/panel';
-import { NeighborhoodExplorerComponent } from '../../../features/modules/visualization';
-import NeighborhoodExplorerTour from '../../../features/modules/visualization/neighborhood-explorer/neighborhood-explorer-tour.component';
+import CytoscapeInteractiveChartComponent from '../../../features/visualization/neighborhood-explorer/components/cytoscape-interactive-chart.component';
+import { dependencyFactory } from '../../../app/di';
+import { SERVICES } from '@/app/di/service-types';
+import { IEntityService } from '@/features/visualization/neighborhood-explorer/services/entity-service';
+import MessageServiceContext from '../../../app/providers/messages/message-service.context';
+import { PageTitle } from '../../../shared/components';
+import NeighborhoodExplorerComponent from '../../../features/visualization/neighborhood-explorer/components/neighborhood-explorer.component';
+import NeighborhoodExplorerTour from '../../../features/visualization/neighborhood-explorer/components/neighborhood-explorer-tour.component';
 import {
     ILocalStorageStore,
     ITutorialStore,
     LOCAL_STORAGE_KEYS,
     STORES,
-} from '../../../stores';
+} from '../../../store/inversify';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
-import { toolDisclaimer } from '../../../utils';
+import { toolDisclaimer } from '../../../shared';
 
 import React from 'react';
 

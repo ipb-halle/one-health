@@ -1,12 +1,13 @@
 import { Button } from 'primereact/button';
-import { IGridColumn, IGridSettings } from '../../../utils/grid';
-import { dependencyFactory } from '../../../features/shared/injection';
-import { IMetadataService, SERVICES } from '../../../services';
+import { IGridColumn, IGridSettings } from '../../../shared/components/grid';
+import { dependencyFactory } from '../../../app/di';
+import { SERVICES } from '@/app/di/service-types';
+import { IMetadataService } from '@/features/metadata/services/metadata-service';
 import { useContext, useEffect, useState } from 'react';
-import { MessageServiceContext } from '../../../features/shared/messages';
+import MessageServiceContext from '../../../app/providers/messages/message-service.context';
 import { SelectButton } from 'primereact/selectbutton';
 import { Link } from 'react-router-dom';
-import OverviewCard from '../../../components/count-comparison-card/overview-card.component';
+import OverviewCard from '../../../shared/components/count-comparison-card/overview-card.component';
 import {
     faArrowRightArrowLeft,
     faCube,

@@ -1,7 +1,9 @@
-@import '../Constants.scss';
+@import '../assets/styles/Constants.scss';
 
 .p-menubar {
     background-color: white;
     box-shadow: $app-box-shadow;
     border: none;
+    display: flex;
+    align-items: flex-end;
 }

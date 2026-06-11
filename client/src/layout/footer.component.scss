@@ -1,13 +1,39 @@
-@use '../Constants.scss' as c;
+@use '../assets/styles/Constants.scss' as c;
 
 
 .app-footer {
-    border: solid 1px c.$app-border-color;
-    background-color: white;
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-    width: 100%;
     padding: 10px;
-    margin: 0;
+    padding-bottom: 0px;
+}
+
+.app-footer-coloured-dark {
+    background-color: c.$app-color-3;
+    align-items: center;
+}
+
+.app-footer-coloured-light {
+    background-color: c.$app-color-4;
+    padding-bottom: 80px;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            float: left;
+
+            a {
+                display: block;
+                color: black;
+                text-align: center;
+                padding: 16px;
+                text-decoration: none;
+
+                &:hover {
+                    background-color: c.$app-color-6;
+                }
+            }
+        }
+    }
 }

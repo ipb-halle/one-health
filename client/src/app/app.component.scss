@@ -1,0 +1,15 @@
+@import '../assets/styles/Constants.scss';
+
+.content {
+    background-color: white;
+    padding-top: $app-header-height;
+    max-width: 1920px;
+    flex: 1;
+}
+
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}

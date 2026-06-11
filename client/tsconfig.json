@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext", "es6"],
+        "target": "ES2020",
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+            "ES2020"
+        ],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -17,7 +21,20 @@
         "jsx": "react-jsx",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "types": ["reflect-metadata"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        "types": [
+            "reflect-metadata"
+        ]
     },
-    "include": ["src","eslint.config.js", "vite.config.js"]
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

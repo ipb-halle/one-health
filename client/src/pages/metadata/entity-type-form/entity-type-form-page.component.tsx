@@ -1,26 +1,27 @@
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
-import { dependencyFactory } from '../../../features/shared/injection';
-import { MessageServiceContext } from '../../../features/shared/messages';
-import { IEntityTypeService, SERVICES } from '../../../services';
+import { dependencyFactory } from '../../../app/di';
+import MessageServiceContext from '../../../app/providers/messages/message-service.context';
+import { IEntityTypeService } from '@/features/metadata/services/entity-type-service';
+import { SERVICES } from '@/app/di/service-types';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IEntityType } from '../../../features/modules/metadata/entity-types';
-import { formReducer } from '../../../utils/formReducer';
-import { SelectableOption } from '../../../utils/selectable-option';
+import { IEntityType } from '@/features/metadata/entity-types';
+import { formReducer } from '../../../shared/utils/formReducer';
+import { SelectableOption } from '../../../core/types/selectable-option';
 import {
     IProperty,
     PropertyListEditorComponent,
-} from '../../../features/modules/metadata/properties';
-import EntityTypeFormTour from '../../../features/modules/metadata/entity-types/entity-type-form.tour.component';
-import { PageTitle } from '../../../components';
+} from '../../../features/metadata/properties';
+import EntityTypeFormTour from '../../../features/metadata/entity-types/entity-type-form.tour.component';
+import { PageTitle } from '../../../shared/components';
 import { Panel } from 'primereact/panel';
 import { ColorPicker } from 'primereact/colorpicker';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { KeywordSearch } from '../../../features/modules/metadata/keywords';
+import { KeywordSearch } from '../../../features/metadata/keywords';
 import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
-import DatasetList from '../../../features/modules/metadata/data-sources/dataset-list.component';
+import DatasetList from '../../../features/metadata/data-sources/dataset-list.component';
 import { Messages } from 'primereact/messages';
 import { useMountEffect } from 'primereact/hooks';
 

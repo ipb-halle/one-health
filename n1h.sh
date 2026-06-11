@@ -36,7 +36,7 @@ case $1 in
         docker compose restart
         ;;
     *)
-        echo "Usage: n1h.sh [start|stop]"
+        echo "Usage: n1h.sh [start|stop|restart]"
         ;;
 esac
 

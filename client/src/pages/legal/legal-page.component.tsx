@@ -1,9 +1,13 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import { PageTitle } from '../../components';
-import { toolDisclaimer } from '../../utils';
+import { PageTitle } from '../../shared/components';
 
 import React from 'react';
-const LegalPageComponent: React.FC = () => {
+
+interface LegalPageProps {
+    activeIndex: number;
+}
+
+const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
     return (
         <div className="page-container-narrow">
             <PageTitle
@@ -11,7 +15,7 @@ const LegalPageComponent: React.FC = () => {
                 title="Legal Information"
                 help={false}></PageTitle>
 
-            <Accordion multiple activeIndex={[]}>
+            <Accordion multiple activeIndex={activeIndex}>
                 <AccordionTab header="Imprint">
                     <p>
                         The Natural-One-Health service (n1h.org,
@@ -703,10 +707,11 @@ const LegalPageComponent: React.FC = () => {
                         Phone: 49 3923 751 - 175
                     </p>
                     <p>
-                        <b>Topicality</b><br/>
-                        We have assessed this service in Oct. 2025. Next assessment is due in one year.
+                        <b>Topicality</b>
+                        <br />
+                        We have assessed this service in Oct. 2025. Next
+                        assessment is due in one year.
                     </p>
-
                 </AccordionTab>
             </Accordion>
         </div>

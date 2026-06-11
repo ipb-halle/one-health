@@ -39,7 +39,7 @@ The following sections provide details about the architecture of each tier of th
 
 React application, single page application using React Router to route to each page component
 
-Each component is comprised by a tsx file a scss file and all the dtos are represented by a .d.ts file
+Each component is comprised by a tsx file and a scss file.
 
 ### Dependencies
 
@@ -58,7 +58,7 @@ Each component is comprised by a tsx file a scss file and all the dtos are repre
 - **react-plotly.js**: React component wrapper for Plotly graphs [[Read documentation](https://github.com/plotly/react-plotly.js)] [[MIT License](https://raw.githubusercontent.com/plotly/react-plotly.js/master/LICENSE)]
 - **openchemlib-js**: Open source javascript chemistry library [[Read documentation](https://cheminfo.github.io/openchemlib-js/modules.html)] [[BSD-3-Clause License](https://github.com/remix-run/react-router/blob/main/LICENSE.md)]
 - **qs**: A querystring parsing and stringifying library [[Read documentation](https://github.com/ljharb/qs)] [[BSD-3-Clause License](https://raw.githubusercontent.com/ljharb/qs/main/LICENSE.md)]
-- 
+- **mobx-state-tree**: State management library [[Read documentation](https://mobx-state-tree.js.org/intro/welcome)] [[MIT License](https://github.com/mobxjs/mobx-state-tree/blob/master/LICENSE)]
 
 ## Server Architecture
 
@@ -163,7 +163,7 @@ For graph visualization we selected [Cytoscape](https://js.cytoscape.org/) and i
 
 For this applications we setted up two environments: `DEV` (Development) and `PROD` (Production). The configurations for these environments must be defined for both the server and client of the application and usually will be related to the networking of the application.
 
-The **client environment** configuration is managed using the `.env*` files located in the root directory of the client (i.e. `client/.env`), in this case we have three files: `.env` for general configurations for both environments, `.env.development` and `.env.production` for specific configurations for development and production respectively.  In the environment specific files we defined two variables `VITE_API_URL=<server-url>` and `VITE_ENV=<environment-name>`, then these variables can be accessed using the `meta.env` object in JavaScript.
+The **client environment** configuration is managed using the `.env*` files located in the root directory of the client (i.e. `client/.env*`), in this case we have two files: `.env.development` and `.env.production` for specific configurations for development and production respectively.  In the environment specific files we defined two variables `VITE_API_URL=<server-url>` and `VITE_ENV=<environment-name>`, then these variables can be accessed using the `meta.env` object in JavaScript.
 
 For example `VITE_API_URL` is used to configure the base URL for the HTTP client (Axios in this case) which is done in the `index.tsx` file
 
@@ -171,7 +171,7 @@ For example `VITE_API_URL` is used to configure the base URL for the HTTP client
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 ```
 
-By default running `npm start` will run a development server using values defined in the `.env.development` file while `npm build` will create a production build of the application using the values in `.env.production`. For more information about handling environment variables in Node.js please refer to the [documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
+By default running `npm start` will run a development server using values defined in the `.env.development` file while `npm build` will create a production build of the application using the values in `.env.production`. For more information about handling environment variables in Node.js please refer to the [documentation](https://vite.dev/guide/env-and-mode).
 
 The **server environment** configuration is managed using the `application-<env>.configuration` files located in `server/src/main/resources/`, in this case we have three files: `application.configuration` which is the default configuration used by the Spring framework, `application-dev.configuration` and `application-prod.configuration` for specific configurations for development and production respectively. The `application.configuration` file is used as a proxy to select the active environment, in this case we setted `spring.profiles.active=dev` since we are in development most of the time, also the active profile can be selected when executing the `jar` file using arguments like we do when running the production build.
 
@@ -181,28 +181,130 @@ java -jar -Dspring.profiles.active=prod app.jar
 
 In these files we store the connection string informations for the databases and also in the future we might need to hide this files from the github to not expose our networking sensitive information. For more information about handling environment variables in Spring please refer to the [documentation](https://docs.spring.io/spring-boot/docs/1.2.0.M1/reference/html/boot-features-profiles.html).
 
+Hier ist der überarbeitete Abschnitt mit deinen Änderungen, sprachlich etwas geglättet und konsistent formatiert:
+
 ## Development Deployment
 
-For running the development build of the app you will need to deploy the databases, the server and the client in a single computer, in this section I will give you an example walkthrough of how this can be done.
+To run the development build of the application, you need the following prerequisites installed on your machine:
 
-Let's start by deploying a database, in this case we use Neo4J Community Edition which can be installed in your computer but we prefer to use it as a docker container in this case
+### Prerequisites
+
+* Docker
+* Node.js
+* npm
+
+Depending on your local setup, you may need to adjust port mappings in:
+
+* `docker-compose.yml`
+* `.env.development`
+* proxy settings in `vite.config.js`
+
+This may be necessary if the default server ports are already in use.
+
+
+For development with hot reloading, ensure that the server path is properly exposed in `docker-compose.yml`.
+
+### 1. Clone the repository
 
 ```bash
-docker run --name one-health-graphdb -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none -v <your-volume>:/data -d neo4j
+git clone <repository-url>
+cd <repository-folder>
 ```
 
-After executing this command you should be able to access the Neo4J Manager through `localhost:7474` and the server to communicate with the app using `localhost:7687`.
+### 2. Build Docker images
 
-To run the server we used [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/), just open the project folder (`server`) and run the main file  `/src/main/java/ipbhalle.de.ontologymanagerserver/OntologyManagerServerApplication.java`. This should launch the server on `localhost:8080`.
+```bash
+docker compose build
+```
 
-To run the client we used Visual Studio Code, after opening the client project directory on VS Code open a terminal and use the following commands to launch the client on `localhost:5173`
+### 3. Start the backend server
+
+```bash
+docker compose up server
+```
+
+This command will automatically start the database containers because of service dependencies.
+
+### 4. Start the frontend client
+
+Navigate to the client directory:
+
+```bash
+cd client
+```
+
+Install dependencies and start the Vite development server:
 
 ```bash
 npm install
 npm start
 ```
 
-Please notice that if any of the port is being used by another process the deployment will fail
+The client will be available on `localhost:8080`.
+
+
+## Dump Data Loading (for IPB developers)
+
+The project data dumps are kept in IPB storage.
+
+### PostgreSQL Data Import
+Postgres Data is avaiable as `*.sql` file.
+
+#### 1. Start the PostgreSQL container
+
+```bash
+docker compose up -d postgres
+```
+
+#### 2. Import the dump
+
+```bash
+docker exec -i one-health-postgredb psql -U one_healt_huser -d one_health < one_health_dump.20251010.sql
+```
+
+The data will then be stored in the configured named volume.
+
+> **Warning:**
+> Running `docker compose rm` may remove containers together with their associated data, depending on your volume configuration.
+
+
+### Neo4j Data Import
+
+Neo4j data is stored as `/data/` folder.
+
+#### 1. Stop the graph database container
+
+```bash
+docker stop one-health-graphdb
+```
+
+#### 2. Copy dump data into the Docker volume
+
+Run:
+
+```bash
+docker run --rm -it \
+    -v one-health_n4j_data:/target \
+    -v $(pwd)/240626neo4j_data:/source \
+    ubuntu bash
+```
+
+Inside the container execute:
+
+```bash
+rm -rf /target/*
+cp -a /source/. /target/
+chown -R 7474:7474 /target
+exit
+```
+
+#### 3. Restart Neo4j
+
+```bash
+docker compose up -d graphdb
+```
+
+The Neo4j instance should now start using the imported dataset.
 
 ## Production Deployment
 

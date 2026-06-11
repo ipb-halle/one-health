@@ -1,7 +1,7 @@
 import { Panel } from 'primereact/panel';
 import { Dropdown } from 'primereact/dropdown';
 import { FileUpload } from 'primereact/fileupload';
-import { PageTitle } from '../../../components';
+import { PageTitle } from '../../../shared/components';
 import { useContext, useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -13,22 +13,20 @@ import {
     FileUploadUploadEvent,
     ItemTemplateOptions,
 } from 'primereact/fileupload';
-import { dependencyFactory } from '../../../features/shared/injection';
-import {
-    IDataSourceService,
-    IEntityTypeService,
-    ILinkTypeService,
-    IMetadataService,
-    SERVICES,
-} from '../../../services';
-import DataPreview from '../../../features/modules/metadata/data-load/data-preview.component';
-import { MessageServiceContext } from '../../../features/shared/messages';
-import { IMapping } from '../../../features/modules/metadata/data-load/mapping';
-import { SelectableOption } from '../../../utils/selectable-option';
-import { IDataSource } from '../../../features/modules/metadata/data-sources';
-import { processChunkAsync, readNextChunk } from '../../../utils/files';
+import { dependencyFactory } from '../../../app/di';
+import { IDataSourceService } from '@/features/metadata/services/data-source-service';
+import { IEntityTypeService } from '@/features/metadata/services/entity-type-service';
+import { ILinkTypeService } from '@/features/metadata/services/link-type-service';
+import { IMetadataService } from '@/features/metadata/services/metadata-service';
+import { SERVICES } from '@/app/di/service-types';
+import DataPreview from '../../../features/metadata/data-load/data-preview.component';
+import MessageServiceContext from '../../../app/providers/messages/message-service.context';
+import { IMapping } from '../../../features/metadata/data-load/mapping';
+import { SelectableOption } from '../../../core/types/selectable-option';
+import { IDataSource } from '@/features/metadata/data-sources';
+import { processChunkAsync, readNextChunk } from '../../../shared/utils/files';
 import { InputText } from 'primereact/inputtext';
-import DatasetList from '../../../features/modules/metadata/data-sources/dataset-list.component';
+import DatasetList from '../../../features/metadata/data-sources/dataset-list.component';
 import { Messages } from 'primereact/messages';
 import { useMountEffect } from 'primereact/hooks';
 

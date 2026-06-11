@@ -1,6 +1,5 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import { PageTitle } from '../../components';
-import { toolDisclaimer } from '../../utils';
+import { PageTitle } from '../../shared/components';
 
 import React from 'react';
 const DocumentationPageComponent: React.FC = () => {
@@ -56,25 +55,6 @@ const DocumentationPageComponent: React.FC = () => {
                         <b>DAAD</b>, Germany (Deutscher Akademischer
                         Austauschdienst/German Academic Exchange Service;
                         funding code DAAD 57592717).
-                        <br />
-                        <br />
-                        <b>GLACIER</b> (German Latin-American Center for
-                        Infection and Epidemiology Research &amp; Training) is
-                        an international multidisciplinary consortium that aims
-                        to level regional disparities in Latin America by
-                        strengthening surveillance and response to emerging
-                        infectious diseases and developing new vaccines and
-                        therapies. GLACIER is made up of more than 30
-                        cooperating institutions from nine countries (Germany,
-                        Mexico, Cuba, Costa Rica, Nicaragua, Honduras, El
-                        Salvador, Panama, and Guatemala). For further
-                        information, please visit the GLACIER consortium’s
-                        official website{' '}
-                        <a
-                            href="https://glacieronehealth.org/about/"
-                            target="blank">
-                            About | GLACIER One Health Project
-                        </a>
                     </p>
                 </AccordionTab>
                 <AccordionTab header="References">

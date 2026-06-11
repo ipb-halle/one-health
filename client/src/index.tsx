@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './assets/styles/index.css';
 import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider } from 'primereact/api';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router-dom';
-import { ToastMessageServiceProvider } from './features/shared/messages';
-import App from './layout/app.component';
+import ToastMessageServiceProvider from './app/providers/messages/toast-message-service.provider';
+import App from './app/app.component';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -19,7 +19,7 @@ root.render(
         <PrimeReactProvider>
             <ToastMessageServiceProvider>
                 <BrowserRouter>
-                    <App />
+                <App/>
                 </BrowserRouter>
             </ToastMessageServiceProvider>
         </PrimeReactProvider>

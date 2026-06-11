@@ -1,53 +1,15 @@
 import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
-import { useNavigate } from 'react-router-dom';
-import oneHealthLogo from '../assets/logo_one_health.png';
-import logo from '../assets/oh_logo.svg';
+import { useNavigate, useLocation } from 'react-router-dom';
+import oneHealthLogo from '../assets/logo-n1h.png';
 import './header.component.scss';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
-    const items: MenuItem[] = [
-        {
-            label: 'Home',
-            icon: 'pi pi-home',
-            command: () => {
-                navigate('/');
-            },
-        },
-        {
-            label: 'Search',
-            icon: 'pi pi-search',
-            items: [
-                {
-                    label: 'General Search',
-                    command: () => {
-                        navigate('/search/general-search');
-                    },
-                },
-                {
-                    label: 'Compound Search',
-                    command: () => {
-                        navigate('/search/structure-search');
-                    },
-                },
-                // {
-                //     icon: 'fa fa-leaf',
-                //     label: 'Plant Search',
-                //     command: () => {
-                //         navigate('/search/plant-search');
-                //     }
-                // },
-                // {
-                //     icon: 'fa fa-virus',
-                //     label: 'Disease Search',
-                //     command: () => {
-                //         navigate('/search/disease-search');
-                //     }
-                // }
-            ],
-        },
+    const location = useLocation();
+
+    const baseItems: MenuItem[] = [
         {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
@@ -69,7 +31,7 @@ const Header: React.FC = () => {
             ],
         },
         {
-            label: 'Metadata',
+            label: 'Contribute',
             icon: 'pi pi-sitemap',
             items: [
                 // {
@@ -101,20 +63,20 @@ const Header: React.FC = () => {
                 },
             ],
         },
-        {
-            label: 'Documentation',
-            icon: 'pi pi-book',
-            command: () => {
-                navigate('/documentation');
-            },
-        },
-        {
-            label: 'Legal Information',
-            icon: 'pi pi-exclamation-triangle',
-            command: () => {
-                navigate('/legal');
-            },
-        },
+        // {
+        //     label: 'Documentation',
+        //     icon: 'pi pi-book',
+        //     command: () => {
+        //         navigate('/documentation');
+        //     },
+        // },
+        // {
+        //     label: 'Legal Information',
+        //     icon: 'pi pi-exclamation-triangle',
+        //     command: () => {
+        //         navigate('/legal');
+        //     },
+        // },
 
         // {
         //     label: 'Contact',
@@ -125,18 +87,43 @@ const Header: React.FC = () => {
         // }
     ];
 
+    const items: MenuItem[] = [...baseItems];
+
+    if (location.pathname !== '/') {
+        items.unshift({
+            label: 'General Search',
+            icon: 'pi pi-search',
+            command: () => navigate('/'),
+        });
+    }
+
     const start = (
-        <img
-            alt="logo"
-            src={logo}
-            height="40"
-            style={{ marginLeft: 10 }}
-            className="mr-2"></img>
+        <div
+            className="col"
+            style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+            <a href="/">
+                <img
+                    alt="logo"
+                    src={oneHealthLogo}
+                    height="40"
+                    style={{ marginLeft: 20 }}
+                    className="mr-2"
+                />
+            </a>
+            <p style={{ fontSize: '16px', color: '#a40', margin: 0 }}>
+                This service is <strong>work in progress</strong>, layout and
+                function are subject to change.
+            </p>
+        </div>
     );
 
     return (
         <div className="fluid fixed-top">
-            <Menubar model={items} start={start} />
+            <Menubar
+                model={items}
+                start={start}
+                pt={{ start: { style: { marginRight: 'auto' } } }}
+            />
         </div>
     );
 };
