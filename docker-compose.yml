@@ -23,15 +23,15 @@ services:
       dockerfile: ./docker/server/server.Dockerfile
     # TODO: expose for debuging purposes only 
     ports:
-      - "8080:8080"
+      - "5173:8080"
     networks:
       - frontend
       - backend
     depends_on:
       postgredb:
-          condition: service_healthy  # ensures the correct start of postgredb
+        condition: service_healthy # ensures the correct start of postgredb
       graphdb:
-          condition: service_healthy
+        condition: service_healthy
 
   client:
     container_name: one-health-client
@@ -39,13 +39,14 @@ services:
       context: .
       dockerfile: ./docker/client/client.Dockerfile
     ports:
-      - "80:80"
+      - "5180:80"
     hostname: www.example.com
     networks:
       - frontend
-    volumes:
-      - /srv/www/conf:/usr/local/apache2/conf
-      - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
+      # volumes:
+      #   - /srv/www/conf:/usr/local/apache2/conf
+      #   - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
+
     depends_on:
       - server
 
@@ -54,8 +55,8 @@ services:
     image: neo4j
     # expose graphdb ports for debugging only
     ports:
-     - "7474:7474"
-     - "7687:7687" # for BOLT-Protocol
+      - "7474:7474"
+      - "7687:7687" # for BOLT-Protocol
     networks:
       - backend
     volumes:
@@ -64,7 +65,7 @@ services:
       NEO4J_AUTH: neo4j/password
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
     healthcheck:
-      test: ["CMD-SHELL", "wget --spider http://localhost:7474"]
+      test: [ "CMD-SHELL", "wget --spider http://localhost:7474" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -81,13 +82,13 @@ services:
     networks:
       - backend
     volumes:
-      -  pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: one_healt_huser
+      POSTGRES_USER: one_health_user
       POSTGRES_PASSWORD: one_health_password
       POSTGRES_DB: one_health
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U one_healt_huser -d one_health"]
+      test: [ "CMD-SHELL", "pg_isready -U one_health_user -d one_health" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -96,6 +97,7 @@ services:
 networks:
   frontend:
   backend:
+
 
 volumes:
   pg_data:

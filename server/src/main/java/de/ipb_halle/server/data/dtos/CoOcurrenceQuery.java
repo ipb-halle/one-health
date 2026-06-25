@@ -1,6 +1,7 @@
 package de.ipb_halle.server.data.dtos;
 
 public class CoOcurrenceQuery {
+
     private TypeQuery leftTypeQuery;
     private TypeQuery rightTypeQuery;
 

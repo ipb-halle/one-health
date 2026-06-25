@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate, useLocation } from 'react-router-dom';
+
 import oneHealthLogo from '../assets/logo-n1h.png';
+
 import './header.component.scss';
+
+
+import LoginDialog from '../app/components/auth/LoginDialog';
+import RegisterDialog from '../app/components/auth/RegisterDialog';
+
+import { authService } from '../app/services/auth.service';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [loginVisible, setLoginVisible] = useState(false);
+    const [registerVisible, setRegisterVisible] = useState(false);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(
+        authService.isAuthenticated(),
+    );
+
+    const refreshAuth = () => {
+        setIsLoggedIn(authService.isAuthenticated());
+    };
+
+    const handleLogout = () => {
+        authService.logout();
+        refreshAuth();
+        navigate('/');
+    };
 
     const baseItems: MenuItem[] = [
         {
@@ -85,6 +110,20 @@ const Header: React.FC = () => {
         //         navigate('/test');
         //     }
         // }
+
+        !isLoggedIn
+            ?
+            {
+                label: 'Login',
+                icon: 'pi pi-sign-in',
+                command: () => setLoginVisible(true),
+            }
+            :
+            {
+                label: 'Logout',
+                icon: 'pi pi-sign-out',
+                command: handleLogout,
+            },
     ];
 
     const items: MenuItem[] = [...baseItems];
@@ -100,7 +139,12 @@ const Header: React.FC = () => {
     const start = (
         <div
             className="col"
-            style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '40px'
+            }}
+        >
             <a href="/">
                 <img
                     alt="logo"
@@ -118,13 +162,50 @@ const Header: React.FC = () => {
     );
 
     return (
-        <div className="fluid fixed-top">
-            <Menubar
-                model={items}
-                start={start}
-                pt={{ start: { style: { marginRight: 'auto' } } }}
+        <>
+            <div className="fluid fixed-top">
+                <Menubar
+                    model={items}
+                    start={start}
+                    pt={{
+                        start: {
+                            style: {
+                                marginRight: 'auto',
+                            },
+                        },
+                    }}
+                />
+            </div>
+
+            {/* LOGIN DIALOG */}
+            <LoginDialog
+                visible={loginVisible}
+                onHide={() => setLoginVisible(false)}
+                onSuccess={() => {
+                    refreshAuth();
+                    setLoginVisible(false);
+                }}
+                onRegisterClick={() => {
+                    setLoginVisible(false);
+                    setRegisterVisible(true);
+                }}
             />
-        </div>
+
+            {/* REGISTER DIALOG */}
+            <RegisterDialog
+                visible={registerVisible}
+                onHide={() => setRegisterVisible(false)}
+                onSuccess={() => {
+                    setRegisterVisible(false);
+                    setLoginVisible(true);
+                }}
+                onLoginClick={() => {
+                    setLoginVisible(true);
+                    setRegisterVisible(false);
+                }}
+            />
+        </>
+
     );
 };
 

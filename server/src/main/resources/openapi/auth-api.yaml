@@ -1,0 +1,439 @@
+openapi: 3.0.3
+
+info:
+  title: N1H Authentication API
+  version: 1.0.0
+  description: Authentication and authorization API for the N1H platform.
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local Development
+
+tags:
+  - name: Auth
+    description: Authentication and session management
+    
+  - name: Users
+    description: User profile management
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Authenticate user
+      description: Validates user credentials and returns a JWT bearer token.
+      operationId: login
+
+      security: []
+
+      requestBody:
+        required: true
+        description: User login credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "401":
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      operationId: register
+      
+      security: []
+      
+      requestBody:
+        required: true
+        description: Registration information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+              
+      responses:
+        "201":
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                
+        "400":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+        "409":
+          description: Username or email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+               
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout current user
+      description: |
+        Invalidates the current authentication session.
+
+        For JWT-based authentication this endpoint can be used
+        for token blacklisting in the future.
+
+      operationId: logout
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: Get current authenticated user
+      description: |
+        Returns information about the currently authenticated user.
+
+      operationId: getCurrentUser
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Current authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/me:
+    put:
+      tags:
+        - Users
+      summary: Update current user profile
+      operationId: updateCurrentUser
+      
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        required: true
+        description: Updated user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+              
+      responses:
+        "200":
+          description: User profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User' 
+                
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /users/me/password:
+    put:
+      tags:
+        - Users
+      summary: Changes current user password
+      operationId: changePassword
+      
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        required: true
+        description: Password change request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+              
+      responses:
+        "200":
+          description: Password updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse' 
+                
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT Bearer Token authentication.
+        Example:
+        Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+  schemas:
+
+    LoginRequest:
+      type: object
+
+      required:
+        - username
+        - password
+
+      properties:
+
+        username:
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: admin
+
+        password:
+          type: string
+          minLength: 5
+          example: secret123
+
+    RegisterRequest:
+      type: object
+      
+      required:
+        - username
+        - email
+        - password
+      
+      properties:
+        
+        username:
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: johndoe
+        
+        email:
+          type: string
+          format: email
+          example: john@example.org
+          
+        password:
+          type: string
+          minLength: 8
+          example: MyStrongPassword123
+          
+    UpdateUserRequest:
+      type: object
+      
+      required:
+        - email
+      
+      properties:
+        
+        email:
+          type: string
+          format: email
+          example: john@example.org
+        
+    ChangePasswordRequest:
+      type: object
+      
+      required:
+        - currentPassword
+        - newPassword
+      
+      properties:
+        
+        currentPassword:
+          type: string
+          example: OldPassword123
+          
+        newPassword:
+          type: string
+          minLength: 8
+          example: NewPassword456
+    
+    LoginResponse:
+      type: object
+
+      required:
+        - token
+        - expiresInSeconds
+        - user
+
+      properties:
+
+        token:
+          type: string
+          description: JWT access token
+          example: eyJhbGciOiJIUzI1NiJ9...
+
+        expiresInSeconds:
+          type: integer
+          description: Token validity in seconds
+          example: 3600
+
+        user:
+          $ref: '#/components/schemas/User'
+
+
+    User:
+      type: object
+
+      required:
+        - id
+        - username
+        - role
+        - enabled
+
+      properties:
+
+        id:
+          type: string
+          example: 1
+
+        username:
+          type: string
+          example: admin
+
+        email:
+          type: string
+          format: email
+          example: admin@n1h.org
+
+        role:
+          type: string
+
+          enum:
+            - VIEWER
+            - CURATOR
+            - ADMIN
+
+          example: ADMIN
+
+        enabled:
+          type: boolean
+          example: true
+
+    LogoutResponse:
+      type: object
+
+      required:
+        - message
+
+      properties:
+
+        message:
+          type: string
+          example: Logged out successfully
+
+    MessageResponse:
+      type: object
+
+      required:
+        - message
+
+      properties:
+
+        message:
+          type: string
+          example: Operation successful
+
+    ErrorResponse:
+      type: object
+
+      required:
+        - message
+
+      properties:
+
+        message:
+          type: string
+          example: Unauthorized request
+
+        code:
+          type: string
+          example: AUTH_401

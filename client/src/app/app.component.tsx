@@ -13,6 +13,7 @@ import {
     MetadataOverviewPageComponent,
     NeighborhoodExplorerPageComponent,
 } from '../pages';
+
 import CompoundSearchPageComponent from '../pages/compound-search/compound-search-page.component';
 import './app.component.scss';
 import { StoreProvider } from './providers/store-provider';
@@ -43,6 +44,8 @@ function App() {
 
                 <Routes>
                     <Route path="/" element={<Layout />}>
+
+
                         <Route index element={<HomePageComponent />} />
 
                         <Route
