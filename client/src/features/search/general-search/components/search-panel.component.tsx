@@ -13,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { Toast } from 'primereact/toast';
 import HistoryModal from '../../search-history/components/general-search-history-modal.component';
 import { RootStoreContext } from '../../../../app/providers/store-provider';
+import GeneralSearchInput from '@/shared/components/GeneralSearchInput';
 
 const SearchPanel: React.FC = () => {
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
@@ -85,35 +86,7 @@ const SearchPanel: React.FC = () => {
                         marginTop: '20px',
                     }}>
                     <div style={{ display: 'flex' }}>
-                        <div className="p-inputgroup general-search-header-input">
-
-                            <InputText
-                                style={{
-                                    border: 'none',
-                                    boxShadow: 'none',
-                                }}
-                                value={generalSearchStore.query}
-                                onChange={(e) => {
-                                    generalSearchStore.setQuery(e.target.value);
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter')
-                                        generalSearchStore.runQuery();
-                                }}
-                                placeholder="Search in knowledge base (e.g. disease name, plant name, compound name, InChI key, ...)"
-                            />
-                            <Button
-                                icon="pi pi-search"
-                                className="p-button-rounded p-button-text"
-                                onClick={(e) => generalSearchStore.runQuery()}
-                                tooltip="Search in knowledge base"
-                                tooltipOptions={{
-                                    position: 'bottom',
-                                    showDelay: 1000,
-                                }}
-                            />
-                        </div>
-
+                        <GeneralSearchInput />
                         <Button
                             id="page-title-help-button"
                             icon="pi pi-question-circle"

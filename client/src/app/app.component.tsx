@@ -19,6 +19,7 @@ import { RootStoreContext, StoreProvider } from './providers/store-provider';
 import { useContext, useEffect } from 'react';
 import { DesktopApp } from './DesktopApp';
 import { observer } from 'mobx-react-lite';
+import MobileApp from './MobileApp';
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
         [screenDeviceStore]);
 
     const appComponent = screenDeviceStore.isMobile ?
-        <div>Mobile App</div> :
+        <MobileApp /> :
         <DesktopApp />
 
     return (
