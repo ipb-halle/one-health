@@ -15,9 +15,19 @@ import {
 } from '../pages';
 import CompoundSearchPageComponent from '../pages/compound-search/compound-search-page.component';
 import './app.component.scss';
-import { StoreProvider } from './providers/store-provider';
+import { RootStoreContext, StoreProvider } from './providers/store-provider';
+import { useContext, useEffect } from 'react';
 
 function App() {
+
+    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+
+    useEffect(
+        () => {
+            screenDeviceStore.start();
+            return () => screenDeviceStore.stop();
+        },
+        [screenDeviceStore]);
 
     return (
         <StoreProvider>
