@@ -20,8 +20,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
-    # ports:
-    #   - "8080:8080"    # NOTE: expose for debuging purposes only!
     networks:
       - one-health-network
     depends_on:
@@ -50,9 +48,6 @@ services:
   graphdb:
     container_name: one-health-graphdb
     image: neo4j
-    #ports:
-    #  - "7474:7474"     # NOTE: expose for debugging only
-    #  - "7687:7687"     # for BOLT-Protocol; expose debugging only
     networks:
       - one-health-network
     volumes:
@@ -72,8 +67,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/rdkit/rdkit.Dockerfile
-    #ports:
-    #  - "5432:5432"     # NOTE: expose database port for debugging only
     networks:
       - one-health-network
     volumes:
