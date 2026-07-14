@@ -1,14 +1,16 @@
+import Footer from "@/layout/footer.component";
+import GeneralSearchInput from "@/shared/components/GeneralSearchInput";
 import { observer } from "mobx-react-lite";
 
 function MobileApp() {
-    return <div>
+    return <div className="mobile-app">
         <div>header</div>
         <div>grafik</div>
         <div>Title text</div>
-        <div>quick search</div>
+        <GeneralSearchInput />
         <div>results</div>
         <div>stats</div>
-        <div>footer</div>
+        <Footer />
     </div>
 }
 

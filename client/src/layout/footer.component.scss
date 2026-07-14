@@ -1,39 +1,48 @@
 @use '../assets/styles/Constants.scss' as c;
 
+.app {
+    .app-footer {
+        padding: 10px;
+        padding-bottom: 0px;
 
-.app-footer {
-    padding: 10px;
-    padding-bottom: 0px;
-}
+    }
 
-.app-footer-coloured-dark {
-    background-color: c.$app-color-3;
-    align-items: center;
-}
 
-.app-footer-coloured-light {
-    background-color: c.$app-color-4;
-    padding-bottom: 80px;
+    .app-footer-coloured-dark {
+        background-color: c.$app-color-3;
+        align-items: center;
+    }
 
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
+    .app-footer-coloured-light {
+        background-color: c.$app-color-4;
+        padding-bottom: 80px;
 
-        li {
-            float: left;
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
 
-            a {
-                display: block;
-                color: black;
-                text-align: center;
-                padding: 16px;
-                text-decoration: none;
+            li {
+                float: left;
 
-                &:hover {
-                    background-color: c.$app-color-6;
+                a {
+                    display: block;
+                    color: black;
+                    text-align: center;
+                    padding: 16px;
+                    text-decoration: none;
+
+                    &:hover {
+                        background-color: c.$app-color-6;
+                    }
                 }
             }
         }
+    }
+}
+
+.mobile-app {
+    .app-footer-coloured-light {
+        display: none;
     }
 }
