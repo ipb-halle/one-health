@@ -10,7 +10,11 @@ export const ScreenDeviceStore = types
         mql: undefined as MediaQueryList | undefined,
         stopListener: undefined as (() => void) | undefined,
     }))
-
+    .actions((self) => ({
+        changeMobile(newState: boolean): void {           
+            self.isMobile = newState;
+        },
+    }))
     .actions((self) => ({
         start() {
             if (typeof window === "undefined") return;
@@ -31,9 +35,5 @@ export const ScreenDeviceStore = types
             self.stopListener?.()
             self.stopListener = undefined
             self.mql = undefined
-        },
-        changeMobile(newState: boolean): void {
-            console.log("In mobile mode "+newState)
-            self.isMobile = newState;
         }
     }))
