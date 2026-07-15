@@ -11,7 +11,7 @@ export const ScreenDeviceStore = types
         stopListener: undefined as (() => void) | undefined,
     }))
     .actions((self) => ({
-        changeMobile(newState: boolean): void {           
+        changeMobile(newState: boolean): void {
             self.isMobile = newState;
         },
     }))

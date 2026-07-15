@@ -1,31 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './footer.component.scss';
 import FooterIcons from './footerIcons';
 
-const Footer: React.FC = () => {
+import { observer } from 'mobx-react-lite';
+import { RootStoreContext } from '@/app/providers/store-provider';
+
+
+function Footer() {
+   
+    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+
+    const footerIconComponent = screenDeviceStore.isMobile ?
+        <div className="ABCDE"><FooterIcons /><FooterIcons /></div> :
+        <FooterIcons />
+
     return (
         <div className="app-footer">
-            <div className="app-footer-coloured-light row">
-                <ul>
-                    <li>
-                        <a href="/documentation">Documentation</a>
-                    </li>
-                    <li>
-                        <a href="/imprint">Imprint</a>
-                    </li>
-                    <li>
-                        <a href="/privacy">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="/accessibility">Accessibility</a>
-                    </li>
-                </ul>
-            </div>
 
-        <FooterIcons />
+            {footerIconComponent}
 
         </div>
     );
 };
 
-export default Footer;
+export default observer(Footer);

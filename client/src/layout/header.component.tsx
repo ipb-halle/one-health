@@ -11,6 +11,40 @@ const Header: React.FC = () => {
 
     const baseItems: MenuItem[] = [
         {
+            label: 'Legal',
+            icon: 'pi pi-chart-bar',
+            items: [
+                {
+                    // icon: 'pi pi-compass',
+                    label: 'Documentation',
+                    command: () => {
+                        navigate('/documentation');
+                    },
+                },
+                {
+                    // icon: 'fa fa-circle-nodes',
+                    label: 'Imprint',
+                    command: () => {
+                        navigate('/imprint/');
+                    },
+                },
+                {
+                    // icon: 'fa fa-circle-nodes',
+                    label: 'Privacy Policy',
+                    command: () => {
+                        navigate('/privacy/');
+                    },
+                },
+                {
+                    // icon: 'fa fa-circle-nodes',
+                    label: 'Accessibility',
+                    command: () => {
+                        navigate('/accessibility/');
+                    },
+                },
+            ]
+        }, 
+        {
             label: 'Visualization',
             icon: 'pi pi-chart-bar',
             items: [
@@ -30,6 +64,9 @@ const Header: React.FC = () => {
                 },
             ],
         },
+
+
+
         {
             label: 'Contribute',
             icon: 'pi pi-sitemap',
