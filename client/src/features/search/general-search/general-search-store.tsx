@@ -69,7 +69,10 @@ export const GeneralSearchStore = types
                 }
             });
         },
-
+        setSelectedType(type: string): void {
+            console.log(type);
+            self.selectedType = type;
+        },
         runQuery: flow(function* (): any {
             const { searchService, messageService, historyService } =
                 getEnv<Env>(self);

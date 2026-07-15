@@ -1,5 +1,6 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
 import { LoadingPlaceholderComponent } from "@/shared/components";
+import ResultEntitySelector from "@/shared/ResultEntitySelector";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 
@@ -15,7 +16,7 @@ function CompactResultDisplay() {
             (generalSearchStore.selectedType != "") ?
             <div>
                 <div>{generalSearchStore.selectedType}</div>
-                <div>Result Menu</div>
+                <ResultEntitySelector />
                 <div>Entities</div>
             </div> :
             <div>NO RESULTS</div>
