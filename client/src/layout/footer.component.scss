@@ -42,7 +42,42 @@
 }
 
 .mobile-app {
-    .app-footer-coloured-light {
-        display: none;
+    .icons-container {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+    }
+
+    .footer-icons {
+        display: flex;
+        white-space: nowrap;
+        width: max-content;
+        animation: footerMovingAnimation 15s linear infinite;
+    }
+
+
+    .icon {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        font-family: sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .icon img {
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+
+    @keyframes footerMovingAnimation {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+
+        100% {
+            transform: translate3d(-50%, 0, 0);
+        }
     }
 }

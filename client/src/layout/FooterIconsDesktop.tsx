@@ -6,7 +6,7 @@ import logoIpb from '../assets/logo-ipb.png';
 import logoForeign from '../assets/logo-foreign-office.png';
 import './footer.component.scss';
 
-function FooterIcons() {
+function FooterIconsDesktop() {
     return             <div
                 className="app-footer-coloured-dark row fixed-bottom"
                 style={{ padding: '0px' }}>
@@ -55,4 +55,4 @@ function FooterIcons() {
             </div>
 }
 
-export default FooterIcons;
+export default FooterIconsDesktop;
