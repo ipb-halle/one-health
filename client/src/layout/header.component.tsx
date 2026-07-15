@@ -22,7 +22,7 @@ const Header: React.FC = () => {
                     },
                 },
                 {
-                    // icon: 'fa fa-circle-nodes',
+                    // icon: 'fa pi-exclamation-triangle',
                     label: 'Imprint',
                     command: () => {
                         navigate('/imprint/');
@@ -64,64 +64,6 @@ const Header: React.FC = () => {
                 },
             ],
         },
-
-
-
-        {
-            label: 'Contribute',
-            icon: 'pi pi-sitemap',
-            items: [
-                // {
-                //     label: 'Overview',
-                //     command: () => {
-                //         navigate('/ontology/overview/');
-                //     }
-                //     // icon: 'pi pi-chart-bar'
-                // },
-                {
-                    label: 'New Entity Type',
-                    command: () => {
-                        navigate('/entity-type-form');
-                    },
-                    // icon: 'pi pi-box'
-                },
-                {
-                    label: 'New Link Type',
-                    command: () => {
-                        navigate('/link-type-form');
-                    },
-                    // icon: 'pi pi-arrows-h'
-                },
-                {
-                    label: 'Data Load',
-                    command: () => {
-                        navigate('/ontology/data-load/0');
-                    },
-                },
-            ],
-        },
-        // {
-        //     label: 'Documentation',
-        //     icon: 'pi pi-book',
-        //     command: () => {
-        //         navigate('/documentation');
-        //     },
-        // },
-        // {
-        //     label: 'Legal Information',
-        //     icon: 'pi pi-exclamation-triangle',
-        //     command: () => {
-        //         navigate('/legal');
-        //     },
-        // },
-
-        // {
-        //     label: 'Contact',
-        //     icon: 'pi pi-envelope',
-        //     command: () => {
-        //         navigate('/test');
-        //     }
-        // }
     ];
 
     const items: MenuItem[] = [...baseItems];

@@ -9,10 +9,6 @@ export function DesktopApp() {
     return <div className="app">
         <nav>
             <Link to="/">Home</Link> |{' '}
-            <Link to="/entity-type-form">Entity Type Form</Link> |{' '}
-            <Link to="/link-type-form">Link Type Form</Link> |{' '}
-            <Link to="/ontology/overview">Ontology Overview</Link> |{' '}
-            <Link to="/ontology/data-load/0">Data Load</Link> |{' '}
             <Link to="/neighborhood-explorer">
                 Neighborhood Explorer
             </Link>{' '}
@@ -29,33 +25,6 @@ export function DesktopApp() {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<HomePageComponent />} />
-
-                <Route
-                    path="entity-type-form"
-                    element={<EntityTypeFormPageComponent />}
-                />
-                <Route
-                    path="entity-type-form/:id"
-                    element={<EntityTypeFormPageComponent />}
-                />
-
-                <Route
-                    path="link-type-form"
-                    element={<LinkTypeFormPageComponent />}
-                />
-                <Route
-                    path="link-type-form/:id"
-                    element={<LinkTypeFormPageComponent />}
-                />
-
-                <Route
-                    path="ontology/overview"
-                    element={<MetadataOverviewPageComponent />}
-                />
-                <Route
-                    path="ontology/data-load/0"
-                    element={<DataLoadPageComponent />}
-                />
 
                 <Route
                     path="search/structure-search"
