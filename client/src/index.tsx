@@ -7,6 +7,7 @@ import { PrimeReactProvider } from 'primereact/api';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router-dom';
 import ToastMessageServiceProvider from './app/providers/messages/toast-message-service.provider';
+import { StoreProvider } from './app/providers/store-provider';
 import App from './app/app.component';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -19,7 +20,9 @@ root.render(
         <PrimeReactProvider>
             <ToastMessageServiceProvider>
                 <BrowserRouter>
-                <App/>
+                    <StoreProvider>
+                        <App />
+                    </StoreProvider>
                 </BrowserRouter>
             </ToastMessageServiceProvider>
         </PrimeReactProvider>
