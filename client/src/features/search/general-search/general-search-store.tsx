@@ -16,6 +16,7 @@ export const GeneralSearchStore = types
     .model({
         entities: types.array(Entity), // optional?
         typeCounts: types.map(types.number),
+        selectedType: "",
         selectedEntities: types.array(types.reference(Entity)),
         isSearching: types.maybeNull(types.boolean),
         query: types.optional(types.string, ''),
@@ -28,6 +29,7 @@ export const GeneralSearchStore = types
             self.typeCounts.forEach((value, key) => {
                 if (value > currentMax) {
                     maxKey = key as string;
+                    currentMax = value;
                 }
             });
             return maxKey;
@@ -44,6 +46,7 @@ export const GeneralSearchStore = types
     }))
     .actions((self) => ({
         calculateTypeCounts(): void {
+            self.typeCounts.clear();
             self.entities.map(e => {
                 const oldCount = self.typeCounts.get(e.type) || 0;
                 self.typeCounts.set(e.type, oldCount + 1);
@@ -81,6 +84,7 @@ export const GeneralSearchStore = types
                 );
                 self.entities.replace(entities);
                 self.calculateTypeCounts();
+                self.selectedType = self.getMajorityType();
                 self.selectedEntities.replace([]);
                 self.isSearching = false;
                 yield historyService.create(
