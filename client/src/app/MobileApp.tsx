@@ -2,7 +2,6 @@ import Footer from "@/layout/footer.component";
 import Layout from "@/layout/layout.component";
 import { DocumentationPageComponent, LegalPageComponent } from "@/pages";
 import MobileHomePageComponent from "@/pages/home/mobile-home-page.component";
-import GeneralSearchInput from "@/shared/components/GeneralSearchInput";
 import { observer } from "mobx-react-lite";
 import { Link, Route, Routes } from "react-router-dom";
 
