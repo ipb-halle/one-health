@@ -8,12 +8,12 @@ import { ITutorialStore, STORES } from '../../../../store/inversify';
 import { Link } from 'react-router-dom';
 import GeneralSearchPageTourComponent from './general-search-tour.component';
 import './general-search.component.scss';
-import SearchResultsPanel from './search-results-table.component';
 import { observer } from 'mobx-react-lite';
 import { Toast } from 'primereact/toast';
 import HistoryModal from '../../search-history/components/general-search-history-modal.component';
 import { RootStoreContext } from '../../../../app/providers/store-provider';
 import GeneralSearchInput from '@/shared/components/GeneralSearchInput';
+import SearchResultsContainerComponent from './search-results-container.component';
 
 const SearchPanel: React.FC = () => {
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
@@ -40,32 +40,6 @@ const SearchPanel: React.FC = () => {
         // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
     };
 
-    /* ### UNDER CONSTRUCTION ### 
-   ### integration of component-search-modal in search panel ### 
-    const [savedMolFile, setSavedMolFile] = useState<string | null>(null);
-    const [editor, setEditor] = useState<any>(null);
-
-
-    const handleHide = () => {
-        if (editor) {
-            const mol = editor.getMolFile();
-            setSavedMolFile(mol);
-        }
-        generalSearchStore.setIsModalOpen(false);
-    };
-
-    const initEditor = () => {
-        const newEditor = OpenChemLib.StructureEditor.createSVGEditor(
-            'structureSearchEditor',
-            1
-        );
-
-        if (savedMolFile) {
-            newEditor.setMolFile(savedMolFile);
-        }
-
-        setEditor(newEditor);
-    } */
 
     const toast = useRef(null);
 
@@ -135,16 +109,7 @@ const SearchPanel: React.FC = () => {
                     of Latin-America
                 </p>
             </div>
-            <div id="search-table">
-                {generalSearchStore.isSearching && (
-                    <LoadingPlaceholderComponent></LoadingPlaceholderComponent>
-                )}
-                {generalSearchStore.isSearching === false && (
-                    <div className="general-search-table">
-                        <SearchResultsPanel />
-                    </div>
-                )}{' '}
-            </div>
+            <SearchResultsContainerComponent />
         </div>
     );
 };
