@@ -15,11 +15,23 @@ type Env = {
 export const GeneralSearchStore = types
     .model({
         entities: types.array(Entity), // optional?
+        typeCounts: types.map(types.number),
         selectedEntities: types.array(types.reference(Entity)),
         isSearching: types.maybeNull(types.boolean),
         query: types.optional(types.string, ''),
+
     })
     .views((self) => ({
+        getMajorityType(): string {
+            let currentMax = 0;
+            let maxKey: string = "";
+            self.typeCounts.forEach((value, key) => {
+                if (value > currentMax) {
+                    maxKey = key as string;
+                }
+            });
+            return maxKey;
+        },
         getEntitiesAsJSON() {
             return self.entities.map((entity) => getSnapshot(entity));
         },
@@ -31,13 +43,21 @@ export const GeneralSearchStore = types
         },
     }))
     .actions((self) => ({
+        calculateTypeCounts(): void {
+            self.entities.map(e => {
+                const oldCount = self.typeCounts.get(e.type) || 0;
+                self.typeCounts.set(e.type, oldCount + 1);
+                return 0;
+            });
+        }
+    }))
+    .actions((self) => ({
         setIsSearching(isSearching: boolean): void {
             self.isSearching = isSearching;
         },
         setQuery(query: string): void {
             self.query = query;
         },
-
         setSelectedEntities(entities: any[]) {
             self.selectedEntities.clear();
             entities.forEach((propEntity) => {
@@ -60,6 +80,7 @@ export const GeneralSearchStore = types
                     messageService!,
                 );
                 self.entities.replace(entities);
+                self.calculateTypeCounts();
                 self.selectedEntities.replace([]);
                 self.isSearching = false;
                 yield historyService.create(
