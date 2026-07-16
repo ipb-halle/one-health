@@ -1,8 +1,25 @@
 
-.mobile-card {
-    text-align: center;
-}
 
-.mobile-card-img {
-    width: 70%;
+.mobile {
+    margin: 10px;
+
+    .search {
+        .title {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .input {
+            margin: 5px;
+        }
+    }
+
+    .card {
+        text-align: center;
+
+        img {
+            width: 70%;
+        }
+    }
+
 }

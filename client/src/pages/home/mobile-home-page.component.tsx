@@ -14,8 +14,7 @@ function MobileHomePageComponent() {
     const earthCardHeader = (
         <img
             alt="Earth surrounded by life and microbes"
-            src={earthImage} 
-            className="mobile-card-img"/>
+            src={earthImage} />
     );
 
     const resultsPanel = (generalSearchStore.isSearching === null) ?
@@ -23,16 +22,18 @@ function MobileHomePageComponent() {
             title="Investigate"
             footer={' '}
             header={earthCardHeader}
-            className="md:w-25rem mobile-card">
+            className="md:w-25rem card">
             <p>
                 Uncover previously unknown relationships.
             </p>
         </Card> :
         <CompactResultDisplay />
 
-    return <div>
-        <div>Title text</div>
-        <GeneralSearchInput />
+    return <div className="mobile">
+        <div className="search">
+            <div className="title">General Search</div>
+            <div className="input"><GeneralSearchInput /></div>
+        </div>
         {resultsPanel}
         <div>stats</div>
     </div>

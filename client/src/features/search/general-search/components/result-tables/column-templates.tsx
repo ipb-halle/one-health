@@ -23,6 +23,10 @@ export const nameColumnTemplate: IColumnTemplate = (result) => {
     return <span>{truncateString(result.name, 150)}</span>;
 };
 
+export const speciesNameColumnTemplate: IColumnTemplate = (result) => {
+    return <i>{truncateString(result.name, 150)}</i>;
+};
+
 export const weightColumnTemplate: IColumnTemplate = (compound) => {
     return (
         <>
