@@ -4,15 +4,17 @@ import ResultEntitySelector from "@/shared/ResultEntitySelector";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import CompactTextResultElement from "./compact-text-result-element";
+import {Entity} from "@/store/Entity";
+import {Property} from "@/store/Property";
+import { Instance } from "mobx-state-tree";
 
-function mapNamedProperty(propName: string, prop:{name:string, value:string|null}[]): string {
+function mapNamedProperty(propName: string, prop:Instance<typeof Property>[]): string {
     let classification = "";
     prop.forEach((p) => {if (p.name === propName) { classification = p.value || "";} });
     return classification;
 }
 
-function mapEntity(entity: { id: string, type: string, name: string, 
-    properties:{name:string, value:string|null}[]}): { id: string, "name": string, "details": string } {
+function mapEntity(entity: Instance<typeof Entity>): { id: string, "name": string, "details": string } {
     switch(entity.type) {
         case "Disease" : return {id: entity.id, name: entity.name, details: mapNamedProperty("Classification", entity.properties)};
         case "Plant" : return {id: entity.id, name: entity.name, details: mapNamedProperty("Family", entity.properties)};
@@ -27,7 +29,7 @@ function CompactResultDisplay() {
     const records = ((generalSearchStore.selectedType == "Disease")
         || (generalSearchStore.selectedType == "Plant")) ?
         generalSearchStore.getEntitiesOfType(generalSearchStore.selectedType).map((e) => {
-            return <CompactTextResultElement
+            return <CompactTextResultElement key={e.id}
                 entity={mapEntity(e)} />
         })
         : <div />
