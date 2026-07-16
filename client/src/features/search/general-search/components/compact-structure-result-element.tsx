@@ -2,6 +2,7 @@ import { CompactStructureEntity } from "@/core/types/compact-structure-entity"
 import MolecularDrawComponent from "@/shared/components/molecular-draw.component"
 import { Button } from "primereact/button"
 import "./compact-result.scss"
+import FormulaRenderer from "@/shared/components/FormulaRenderer"
 
 function CompactStructureResultElement(data: { entity: CompactStructureEntity }) {
 
@@ -14,7 +15,7 @@ function CompactStructureResultElement(data: { entity: CompactStructureEntity })
             </div>
             <Button className="button" icon="pi pi-chart-bar" />
         </div>
-        <div className="details">{data.entity.formula}</div>
+        <div className="details"><FormulaRenderer formula={data.entity.formula} /></div>
     </div>
 
 }

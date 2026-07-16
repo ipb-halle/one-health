@@ -2,6 +2,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import {
     nameColumnTemplate,
+    formulaColumnTemplate,
     smilesColumnTemplate,
     structureDrawTemplate,
     weightColumnTemplate,
@@ -12,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { Entity } from '../../../../../store/Entity';
 import { RootStoreContext } from '../../../../../app/providers/store-provider';
 import { Instance } from 'mobx-state-tree';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
 
 interface NaturalProductTableProps {
     results: Instance<typeof Entity>[];
@@ -36,10 +38,10 @@ const NaturalProductTable: React.FC<NaturalProductTableProps> = ({
             value={results}
             tableStyle={{ minWidth: '50rem' }}>
             <Column header="Structure" body={structureDrawTemplate}></Column>
-            <Column
+            <Column 
                 field="name"
                 header="Mol. Formula"
-                body={nameColumnTemplate}
+                body={formulaColumnTemplate}
                 sortable></Column>
             <Column header="Mol.Weight" body={weightColumnTemplate}></Column>
             <Column header="SMILES" body={smilesColumnTemplate}></Column>

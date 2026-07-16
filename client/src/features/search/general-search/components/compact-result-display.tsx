@@ -48,11 +48,13 @@ function mapEntity(entity: Instance<typeof Entity>): CompactTextEntity | Compact
         case "Disease": return {
             id: entity.id,
             name: entity.name,
+            styleClass: "",
             details: mapNamedProperty("Classification", entity.properties)
         };
         case "Plant": return {
             id: entity.id,
             name: entity.name,
+            styleClass: "speciesName",
             details: mapNamedProperty("Family", entity.properties)
         };
         case "Natural Product":
