@@ -28,23 +28,9 @@ const Header: React.FC = () => {
             },
             {
                 // icon: 'fa pi-exclamation-triangle',
-                label: 'Imprint',
+                label: 'Legal Information',
                 command: () => {
-                    navigate('/imprint/');
-                },
-            },
-            {
-                // icon: 'fa fa-circle-nodes',
-                label: 'Privacy Policy',
-                command: () => {
-                    navigate('/privacy/');
-                },
-            },
-            {
-                // icon: 'fa fa-circle-nodes',
-                label: 'Accessibility',
-                command: () => {
-                    navigate('/accessibility/');
+                    navigate('/legal/');
                 },
             },
         ]
@@ -83,7 +69,7 @@ const Header: React.FC = () => {
         items.unshift({
             label: 'General Search',
             icon: 'pi pi-search',
-            command: () => navigate('/'),
+            command: () => {screenDeviceStore.setMenuVisibility(false); navigate('/')},
         });
     }
 
@@ -100,7 +86,7 @@ const Header: React.FC = () => {
                     className="mr-2"
                 />
             </a>
-            <Button icon="pi pi-file" text label="Menu"
+            <Button icon="pi pi-bars" text label="Menu"
                 visible={screenDeviceStore.isMobile}
                 onClick={() => { screenDeviceStore.setMenuVisibility(true) }} />
         </div>
@@ -111,7 +97,7 @@ const Header: React.FC = () => {
         {start}
         <Sidebar visible={screenDeviceStore.mobileMenuVisible}
             onHide={() => { screenDeviceStore.setMenuVisibility(false) }} >
-            <PanelMenu model={items} />
+            <PanelMenu model={items} onClick={() => { screenDeviceStore.setMenuVisibility(false) }} />
         </Sidebar>
     </div>
         : <Menubar

@@ -11,9 +11,7 @@ function MobileApp() {
             <Link to="/">Home</Link> |{' '}
             |{' '}
             | <Link to="/documentation">Documentation</Link> |{' '}
-            <Link to="/imprint">Imprint</Link> |{' '}
-            <Link to="/privacy">Privacy</Link> |{' '}
-            <Link to="/accessibility">Accessibility</Link>
+            <Link to="/legal">Legal Information</Link> |{' '}
         </nav>
 
         <Routes>
@@ -26,16 +24,8 @@ function MobileApp() {
                 />
 
                 <Route
-                    path="imprint"
-                    element={<LegalPageComponent activeIndex={0} />}
-                />
-                <Route
-                    path="privacy"
-                    element={<LegalPageComponent activeIndex={1} />}
-                />
-                <Route
-                    path="accessibility"
-                    element={<LegalPageComponent activeIndex={2} />}
+                    path="legal"
+                    element={<LegalPageComponent />}
                 />
             </Route>
         </Routes>

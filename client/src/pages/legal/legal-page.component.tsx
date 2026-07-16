@@ -4,7 +4,7 @@ import { PageTitle } from '../../shared/components';
 import React from 'react';
 
 interface LegalPageProps {
-    activeIndex: number;
+    activeIndex?: number;
 }
 
 const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
