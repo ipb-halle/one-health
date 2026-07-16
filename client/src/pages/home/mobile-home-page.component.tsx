@@ -26,6 +26,10 @@ function MobileHomePageComponent() {
             <p>
                 Uncover previously unknown relationships.
             </p>
+            <p style={{ fontSize: '16px', color: '#a40', margin: 0 }}>
+                This service is <strong>work in progress</strong>, layout and
+                function are subject to change.
+            </p>
         </Card> :
         <CompactResultDisplay />
 

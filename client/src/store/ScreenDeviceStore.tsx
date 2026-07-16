@@ -6,6 +6,7 @@ const MOBILE_MAX_WIDTH_PX = 768
 export const ScreenDeviceStore = types
     .model({
         isMobile: types.optional(types.boolean, false),
+        mobileMenuVisible: types.optional(types.boolean, false),
     }).volatile(() => ({
         mql: undefined as MediaQueryList | undefined,
         stopListener: undefined as (() => void) | undefined,
@@ -35,5 +36,12 @@ export const ScreenDeviceStore = types
             self.stopListener?.()
             self.stopListener = undefined
             self.mql = undefined
+        },
+        toggleMenuVisibility() {
+            console.log(self.mobileMenuVisible);
+            self.mobileMenuVisible = ! self.mobileMenuVisible;
+        },
+        setMenuVisibility(visible:boolean) {
+            self.mobileMenuVisible = visible;
         }
     }))

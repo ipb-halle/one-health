@@ -7,8 +7,7 @@ import { Link, Route, Routes } from "react-router-dom";
 
 function MobileApp() {
     return <div className="mobile-app">
-        <div>header</div>
-        <nav>
+        <nav hidden={true}>
             <Link to="/">Home</Link> |{' '}
             |{' '}
             | <Link to="/documentation">Documentation</Link> |{' '}

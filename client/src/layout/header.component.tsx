@@ -1,72 +1,83 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { MenuItem } from 'primereact/menuitem';
 import { useNavigate, useLocation } from 'react-router-dom';
 import oneHealthLogo from '../assets/logo-n1h.png';
 import './header.component.scss';
+import { RootStoreContext } from '@/app/providers/store-provider';
+import { observer } from 'mobx-react-lite';
+import { PanelMenu } from 'primereact/panelmenu';
+import { Sidebar } from 'primereact/sidebar';
+import { Button } from 'primereact/button';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const baseItems: MenuItem[] = [
-        {
-            label: 'Legal',
-            icon: 'pi pi-chart-bar',
-            items: [
-                {
-                    // icon: 'pi pi-compass',
-                    label: 'Documentation',
-                    command: () => {
-                        navigate('/documentation');
-                    },
+    const legalItems: MenuItem =
+    {
+        label: 'Legal',
+        icon: 'pi pi-file',
+        items: [
+            {
+                // icon: 'pi pi-compass',
+                label: 'Documentation',
+                command: () => {
+                    navigate('/documentation');
                 },
-                {
-                    // icon: 'fa pi-exclamation-triangle',
-                    label: 'Imprint',
-                    command: () => {
-                        navigate('/imprint/');
-                    },
+            },
+            {
+                // icon: 'fa pi-exclamation-triangle',
+                label: 'Imprint',
+                command: () => {
+                    navigate('/imprint/');
                 },
-                {
-                    // icon: 'fa fa-circle-nodes',
-                    label: 'Privacy Policy',
-                    command: () => {
-                        navigate('/privacy/');
-                    },
+            },
+            {
+                // icon: 'fa fa-circle-nodes',
+                label: 'Privacy Policy',
+                command: () => {
+                    navigate('/privacy/');
                 },
-                {
-                    // icon: 'fa fa-circle-nodes',
-                    label: 'Accessibility',
-                    command: () => {
-                        navigate('/accessibility/');
-                    },
+            },
+            {
+                // icon: 'fa fa-circle-nodes',
+                label: 'Accessibility',
+                command: () => {
+                    navigate('/accessibility/');
                 },
-            ]
-        }, 
-        {
-            label: 'Visualization',
-            icon: 'pi pi-chart-bar',
-            items: [
-                {
-                    // icon: 'pi pi-compass',
-                    label: 'Neighborhood Explorer',
-                    command: () => {
-                        navigate('/neighborhood-explorer');
-                    },
-                },
-                {
-                    // icon: 'fa fa-circle-nodes',
-                    label: 'Co-occurrences Search',
-                    command: () => {
-                        navigate('/visualization/co-occurrence-search/');
-                    },
-                },
-            ],
-        },
-    ];
+            },
+        ]
+    };
 
-    const items: MenuItem[] = [...baseItems];
+
+    const visItems: MenuItem = {
+        label: 'Visualization',
+        icon: 'pi pi-chart-bar',
+        items: [
+            {
+                // icon: 'pi pi-compass',
+                label: 'Neighborhood Explorer',
+                command: () => {
+                    navigate('/neighborhood-explorer');
+                },
+            },
+            {
+                // icon: 'fa fa-circle-nodes',
+                label: 'Co-occurrences Search',
+                command: () => {
+                    navigate('/visualization/co-occurrence-search/');
+                },
+            },
+        ],
+    };
+
+    const items: MenuItem[] = [legalItems];
+    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+
+    if (!screenDeviceStore.isMobile) {
+        items.push(visItems);
+    }
 
     if (location.pathname !== '/') {
         items.unshift({
@@ -79,7 +90,7 @@ const Header: React.FC = () => {
     const start = (
         <div
             className="col"
-            style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+            style={{ display: 'flex', alignItems: 'center', gap: '40px', justifyContent: 'space-between' }}>
             <a href="/">
                 <img
                     alt="logo"
@@ -89,22 +100,37 @@ const Header: React.FC = () => {
                     className="mr-2"
                 />
             </a>
-            <p style={{ fontSize: '16px', color: '#a40', margin: 0 }}>
-                This service is <strong>work in progress</strong>, layout and
-                function are subject to change.
-            </p>
+            <Button icon="pi pi-file" text label="Menu"
+                visible={screenDeviceStore.isMobile}
+                onClick={() => { screenDeviceStore.setMenuVisibility(true) }} />
         </div>
     );
 
+
+    const menuBar = screenDeviceStore.isMobile ? <div>
+        {start}
+        <Sidebar visible={screenDeviceStore.mobileMenuVisible}
+            onHide={() => { screenDeviceStore.setMenuVisibility(false) }} >
+            <PanelMenu model={items} />
+        </Sidebar>
+    </div>
+        : <Menubar
+            model={items}
+            start={start}
+            pt={{ start: { style: { marginRight: 'auto' } } }}
+        />
+
     return (
         <div className="fluid fixed-top">
-            <Menubar
+            {/* <Menubar
                 model={items}
                 start={start}
                 pt={{ start: { style: { marginRight: 'auto' } } }}
-            />
+            /> */}
+            {menuBar}
         </div>
     );
 };
 
-export default Header;
+
+export default observer(Header);
