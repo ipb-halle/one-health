@@ -1,13 +1,14 @@
 import { CompactTextEntity } from "@/core/types/compact-text-entity"
 import { Button } from "primereact/button"
+import "./compact-result.scss"
 
 function CompactTextResultElement(data: {entity: CompactTextEntity}) {
 
-    return <div>
-        <div>
+    return <div className="compactDisplayElement">
+        <div className="main">
             <div>{data.entity.name}</div>
-            <Button label="!!!" /></div>
-        <div>{data.entity.details}</div>
+            <Button className="button" icon="pi pi-chart-bar" /></div>
+        <div className="details">{data.entity.details}</div>
     </div>
 }
 

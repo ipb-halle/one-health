@@ -1,0 +1,25 @@
+.compactDisplayElement {
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.15);
+    .main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        .structure {
+            margin: 5px;
+            width: 240px;
+            height: auto;
+        }
+        .button {
+            margin: 10px;
+            height:fit-content;
+        }
+    }
+
+    .details {
+        font-size:small;
+        text-align: center;
+        padding-bottom: 5px;
+    }
+}
+
