@@ -73,9 +73,11 @@ function createCompactComponents(entities: Instance<typeof Entity>[]):
 
     return entities.map(e => {
         if (e.type == "Natural Product") {
-            return <CompactStructureResultElement />
+            return <CompactStructureResultElement 
+                    entity={mapEntity(e) as CompactStructureEntity} key={e.id} />
         } else {
-            return <CompactTextResultElement entity={mapEntity(e)} key={e.id} />
+            return <CompactTextResultElement 
+                    entity={mapEntity(e) as CompactTextEntity} key={e.id} />
         }
     })
 }
