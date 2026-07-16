@@ -195,53 +195,53 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             processed by us. If such processing is taking place,
                             you may request information from the operator about
                             the following:
-                            <ol>
-                                <li>
-                                    The purposes for which the personal data are
-                                    processed
-                                </li>
-                                <li>
-                                    the categories of personal data which are
-                                    processed
-                                </li>
-                                <li>
-                                    the recipients or categories of recipients
-                                    to whom the personal data concerning you
-                                    have been or will be disclosed
-                                </li>
-                                <li>
-                                    the planned duration of the storage of the
-                                    personal data concerning you or, if concrete
-                                    information on this is not possible,
-                                    criteria for determining the storage period
-                                </li>
-                                <li>
-                                    the existence of a right to rectification or
-                                    deletion of the personal data concerning
-                                    you, a right to restriction of processing by
-                                    the operator or a right to object to such
-                                    processing
-                                </li>
-                                <li>
-                                    the existence of a right of appeal to a
-                                    supervisory authority
-                                </li>
-                                <li>
-                                    any available information on the origin of
-                                    the data, if the personal data are not
-                                    collected from the data subject
-                                </li>
-                                <li>
-                                    the existence of automated decision-making,
-                                    including profiling, pursuant to Article
-                                    22(1) and (4) of the GDPR and, at least in
-                                    these cases, meaningful information about
-                                    the logic involved and the scope and
-                                    intended effects of such processing for the
-                                    data subject.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                The purposes for which the personal data are
+                                processed
+                            </li>
+                            <li>
+                                the categories of personal data which are
+                                processed
+                            </li>
+                            <li>
+                                the recipients or categories of recipients
+                                to whom the personal data concerning you
+                                have been or will be disclosed
+                            </li>
+                            <li>
+                                the planned duration of the storage of the
+                                personal data concerning you or, if concrete
+                                information on this is not possible,
+                                criteria for determining the storage period
+                            </li>
+                            <li>
+                                the existence of a right to rectification or
+                                deletion of the personal data concerning
+                                you, a right to restriction of processing by
+                                the operator or a right to object to such
+                                processing
+                            </li>
+                            <li>
+                                the existence of a right of appeal to a
+                                supervisory authority
+                            </li>
+                            <li>
+                                any available information on the origin of
+                                the data, if the personal data are not
+                                collected from the data subject
+                            </li>
+                            <li>
+                                the existence of automated decision-making,
+                                including profiling, pursuant to Article
+                                22(1) and (4) of the GDPR and, at least in
+                                these cases, meaningful information about
+                                the logic involved and the scope and
+                                intended effects of such processing for the
+                                data subject.
+                            </li>
+                        </ol>
 
                         <p>
                             You have the right to request information about
@@ -271,33 +271,33 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             Under the following conditions, you may request the
                             restriction of the processing of personal data
                             concerning you:
-                            <ol>
-                                <li>
-                                    if you contest the accuracy of the personal
-                                    data concerning you for a period enabling
-                                    the operator to verify the accuracy of the
-                                    personal data;
-                                </li>
-                                <li>
-                                    the processing is unlawful and you object to
-                                    the deletion of the personal data and
-                                    request instead the restriction of the use
-                                    of the personal data
-                                </li>
-                                <li>
-                                    the operator no longer needs the personal
-                                    data for the purposes of processing, but you
-                                    need them for the establishment, exercise or
-                                    defense of legal claims; or
-                                </li>
-                                <li>
-                                    if you have objected to the processing
-                                    pursuant to Article 21 (1) GDPR and it is
-                                    not yet clear whether the legitimate grounds
-                                    of the operator outweigh your grounds.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                if you contest the accuracy of the personal
+                                data concerning you for a period enabling
+                                the operator to verify the accuracy of the
+                                personal data;
+                            </li>
+                            <li>
+                                the processing is unlawful and you object to
+                                the deletion of the personal data and
+                                request instead the restriction of the use
+                                of the personal data
+                            </li>
+                            <li>
+                                the operator no longer needs the personal
+                                data for the purposes of processing, but you
+                                need them for the establishment, exercise or
+                                defense of legal claims; or
+                            </li>
+                            <li>
+                                if you have objected to the processing
+                                pursuant to Article 21 (1) GDPR and it is
+                                not yet clear whether the legitimate grounds
+                                of the operator outweigh your grounds.
+                            </li>
+                        </ol>
 
                         <p>
                             If the processing of personal data concerning you
@@ -328,43 +328,43 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             operator is obliged to delete such data without
                             undue delay, if one of the following reasons
                             applies:
-                            <ol>
-                                <li>
-                                    The personal data concerning you are no
-                                    longer necessary for the purposes for which
-                                    they were collected or otherwise processed.
-                                </li>
-                                <li>
-                                    You withdraw your consent on which the
-                                    processing was based pursuant to Art. 6 (1)
-                                    a or Art. 9 (2) a GDPR and there is no other
-                                    legal basis for the processing.
-                                </li>
-                                <li>
-                                    You object to the processing pursuant to
-                                    Art. 21 (1) GDPR and there are no overriding
-                                    legitimate grounds for the processing, or
-                                    you object to the processing pursuant to
-                                    Art. 21 (2) GDPR.
-                                </li>
-                                <li>
-                                    The personal data concerning you has been
-                                    processed unlawfully.
-                                </li>
-                                <li>
-                                    The deletion of the personal data concerning
-                                    you is necessary for compliance with a legal
-                                    obligation under Union or Member State law
-                                    to which the operator is subject.
-                                </li>
-                                <li>
-                                    The personal data concerning you has been
-                                    collected in relation to information society
-                                    services offered pursuant to Article 8(1) of
-                                    the GDPR.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                The personal data concerning you are no
+                                longer necessary for the purposes for which
+                                they were collected or otherwise processed.
+                            </li>
+                            <li>
+                                You withdraw your consent on which the
+                                processing was based pursuant to Art. 6 (1)
+                                a or Art. 9 (2) a GDPR and there is no other
+                                legal basis for the processing.
+                            </li>
+                            <li>
+                                You object to the processing pursuant to
+                                Art. 21 (1) GDPR and there are no overriding
+                                legitimate grounds for the processing, or
+                                you object to the processing pursuant to
+                                Art. 21 (2) GDPR.
+                            </li>
+                            <li>
+                                The personal data concerning you has been
+                                processed unlawfully.
+                            </li>
+                            <li>
+                                The deletion of the personal data concerning
+                                you is necessary for compliance with a legal
+                                obligation under Union or Member State law
+                                to which the operator is subject.
+                            </li>
+                            <li>
+                                The personal data concerning you has been
+                                collected in relation to information society
+                                services offered pursuant to Article 8(1) of
+                                the GDPR.
+                            </li>
+                        </ol>
 
                         <h3>b) Information to third parties</h3>
                         <p>
@@ -383,40 +383,40 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                         <p>
                             The right to deletion does not exist to the extent
                             that the processing is necessary
-                            <ol>
-                                <li>
-                                    For the exercise of the right to freedom of
-                                    expression and information;
-                                </li>
-                                <li>
-                                    for compliance with a legal obligation which
-                                    requires processing under Union or Member
-                                    State law to which the operator is subject,
-                                    or for the performance of a task carried out
-                                    in the public interest or in the exercise of
-                                    official authority vested in the operator;
-                                </li>
-                                <li>
-                                    for reasons of public interest in the area
-                                    of public health pursuant to Art. 9(2)(h)
-                                    and (i) and Art. 9(3) GDPR;
-                                </li>
-                                <li>
-                                    for archiving purposes in the public
-                                    interest, scientific or historical research
-                                    purposes or statistical purposes pursuant to
-                                    Article 89(1) GDPR, insofar as the right
-                                    referred to in section a) is likely to
-                                    render impossible or seriously prejudice the
-                                    achievement of the purposes of such
-                                    processing; or
-                                </li>
-                                <li>
-                                    for the assertion, exercise or defense of
-                                    legal claims.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                For the exercise of the right to freedom of
+                                expression and information;
+                            </li>
+                            <li>
+                                for compliance with a legal obligation which
+                                requires processing under Union or Member
+                                State law to which the operator is subject,
+                                or for the performance of a task carried out
+                                in the public interest or in the exercise of
+                                official authority vested in the operator;
+                            </li>
+                            <li>
+                                for reasons of public interest in the area
+                                of public health pursuant to Art. 9(2)(h)
+                                and (i) and Art. 9(3) GDPR;
+                            </li>
+                            <li>
+                                for archiving purposes in the public
+                                interest, scientific or historical research
+                                purposes or statistical purposes pursuant to
+                                Article 89(1) GDPR, insofar as the right
+                                referred to in section a) is likely to
+                                render impossible or seriously prejudice the
+                                achievement of the purposes of such
+                                processing; or
+                            </li>
+                            <li>
+                                for the assertion, exercise or defense of
+                                legal claims.
+                            </li>
+                        </ol>
                     </div>
 
                     <div className="text-container">
@@ -448,19 +448,19 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             transfer this data to another operator without
                             hindrance from the operator to whom the personal
                             data was provided, provided that
-                            <ol>
-                                <li>
-                                    the processing is based on consent pursuant
-                                    to Art. 6 (1) a GDPR or Art. 9 (2) a GDPR or
-                                    on a contract pursuant to Art. 6 (1) b GDPR
-                                    and
-                                </li>
-                                <li>
-                                    the processing is carried out with the help
-                                    of automated procedures.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                the processing is based on consent pursuant
+                                to Art. 6 (1) a GDPR or Art. 9 (2) a GDPR or
+                                on a contract pursuant to Art. 6 (1) b GDPR
+                                and
+                            </li>
+                            <li>
+                                the processing is carried out with the help
+                                of automated procedures.
+                            </li>
+                        </ol>
 
                         <p>
                             In exercising this right, you also have the right to
@@ -533,7 +533,7 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             <b>
                                 You have the right to revoke your declaration of
                                 consent under data protection law at any time.
-                            </b>{' '}
+                            </b>
                             The revocation of consent does not affect the
                             lawfulness of the processing carried out on the
                             basis of the consent until the revocation.
@@ -551,25 +551,25 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             profiling - which produces legal effects concerning
                             you or similarly significantly affects you. This
                             does not apply if the decision
-                            <ol>
-                                <li>
-                                    is necessary for the conclusion or
-                                    performance of a contract between you and
-                                    the operator,
-                                </li>
-                                <li>
-                                    is permitted by legal provisions of the
-                                    Union or the Member States to which the
-                                    operator is subject and these legal
-                                    provisions contain appropriate measures to
-                                    protect your rights and freedoms as well as
-                                    your legitimate interests, or
-                                </li>
-                                <li>
-                                    is carried out with your explicit consent.
-                                </li>
-                            </ol>
                         </p>
+                        <ol>
+                            <li>
+                                is necessary for the conclusion or
+                                performance of a contract between you and
+                                the operator,
+                            </li>
+                            <li>
+                                is permitted by legal provisions of the
+                                Union or the Member States to which the
+                                operator is subject and these legal
+                                provisions contain appropriate measures to
+                                protect your rights and freedoms as well as
+                                your legitimate interests, or
+                            </li>
+                            <li>
+                                is carried out with your explicit consent.
+                            </li>
+                        </ol>
 
                         <p>
                             However, these decisions may not be based on special
@@ -632,7 +632,7 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             legal decisions.
                         </p>
                         <p>
-                            Revision: June, 16<sup>th</sup> 2025
+                            Revision: July, 16<sup>th</sup> 2026
                         </p>
                     </div>
                 </AccordionTab>
@@ -648,27 +648,29 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                         ask for your patience, because our manpower is limited.
                         We are aware of several accessibility issues in this
                         version of N1H.org. Among them:
-                        <ul>
-                            <li>page elements with poor contrasts</li>
-                            <li>very small font sizes</li>
-                            <li>
-                                missing or mis-leading semantic annotation of
-                                page elements
-                            </li>
-                            <li>
-                                missing, mis-leading or un-informative
-                                alternative descriptions for images
-                            </li>
-                            <li>
-                                page elements, which are not operable with the
-                                keyboard
-                            </li>
-                            <li>
-                                downloadable elements, which do not conform with
-                                accessibility standards
-                            </li>
-                            <li>confusing or garbled page structure</li>
-                        </ul>
+                    </p>
+                    <ul>
+                        <li>page elements with poor contrasts</li>
+                        <li>very small font sizes</li>
+                        <li>
+                            missing or mis-leading semantic annotation of
+                            page elements
+                        </li>
+                        <li>
+                            missing, mis-leading or un-informative
+                            alternative descriptions for images
+                        </li>
+                        <li>
+                            page elements, which are not operable with the
+                            keyboard
+                        </li>
+                        <li>
+                            downloadable elements, which do not conform with
+                            accessibility standards
+                        </li>
+                        <li>confusing or garbled page structure</li>
+                    </ul>
+                    <p>
                         We will try to fix these issues as long as these fixes
                         do not impact the scientific value of N1H.org.
                         <br />
@@ -709,7 +711,7 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                     <p>
                         <b>Topicality</b>
                         <br />
-                        We have assessed this service in Oct. 2025. Next
+                        We have assessed this service in July. 2026. Next
                         assessment is due in one year.
                     </p>
                 </AccordionTab>
