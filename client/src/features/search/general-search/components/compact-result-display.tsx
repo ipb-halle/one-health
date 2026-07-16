@@ -25,11 +25,13 @@ function CompactResultDisplay() {
         {generalSearchStore.isSearching === false && (
             (generalSearchStore.selectedType != "") ?
                 <div>
-                    <div>{generalSearchStore.selectedType}</div>
-                    <ResultEntitySelector />
+                    <div className="compactDisplay-ResultEntitySelector">
+                        <div>Result Types:</div>
+                        <ResultEntitySelector />
+                    </div>
                     {components}
                 </div> :
-                <div>NO RESULTS</div>
+                <div>No Results</div>
         )}
     </div>
 

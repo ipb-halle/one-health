@@ -39,7 +39,6 @@ function MobileHomePageComponent() {
             <div className="input"><GeneralSearchInput /></div>
         </div>
         {resultsPanel}
-        <div>stats</div>
     </div>
 }
 

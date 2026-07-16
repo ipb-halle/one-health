@@ -1,3 +1,10 @@
+.compactDisplay-ResultEntitySelector {
+    display: flex;
+    justify-content: space-between;
+    align-items: first baseline;
+    margin: 10px;
+}
+
 .compactDisplayElement {
     margin: 10px;
     box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.15);

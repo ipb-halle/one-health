@@ -81,7 +81,7 @@ const Header: React.FC = () => {
                 <img
                     alt="logo"
                     src={oneHealthLogo}
-                    height="40"
+                    height="35"
                     style={{ marginLeft: 20 }}
                     className="mr-2"
                 />
@@ -93,7 +93,7 @@ const Header: React.FC = () => {
     );
 
 
-    const menuBar = screenDeviceStore.isMobile ? <div>
+    const menuBar = screenDeviceStore.isMobile ? <div className="p-menubar">
         {start}
         <Sidebar visible={screenDeviceStore.mobileMenuVisible}
             onHide={() => { screenDeviceStore.setMenuVisibility(false) }} >
