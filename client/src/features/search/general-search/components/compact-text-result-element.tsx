@@ -1,6 +1,7 @@
+import { CompactTextEntity } from "@/core/types/compact-text-entity"
 import { Button } from "primereact/button"
 
-function CompactTextResultElement(data: {entity: { id: string, name: string, details: string }}) {
+function CompactTextResultElement(data: {entity: CompactTextEntity}) {
 
     return <div>
         <div>

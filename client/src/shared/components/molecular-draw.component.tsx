@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import OpenChemLib from 'openchemlib/full';
+import { MolecularDrawComponentProps } from '@/core/types/molecular-draw-component-props';
 
 import SmilesDrawerLib from 'smiles-drawer';
 
-interface MolecularDrawComponentProps {
-    smiles: string;
-    xkey: number;
-}
 
 const MolecularDrawComponent: React.FC<MolecularDrawComponentProps> = ({
     smiles,
