@@ -1,16 +1,15 @@
 @use '../assets/styles/Constants.scss' as c;
 
+.app-footer-coloured-dark {
+    background-color: c.$app-color-3;
+    align-items: center;
+}
+
 .app {
     .app-footer {
         padding: 10px;
         padding-bottom: 0px;
 
-    }
-
-
-    .app-footer-coloured-dark {
-        background-color: c.$app-color-3;
-        align-items: center;
     }
 
     .app-footer-coloured-light {
@@ -46,6 +45,10 @@
         width: 100%;
         overflow: hidden;
         display: flex;
+    }
+
+    .mobile-footer {
+        padding: 5px;
     }
 
     .footer-icons {

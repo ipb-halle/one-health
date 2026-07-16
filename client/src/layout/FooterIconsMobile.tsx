@@ -8,7 +8,7 @@ import './footer.component.scss';
 
 function FooterIconsMobile() {
     return <div className="icons-container">
-        <div className="footer-icons app-footer-coloured-dark fixed-bottom">
+        <div className="footer-icons app-footer-coloured-dark fixed-bottom mobile-footer">
             <div className="icon"><img alt="logo" src={logoIpb} /></div>
             <div className="icon"><img alt="logo" src={logoGlacier} /></div>
             <div className="icon"><img alt="logo" src={logoForeign} /></div>

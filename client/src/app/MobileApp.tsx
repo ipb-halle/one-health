@@ -29,8 +29,6 @@ function MobileApp() {
                 />
             </Route>
         </Routes>
-
-        <Footer />
     </div>
 }
 
