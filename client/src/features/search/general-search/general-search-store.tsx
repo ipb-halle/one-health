@@ -45,7 +45,7 @@ export const GeneralSearchStore = types
             return self.entities.filter((e) => e.type == type);
         },
         getEntityById(id: string | number): Instance<typeof Entity> | undefined {
-            return self.entities.find(e => e.id = id.toString());
+            return self.entities.find(e => e.id == id.toString());
         },
     }))
     .actions((self) => ({
