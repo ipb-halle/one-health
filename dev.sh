@@ -29,7 +29,7 @@ case $1 in
         docker compose -f docker-compose.yml -f compose-dev.yml up -d server
         ;;
     stop)
-        docker compose -f docker-compose.yml -f down
+        docker compose -f docker-compose.yml -f compose-dev.yml down
         ;;
     *)
         echo "Usage: dev.sh [start|stop]"
