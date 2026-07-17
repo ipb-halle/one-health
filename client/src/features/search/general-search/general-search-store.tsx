@@ -6,6 +6,7 @@ import { IGeneralSearchService } from './services/general-search-service';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import { RootStore } from '../../../store/root-store';
+
 type Env = {
     historyService: IGeneralSearchHistoryService;
     messageService: MessageService;
@@ -42,6 +43,9 @@ export const GeneralSearchStore = types
         },
         getEntitiesOfType(type: string) {
             return self.entities.filter((e) => e.type == type);
+        },
+        getEntityById(id: string | number): Instance<typeof Entity> | undefined {
+            return self.entities.find(e => e.id = id.toString());
         },
     }))
     .actions((self) => ({
