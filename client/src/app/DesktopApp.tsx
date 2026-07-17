@@ -1,5 +1,5 @@
 import Layout from "@/layout/layout.component";
-import { CoOccurrenceSummaryPageComponent, DataLoadPageComponent, DocumentationPageComponent, EntityTypeFormPageComponent, HomePageComponent, LegalPageComponent, LinkTypeFormPageComponent, MetadataOverviewPageComponent, NeighborhoodExplorerPageComponent } from "@/pages";
+import { CoOccurrenceSummaryPageComponent, DocumentationPageComponent, HomePageComponent, LegalPageComponent, NeighborhoodExplorerPageComponent } from "@/pages";
 import CompoundSearchPageComponent from "@/pages/compound-search/compound-search-page.component";
 import { Link, Route, Routes } from "react-router-dom";
 
