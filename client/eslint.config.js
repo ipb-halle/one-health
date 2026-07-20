@@ -34,6 +34,9 @@ export default [
 	            ...tseslint.configs.recommended.rules, //recommended Rules from TsESLint
 	            ...react.configs.recommended.rules, // recommended Rules from ReactESLint
 	            ...reactHooks.configs.recommended.rules, // recommended Rules especially for React hooks
+	            'no-undef': 'off',
+	            'react/react-in-jsx-scope': 'off',
+	            'react/jsx-uses-react': 'off',
 	            '@typescript-eslint/no-unused-vars': [
 	                // warns if variables are unused
 	                'warn',
@@ -73,6 +76,9 @@ export default [
 	            ...tseslint.configs.recommended.rules,
 	            ...react.configs.recommended.rules,
 	            ...reactHooks.configs.recommended.rules,
+	            'no-undef': 'off',
+	            'react/react-in-jsx-scope': 'off',
+	            'react/jsx-uses-react': 'off',
 	            '@typescript-eslint/no-unused-vars': [
 	                'warn',
 	                { argsIgnorePattern: '^_' },
