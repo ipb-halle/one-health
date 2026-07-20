@@ -1,4 +1,5 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
+import { LoadingPlaceholderComponent } from "@/shared/components";
 import { observer } from "mobx-react-lite"
 import { IMSTMap, number } from "mobx-state-tree/dist/internal";
 import { Chart } from "primereact/chart";
@@ -14,6 +15,7 @@ function EntityDetailComponent() {
         <div className="chart-box"><Chart type="bar"
             data={convertToChart(entityDetailStore.typeCounts)}
             options={{}} /></div>
+            { entityDetailStore.isLoading && ( <LoadingPlaceholderComponent/> )}
         <div>Structure Image</div>
         <div>Synonyms</div>
         <div>Identifier</div>
