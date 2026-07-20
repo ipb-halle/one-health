@@ -1,4 +1,4 @@
-@import '../../../../assets/styles/Constants.scss';
+@use '../../../../assets/styles/Constants' as *;
 
 .general-search-header {
     display: flex;

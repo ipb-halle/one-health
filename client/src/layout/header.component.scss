@@ -1,4 +1,4 @@
-@import '../assets/styles/Constants.scss';
+@use '../assets/styles/Constants' as *;
 
 .p-menubar {
     background-color: white;
