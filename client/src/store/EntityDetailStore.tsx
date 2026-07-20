@@ -2,6 +2,7 @@ import { flow, Instance, types } from "mobx-state-tree";
 import { Entity } from "./Entity";
 import { IEntityDTO } from "@/features/search/general-search/models/entity-dto";
 import { EntityREST2MST } from "./adapter/EntityREST2MST";
+import { GET_ADJACENT_ENTITITES } from "./adapter/REST_ENDPOINTS";
 
 export const EntityDetailStore = types
     .model({
@@ -24,7 +25,7 @@ export const EntityDetailStore = types
                 const params = new URLSearchParams();
                 params.append("id", self.selectedEntity.id);
                 const response = yield fetch(
-                    "api/entity/getAdjacentEntities?" + params.toString()
+                    GET_ADJACENT_ENTITITES + "?" + params.toString()
                 );
                 if (response.status == 200) {
                     const body = yield response.json() as IEntityDTO[];

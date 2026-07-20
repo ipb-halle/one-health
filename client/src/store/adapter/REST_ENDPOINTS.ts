@@ -1,0 +1,1 @@
+export const GET_ADJACENT_ENTITITES = "api/entity/getAdjacentEntities";
