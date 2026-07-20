@@ -12,10 +12,9 @@ export const EntityDetailStore = types
     .actions((self) => ({
         calculateTypeCounts(): void {
             self.typeCounts.clear();
-            self.adjacentEntities.map(e => {
+            self.adjacentEntities.forEach(e => {
                 const oldCount = self.typeCounts.get(e.type) || 0;
                 self.typeCounts.set(e.type, oldCount + 1);
-                return 0;
             });
         }
     }))
@@ -23,7 +22,7 @@ export const EntityDetailStore = types
         loadAdjacentEntitiesOfSelection: flow(function* (): any {
             if (self.selectedEntity) {
                 const params = new URLSearchParams();
-                params.append("id", self.selectedEntity?.id);
+                params.append("id", self.selectedEntity.id);
                 const response = yield fetch(
                     "api/entity/getAdjacentEntities?" + params.toString()
                 );
