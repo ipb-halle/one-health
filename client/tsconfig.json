@@ -28,11 +28,14 @@
             ]
         },
         "types": [
+            "jest",
+            "node",
             "reflect-metadata"
         ]
     },
     "include": [
-        "src"
+        "src",
+        "test"
     ],
     "exclude": [
         "node_modules"
