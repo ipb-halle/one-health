@@ -1,7 +1,6 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import {
-    nameColumnTemplate,
     formulaColumnTemplate,
     smilesColumnTemplate,
     structureDrawTemplate,
@@ -13,7 +12,6 @@ import { observer } from 'mobx-react-lite';
 import { Entity } from '../../../../../store/Entity';
 import { RootStoreContext } from '../../../../../app/providers/store-provider';
 import { Instance } from 'mobx-state-tree';
-import FormulaRenderer from '@/shared/components/FormulaRenderer';
 
 interface NaturalProductTableProps {
     results: Instance<typeof Entity>[];

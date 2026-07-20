@@ -15,7 +15,6 @@ export default (FormulaRenderer)
 
 function splitFormula(formula: string): string[] {
     let elements: string[] = [];
-    let startIndex = 0;
 
     if (formula.length == 0) {
         return elements;

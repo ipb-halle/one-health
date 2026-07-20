@@ -5,8 +5,6 @@ import { Button } from 'primereact/button';
 import { RootStoreContext } from '../../../../app/providers/store-provider';
 import { Column } from 'primereact/column';
 import { truncateString } from '../../../../shared';
-import { HistoryItem } from '../../general-search/models/history-item';
-import { DataView } from 'primereact/dataview';
 import { DataTable } from 'primereact/datatable';
 import { Instance } from 'mobx-state-tree';
 import { SavedTextSearch } from '../models/SavedTextSearch';
