@@ -1,10 +1,10 @@
 function FormulaRenderer(data: {formula:string}) {
-
+    let mockId = 0;
     const formula = splitFormula(data.formula).map((e) => {
         if (e.match("[0-9]+")) {
-            return <sub>{e}</sub>
+            return <sub key={"f" + mockId++}>{e}</sub>
         } else {
-            return <span>{e}</span>
+            return <span key={"f" + mockId++}>{e}</span>
         }
     });
         
