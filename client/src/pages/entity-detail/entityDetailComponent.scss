@@ -1,6 +1,18 @@
 .entity-detail {
+    padding-top: 20px;
+    margin: 10px;
+
     .chart-box {
         width: 80%;
         text-align: center;
+    }
+    .synonym {
+
+    }
+    .synonymText {
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 }

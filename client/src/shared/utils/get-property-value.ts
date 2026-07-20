@@ -1,3 +1,5 @@
+import { Entity } from "@/store/Entity";
+import { Instance } from "mobx-state-tree";
 
 
 interface PropertyList {
@@ -7,6 +9,6 @@ interface PropertyList {
     }[]
 }
 
-export const getPropertyValue = (element: PropertyList, key: string) => {
-    return element?.properties?.find((e: { name: string }) => e.name === key)?.value || '';
+export const getPropertyValue = (element: PropertyList | Instance<typeof Entity>, key: string):string | undefined => {
+    return element?.properties?.find((e: { name: string }) => e.name === key)?.value || undefined;
 };
