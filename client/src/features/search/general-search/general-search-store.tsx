@@ -1,6 +1,5 @@
 import { types, flow, getEnv, getSnapshot, getRoot, Instance } from 'mobx-state-tree';
 import { Entity } from '../../../store/Entity';
-import React from 'react';
 import { IGeneralSearchHistoryService } from '../search-history/services/general-search-history-service';
 import { IGeneralSearchService } from './services/general-search-service';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
