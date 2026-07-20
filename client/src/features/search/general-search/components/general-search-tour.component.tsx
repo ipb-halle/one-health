@@ -6,7 +6,7 @@ import historyGif from '../../../../assets/tutorials/search/general-search/gener
 
 interface GeneralSearchPageTourProps {
     run: boolean;
-    callback: any;
+    callback: () => void;
 }
 
 const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
@@ -14,7 +14,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
     callback,
 }) => {
     const handleJoyrideCallback = (data: CallBackProps) => {
-        const { status, type } = data;
+        const { status } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
         if (finishedStatuses.includes(status)) {
