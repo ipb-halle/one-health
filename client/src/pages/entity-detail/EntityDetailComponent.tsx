@@ -5,6 +5,7 @@ import { getSnapshot } from "mobx-state-tree";
 import { IMSTMap, number } from "mobx-state-tree/dist/internal";
 import { Chart } from "primereact/chart";
 import { useContext } from "react"
+import { types } from "mobx-state-tree";
 
 function EntityDetailComponent() {
     const entityDetailStore = useContext(RootStoreContext).entityDetailStore;
@@ -15,8 +16,8 @@ function EntityDetailComponent() {
 
     return <div className="entity-detail">
         <div className="chart-box"><Chart type="bar"
-            data={convertToChart(entityDetailStore.typeCounts)} 
-            options={{ }}/></div>
+            data={convertToChart(entityDetailStore.typeCounts)}
+            options={{}} /></div>
         <div>Structure Image</div>
         <div>Synonyms</div>
         <div>Identifier</div>
@@ -24,18 +25,19 @@ function EntityDetailComponent() {
 }
 export default observer(EntityDetailComponent)
 
-function convertToChart(typeCounts:IMSTMap<number>): any {
-    let labels:string[] = [];
-    let data:number[] = [];
+function convertToChart(typeCounts: IMSTMap<typeof number>): any {
+    let labels: string[] = [];
+    let data: number[] = [];
     if (typeCounts) {
-       typeCounts.forEach((value:number, key:string) => {
-            labels.push(key); 
-            data.push(value)}
+        typeCounts.forEach((value: number, key: string | number) => {
+            labels.push(key.toString());
+            data.push(value)
+        }
         );
     }
 
-    return { 
-        labels : labels,
+    return {
+        labels: labels,
         datasets: [
             {
                 label: "Related Entities",
