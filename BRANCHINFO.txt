@@ -1,4 +1,1 @@
-This branch is our playground to test 
-a mobile ready n1h.org web application.
-
-Branch created 2026-07-13 by FBroda
+Main branch
