@@ -15,4 +15,12 @@
         white-space: nowrap;
         text-overflow: ellipsis;
     }
+
+    .buttons {
+        text-align: right;
+        margin: 10px;
+        .p-button-label {
+            font-size: small;
+        }
+    }
 }

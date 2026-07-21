@@ -22,6 +22,7 @@ function EntityDetailComponent() {
     return <div className="entity-detail">
         <center><h1>Details</h1></center>
         {relationBarChart(entityDetailStore, navigate)}
+        {navigationButtons(entityDetailStore, navigate)}
         {entityDetailStore.isLoading && (<LoadingPlaceholderComponent />)}
         {structureImage(entityDetailStore)}
         {synonyms(entityDetailStore)}
@@ -51,6 +52,15 @@ function synonyms(entityDetailStore: Instance<typeof EntityDetailStore>): JSX.El
         </div>;
 }
 
+
+function navigationButtons(entityDetailStore: Instance<typeof EntityDetailStore>, navigate: (target:string)=>void): JSX.Element {
+    return <div className="buttons">
+        <Button icon="pi pi-directions-alt" label="Return" onClick={()=>navigate("/")} />{" "}
+        {(entityDetailStore.adjacentEntities.length > 0) && 
+            <Button icon="pi pi-search" label="Investigate relations" onClick={()=>investigateAdjacentEntries(entityDetailStore, navigate)}/>}
+    </div>    
+}
+
 function relationBarChart(entityDetailStore: Instance<typeof EntityDetailStore>, navigate: (target:string)=>void): JSX.Element | null {
     if (entityDetailStore.isLoading) {
         return null;
@@ -59,7 +69,6 @@ function relationBarChart(entityDetailStore: Instance<typeof EntityDetailStore>,
         <div className="chart-box"><Chart type="bar"
             data={convertToChart(entityDetailStore.typeCounts)}
             options={{}} />
-        <Button icon="pi pi-search" onClick={()=>investigateAdjacentEntries(entityDetailStore, navigate)}/>
         </div> :
         <div><b>No related entities found</b></div>
 }
