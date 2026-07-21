@@ -1,4 +1,4 @@
-import Plot from 'react-plotly.js';
+import * as PlotlyReact from 'react-plotly.js';
 import { SankeyData } from 'plotly.js';
 import {
     ReactNode,
@@ -9,7 +9,6 @@ import {
     useState,
 } from 'react';
 import './co-occurrence-summary-page.component.scss';
-import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { dependencyFactory } from '../../../app/di';
 import { SERVICES } from '@/app/di/service-types';
@@ -21,7 +20,6 @@ import TypeQueryBuilder from '../../../features/visualization/co-ocurrence-searc
 import { PageTitle } from '../../../shared/components';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { SplitButton } from 'primereact/splitbutton';
-import { TabPanel, TabView } from 'primereact/tabview';
 import { ISavedCoOcurrenceVisualization } from '../../../features/visualization/visualization-history/models/saved-co-ocurrence-visualization';
 import { InputText } from 'primereact/inputtext';
 import { ICoOcurrenceVisualizationHistoryService } from '../../../features/visualization/co-ocurrence-search/services/co-ocurrence-visualization-history-service';
@@ -32,7 +30,6 @@ import { ITypeQuery } from '../../../features/visualization/co-ocurrence-search/
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
 import {
     ILocalStorageStore,
-    ITutorialStore,
     LOCAL_STORAGE_KEYS,
     STORES,
 } from '../../../store/inversify';
@@ -42,6 +39,30 @@ import { useNavigate } from 'react-router-dom';
 import { toolDisclaimer } from '../../../shared';
 
 import React from 'react';
+
+// ToDo: this code fixes the "old import method" for Plotly 2.6.0 and
+// we need to upgrade to Plotly 4.x asap to get rid of this.
+const unwrapDefaultExport = <T,>(value: unknown, maxDepth = 3): T => {
+    let current = value;
+    for (let depth = 0; depth < maxDepth; depth++) {
+        if (
+            current &&
+            typeof current === 'object' &&
+            'default' in (current as Record<string, unknown>)
+        ) {
+            const next = (current as Record<string, unknown>).default;
+            if (next === current) break;
+            current = next;
+            continue;
+        }
+        break;
+    }
+    return current as T;
+};
+
+// Bundler interop can return a module namespace object (sometimes even nested `default.default...`).
+// React expects an element type (function/class, or a special object with `$$typeof` like memo/forwardRef).
+const Plot = unwrapDefaultExport<any>(PlotlyReact);
 
 const CoOccurrenceSummaryPageComponent: React.FC = () => {
     const ontologyService = dependencyFactory.get<IOntologyService>(
@@ -305,7 +326,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         );
     };
 
-    const reject = () => {};
+    const reject = () => { };
 
     const listTemplate = (
         items: ISavedCoOcurrenceVisualization[],
