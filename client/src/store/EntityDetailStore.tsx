@@ -1,8 +1,9 @@
-import { flow, Instance, types } from "mobx-state-tree";
+import { clone, flow, getRoot, Instance, types } from "mobx-state-tree";
 import { Entity } from "./Entity";
 import { IEntityDTO } from "@/features/search/general-search/models/entity-dto";
 import { EntityREST2MST } from "./adapter/EntityREST2MST";
 import { GET_ADJACENT_ENTITITES } from "./adapter/REST_ENDPOINTS";
+import { RootStore } from "./root-store";
 
 export const EntityDetailStore = types
     .model({
@@ -50,6 +51,11 @@ export const EntityDetailStore = types
             self.selectedEntity = entity;
             self.loadAdjacentEntitiesOfSelection();
         },
-
+        investigateAdjacentEntries():void {
+            const entities:Instance<typeof Entity>[] = [];
+            self.adjacentEntities.forEach(e => entities.push(clone(e)));
+            self.adjacentEntities.replace([]);
+            getRoot<typeof RootStore>(self).generalSearchStore.setResults(entities);
+        },
     }));
 

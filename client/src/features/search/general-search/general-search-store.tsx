@@ -58,6 +58,15 @@ export const GeneralSearchStore = types
         }
     }))
     .actions((self) => ({
+        setResults(other: Instance<typeof Entity>[]): void {
+            self.entities.replace(other);
+            self.calculateTypeCounts();
+            self.selectedType = self.getMajorityType();
+            self.selectedEntities.replace([]);
+            self.isSearching = false;
+        },
+    }))
+    .actions((self) => ({
         setIsSearching(isSearching: boolean): void {
             self.isSearching = isSearching;
         },
@@ -88,11 +97,7 @@ export const GeneralSearchStore = types
                     self.query,
                     messageService!,
                 );
-                self.entities.replace(entities);
-                self.calculateTypeCounts();
-                self.selectedType = self.getMajorityType();
-                self.selectedEntities.replace([]);
-                self.isSearching = false;
+                self.setResults(entities);
                 yield historyService.create(
                     {
                         id: '0',

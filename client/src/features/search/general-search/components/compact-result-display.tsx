@@ -26,7 +26,7 @@ function CompactResultDisplay() {
         {generalSearchStore.isSearching === false && (
             (generalSearchStore.selectedType != "") ?
                 <div>
-                    <div className="search-note">Displaying a maximum of 50 results</div>
+                    <div className="search-note">Search returns a maximum of 50 results</div>
                     <div className="compactDisplay-ResultEntitySelector">
                         <div>Result Types:</div>
                         <ResultEntitySelector />
