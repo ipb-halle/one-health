@@ -1,36 +1,49 @@
-.compactDisplay-ResultEntitySelector {
-    display: flex;
-    justify-content: space-between;
-    align-items: first baseline;
-    margin: 10px;
-}
+.compact-search-table {
 
-.compactDisplayElement {
-    margin: 10px;
-    box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.15);
-    .main {
-        font-size:larger;
-        margin: 5px;
+
+    .compactDisplay-ResultEntitySelector {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
-        .structure {
-            width: 240px;
-            height: auto;
+        align-items: first baseline;
+        margin: 10px;
+    }
+
+    .search-note {
+        font-size: x-small;
+        margin-left: 10px;
+    }
+
+    .compactDisplayElement {
+        margin: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+        .main {
+            font-size: larger;
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            .structure {
+                width: 240px;
+                height: auto;
+            }
+
+            .button {
+                margin: 10px;
+                height: fit-content;
+            }
+
+            .speciesName {
+                font-style: italic;
+            }
         }
-        .button {
-            margin: 10px;
-            height:fit-content;
-        }
-        .speciesName {
-            font-style: italic;
+
+        .details {
+            font-size: small;
+            text-align: center;
+            padding-bottom: 5px;
         }
     }
 
-    .details {
-        font-size:small;
-        text-align: center;
-        padding-bottom: 5px;
-    }
 }
-

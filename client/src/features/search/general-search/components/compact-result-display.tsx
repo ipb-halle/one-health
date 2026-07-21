@@ -10,6 +10,7 @@ import { Instance } from "mobx-state-tree";
 import { CompactTextEntity } from "@/core/types/compact-text-entity";
 import { CompactStructureEntity } from "@/core/types/compact-structure-entity";
 import CompactStructureResultElement from "./compact-structure-result-element";
+import "./compact-result.scss";
 
 function CompactResultDisplay() {
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
@@ -18,13 +19,14 @@ function CompactResultDisplay() {
     const components = createCompactComponents(
         generalSearchStore.getEntitiesOfType(generalSearchStore.selectedType) );
 
-    return <div id="search-table">
+    return <div className="compact-search-table">
         {generalSearchStore.isSearching && (
             <LoadingPlaceholderComponent />
         )}
         {generalSearchStore.isSearching === false && (
             (generalSearchStore.selectedType != "") ?
                 <div>
+                    <div className="search-note">Displaying a maximum of 50 results</div>
                     <div className="compactDisplay-ResultEntitySelector">
                         <div>Result Types:</div>
                         <ResultEntitySelector />
