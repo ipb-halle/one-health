@@ -13,9 +13,9 @@
     "@testing-library/user-event": "13.5.0",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
-
     "axios": "1.16.0",
     "bootstrap": "5.3.7",
+    "chart.js": "^4.5.1",
     "csv-parser": "3.2.0",
     "cytoscape": "3.27.2",
     "cytoscape-cxtmenu": "3.5.0",
@@ -24,23 +24,19 @@
     "localforage": "1.10.0",
     "match-sorter": "6.3.4",
     "mobx": "6.15.0",
-    "mobx-state-tree": "7.1.0",
     "mobx-react-lite": "4.1.0",
+    "mobx-state-tree": "7.1.0",
     "openchemlib": "8.21.0",
     "plotly.js": "2.35.3",
     "primeicons": "6.0.1",
     "primereact": "10.9.6",
-
     "qs": "6.15.1",
-
     "react": "18.3.1",
     "react-cytoscapejs": "2.0.0",
     "react-dom": "18.3.1",
     "react-joyride": "2.9.3",
     "react-plotly.js": "2.6.0",
-
     "react-router-dom": "6.30.3",
-
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "sass": "1.89.2",
@@ -52,7 +48,8 @@
     "start": "vite --mode development",
     "build": "vite build --mode production",
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
-    "test": "vitest",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "preview": "vite preview"
   },
   "browserslist": {
@@ -71,10 +68,12 @@
     "@babel/plugin-proposal-decorators": "7.28.0",
     "@eslint-react/eslint-plugin": "1.52.3",
     "@eslint/js": "9.31.0",
+    "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@types/cytoscape-cxtmenu": "3.4.4",
     "@types/file-saver": "2.0.7",
+    "@types/jest": "30.0.0",
     "@types/node": "20.19.8",
     "@types/react-cytoscapejs": "1.2.5",
     "@types/react-plotly.js": "2.6.3",
@@ -82,20 +81,18 @@
     "@typescript-eslint/eslint-plugin": "8.37.0",
     "@typescript-eslint/parser": "8.37.0",
     "@vitejs/plugin-react": "4.7.0",
-
     "eslint": "9.31.0",
     "eslint-config-prettier": "10.1.5",
-    "eslint-plugin-prettier": "5.5.1",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
-
+    "jest": "30.0.5",
+    "jest-environment-jsdom": "30.0.5",
     "jsdom": "26.1.0",
     "prettier": "3.6.2",
+    "ts-jest": "29.4.4",
     "typescript": "4.9.5",
     "typescript-eslint": "8.37.0",
-
     "vite": "7.3.3",
-    "vite-plugin-eslint": "1.8.1",
-    "vitest": "3.2.4"
+    "vite-plugin-eslint": "1.8.1"
   }
 }

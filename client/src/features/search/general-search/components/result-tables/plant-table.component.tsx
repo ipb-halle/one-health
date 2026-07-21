@@ -3,7 +3,7 @@ import { Column } from 'primereact/column';
 import {
     familyColumnTemplate,
     kingdomColumnTemplate,
-    nameColumnTemplate,
+    speciesNameColumnTemplate,
     phylumColumnTemplate,
 } from './column-templates';
 import { observer } from 'mobx-react-lite';
@@ -35,7 +35,7 @@ const PlantTable: React.FC<PlantTableProps> = ({ results }) => {
             <Column
                 field="name"
                 header="Scientific Name"
-                body={nameColumnTemplate}
+                body={speciesNameColumnTemplate}
                 sortable></Column>
             <Column header="Kingdom" body={kingdomColumnTemplate}></Column>
             <Column header="Phylum" body={phylumColumnTemplate}></Column>

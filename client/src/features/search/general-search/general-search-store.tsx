@@ -1,11 +1,11 @@
 import { types, flow, getEnv, getSnapshot, getRoot, Instance } from 'mobx-state-tree';
 import { Entity } from '../../../store/Entity';
-import React from 'react';
 import { IGeneralSearchHistoryService } from '../search-history/services/general-search-history-service';
 import { IGeneralSearchService } from './services/general-search-service';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import { RootStore } from '../../../store/root-store';
+
 type Env = {
     historyService: IGeneralSearchHistoryService;
     messageService: MessageService;
@@ -15,11 +15,25 @@ type Env = {
 export const GeneralSearchStore = types
     .model({
         entities: types.array(Entity), // optional?
+        typeCounts: types.map(types.number),
+        selectedType: "",
         selectedEntities: types.array(types.reference(Entity)),
         isSearching: types.maybeNull(types.boolean),
         query: types.optional(types.string, ''),
+
     })
     .views((self) => ({
+        getMajorityType(): string {
+            let currentMax = 0;
+            let maxKey: string = "";
+            self.typeCounts.forEach((value, key) => {
+                if (value > currentMax) {
+                    maxKey = key as string;
+                    currentMax = value;
+                }
+            });
+            return maxKey;
+        },
         getEntitiesAsJSON() {
             return self.entities.map((entity) => getSnapshot(entity));
         },
@@ -29,6 +43,28 @@ export const GeneralSearchStore = types
         getEntitiesOfType(type: string) {
             return self.entities.filter((e) => e.type == type);
         },
+        getEntityById(id: string | number): Instance<typeof Entity> | undefined {
+            return self.entities.find(e => e.id == id.toString());
+        },
+    }))
+    .actions((self) => ({
+        calculateTypeCounts(): void {
+            self.typeCounts.clear();
+            self.entities.map(e => {
+                const oldCount = self.typeCounts.get(e.type) || 0;
+                self.typeCounts.set(e.type, oldCount + 1);
+                return 0;
+            });
+        }
+    }))
+    .actions((self) => ({
+        setResults(other: Instance<typeof Entity>[]): void {
+            self.entities.replace(other);
+            self.calculateTypeCounts();
+            self.selectedType = self.getMajorityType();
+            self.selectedEntities.replace([]);
+            self.isSearching = false;
+        },
     }))
     .actions((self) => ({
         setIsSearching(isSearching: boolean): void {
@@ -37,7 +73,6 @@ export const GeneralSearchStore = types
         setQuery(query: string): void {
             self.query = query;
         },
-
         setSelectedEntities(entities: any[]) {
             self.selectedEntities.clear();
             entities.forEach((propEntity) => {
@@ -46,7 +81,10 @@ export const GeneralSearchStore = types
                 }
             });
         },
-
+        setSelectedType(type: string): void {
+            console.log(type);
+            self.selectedType = type;
+        },
         runQuery: flow(function* (): any {
             const { searchService, messageService, historyService } =
                 getEnv<Env>(self);
@@ -59,9 +97,7 @@ export const GeneralSearchStore = types
                     self.query,
                     messageService!,
                 );
-                self.entities.replace(entities);
-                self.selectedEntities.replace([]);
-                self.isSearching = false;
+                self.setResults(entities);
                 yield historyService.create(
                     {
                         id: '0',

@@ -6,7 +6,6 @@ import {
     getSnapshot,
     SnapshotOut,
 } from 'mobx-state-tree';
-import React from 'react';
 import { IGeneralSearchHistoryService } from '../../../features/search/search-history/services/general-search-history-service';
 import { IGeneralSearchService } from '../../../features/search/general-search/services/general-search-service';
 import type { MessageService } from '../../../core/api/messages/interfaces/message-service';

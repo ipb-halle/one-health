@@ -316,15 +316,16 @@ The production build of the application is deployed using Docker, we provide thr
 
 `rdkit.dockerfile` provides a containerized version of the postgres database
 
-The deployment procress is managed by `docker-compose.yml` located in the root directory.
+The deployment is managed by the `n1h.sh` script in the repository root. The script requires a single argument (`start`, `stop` or `restart`) and expects a `.onehealth` file in the home directory of the calling user. This file should define the following variables:
+* ONE_HEALTH_REPO as the absolute path to the local repository
+* ONE_HEALTH_DATA as the absolute path to the local data directory
+The data directory is supposed to contain a `compose.override.yaml` file, which currently defines the hostname and available ports for this instance. Instance data is kept in two externally managed named volumes: pg_data for the PostgreSQL database and n4j_data for the graph data. Procedures to create these named volumes from scratch need to be developed.
+Furthermore, the client container expects the directory `/srv/www/conf` to contain the Apache httpd configuration for the client container. Additionally, the directory `/srv/www/letsencrypt/.well-known` is mounted to support the challenge-response procedure of Let's Encrypt.
 
-`run-compose.sh` located in `scripts/` automates this process using this tool.
-
-To execute this file run the following commands
+To build an start an instance, simply run the following command:
 
 ```bash
-chmod +x scripts/run-compose.sh
-./scripts/run-compose.sh
+./n1h.sh start
 ```
 
 

@@ -13,7 +13,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-version: '3'
 
 services:
   server:
@@ -21,12 +20,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
-    # TODO: expose for debuging purposes only 
-    ports:
-      - "8080:8080"
     networks:
-      - frontend
-      - backend
+      - one-health-network
     depends_on:
       postgredb:
           condition: service_healthy  # ensures the correct start of postgredb
@@ -40,9 +35,10 @@ services:
       dockerfile: ./docker/client/client.Dockerfile
     ports:
       - "80:80"
+    # - "443:443"
     hostname: www.example.com
     networks:
-      - frontend
+      - one-health-network
     volumes:
       - /srv/www/conf:/usr/local/apache2/conf
       - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
@@ -52,14 +48,10 @@ services:
   graphdb:
     container_name: one-health-graphdb
     image: neo4j
-    # expose graphdb ports for debugging only
-    ports:
-     - "7474:7474"
-     - "7687:7687" # for BOLT-Protocol
     networks:
-      - backend
+      - one-health-network
     volumes:
-      - n4j_data:/var/lib/neo4j/data
+      - onehealth_neo4j:/var/lib/neo4j/data
     environment:
       NEO4J_AUTH: neo4j/password
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
@@ -75,13 +67,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/rdkit/rdkit.Dockerfile
-    # expose database port for debugging only
-    # ports:
-    #  - "5432:5433"
     networks:
-      - backend
+      - one-health-network
     volumes:
-      -  pg_data:/var/lib/postgresql/data
+      -  onehealth_pgsql:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: one_healt_huser
       POSTGRES_PASSWORD: one_health_password
@@ -94,9 +83,14 @@ services:
       start_period: 30s
 
 networks:
-  frontend:
-  backend:
+  one-health-network:
+    driver: bridge
 
 volumes:
-  pg_data:
-  n4j_data:
+  onehealth_pgsql:
+    external: true
+    name: onehealth_pgsql
+  onehealth_neo4j:
+    external: true
+    name: onehealth_neo4j
+

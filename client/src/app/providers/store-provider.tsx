@@ -1,9 +1,9 @@
-import React, { createContext, ReactNode, useMemo } from 'react';
-import { RootStore,IRootStore } from '../../store/root-store';
+import { createContext, ReactNode, useMemo } from 'react';
+import { IRootStore, RootStore } from '../../store/root-store';
 import { dependencyFactory } from '../di';
 import { SERVICES } from '@/app/di/service-types';
 
-export const RootStoreContext = createContext<IRootStore>(RootStore.create({}));
+export const RootStoreContext = createContext<IRootStore>(null as unknown as IRootStore);
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
     // useMemo stellt sicher, dass der Store nur einmal erstellt wird

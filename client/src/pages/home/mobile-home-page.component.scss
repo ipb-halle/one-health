@@ -1,0 +1,26 @@
+
+
+.mobile {
+    margin: 10px;
+    padding-top: 35px;
+
+    .search {
+        .title {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .input {
+            margin: 5px;
+        }
+    }
+
+    .card {
+        text-align: center;
+
+        img {
+            width: 70%;
+        }
+    }
+
+}

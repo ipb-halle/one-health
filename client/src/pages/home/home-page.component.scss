@@ -1,16 +1,31 @@
-@import '../../assets/styles/Constants.scss';
+@use '../../assets/styles/Constants' as *;
 
-.home-card-section .p-card {
-    height: 470px;
-}
+.home-card-section {
+    margin-top: '30px';
+    margin-bottom: '30px';
+    height: '100%';
 
-.home-card-section .p-card-header {
-    height: 180px;
+    .p-card {
+        height: 470px;
+    }
 
-}
+    .p-card-header {
+        height: 250px;
+        text-align: center;
 
-.home-card-section .p-card-content {
-    height: 170px;
-    overflow-y: hidden;
-    padding: 0;
+        img {
+            padding-top: 2em;
+            width: 80%;
+            max-width: 230px;
+            height: auto;
+        }
+
+    }
+
+    .p-card-content {
+        /* height: 170px; */
+        height: 55%;
+        overflow-y: hidden;
+        padding: 0;
+    }
 }

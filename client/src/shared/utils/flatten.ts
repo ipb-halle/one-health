@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function getPathKeyFromObject(obj: object, path: string, key: string): string {
     return Array.isArray(obj) ? `${path}[${key}]` : `${path}.${key}`;
 }
@@ -28,11 +29,11 @@ export const flatten = (object: any) => {
     const o = Object.assign({}, ..._flatten(object));
     return Object.assign(
         {},
-        ...(function _sliceFirst(obj) {
+        ...(function _sliceFirst() {
             return [
                 ...Object.keys(o).map((key) => ({ [key.slice(1)]: o[key] })),
             ];
-        })(o),
+        })(),
     );
 };
 

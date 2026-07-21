@@ -1,4 +1,4 @@
-@import './Constants.scss';
+@use './Constants' as *;
 
 @import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
 

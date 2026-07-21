@@ -31,7 +31,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
     const steps: Array<Step> = [
         {
             content:
-                'This is the neighborhood explorer that allows you to interactively explore the ontology.',
+                'This is the neighborhood explorer that allows you to interactively explore the knowledge graph.',
             styles: { tooltip: { width: '500px' } },
             placement: 'center',
             target: 'body',

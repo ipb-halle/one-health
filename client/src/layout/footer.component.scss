@@ -1,39 +1,86 @@
 @use '../assets/styles/Constants.scss' as c;
 
-
-.app-footer {
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
 .app-footer-coloured-dark {
     background-color: c.$app-color-3;
     align-items: center;
 }
 
-.app-footer-coloured-light {
-    background-color: c.$app-color-4;
-    padding-bottom: 80px;
+.app {
+    .app-footer {
+        padding: 10px;
+        padding-bottom: 0px;
 
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
+    }
 
-        li {
-            float: left;
+    .app-footer-coloured-light {
+        background-color: c.$app-color-4;
+        padding-bottom: 80px;
 
-            a {
-                display: block;
-                color: black;
-                text-align: center;
-                padding: 16px;
-                text-decoration: none;
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
 
-                &:hover {
-                    background-color: c.$app-color-6;
+            li {
+                float: left;
+
+                a {
+                    display: block;
+                    color: black;
+                    text-align: center;
+                    padding: 16px;
+                    text-decoration: none;
+
+                    &:hover {
+                        background-color: c.$app-color-6;
+                    }
                 }
             }
+        }
+    }
+}
+
+.mobile-app {
+    .icons-container {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+    }
+
+    .mobile-footer {
+        padding: 5px;
+    }
+
+    .footer-icons {
+        display: flex;
+        white-space: nowrap;
+        width: max-content;
+        animation: footerMovingAnimation 15s linear infinite;
+    }
+
+
+    .icon {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        font-family: sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .icon img {
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+
+    @keyframes footerMovingAnimation {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+
+        100% {
+            transform: translate3d(-50%, 0, 0);
         }
     }
 }

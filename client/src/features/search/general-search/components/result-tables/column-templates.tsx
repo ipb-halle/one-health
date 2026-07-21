@@ -2,6 +2,7 @@ import MolecularDrawComponent from '../../../../../shared/components/molecular-d
 import { truncateString } from '../../../../../shared';
 import { IEntityDTO } from '../../models/entity-dto';
 import { getPropertyValue } from '../../../../../shared/utils/get-property-value';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
 
 type IColumnTemplate = (rowData: IEntityDTO, options: any) => JSX.Element;
 
@@ -14,8 +15,16 @@ export const structureDrawTemplate: IColumnTemplate = (compound, options) => {
     );
 };
 
+export const formulaColumnTemplate: IColumnTemplate = (result) => {
+    return <FormulaRenderer formula={result.name} />
+}
+
 export const nameColumnTemplate: IColumnTemplate = (result) => {
     return <span>{truncateString(result.name, 150)}</span>;
+};
+
+export const speciesNameColumnTemplate: IColumnTemplate = (result) => {
+    return <i>{truncateString(result.name, 150)}</i>;
 };
 
 export const weightColumnTemplate: IColumnTemplate = (compound) => {

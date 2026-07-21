@@ -1,12 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { StructureFilterMatchMode } from '../../features/filters/enums/structure-filter-match-mode';
 import {
-    CollectionPlaceholderComponent,
     LoadingPlaceholderComponent,
     PageTitle,
 } from '../../shared/components';
 import { Panel } from 'primereact/panel';
-import StructureEditor from '../../features/filters/structure-editor.component';
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -14,20 +12,16 @@ import { dependencyFactory } from '../../app/di';
 import { ICompoundService } from '@/features/search/compound-search/services/compound-search-service';
 import { SERVICES } from '@/app/di/service-types';
 import MessageServiceContext from '../../app/providers/messages/message-service.context';
-import { SplitButton } from 'primereact/splitbutton';
 import {
     FileUpload,
     FileUploadHandlerEvent,
     FileUploadSelectEvent,
-    FileUploadUploadEvent,
 } from 'primereact/fileupload';
-import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
+import { PaginatorPageChangeEvent } from 'primereact/paginator';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputNumber } from 'primereact/inputnumber';
 import { Slider } from 'primereact/slider';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { INeighborhoodExplorerStore } from '../../store/inversify/neighborhood-explorer-store';

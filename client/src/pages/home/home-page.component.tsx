@@ -76,6 +76,11 @@ const HomePageComponent: React.FC = () => {
                             About | GLACIER One Health Project
                         </a>
                     </small>
+                    <p style={{ fontSize: '16px', color: '#a40', margin: 0 }}>
+                        This service is <strong>work in progress</strong>, layout and
+                        function are subject to change. Works best with a desktop browser.
+                    </p>
+                    <div style={{ height: '50px' }}></div>
                 </div>
             </div>
         </div>

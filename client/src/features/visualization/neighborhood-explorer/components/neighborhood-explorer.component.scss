@@ -1,4 +1,4 @@
-@import '../../../../assets/styles/Constants.scss';
+@use '../../../../assets/styles/Constants' as *;
 .neighborhood-explorer {
     border: 1px solid $app-border-color;
     height: 800px;

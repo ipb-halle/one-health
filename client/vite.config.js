@@ -35,10 +35,5 @@ export default defineConfig(() => {
             },
         },
 
-        test: {
-            globals: true, // all imports from vitest are global/no manual imports needed
-            environment: 'jsdom',
-            setupFiles: './src/tests/setup.js', // includes the test setup file
-        },
     };
 });

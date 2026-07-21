@@ -1,10 +1,12 @@
-@import '../assets/styles/Constants.scss';
+@use '../assets/styles/Constants' as *;
 
 .content {
     background-color: white;
     padding-top: $app-header-height;
     max-width: 1920px;
     flex: 1;
+    padding-bottom: 60px;
+    padding-top: 30px;
 }
 
 

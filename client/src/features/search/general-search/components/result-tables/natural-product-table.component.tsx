@@ -1,7 +1,7 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import {
-    nameColumnTemplate,
+    formulaColumnTemplate,
     smilesColumnTemplate,
     structureDrawTemplate,
     weightColumnTemplate,
@@ -36,10 +36,10 @@ const NaturalProductTable: React.FC<NaturalProductTableProps> = ({
             value={results}
             tableStyle={{ minWidth: '50rem' }}>
             <Column header="Structure" body={structureDrawTemplate}></Column>
-            <Column
+            <Column 
                 field="name"
                 header="Mol. Formula"
-                body={nameColumnTemplate}
+                body={formulaColumnTemplate}
                 sortable></Column>
             <Column header="Mol.Weight" body={weightColumnTemplate}></Column>
             <Column header="SMILES" body={smilesColumnTemplate}></Column>

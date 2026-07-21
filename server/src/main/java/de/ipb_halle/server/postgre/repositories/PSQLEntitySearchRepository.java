@@ -19,7 +19,7 @@ public class PSQLEntitySearchRepository implements IEntitySearchRepository {
 
     @Override
     public List<String> FindMatchingEntityIds(String query) {
-        var sql = "select distinct entityid from entity_string_index where key ilike ?";
+        var sql = "select distinct entityid from entity_string_index where key ilike ? limit 50";
 
 //        var result = template.queryForList(sql, String.class, query);
         try(var result = template.queryForStream(sql, (rs, rowNum) -> rs.getString("entityid"), "%" + query + "%")){
