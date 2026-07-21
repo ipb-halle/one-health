@@ -55,7 +55,9 @@ export const EntityDetailStore = types
             const entities:Instance<typeof Entity>[] = [];
             self.adjacentEntities.forEach(e => entities.push(clone(e)));
             self.adjacentEntities.replace([]);
-            getRoot<typeof RootStore>(self).generalSearchStore.setResults(entities);
+            const generalSearchStore = getRoot<typeof RootStore>(self).generalSearchStore;
+            generalSearchStore.setResults(entities);
+            generalSearchStore.setQuery("");
         },
     }));
 
