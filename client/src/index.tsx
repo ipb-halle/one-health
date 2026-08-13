@@ -25,7 +25,9 @@ root.render(
             <PrimeReactProvider>
                 <ToastMessageServiceProvider>
                     <BrowserRouter>
-                        <App />
+                        <StoreProvider>
+                            <App />
+                        </StoreProvider>
                     </BrowserRouter>
                 </ToastMessageServiceProvider>
             </PrimeReactProvider>
