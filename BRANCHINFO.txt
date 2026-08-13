@@ -1,1 +1,12 @@
-Main branch
+This branch is our development branch for the
+mobile-ready version of the One Health project.
+
+It contains the work on mobile UI, authentication,
+OpenAPI-generated APIs, React Query integration,
+Docker configuration, and related backend updates.
+
+Branch: mobile-version
+Project: https://github.com/ipb-halle/one-health/tree/mobile-version
+
+Branch created 2026-05-18 by Hoda Anvari Kazemabad
+BRANCHINFO updated 2026-08-11
