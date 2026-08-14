@@ -212,7 +212,6 @@ const Header: React.FC = () => {
                 >
                     <div className="mobile-sidebar-header" style={{ padding: '10px 0 15px 0', borderBottom: '1px solid #e2e8f0', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <img alt="logo" src={oneHealthLogo} height="30" />
-                        <span style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#166534' }}>ONE HEALTH</span>
                     </div>
                     <PanelMenu model={mobileMenuItems} onClick={() => screenDeviceStore.setMenuVisibility(false)} />
                 </Sidebar>
