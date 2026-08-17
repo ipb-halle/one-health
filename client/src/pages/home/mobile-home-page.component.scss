@@ -102,24 +102,22 @@
     .mobile-hero-card {
         display: flex;
         align-items: flex-start;
-        gap: 16px;
-        margin-top: 6%;
-        padding: 12px;
+        gap: 6px;
+        margin-top: 3%;
+        padding: 10px;
         background-color: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 5px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 
         .hero-left-col {
             flex-shrink: 0;
-            width: 90px;
+            width: 90%;
             display: flex;
             align-items: center;
             justify-content: center;
 
             .hero-earth-img {
-                width: 105px;
-                height: 105px;
+                width: 280px;
+                height: 280px;
                 object-fit: contain;
             }
         }
@@ -128,11 +126,11 @@
             flex: 1;
 
             .hero-heading {
-                font-size: 16px;
+                font-size: 22px;
                 font-weight: 600;
                 color: #1e293b;
-                margin: 1.5% 1% 1.5% 1%;
-                line-height: 1.35;
+                margin: 0.5% 1% 0.5% 1%;
+                line-height: 1.5;
             }
 
             /*            .hero-subtext {
@@ -170,7 +168,7 @@
                 flex-shrink: 0;
 
                 .stat-icon {
-                    font-size: 28px;
+                    font-size: 30px;
                     color: #28642a;
                 }
             }
@@ -181,7 +179,7 @@
                 justify-content: center;
 
                 .stat-value {
-                    font-size: 16px;
+                    font-size: 20px;
                     font-weight: 800;
                     color: #0f172a;
                     line-height: 1.4;
@@ -197,137 +195,4 @@
         }
     }
 
-    /* Explore Card */
-    .mobile-explore-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px;
-        background-color: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-
-        .explore-left-col {
-            flex-shrink: 0;
-            width: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            .explore-network-img {
-                width: 95px;
-                height: 95px;
-                object-fit: contain;
-                border-radius: 50%;
-            }
-        }
-
-        .explore-right-col {
-            flex: 1;
-
-            .explore-title {
-                font-size: 16px;
-                font-weight: 800;
-                color: #0f172a;
-                margin: 0 0 4px 0;
-                line-height: 1.2;
-            }
-
-            .explore-subtext {
-                font-size: 12px;
-                font-weight: 400;
-                color: #475569;
-                margin: 0 0 10px 0;
-                line-height: 1.35;
-            }
-
-            .explore-cta-btn {
-                background-color: #28642a;
-                color: #ffffff;
-                border: none;
-                border-radius: 20px;
-                padding: 6px 14px;
-                font-size: 12px;
-                font-weight: 700;
-                cursor: pointer;
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                transition: background-color 0.15s ease;
-
-                &:hover,
-                &:active {
-                    background-color: #1e4d20;
-                }
-            }
-        }
-    }
-
-    /* Discover Card */
-    .mobile-discover-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px;
-        background-color: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-
-        .discover-left-col {
-            flex-shrink: 0;
-            width: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            .discover-network-img {
-                width: 95px;
-                height: 95px;
-                object-fit: contain;
-                border-radius: 50%;
-            }
-        }
-
-        .discover-right-col {
-            flex: 1;
-
-            .discover-title {
-                font-size: 16px;
-                font-weight: 800;
-                color: #0f172a;
-                margin: 0 0 4px 0;
-                line-height: 1.2;
-            }
-
-            .discover-subtext {
-                font-size: 12px;
-                font-weight: 400;
-                color: #475569;
-                margin: 0 0 10px 0;
-                line-height: 1.35;
-            }
-
-            .discover-cta-btn {
-                background-color: #28642a;
-                color: #ffffff;
-                border: none;
-                border-radius: 20px;
-                padding: 6px 14px;
-                font-size: 12px;
-                font-weight: 700;
-                cursor: pointer;
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                transition: background-color 0.15s ease;
-
-                &:hover,
-                &:active {
-                    background-color: #1e4d20;
-                }
-            }
-        }
-    }
 }
