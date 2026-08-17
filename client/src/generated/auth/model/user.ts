@@ -11,6 +11,11 @@ export interface User {
   id: string;
   username: string;
   email?: string;
+  /**
+   * User's ORCID identifier, if linked.
+   * @nullable
+   */
+  orcid?: string | null;
   role: UserRole;
   enabled: boolean;
 }

@@ -29,6 +29,8 @@ import type {
   LoginRequest,
   LoginResponse,
   LogoutResponse,
+  OrcidAuthUrlResponse,
+  OrcidTokenRequest,
   RegisterRequest,
   User
 } from '.././model';
@@ -169,7 +171,6 @@ export const useRegister = <TError = ErrorResponse | ErrorResponse,
     }
     /**
  * Invalidates the current authentication session.
-
 For JWT-based authentication this endpoint can be used
 for token blacklisting in the future.
 
@@ -231,6 +232,163 @@ export const useLogout = <TError = ErrorResponse,
       > => {
 
       const mutationOptions = getLogoutMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
+ * Returns the ORCID OAuth2 authorization URL and state parameter.
+ * @summary Get ORCID authorization URL
+ */
+export const getOrcidAuthorizeUrl = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxiosInstance<OrcidAuthUrlResponse>(
+      {url: `/auth/orcid/authorize-url`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
+
+export const getGetOrcidAuthorizeUrlQueryKey = () => {
+    return [
+    `/auth/orcid/authorize-url`
+    ] as const;
+    }
+
+    
+export const getGetOrcidAuthorizeUrlQueryOptions = <TData = Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetOrcidAuthorizeUrlQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>> = ({ signal }) => getOrcidAuthorizeUrl(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetOrcidAuthorizeUrlQueryResult = NonNullable<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>>
+export type GetOrcidAuthorizeUrlQueryError = unknown
+
+
+export function useGetOrcidAuthorizeUrl<TData = Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>,
+          TError,
+          Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetOrcidAuthorizeUrl<TData = Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>,
+          TError,
+          Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetOrcidAuthorizeUrl<TData = Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get ORCID authorization URL
+ */
+
+export function useGetOrcidAuthorizeUrl<TData = Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOrcidAuthorizeUrl>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetOrcidAuthorizeUrlQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * Validates the ORCID authorization code and state and returns a JWT bearer token.
+ * @summary Authenticate with ORCID
+ */
+export const orcidLogin = (
+    orcidTokenRequest: OrcidTokenRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxiosInstance<LoginResponse>(
+      {url: `/auth/orcid/token`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: orcidTokenRequest, signal
+    },
+      );
+    }
+  
+
+
+export const getOrcidLoginMutationOptions = <TError = ErrorResponse | ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof orcidLogin>>, TError,{data: OrcidTokenRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof orcidLogin>>, TError,{data: OrcidTokenRequest}, TContext> => {
+
+const mutationKey = ['orcidLogin'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof orcidLogin>>, {data: OrcidTokenRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  orcidLogin(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type OrcidLoginMutationResult = NonNullable<Awaited<ReturnType<typeof orcidLogin>>>
+    export type OrcidLoginMutationBody = OrcidTokenRequest
+    export type OrcidLoginMutationError = ErrorResponse | ErrorResponse
+
+    /**
+ * @summary Authenticate with ORCID
+ */
+export const useOrcidLogin = <TError = ErrorResponse | ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof orcidLogin>>, TError,{data: OrcidTokenRequest}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof orcidLogin>>,
+        TError,
+        {data: OrcidTokenRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getOrcidLoginMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

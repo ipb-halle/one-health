@@ -12,6 +12,8 @@ export * from './loginRequest';
 export * from './loginResponse';
 export * from './logoutResponse';
 export * from './messageResponse';
+export * from './orcidAuthUrlResponse';
+export * from './orcidTokenRequest';
 export * from './registerRequest';
 export * from './updateUserRequest';
 export * from './user';
