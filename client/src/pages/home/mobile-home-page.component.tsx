@@ -9,9 +9,6 @@ import { Button } from "primereact/button";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import earthImage from '../../assets/img/earth_image.png';
-import cooccurrencesSummaryImage from '../../assets/img/cooccurrences-summary.png';
-import neighborhoodExplorerImage from '../../assets/img/neighborhood-explorer.png';
-import explocooccurrencesSummaryImage from '../../assets/img/explocooccurrences-summary.png';
 
 import './mobile-home-page.component.scss';
 
