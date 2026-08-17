@@ -1,57 +1,51 @@
 @use '../../../../assets/styles/Constants' as *;
 
 .general-search-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .general-search-header-input {
-    width: 100%;
-    border: 1px solid $app-border-color;
-    border-radius: 4px;
-    overflow: hidden;
-    
+  width: 100%;
+  border: 1px solid $app-border-color;
+  border-radius: 4px;
+  overflow: hidden;
+
 }
 
-.general-search-links {
-    display: flex;
-    justify-content: center;
-    gap: 16px;         
-    margin-top: 12px;
-}
 
 .general-search-link {
-    color: rgb(77, 85, 92);
-    text-decoration: none;
+  color: rgb(77, 85, 92);
+  text-decoration: none;
 }
 
 
 .general-search-table {
-    border: 1px solid $app-border-color;
-    border-radius: 4px;
-    max-height: 650px;
-    overflow: auto; 
-    position: relative;
+  border: 1px solid $app-border-color;
+  border-radius: 4px;
+  max-height: 650px;
+  overflow: auto;
+  position: relative;
 }
 
 .token-list {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-left: 2px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
 }
 
 .token {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #dee2e6; 
-  border-radius: 0.25rem; 
-  padding: 0.25rem 0.25rem; 
-  font-size: 0.875rem; 
-  background-color: #e9ecef; 
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.875rem;
+  background-color: #e9ecef;
   cursor: pointer;
 
   &:hover {
@@ -59,26 +53,29 @@
     border: 1.5px solid #b6b9bd
   }
 
-.token-button {
-  padding: 0;
-  width: 1.5rem;
-  height: 1.5rem;
+  .token-button {
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
 
 
-  &:active {
-    transform: translateY(1px); // push down effect
+    &:active {
+      transform: translateY(1px); // push down effect
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+      background: none !important;
+    }
   }
-  &:focus,
-  &:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-    background: none !important;
-  }}}
+}
 
 .visualize-button {
-    position: absolute;
-    top: 5px;
-    right: 5px; 
-    z-index: 10;
-    width: auto
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 10;
+  width: auto
 }
