@@ -102,6 +102,18 @@ function MobileHomePageComponent() {
                                 className="hero-earth-img"
                             />
                         </div>
+
+                        {/*<div className="hero-right-col">
+                            <h2 className="hero-heading">
+                                Empowering the research on plant-derived natural products for the treatment of diseases
+                            </h2>
+                            {/*<p className="hero-subtext">
+                                Search connections across plants, compounds and diseases in integrated datasets.
+                            </p>*/}
+                        {/*}  </div>*/}
+                    </div>
+
+                    <div className="mobile-hero-card">
                         <div className="hero-right-col">
                             <h2 className="hero-heading">
                                 Empowering the research on plant-derived natural products for the treatment of diseases
@@ -187,52 +199,6 @@ function MobileHomePageComponent() {
                         </div>
                     </div>
 
-                    {/* Discover SECTION */}
-                    <div className="mobile-discover-card">
-                        <div className="discover-left-col">
-                            <img
-                                src={cooccurrencesSummaryImage}
-                                alt="Co-Occurrences Summary"
-                                className="discover-network-img"
-                            />
-                        </div>
-                        <div className="discover-right-col">
-                            <h3 className="discover-title">Discover</h3>
-                            <p className="discover-subtext">
-                                Discover co-occurrences of scientific concepts found in literature and datasets.
-                            </p>
-                            <button
-                                className="discover-cta-btn"
-                            //onClick={() => navigate('/neighborhood-explorer')}
-                            >
-                                Discover &rarr;
-                            </button>
-                        </div>
-                    </div>
-
-
-                    {/* EXPLORE SECTION */}
-                    <div className="mobile-explore-card">
-                        <div className="explore-left-col">
-                            <img
-                                src={neighborhoodExplorerImage}
-                                alt="Neighborhood Explorer"
-                                className="explore-network-img"
-                            />
-                        </div>
-                        <div className="explore-right-col">
-                            <h3 className="explore-title">Explore</h3>
-                            <p className="explore-subtext">
-                                Explore the connections found in scientific data between species, natural products and diseases
-                            </p>
-                            <button
-                                className="explore-cta-btn"
-                                onClick={() => navigate('/neighborhood-explorer')}
-                            >
-                                Explore &rarr;
-                            </button>
-                        </div>
-                    </div>
                 </div>
             )}
         </div>
