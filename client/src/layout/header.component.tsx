@@ -93,7 +93,7 @@ const Header: React.FC = () => {
             icon: 'fa fa-atom',
             command: () => {
                 screenDeviceStore.setMenuVisibility(false);
-                navigate('/search/structure-search');
+                //     navigate('/search/structure-search');
             },
         },
         {
@@ -101,7 +101,7 @@ const Header: React.FC = () => {
             icon: 'pi pi-compass',
             command: () => {
                 screenDeviceStore.setMenuVisibility(false);
-                navigate('/neighborhood-explorer');
+                // navigate('/neighborhood-explorer');
             },
         },
         {
@@ -109,7 +109,7 @@ const Header: React.FC = () => {
             icon: 'pi pi-chart-line',
             command: () => {
                 screenDeviceStore.setMenuVisibility(false);
-                navigate('/visualization/co-occurrence-search/');
+                // navigate('/visualization/co-occurrence-search/');
             },
         },
         {
@@ -178,7 +178,7 @@ const Header: React.FC = () => {
                     </div>
 
                     <div className="mobile-header-right">
-                        <button
+                        {/*<button
                             className="mobile-shortcut-btn"
                             onClick={() => navigate('/search/structure-search')}
                             title="Compound Search"
@@ -190,11 +190,11 @@ const Header: React.FC = () => {
                         <button
                             className="mobile-shortcut-btn"
                             onClick={() => setHistoryVisible(true)}
-                            title="Search History"
+                            title="!"
                         >
                             <i className="pi pi-history shortcut-icon" />
                             <span className="shortcut-label">Search History</span>
-                        </button>
+                        </button>*/}
 
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
