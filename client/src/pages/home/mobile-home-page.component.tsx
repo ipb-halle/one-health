@@ -93,37 +93,6 @@ function MobileHomePageComponent() {
                 </div>
             ) : (
                 <div className="mobile-main-content">
-                    {/* HERO / INTRODUCTION */}
-                    <div className="mobile-hero-card">
-                        <div className="hero-left-col">
-                            <img
-                                src={earthImage}
-                                alt="One Health Earth Illustration"
-                                className="hero-earth-img"
-                            />
-                        </div>
-
-                        {/*<div className="hero-right-col">
-                            <h2 className="hero-heading">
-                                Empowering the research on plant-derived natural products for the treatment of diseases
-                            </h2>
-                            {/*<p className="hero-subtext">
-                                Search connections across plants, compounds and diseases in integrated datasets.
-                            </p>*/}
-                        {/*}  </div>*/}
-                    </div>
-
-                    <div className="mobile-hero-card">
-                        <div className="hero-right-col">
-                            <h2 className="hero-heading">
-                                Empowering the research on plant-derived natural products for the treatment of diseases
-                            </h2>
-                            {/*<p className="hero-subtext">
-                                Search connections across plants, compounds and diseases in integrated datasets.
-                            </p>*/}
-                        </div>
-                    </div>
-
                     {/* KNOWLEDGE-BASE SEARCH */}
                     <div className="mobile-search-bar-section">
                         <div className="mobile-search-input-wrapper">
@@ -155,6 +124,30 @@ function MobileHomePageComponent() {
                             </button>
                         </div>
                     </div>
+
+                    {/* HERO / INTRODUCTION */}
+                    <div className="mobile-hero-card">
+                        <div className="hero-left-col">
+                            <img
+                                src={earthImage}
+                                alt="One Health Earth Illustration"
+                                className="hero-earth-img"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mobile-hero-card">
+                        <div className="hero-right-col">
+                            <h2 className="hero-heading">
+                                Empowering the research on plant-derived natural products for the treatment of diseases
+                            </h2>
+                            {/*<p className="hero-subtext">
+                                Search connections across plants, compounds and diseases in integrated datasets.
+                            </p>*/}
+                        </div>
+                    </div>
+
+
 
                     {/* PLATFORM STATISTICS */}
                     <div className="mobile-stats-grid">
