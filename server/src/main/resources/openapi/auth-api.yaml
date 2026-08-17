@@ -25,7 +25,6 @@ paths:
       summary: Authenticate user
       description: Validates user credentials and returns a JWT bearer token.
       operationId: login
-
       security: []
 
       requestBody:
@@ -64,7 +63,6 @@ paths:
         - Auth
       summary: Register a new user
       operationId: register
-      
       security: []
       
       requestBody:
@@ -104,12 +102,9 @@ paths:
       summary: Logout current user
       description: |
         Invalidates the current authentication session.
-
         For JWT-based authentication this endpoint can be used
         for token blacklisting in the future.
-
       operationId: logout
-
       security:
         - bearerAuth: []
 
@@ -128,6 +123,62 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /auth/orcid/authorize-url:
+    get:
+      tags:
+        - Auth
+      summary: Get ORCID authorization URL
+      description: Returns the ORCID OAuth2 authorization URL and state parameter.
+      operationId: getOrcidAuthorizeUrl
+      security: []
+
+      responses:
+        "200":
+          description: ORCID authorization URL generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrcidAuthUrlResponse'
+  
+  /auth/orcid/token:
+    post:
+      tags:
+        - Auth
+      summary: Authenticate with ORCID 
+      description: Validates the ORCID authorization code and state and returns a JWT bearer token.
+      operationId: orcidLogin
+      security: []
+
+      requestBody:
+        required: true
+        description: ORCID authorization code and state parameter
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrcidTokenRequest'
+
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+        "400":
+          description: Invalid request or missing parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "401":
+          description: Invalid ORCID code or authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /auth/me:
     get:
       tags:
@@ -135,9 +186,7 @@ paths:
       summary: Get current authenticated user
       description: |
         Returns information about the currently authenticated user.
-
       operationId: getCurrentUser
-
       security:
         - bearerAuth: []
 
@@ -169,7 +218,6 @@ paths:
         - Users
       summary: Update current user profile
       operationId: updateCurrentUser
-      
       security:
         - bearerAuth: []
       
@@ -209,7 +257,6 @@ paths:
         - Users
       summary: Changes current user password
       operationId: changePassword
-      
       security:
         - bearerAuth: []
       
@@ -261,13 +308,11 @@ components:
 
     LoginRequest:
       type: object
-
       required:
         - username
         - password
 
       properties:
-
         username:
           type: string
           minLength: 3
@@ -281,14 +326,12 @@ components:
 
     RegisterRequest:
       type: object
-      
       required:
         - username
         - email
         - password
       
       properties:
-        
         username:
           type: string
           minLength: 3
@@ -307,26 +350,22 @@ components:
           
     UpdateUserRequest:
       type: object
-      
       required:
         - email
       
       properties:
-        
         email:
           type: string
           format: email
           example: john@example.org
         
     ChangePasswordRequest:
-      type: object
-      
+      type: object   
       required:
         - currentPassword
         - newPassword
       
       properties:
-        
         currentPassword:
           type: string
           example: OldPassword123
@@ -336,16 +375,49 @@ components:
           minLength: 8
           example: NewPassword456
     
+
+    OrcidTokenRequest:
+      type: object
+      required:
+        - code
+        - state
+
+      properties:
+        code:
+          type: string
+          description: Authorization code returned by ORCID
+          example: 1234567890abcdef
+        state:
+          type: string
+          description: OAuth state value associated with the authorization request.
+          example: random_state_string
+
+    OrcidAuthUrlResponse:
+      type: object
+      required:
+        - url
+        - state
+
+      properties:
+        url:
+          type: string
+          format: uri
+          description: ORCID OAuth2 authorization URL.
+          example: https://orcid.org/oauth/authorize?client_id=APP-1234567890&response_type=code&scope=/authenticate&redirect_uri=https://yourapp.com/callback&state=random_state_string
+        
+        state:
+          type: string
+          description: OAuth state value associated with the authorization request.
+          example: random_state_string
+
     LoginResponse:
       type: object
-
       required:
         - token
         - expiresInSeconds
         - user
 
       properties:
-
         token:
           type: string
           description: JWT access token
@@ -359,10 +431,8 @@ components:
         user:
           $ref: '#/components/schemas/User'
 
-
     User:
       type: object
-
       required:
         - id
         - username
@@ -370,7 +440,6 @@ components:
         - enabled
 
       properties:
-
         id:
           type: string
           example: 1
@@ -384,14 +453,18 @@ components:
           format: email
           example: admin@n1h.org
 
+        orcid:
+          type: string
+          nullable: true
+          description: User's ORCID identifier, if linked.
+          example: "0000-0001-2345-6789"
+
         role:
           type: string
-
           enum:
             - VIEWER
             - CURATOR
             - ADMIN
-
           example: ADMIN
 
         enabled:
@@ -400,36 +473,30 @@ components:
 
     LogoutResponse:
       type: object
-
       required:
         - message
 
       properties:
-
         message:
           type: string
           example: Logged out successfully
 
     MessageResponse:
       type: object
-
       required:
         - message
 
       properties:
-
         message:
           type: string
           example: Operation successful
 
     ErrorResponse:
       type: object
-
       required:
         - message
 
       properties:
-
         message:
           type: string
           example: Unauthorized request
