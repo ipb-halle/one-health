@@ -1,12 +1,14 @@
-This branch is our development branch for the
-mobile-ready version of the One Health project.
+This branch is our development branch for implementing
+user registration and login functionality in the One Health project.
+Authentication and registration will be implemented using ORCID.
+The authentication flow will also include session management,
+including cookie- and token-based session handling.
 
-It contains the work on mobile UI, authentication,
-OpenAPI-generated APIs, React Query integration,
-Docker configuration, and related backend updates.
+It contains the work on authentication forms, user registration,
+login flow, ORCID integration, session management, cookies, tokens,
+authentication-related UI, and related backend updates.
 
-Branch: mobile-version
-Project: https://github.com/ipb-halle/one-health/tree/mobile-version
-
-Branch created 2026-05-18 by Hoda Anvari Kazemabad
-BRANCHINFO updated 2026-08-11
+Branch: feature/auth-registration-login
+Project: https://github.com/ipb-halle/one-health/tree/feature/auth-registration-login
+Branch created 2026-08-17 by Hoda Anvari Kazemabad
+BRANCHINFO updated 2026-08-17
