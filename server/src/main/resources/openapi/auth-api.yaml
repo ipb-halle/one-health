@@ -445,7 +445,8 @@ components:
 
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
           example: 1
 
         username:
