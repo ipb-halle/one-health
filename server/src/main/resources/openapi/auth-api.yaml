@@ -321,6 +321,7 @@ components:
 
         password:
           type: string
+          format: password
           minLength: 5
           example: secret123
 
@@ -345,6 +346,7 @@ components:
           
         password:
           type: string
+          format: password
           minLength: 8
           example: MyStrongPassword123
           
@@ -368,10 +370,12 @@ components:
       properties:
         currentPassword:
           type: string
+          format: password
           example: OldPassword123
           
         newPassword:
           type: string
+          format: password
           minLength: 8
           example: NewPassword456
     
