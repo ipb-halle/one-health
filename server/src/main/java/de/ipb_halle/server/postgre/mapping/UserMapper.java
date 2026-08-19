@@ -1,12 +1,12 @@
 package de.ipb_halle.server.postgre.mapping;
 
+import de.ipb_halle.model.User;
+import de.ipb_halle.model.UserRole;
+import de.ipb_halle.server.postgre.models.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import org.openapitools.jackson.nullable.JsonNullable;
-
-import de.ipb_halle.model.User;
-import de.ipb_halle.server.postgre.models.UserEntity;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
@@ -18,23 +18,24 @@ public interface UserMapper {
             return null;
         }
 
-        User user = new User();
-        user.setId(userEntity.getId());
-        user.setUsername(userEntity.getUsername());
-        user.setEmail(userEntity.getEmail());
-
-        user.setRole(userEntity.getRole() != null
-                ? User.RoleEnum.fromValue(userEntity.getRole().name())
-                : null);
-        user.setEnabled(userEntity.getEnabled());
+        User userDto = new User();
+       
+        userDto.setId(userEntity.getId());
+        userDto.setUsername(userEntity.getUsername());
+        userDto.setEmail(userEntity.getEmail());
+        userDto.setEnabled(userEntity.getEnabled());
 
         if (userEntity.getOrcid() != null) {
-            user.setOrcid(JsonNullable.of(userEntity.getOrcid()));
+            userDto.setOrcid(JsonNullable.of(userEntity.getOrcid()));
         } else {
-            user.setOrcid(JsonNullable.undefined());
+            userDto.setOrcid(JsonNullable.undefined());
         }
 
-        return user;
+        if(userEntity.getRole() != null) {
+            userDto.setRole(UserRole.valueOf(userEntity.getRole().name()));
+        }
+
+        return userDto;
     }
 
     default User map(UserEntity userEntity) {
