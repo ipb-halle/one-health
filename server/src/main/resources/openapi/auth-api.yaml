@@ -17,84 +17,7 @@ tags:
     description: User profile management
 
 paths:
-
-  /auth/login:
-    post:
-      tags:
-        - Auth
-      summary: Authenticate user
-      description: Validates user credentials and returns a JWT bearer token.
-      operationId: login
-      security: []
-
-      requestBody:
-        required: true
-        description: User login credentials
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-
-      responses:
-        "200":
-          description: Authentication successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-        "401":
-          description: Invalid username or password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /auth/register:
-    post:
-      tags:
-        - Auth
-      summary: Register a new user
-      operationId: register
-      security: []
-      
-      requestBody:
-        required: true
-        description: Registration information
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
-              
-      responses:
-        "201":
-          description: User successfully registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-                
-        "400":
-          description: Validation failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-                
-        "409":
-          description: Username or email already exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-               
+          
   /auth/logout:
     post:
       tags:
@@ -250,47 +173,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  
-  /users/me/password:
-    put:
-      tags:
-        - Users
-      summary: Changes current user password
-      operationId: changePassword
-      security:
-        - bearerAuth: []
-      
-      requestBody:
-        required: true
-        description: Password change request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChangePasswordRequest'
-              
-      responses:
-        "200":
-          description: Password updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MessageResponse' 
-                
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  
-  
+
+
 components:
 
   securitySchemes:
@@ -305,54 +189,7 @@ components:
         Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 
   schemas:
-
-    LoginRequest:
-      type: object
-      required:
-        - username
-        - password
-
-      properties:
-        username:
-          type: string
-          minLength: 3
-          maxLength: 100
-          example: admin
-
-        password:
-          type: string
-          format: password
-          minLength: 5
-          example: secret123
-
-    RegisterRequest:
-      type: object
-      required:
-        - username
-        - email
-        - password
       
-      properties:
-        username:
-          type: string
-          minLength: 3
-          maxLength: 100
-          description: Unique username
-          example: johndoe
-        
-        email:
-          type: string
-          format: email
-          description: User's email address
-          example: john@example.org
-          
-        password:
-          type: string
-          format: password
-          minLength: 8
-          description: User's password
-          example: MyStrongPassword123
-          
     UpdateUserRequest:
       type: object
       required:
@@ -372,24 +209,6 @@ components:
           description: Updated contact email address.
           example: "jane.doe@institution.org"
         
-    ChangePasswordRequest:
-      type: object   
-      required:
-        - currentPassword
-        - newPassword
-      
-      properties:
-        currentPassword:
-          type: string
-          format: password
-          example: OldPassword123
-          
-        newPassword:
-          type: string
-          format: password
-          minLength: 8
-          example: NewPassword456
-    
     OrcidTokenRequest:
       type: object
       required:
