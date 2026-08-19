@@ -6,7 +6,6 @@ import de.ipb_halle.server.postgre.models.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import org.openapitools.jackson.nullable.JsonNullable;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
@@ -21,15 +20,11 @@ public interface UserMapper {
         User userDto = new User();
        
         userDto.setId(userEntity.getId());
-        userDto.setUsername(userEntity.getUsername());
         userDto.setEmail(userEntity.getEmail());
         userDto.setEnabled(userEntity.getEnabled());
 
-        if (userEntity.getOrcid() != null) {
-            userDto.setOrcid(JsonNullable.of(userEntity.getOrcid()));
-        } else {
-            userDto.setOrcid(JsonNullable.undefined());
-        }
+        userDto.setOrcid(userEntity.getOrcid());
+        userDto.setDisplayName(userEntity.getDisplayName());
 
         if(userEntity.getRole() != null) {
             userDto.setRole(UserRole.valueOf(userEntity.getRole().name()));

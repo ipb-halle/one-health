@@ -18,14 +18,13 @@ public class UserEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String orcid;
+
+    private String displayName;
 
     @Column(unique = true)
     private String email;
-    private String passwordHash;
-
-    @Column(unique = true)
-    private String orcid;
+   
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,12 +44,12 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getDisplayName() {
+    return displayName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {
@@ -59,14 +58,6 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public String getOrcid() {

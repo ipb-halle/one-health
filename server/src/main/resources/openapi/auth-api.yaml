@@ -359,10 +359,18 @@ components:
         - email
       
       properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Updated display name within N1H.
+          example: "Dr. Jane Doe"
+
         email:
           type: string
           format: email
-          example: john@example.org
+          description: Updated contact email address.
+          example: "jane.doe@institution.org"
         
     ChangePasswordRequest:
       type: object   
@@ -449,7 +457,8 @@ components:
       type: object
       required:
         - id
-        - username
+        - orcid
+        - displayName
         - role
         - enabled
 
@@ -458,10 +467,13 @@ components:
           type: integer
           format: int64
           example: 1
-
-        username:
+        
+        displayName:
           type: string
-          example: admin
+          minLength: 1
+          maxLength: 200
+          description: User's editable display name within N1H
+          example: "Dr. Jane Doe"
 
         email:
           type: string
@@ -470,8 +482,8 @@ components:
 
         orcid:
           type: string
-          nullable: true
-          description: User's ORCID identifier, if linked.
+          pattern: '^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$'
+          description: User's unique and immutable ORCID identifier.
           example: "0000-0001-2345-6789"
 
         role:
