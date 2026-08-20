@@ -1,1 +1,0 @@
-import './RegisterPage.scss';
