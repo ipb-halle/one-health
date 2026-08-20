@@ -7,5 +7,12 @@
  */
 
 export interface UpdateUserRequest {
+  /**
+   * Updated display name within N1H.
+   * @minLength 1
+   * @maxLength 200
+   */
+  displayName?: string;
+  /** Updated contact email address. */
   email: string;
 }

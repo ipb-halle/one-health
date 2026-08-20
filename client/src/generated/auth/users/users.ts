@@ -16,9 +16,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ChangePasswordRequest,
   ErrorResponse,
-  MessageResponse,
   UpdateUserRequest,
   User
 } from '.././model';
@@ -88,69 +86,6 @@ export const useUpdateCurrentUser = <TError = ErrorResponse | ErrorResponse,
       > => {
 
       const mutationOptions = getUpdateCurrentUserMutationOptions(options);
-
-      return useMutation(mutationOptions, queryClient);
-    }
-    /**
- * @summary Changes current user password
- */
-export const changePassword = (
-    changePasswordRequest: ChangePasswordRequest,
- ) => {
-      
-      
-      return customAxiosInstance<MessageResponse>(
-      {url: `/users/me/password`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: changePasswordRequest
-    },
-      );
-    }
-  
-
-
-export const getChangePasswordMutationOptions = <TError = ErrorResponse | ErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: ChangePasswordRequest}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: ChangePasswordRequest}, TContext> => {
-
-const mutationKey = ['changePassword'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changePassword>>, {data: ChangePasswordRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  changePassword(data,)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof changePassword>>>
-    export type ChangePasswordMutationBody = ChangePasswordRequest
-    export type ChangePasswordMutationError = ErrorResponse | ErrorResponse
-
-    /**
- * @summary Changes current user password
- */
-export const useChangePassword = <TError = ErrorResponse | ErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: ChangePasswordRequest}, TContext>, }
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof changePassword>>,
-        TError,
-        {data: ChangePasswordRequest},
-        TContext
-      > => {
-
-      const mutationOptions = getChangePasswordMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

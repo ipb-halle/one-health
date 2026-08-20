@@ -8,14 +8,19 @@
 import type { UserRole } from './userRole';
 
 export interface User {
-  id: string;
-  username: string;
+  id: number;
+  /**
+   * User's editable display name within N1H
+   * @minLength 1
+   * @maxLength 200
+   */
+  displayName: string;
   email?: string;
   /**
-   * User's ORCID identifier, if linked.
-   * @nullable
+   * User's unique and immutable ORCID identifier.
+   * @pattern ^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$
    */
-  orcid?: string | null;
+  orcid: string;
   role: UserRole;
   enabled: boolean;
 }
