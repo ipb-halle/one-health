@@ -5,23 +5,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import oneHealthLogo from '../assets/logo-n1h.png';
 
+
 import './header.component.scss';
 import { RootStoreContext } from '@/app/providers/store-provider';
 import { observer } from 'mobx-react-lite';
 import { PanelMenu } from 'primereact/panelmenu';
 import { Sidebar } from 'primereact/sidebar';
 
-import LoginDialog from '../app/components/auth/LoginDialog';
-import RegisterDialog from '../app/components/auth/RegisterDialog';
 import HistoryModal from '@/features/search/search-history/components/general-search-history-modal.component';
+import { getOrcidAuthorizeUrl } from '@/generated/auth/auth/auth';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
 
-    const [loginVisible, setLoginVisible] = useState<boolean>(false);
-    const [registerVisible, setRegisterVisible] = useState<boolean>(false);
     const [historyVisible, setHistoryVisible] = useState<boolean>(false);
 
     const legalItems: MenuItem = {
@@ -43,7 +41,6 @@ const Header: React.FC = () => {
         ],
     };
 
-
     const visItems: MenuItem = {
         label: 'Visualization',
         icon: 'pi pi-chart-line',
@@ -64,22 +61,12 @@ const Header: React.FC = () => {
     };
 
     const authItems: MenuItem = {
-        label: 'User Profile / Login',
+        label: 'Sign in with ORCID',
         icon: 'pi pi-user',
-        items: [
-            {
-                label: 'Login',
-                command: () => {
-                    setLoginVisible(true);
-                },
-            },
-            {
-                label: 'Register',
-                command: () => {
-                    setRegisterVisible(true);
-                },
-            },
-        ],
+        command: async () => {
+            const response = await getOrcidAuthorizeUrl();
+            window.location.href = response.url;
+        },
     };
 
     const items: MenuItem[] = [legalItems];
@@ -222,8 +209,11 @@ const Header: React.FC = () => {
 
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
-                            onClick={() => setLoginVisible(true)}
-                            title="User Profile / Login"
+                            onClick={async () => {
+                                const response = await getOrcidAuthorizeUrl();
+                                window.location.href = response.url;
+                            }}
+                            title="Sign in with ORCID"
                         >
                             <i className="pi pi-user shortcut-icon" />
                         </button>
@@ -243,24 +233,6 @@ const Header: React.FC = () => {
                 <HistoryModal
                     visible={historyVisible}
                     onHide={() => setHistoryVisible(false)}
-                />
-                <LoginDialog
-                    visible={loginVisible}
-                    onHide={() => setLoginVisible(false)}
-                    onSuccess={() => setLoginVisible(false)}
-                    onRegisterClick={() => {
-                        setLoginVisible(false);
-                        setRegisterVisible(true);
-                    }}
-                />
-                <RegisterDialog
-                    visible={registerVisible}
-                    onHide={() => setRegisterVisible(false)}
-                    onSuccess={() => setRegisterVisible(false)}
-                    onLoginClick={() => {
-                        setRegisterVisible(false);
-                        setLoginVisible(true);
-                    }}
                 />
             </div>
         );
