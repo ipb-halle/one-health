@@ -21,6 +21,11 @@ services:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
     # TODO: expose for debuging purposes only 
+    environment:
+      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID}
+      ORCID_AUTHORIZE_URL: ${ORCID_AUTHORIZE_URL}
+      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI}
+
     ports:
       - "5173:8080"
     networks:
@@ -45,8 +50,10 @@ services:
       - one-health-network
       #- frontend
     volumes:
-      - /srv/www/conf:/usr/local/apache2/conf
+      #- /srv/www/conf:/usr/local/apache2/conf
+      #- /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
       - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
+
     depends_on:
       - server
 
