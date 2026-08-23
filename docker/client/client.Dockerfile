@@ -22,3 +22,6 @@ FROM httpd
 
 # Copy the production build files from the build stage to the nginx web root directory
 COPY --from=build /app/build /usr/local/apache2/htdocs
+COPY docker/client/httpd-vhost.conf /usr/local/apache2/conf/extra/httpd-vhost.conf
+
+RUN echo "Include conf/extra/httpd-vhost.conf" >> /usr/local/apache2/conf/httpd.conf
