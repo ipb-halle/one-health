@@ -10,6 +10,7 @@ class CuratorApplicationTests {
 
 	@Test
 	void contextLoads() {
+            System.out.println("xxxx contextLoads() succeeded.");
 	}
 
 }

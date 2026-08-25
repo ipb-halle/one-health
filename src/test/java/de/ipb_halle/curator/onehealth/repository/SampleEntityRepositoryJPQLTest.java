@@ -1,7 +1,7 @@
 package de.ipb_halle.curator.onehealth.repository;
 
+import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.onehealth.SampleEntity;
-import java.net.URL;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,30 +10,34 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.postgresql.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.jdbc.datasource.embedded.DataSourceFactory;
 
-// @DataJpaTest
+@DataJpaTest
 @Testcontainers
 class SampleEntityRepositoryJPQLTest {
 
-    @Container
-    static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:latest")
-        .withDatabaseName("testdb")
-        .withUsername("testuser")
-        .withPassword("testpass");
+    // @Container
+    static PostgreSQLContainer postgres;
+
+    static {
+        try {
+            postgres = TestcontainersConfiguration.buildPostgreSQLContainer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @TestConfiguration
     static class TestConfig {
+
         @Bean
         public JdbcTemplate jdbcTemplate() {
             return new JdbcTemplate(DataSourceBuilder
@@ -59,13 +63,13 @@ class SampleEntityRepositoryJPQLTest {
         // insert directly into testcontainer database to bypass Hibernate
         UUID testId = UUID.randomUUID();
         JdbcTemplate jdbc = new JdbcTemplate(DataSourceBuilder
-                    .create()
-                    .url(postgres.getJdbcUrl())
-                    .username(postgres.getUsername())
-                    .password(postgres.getPassword())
-                    .build());
+                .create()
+                .url(postgres.getJdbcUrl())
+                .username(postgres.getUsername())
+                .password(postgres.getPassword())
+                .build());
         jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)",
-            testId, "TestEntity", 42);
+                testId, "TestEntity", 42);
 
         Optional<SampleEntity> result = repository.findByIdJPQL(testId);
 
@@ -80,11 +84,11 @@ class SampleEntityRepositoryJPQLTest {
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
         JdbcTemplate jdbc = new JdbcTemplate(DataSourceBuilder
-                    .create()
-                    .url(postgres.getJdbcUrl())
-                    .username(postgres.getUsername())
-                    .password(postgres.getPassword())
-                    .build());
+                .create()
+                .url(postgres.getJdbcUrl())
+                .username(postgres.getUsername())
+                .password(postgres.getPassword())
+                .build());
 
         jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id1, "Alpha", 10);
         jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id2, "Beta", 10);
@@ -94,6 +98,6 @@ class SampleEntityRepositoryJPQLTest {
 
         assertThat(result).hasSize(2);
         assertThat(result).extracting(SampleEntity::getName)
-            .containsExactly("Alpha", "Beta");
+                .containsExactly("Alpha", "Beta");
     }
 }
