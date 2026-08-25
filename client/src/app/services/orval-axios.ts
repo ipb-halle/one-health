@@ -4,8 +4,8 @@ import { authService } from './auth.service';
 // single reusable axios instance
 const axiosInstance = axios.create({
     //baseURL: getApiBaseUrl(),
-    baseURL: import.meta.env.VITE_API_URL,
-   // 'http://localhost:5173/api',
+    //baseURL: import.meta.env.VITE_API_URL,
+    baseURL: 'http://a.localhost:5173/api',
 });
 
 
