@@ -26,7 +26,7 @@ services:
       ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
       ORCID_AUTHORIZE_URL: ${ORCID_AUTHORIZE_URL:-https://orcid.org/oauth/authorize}
       ORCID_TOKEN_URL: ${ORCID_TOKEN_URL:-https://orcid.org/oauth/token}
-      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI:-http://a.localhost:5173/auth/orcid/callback}
+      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI:-http://a.localhost:5174/auth/orcid/callback}
 
     ports:
       - "5173:8080"
