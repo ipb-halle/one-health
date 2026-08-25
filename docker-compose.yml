@@ -22,12 +22,15 @@ services:
       dockerfile: ./docker/server/server.Dockerfile
     # TODO: expose for debuging purposes only 
     environment:
-      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID}
-      ORCID_AUTHORIZE_URL: ${ORCID_AUTHORIZE_URL}
-      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI}
+      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
+      ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
+      ORCID_AUTHORIZE_URL: ${ORCID_AUTHORIZE_URL:-https://orcid.org/oauth/authorize}
+      ORCID_TOKEN_URL: ${ORCID_TOKEN_URL:-https://orcid.org/oauth/token}
+      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI:-http://a.localhost:5173/auth/orcid/callback}
 
     ports:
       - "5173:8080"
+      #- "8080:8080"
     networks:
       - one-health-network
     depends_on:
