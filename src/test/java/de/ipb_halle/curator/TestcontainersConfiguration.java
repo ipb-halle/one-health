@@ -1,5 +1,8 @@
 package de.ipb_halle.curator;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +13,10 @@ import org.testcontainers.utility.MountableFile;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
+
+    private final static String SCHEMA_DIR = "util/schema/";
+    private final static String INIT_DIR = "/docker-entrypoint-initdb.d/";
+
     private static final PostgreSQLContainer postgres = buildPostgreSQLContainer();
 
     @Bean
@@ -28,10 +35,23 @@ public class TestcontainersConfiguration {
         PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres:latest"))
                 .withDatabaseName("curator")
                 .withUsername("curator")
-                .withPassword("curator")
-                .withCopyToContainer(MountableFile.forClasspathResource("/schema/0001_test_db.sql"), "/docker-entrypoint-initdb.d/0001_test_db.sql");
+                .withPassword("curator");
+        container = addInitDbFile(container, "0001_test_db.sql");
         container.start();
-
         return container;
+    }
+
+    private static PostgreSQLContainer addInitDbFile(PostgreSQLContainer container, String filename) {
+        try {
+            Path basePath = Paths.get(
+                    TestcontainersConfiguration.class.getResource("/").toURI())
+                    .getParent().getParent();
+
+            Path file = basePath.resolve(SCHEMA_DIR + filename);
+
+            return container.withCopyToContainer(MountableFile.forHostPath(file), INIT_DIR + filename);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

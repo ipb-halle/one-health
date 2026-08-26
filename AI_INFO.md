@@ -39,9 +39,9 @@ java -jar curator.jar
 - **ORM:** Hibernate (via Spring Data JPA) is used exclusively for database access.
 
 ### Database Schema Management
-- The SQL schema scripts are stored in `src/test/resources/schema`
-- This schema is used for testing and production
-- Database migration is always done manually - no tools (Flyway or Liquibase) should be adopted
+- The SQL schema scripts are stored in `util/schema`
+- This schema is used for development, testing and production. Some scripts, which require superuser privileges are irrelevant for testing and development. Do not touch them.
+- Migrations for the production database are always applied manually - no tools (Flyway or Liquibase) should be adopted
 
 ### Application Startup & Component Discovery
 The entry point is `CuratorApplication.java`, annotated with `@SpringBootApplication`. This annotation combines three behaviors:
@@ -162,7 +162,6 @@ This rule extends beyond JPQL: no derived delete methods, no implicit query gene
 - MapStruct may be acceptable for simple cases (i.e. an entity DTO pair which has many properties but is otherwise simple). A decision will be made on a case by case basis. Agents may suggest changes but need explicit approval.
 
 ### Error Handling Strategy
-The error handling strategy is not yet fixed. We need a proper error reporting scheme, which allows to provide manually curated data for subsequent runs. 
 - Exceptions should be handled by a custom excption hierarchy (e.g., `EntityNotFoundException`, `DuplicateIdentifierException`).
 - Exceptions are handled on a per-service basis, no global exception handler (`@ControllerAdvice` / `@RestControllerAdvice`) 
 - Validation failures and less critical errors are logged, fatal errors cause program termination
