@@ -162,9 +162,11 @@ This rule extends beyond JPQL: no derived delete methods, no implicit query gene
 - MapStruct may be acceptable for simple cases (i.e. an entity DTO pair which has many properties but is otherwise simple). A decision will be made on a case by case basis. Agents may suggest changes but need explicit approval.
 
 ### Error Handling Strategy
-- Exceptions should be handled by a custom excption hierarchy (e.g., `EntityNotFoundException`, `DuplicateIdentifierException`).
-- Exceptions are handled on a per-service basis, no global exception handler (`@ControllerAdvice` / `@RestControllerAdvice`) 
-- Validation failures and less critical errors are logged, fatal errors cause program termination
+- Custom exception hierarchy for domain-specific errors (e.g., `EntityNotFoundException`, `DuplicateIdentifierException`). All custom exceptions are **unchecked** (`extends RuntimeException`) — callers do not need try/catch blocks.
+- Exceptions are handled on a per-service basis, no global exception handler (`@ControllerAdvice` / `@RestControllerAdvice`). Each service decides when to wrap a low-level exception (e.g., Hibernate `DataAccessException`) in a domain-specific one, and when to let it bubble up as-is.
+- Validation failures for **missing** data: throw a custom exception or return Optional depending on whether "not found" is a normal outcome of the operation.
+- Validation failures for **invalid input**: log at WARN and return early with an empty Optional, rather than throwing.
+- Fatal errors (unexpected exceptions) cause program termination — do not catch and swallow them.
 
 ---
 
