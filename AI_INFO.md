@@ -31,8 +31,8 @@ necessary for the curation database.
 The application should basically use Hibernate as an ORM framework for database 
 access. As we have some non-standard column types in the database, we do not 
 want Spring to automatically adjust the database structure. Instead we want to 
-provide a set of SQL scripts for database setup. The the complete schema 
-information is collected in multiple files in the util/schema/ directory. We 
+provide a set of SQL scripts for database setup. Currently the schema is stored
+in the src/test/resources/schema directory. This may change later. We 
 also want to structure the project along the different source databases. Java 
 models, DTOs, interfaces and services for database access should be stored in 
 their business case package, in contrast to storing all the models in a model 

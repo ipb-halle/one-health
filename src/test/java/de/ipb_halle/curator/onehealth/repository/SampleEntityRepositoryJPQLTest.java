@@ -1,5 +1,6 @@
 package de.ipb_halle.curator.onehealth.repository;
 
+import de.ipb_halle.curator.DbTestHelper;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.onehealth.SampleEntity;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 @Testcontainers
 class SampleEntityRepositoryJPQLTest {
 
-    // @Container
     static PostgreSQLContainer postgres;
 
     static {
@@ -34,7 +34,7 @@ class SampleEntityRepositoryJPQLTest {
             throw new RuntimeException(e);
         }
     }
-
+    /*
     @TestConfiguration
     static class TestConfig {
 
@@ -46,7 +46,7 @@ class SampleEntityRepositoryJPQLTest {
                     .build());
         }
     }
-
+     */
     @Autowired
     private SampleEntityRepository repository;
 
@@ -58,18 +58,17 @@ class SampleEntityRepositoryJPQLTest {
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
     }
 
+    private void createTestData(UUID id, String name, int value) {
+        String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";
+        DbTestHelper helper = new DbTestHelper(postgres);
+        helper.dbUpdate(sql, id, name, value);
+    }
+
     @Test
     void saveAndFindByUUID_JPQL() {
         // insert directly into testcontainer database to bypass Hibernate
         UUID testId = UUID.randomUUID();
-        JdbcTemplate jdbc = new JdbcTemplate(DataSourceBuilder
-                .create()
-                .url(postgres.getJdbcUrl())
-                .username(postgres.getUsername())
-                .password(postgres.getPassword())
-                .build());
-        jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)",
-                testId, "TestEntity", 42);
+        createTestData(testId, "TestEntity", 42);
 
         Optional<SampleEntity> result = repository.findByIdJPQL(testId);
 
@@ -83,16 +82,10 @@ class SampleEntityRepositoryJPQLTest {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
-        JdbcTemplate jdbc = new JdbcTemplate(DataSourceBuilder
-                .create()
-                .url(postgres.getJdbcUrl())
-                .username(postgres.getUsername())
-                .password(postgres.getPassword())
-                .build());
 
-        jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id1, "Alpha", 10);
-        jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id2, "Beta", 10);
-        jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id3, "Gamma", 20);
+        createTestData(id1, "Alpha", 10);
+        createTestData(id2, "Beta", 10);
+        createTestData(id3, "Gamma", 20);
 
         List<SampleEntity> result = repository.findByValueJPQL(10);
 

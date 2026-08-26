@@ -1,39 +1,48 @@
 package de.ipb_halle.curator.onehealth.service;
 
+import de.ipb_halle.curator.DbTestHelper;
+import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.onehealth.dto.SampleEntityDTO;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.support.TransactionTemplate;
-// import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
-// @DataJpaTest
+@SpringBootTest
 @Testcontainers
 class SampleEntityServiceCriteriaTest {
-/*
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
-        .withDatabaseName("testdb")
-        .withUsername("testuser")
-        .withPassword("testpass");
+
+    static PostgreSQLContainer postgres;
+
+    static {
+        try {
+            postgres = TestcontainersConfiguration.buildPostgreSQLContainer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @TestConfiguration
     static class TestConfig {
+
         @Bean
         public JdbcTemplate jdbcTemplate() {
-            return new JdbcTemplate(postgres.getJdbcUrl(), postgres.getDataSource());
+            return new JdbcTemplate(DataSourceBuilder
+                    .create()
+                    .url(postgres.getJdbcUrl())
+                    .build());
         }
     }
 
@@ -51,21 +60,28 @@ class SampleEntityServiceCriteriaTest {
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "validate");
     }
 
+    private void clearTable() {
+        String sql = "DELETE FROM sample_entity";
+        DbTestHelper helper = new DbTestHelper(postgres);
+        helper.dbUpdate(sql);
+    }
+
+    private void createTestData(UUID id, String name, int value) {
+        String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";
+        DbTestHelper helper = new DbTestHelper(postgres);
+        helper.dbUpdate(sql, id, name, value);
+    }
+
     @Test
     void findByCriteria_namePattern() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
-        JdbcTemplate jdbc = new JdbcTemplate(postgres.getJdbcUrl(), postgres.getDataSource());
-        TransactionTemplate tt = new TransactionTemplate(entityManager.getTransactionManager());
 
         // Insert via JDBC (JPQL queries won't see uncommitted data)
-        tt.execute(status -> {
-            jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id1, "Apple", 5);
-            jdbc.update("INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)", id2, "Banana", 10);
-            return null;
-        });
+        createTestData(id1, "Apple", 5);
+        createTestData(id2, "Banana", 10);
 
-        List<SampleEntityDTO> result = service.findByCriteria("app", null, null);
+        List<SampleEntityDTO> result = service.findByCriteria("ppl", null, null);
 
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getName()).isEqualTo("Apple");
@@ -76,19 +92,13 @@ class SampleEntityServiceCriteriaTest {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
-        JdbcTemplate jdbc = new JdbcTemplate(postgres.getJdbcUrl(), postgres.getDataSource());
 
-        entityManager.createQuery("DELETE FROM SampleEntity").executeUpdate();
+        clearTable();
 
         // Manually insert data via native SQL
-        try (java.sql.Connection conn = postgres.getConnection();
-             java.sql.PreparedStatement ps = conn.prepareStatement(
-                 "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)")) {
-
-            ps.setObject(1, id1); ps.setString(2, "Low", 5); ps.execute();
-            ps.setObject(1, id2); ps.setString(2, "Medium", 50); ps.execute();
-            ps.setObject(1, id3); ps.setString(2, "High", 95); ps.execute();
-        }
+        createTestData(id1, "Low", 5);
+        createTestData(id2, "Medium", 50);
+        createTestData(id3, "High", 100);
 
         // Use Criteria API to filter by value range
         List<SampleEntityDTO> result = service.findByCriteria(null, 10, 60);
@@ -115,22 +125,17 @@ class SampleEntityServiceCriteriaTest {
 
     @Test
     void findByValue() {
-        JdbcTemplate jdbc = new JdbcTemplate(postgres.getJdbcUrl(), postgres.getDataSource());
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
 
-        entityManager.createQuery("DELETE FROM SampleEntity").executeUpdate();
+        // entityManager.createQuery("DELETE FROM SampleEntity").executeUpdate();
+        clearTable();
 
-        try (java.sql.Connection conn = postgres.getConnection();
-             java.sql.PreparedStatement ps = conn.prepareStatement(
-                 "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)")) {
-            ps.setObject(1, id1); ps.setString(2, "X", 42); ps.execute();
-            ps.setObject(1, id2); ps.setString(2, "Y", 42); ps.execute();
-        }
+        createTestData(id1, "X", 42);
+        createTestData(id2, "Y", 42);
 
         List<SampleEntityDTO> result = service.findByValue(42);
 
         assertThat(result).hasSize(2);
     }
-*/
 }
