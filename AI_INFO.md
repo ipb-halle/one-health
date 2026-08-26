@@ -1,50 +1,244 @@
-The purpose of this project is to merge data from different databases and to 
-create a curated and consolidated knowledge graph from this data to the main 
-project. The main project will have some data records - entities and relations 
-- of its own. This data may change over time, as will the records from foreign 
-data sources. Therefore we want to track the data records in a source code 
-repository and to provide versioned releases of the knowledge graph. The data 
-will be centered around the knowledge graph triangle ORGANISM produces 
-NATURAL COMPOUND, ORGANISM treats DISEASE and NATURAL PRODUCT treats DISEASE. 
-Over time we want to include many more entities and relations, e.g. geo-location, 
-involved enzymes etc.
-To facilitate the merge and curation process, persistent identifiers need to be 
-identified for the records of the original databases. For chemical structures, 
-this could be the InChI or InChI-Key, for records taken from ontologies, this 
-could be the IRI and in other cases we must keep track of the source 
-identifiers.
-The project is realized as a Spring Boot application to be run as a single 
-plain commandline command. It shall have a configuration file (either JSON or 
-Java Properties), which provide information about database connectivity, source 
-URLs and other configuration data. The primary compilation of the data shall be 
-done in a PostgreSQL database. The contents of that database is later to be 
-transformed in a graph database (Neo4J). We need to make sure, the identifiers 
-for entities and relations are persistent within our project. Otherwise it 
-would be impossible to compare different releases or to cite the results of the 
-main application. The merging or compilation step also need to make sure to 
-treat records correctly, which have been marked obsolete or incorrect in their 
-original sources or which have been deleted.
-Some records of the database will include chemical structure information. While 
-the main application requires substructure searches in its data this is not 
-necessary for the curation database.
+# AI_INFO — Project Guidelines for Copilot / AI Coding Assistants
 
-The application should basically use Hibernate as an ORM framework for database 
-access. As we have some non-standard column types in the database, we do not 
-want Spring to automatically adjust the database structure. Instead we want to 
-provide a set of SQL scripts for database setup. Currently the schema is stored
-in the src/test/resources/schema directory. This may change later. We 
-also want to structure the project along the different source databases. Java 
-models, DTOs, interfaces and services for database access should be stored in 
-their business case package, in contrast to storing all the models in a model 
-package, the interfaces in an interface package etc.  The whole application 
-must be well covered by unit tests. The tests should use TestContainers for 
-testing where appropriate. To keep things manageable, the project should use a 
-good compromize in using as few layers of abstraction as possible, while 
-keeping a clean code an observing the SOLID principles: single responsibility, 
-open/closed principle, Liskov substituion principle, Interface segregation 
-principle, dependency inversion principle.
-Furthermore the coding style must be explicit. In general that means 
-configuration is preferred over convention.  The goal is to make things 
-understandable and traceable at the expense of a few more lines of 
-code even for people unaware of the conventions. As an example, automatic 
-generation of queries from method names is forbidden.
+---
+
+## 1. Purpose & Domain
+
+This project merges data from multiple databases and curates a consolidated knowledge graph.
+The main project maintains its own entities and relations alongside imported records from foreign sources.
+Data records may change over time; both the main project's records and external source records are tracked in this source code repository for versioned releases of the knowledge graph.
+
+**Core domain triangles:**
+- ORGANISM produces NATURAL COMPOUND
+- ORGANISM treats DISEASE
+- NATURAL PRODUCT treats DISEASE
+
+Over time, additional entity and relation types will be added (e.g., geo-location, enzymes).
+
+### Identifier Strategy
+Persistent identifiers must be resolved for every imported record:
+- Chemical structures → InChI / InChI-Key
+- Ontology records → IRI
+- Other sources → original source identifier tracked alongside
+
+This ensures releases can be compared and cited reliably. Records marked obsolete or deleted in their original sources must be handled correctly during merging (see §4).
+
+---
+
+## 2. Architecture
+
+### Runtime
+The application is a Spring Boot executable JAR run as a single commandline process:
+```
+java -jar curator.jar
+```
+
+### Persistence
+- **Primary database:** PostgreSQL — all compiled/curated data lives here.
+- **Graph export target:** Neo4J — the PostgreSQL contents are later transformed into graph data.
+- **ORM:** Hibernate (via Spring Data JPA) is used exclusively for database access.
+
+### Database Schema Management
+- The SQL schema scripts are stored in `src/test/resources/schema`
+- This schema is used for testing and production
+- Database migration is always done manually - no tools (Flyway or Liquibase) should be adopted
+
+### Application Startup & Component Discovery
+The entry point is `CuratorApplication.java`, annotated with `@SpringBootApplication`. This annotation combines three behaviors:
+
+1. **`@Configuration`** — marks the class as a Spring configuration source
+2. **`@EnableAutoConfiguration`** — activates Spring Boot's auto-configuration (automatically configures beans based on classpath dependencies and properties)
+3. **`@ComponentScan`** — scans the current package (`de.ipb_halle.curator`) and all sub-packages for stereotype-annotated classes
+
+For this project, **implicit component scanning is the preferred approach**. The codebase is small enough that bean definitions are discoverable without explicit `@Bean` wiring. Scanning covers:
+- `@Service` → business logic services (singleton scope by default)
+- `@Repository` → Spring Data repository interfaces (singleton scope)
+- `@Component` → utility components such as converters (singleton scope)
+
+All discovered beans use **singleton scope** by default (one shared instance per Spring context). This is equivalent to Jakarta EE's CDI `@ApplicationScoped`. To use a different scope, annotate the bean explicitly (`@Scope("prototype")`, etc.), but this should be rare and well-justified.
+
+### Configuration & Environments
+The application uses **Spring Boot profiles** to switch between environments. Profiles are activated via `--spring.profiles.active=<profile>` or the `SPRING_PROFILES_ACTIVE` environment variable.
+
+#### How It Works
+Spring Boot loads configuration files in this priority order (highest first):
+1. `application-{profile}.properties` for each active profile
+2. `application.properties` (base configuration, always loaded)
+
+Property values in profile-specific files **override** the base file.
+
+#### Profile Files to Create
+- `src/main/resources/application.properties` — base defaults (shared across all environments)
+- `src/main/resources/application-dev.properties` — local development settings
+- `src/main/resources/application-prod.properties` — production settings
+
+#### Switching Environments
+
+```bash
+# Development (local PostgreSQL on localhost, open-in-view=true for debugging)
+java -jar curator.jar --spring.profiles.active=dev
+
+# Production (production database, open-in-view=false, secure connection pooling)
+java -jar curator.jar --spring.profiles.active=prod
+
+# Testing (profile is handled by @SpringBootTest / @Testcontainers; no active profile needed)
+mvn test
+```
+
+#### Environment Variable Override
+Sensitive values can be injected via environment variables at runtime:
+```bash
+SPRING_DATASOURCE_PASSWORD=mysecret123 java -jar curator.jar --spring.profiles.active=prod
+```
+This is the **recommended** approach for secrets — never hardcode them in properties files.
+
+#### Typical Profile Property Overrides
+| Property | `dev` | `prod` |
+|---|---|---|
+| `spring.datasource.url` | `jdbc:postgresql://localhost:5432/curator` | Production DB URL (remote) |
+| `spring.jpa.open-in-view` | `true` | `false` |
+| `logging.level.root` | `DEBUG` | `INFO` |
+
+---
+
+## 3. Code Structure & Package Layout
+
+### Domain-Based Packaging
+Package structure follows **business domains** (external data sources), NOT technical layers.
+Each external data source gets its own sub-package under `de.ipb_halle.curator/{sourceName}/`:
+
+```
+de.ipb_halle.curator/
+├── onehealth/                  ← business domain: OneHealth data source
+│   ├── SampleEntity.java       ← JPA entity
+│   ├── SampleEntityDTO.java    ← DTO (transfer object)
+│   ├── repository/             ← Spring Data repositories (interfaces)
+│   ├── service/                ← business logic services (@Service)
+│   └── conversion/             ← converter classes (@Component)
+├── another_source/             ← future: separate business domain
+```
+
+All models, DTOs, repository interfaces, and services for a given source live within its package. Avoid technical-layer packages (`model/`, `dao/`, `dto/` at the root level).
+
+### Component Responsibilities
+- Controllers should be called directly - additional faceade layers are not wanted
+- Conversion components can be called outside of service contexts
+- All public APIs should use the DTOs, database entities should not be exposed publicly
+
+---
+
+## 4. Coding Conventions
+
+### Dependency Injection 
+The project makes use of field injection with `@Autowired`. Constructor injection is to be used sparingly for helper classes, which do not constitute a service or bean.
+
+### Transaction Management
+- Use `@Transactional(readOnly = true)` on all methods that only read data. This enables Hibernate read-only optimization.
+- Plain `@Transactional` is used for methods that write (save, update, delete).
+- Do not annotate fields or classes with transaction semantics — only individual methods.
+
+### SQL & Query Conventions
+**Query Declaration (Required)**
+All JPQL/HQL queries MUST be declared explicitly using `@Query` annotations. Deriving queries from method names is forbidden:
+```java
+// ✅ Required
+@Query("SELECT s FROM SampleEntity s WHERE s.value = :value")
+List<SampleEntity> findByValueJPQL(int value);
+
+// ❌ Forbidden — Spring Data will derive this, but we disallow it
+List<SampleEntity> findByValue(int value);
+```
+This rule extends beyond JPQL: no derived delete methods, no implicit query generation of any kind. All SQL/JPQL must be visible in the source code for traceability.
+
+### Open-in-View (Session Lifecycle)
+`open-in-view=true` keeps the Hibernate Session alive until the end of the HTTP request, allowing lazy-loaded proxies to be accessed outside `@Transactional` methods. This is useful in development because it makes lazy-loading bugs visible immediately (missing data throws an exception). In production, however, it hides N+1 query problems and creates invisible transaction boundaries that exhaust DB connections.
+
+**Rule:** Use `open-in-view=true` **only** in the dev profile. Set to `false` (or remove it) in all other profiles. Fetch required data explicitly via JPQL `JOIN FETCH` clauses in production code.
+
+### DTO-to-Entity Mapping Policy
+- DTO-to-Entity Mapping and vice versa is done by conversion classes, which are annotated with `@Component` 
+- partial mapping is allowed - DTOs do not necessarily contain all entity fields
+- ModelMapper is strictly forbidden, because does not provide compile time checks and will be evaluated at runtime only
+- MapStruct may be acceptable for simple cases (i.e. an entity DTO pair which has many properties but is otherwise simple). A decision will be made on a case by case basis. Agents may suggest changes but need explicit approval.
+
+### Error Handling Strategy
+The error handling strategy is not yet fixed. We need a proper error reporting scheme, which allows to provide manually curated data for subsequent runs. 
+- Exceptions should be handled by a custom excption hierarchy (e.g., `EntityNotFoundException`, `DuplicateIdentifierException`).
+- Exceptions are handled on a per-service basis, no global exception handler (`@ControllerAdvice` / `@RestControllerAdvice`) 
+- Validation failures and less critical errors are logged, fatal errors cause program termination
+
+---
+
+## 5. Testing Strategy
+
+### Test Scope Rules
+| Test Type | Annotation | What's Loaded | Use When |
+|---|---|---|---|
+| **Repository slice test** | `@DataJpaTest` + `@Testcontainers` | Only JPA entities, repositories, EntityManager | Testing repository queries in isolation |
+| **Service integration test** | `@SpringBootTest` + `@Testcontainers` | Full application context (all beans) | Testing the complete service chain including converters and services |
+| **Converter unit test** | Plain JUnit 5 (+ Mockito) | Nothing from Spring | Pure Java conversion logic, no Spring dependencies |
+
+### Database Test Setup
+All database-dependent tests MUST use Testcontainers:
+```java
+@SpringBootTest
+@Testcontainers
+class MyIntegrationTest {
+    @Autowired SampleEntityService service; // Full chain available
+}
+
+@DataJpaTest
+@Testcontainers
+class MyRepoTest {
+    @Autowired SampleEntityRepository repository; // Repository only
+}
+```
+
+### SQL Data Insertion in Tests
+When inserting test data in `@SpringBootTest` integration tests, use JDBC (`DbTestHelper`) rather than JPQL — uncommitted JDBC inserts are invisible to other transactions during the same test. In `@DataJpaTest` slice tests, you may use JPQL within the same transaction.
+
+### Naming Conventions for Test Classes
+Integration tests and acceptance tests will be created manually. The naming scheme will be determined later.
+
+---
+
+## 6. SOLID Principles Reference
+
+All code must observe the five SOLID principles. This is mandatory, not optional:
+
+1. **Single Responsibility** — Each class has one reason to change.
+2. **Open/Closed** — Classes are open for extension but closed for modification (prefer composition over inheritance).
+3. **Liskov Substitution** — Subtypes must be substitutable for their base types without altering behavior.
+4. **Interface Segregation** — Prefer narrow, focused interfaces over fat ones.
+5. **Dependency Inversion** — Depend on abstractions (interfaces), not concrete implementations.
+
+---
+
+## 7. Coding Style Summary
+
+| Rule | Enforcement |
+|---|---|
+| Field injection (constructor injection only for helper classes - not beans or services) | Code review |
+| All queries explicit via `@Query` | Compiler + code review |
+| `readOnly = true` on read-only methods | Convention |
+| Domain-based packages (`curator/{sourceName}/`) | Code review |
+| No derived query methods | Code review |
+| Testcontainers for all DB tests | CI pipeline |
+| Explicit config over convention | Code review |
+
+---
+
+## 8. Chemical Structure Handling
+
+The database includes chemical structure information. The main application requires substructure searches on this data, but the curation database does not need this capability. Ensure chemical structure columns and indices are preserved during any schema changes. This project uses standard strings for chemical structures.
+
+
+---
+
+## 9. Obsolete / Deleted Record Handling
+Records marked obsolete or deleted in original sources are soft deleted:
+- Soft delete flag (`is_obsolete BOOLEAN DEFAULT false`)?
+
+---
+
+*This document is intended for AI coding assistants. It supersedes informal conventions and serves as the canonical reference for project guidelines.*

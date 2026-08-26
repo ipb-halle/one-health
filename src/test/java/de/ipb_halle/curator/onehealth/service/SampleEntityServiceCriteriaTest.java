@@ -3,62 +3,28 @@ package de.ipb_halle.curator.onehealth.service;
 import de.ipb_halle.curator.DbTestHelper;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.onehealth.dto.SampleEntityDTO;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 @SpringBootTest
 @Testcontainers
+@Import(TestcontainersConfiguration.class)
 class SampleEntityServiceCriteriaTest {
 
-    static PostgreSQLContainer postgres;
-
-    static {
-        try {
-            postgres = TestcontainersConfiguration.buildPostgreSQLContainer();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @TestConfiguration
-    static class TestConfig {
-
-        @Bean
-        public JdbcTemplate jdbcTemplate() {
-            return new JdbcTemplate(DataSourceBuilder
-                    .create()
-                    .url(postgres.getJdbcUrl())
-                    .build());
-        }
-    }
+    @Autowired
+    private PostgreSQLContainer postgres;
 
     @Autowired
     private SampleEntityService service;
-
-    @Autowired
-    private EntityManager entityManager;
-
-    @DynamicPropertySource
-    static void properties(org.springframework.test.context.DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", () -> postgres.getUsername());
-        registry.add("spring.datasource.password", () -> postgres.getPassword());
-        registry.add("spring.jpa.hibernate.ddl-auto", () -> "validate");
-    }
 
     private void clearTable() {
         String sql = "DELETE FROM sample_entity";

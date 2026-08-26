@@ -6,10 +6,6 @@ import de.ipb_halle.curator.onehealth.SampleEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -19,44 +15,18 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Testcontainers
+@Import(TestcontainersConfiguration.class)
 class SampleEntityRepositoryJPQLTest {
 
-    static PostgreSQLContainer postgres;
+    @Autowired
+    private PostgreSQLContainer postgres;
 
-    static {
-        try {
-            postgres = TestcontainersConfiguration.buildPostgreSQLContainer();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /*
-    @TestConfiguration
-    static class TestConfig {
-
-        @Bean
-        public JdbcTemplate jdbcTemplate() {
-            return new JdbcTemplate(DataSourceBuilder
-                    .create()
-                    .url(postgres.getJdbcUrl())
-                    .build());
-        }
-    }
-     */
     @Autowired
     private SampleEntityRepository repository;
-
-    @DynamicPropertySource
-    static void properties(org.springframework.test.context.DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", () -> postgres.getUsername());
-        registry.add("spring.datasource.password", () -> postgres.getPassword());
-        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
-    }
 
     private void createTestData(UUID id, String name, int value) {
         String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";

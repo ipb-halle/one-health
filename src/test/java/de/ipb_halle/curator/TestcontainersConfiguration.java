@@ -1,6 +1,4 @@
-
 package de.ipb_halle.curator;
-
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -13,7 +11,7 @@ import org.testcontainers.utility.MountableFile;
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
 
-    private PostgreSQLContainer container;
+    private static PostgreSQLContainer postgres;
 
     @Bean
     @ServiceConnection
@@ -24,11 +22,13 @@ public class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     PostgreSQLContainer postgreSqlContainer() throws Exception {
-        container = buildPostgreSQLContainer();
-        return container;
+        if (postgres == null) {
+            postgres = buildPostgreSQLContainer();
+        }
+        return postgres;
     }
 
-    public static PostgreSQLContainer buildPostgreSQLContainer() throws Exception {
+    private PostgreSQLContainer buildPostgreSQLContainer() throws Exception {
         PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres:latest"))
                 .withDatabaseName("curator")
                 .withUsername("curator")
