@@ -10,8 +10,7 @@ import org.testcontainers.utility.MountableFile;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
-
-    private static PostgreSQLContainer postgres;
+    private static final PostgreSQLContainer postgres = buildPostgreSQLContainer();
 
     @Bean
     @ServiceConnection
@@ -22,13 +21,10 @@ public class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     PostgreSQLContainer postgreSqlContainer() throws Exception {
-        if (postgres == null) {
-            postgres = buildPostgreSQLContainer();
-        }
         return postgres;
     }
 
-    private PostgreSQLContainer buildPostgreSQLContainer() throws Exception {
+    private static PostgreSQLContainer buildPostgreSQLContainer() {
         PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres:latest"))
                 .withDatabaseName("curator")
                 .withUsername("curator")
