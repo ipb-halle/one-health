@@ -83,14 +83,14 @@ public class MetadataRepository {
      */
     @Transactional(readOnly = true)
     public Optional<FieldDefinitionInfo> findFieldDefinitionById(int id) {
-        String sql = "SELECT fd.id AS fid, fd.name AS fname, ft.name AS ftype, fd.description AS fdesc, fd.mandatory AS fand, fd.multivalued AS fmulti FROM field_definitions fd JOIN field_types ft ON fd.type = ft.id WHERE fd.id = ?";
+        String sql = "SELECT fd.id AS fd_id, fd.name AS fd_name, ft.name AS fd_type, fd.description AS fd_desc, fd.mandatory AS fd_mand, fd.multivalued AS fd_multi FROM field_definitions fd JOIN field_types ft ON fd.type = ft.id WHERE fd.id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new FieldDefinitionInfo(
-                rs.getInt("fid"),
-                rs.getString("fname"),
-                FieldTypeEnum.fromName(rs.getString("ftype")),
-                rs.getString("fdesc"),
-                rs.getBoolean("fand"),
-                rs.getBoolean("fmulti")
+                rs.getInt("fd_id"),
+                rs.getString("fd_name"),
+                FieldTypeEnum.fromName(rs.getString("fd_type")),
+                rs.getString("fd_desc"),
+                rs.getBoolean("fd_mand"),
+                rs.getBoolean("fd_multi")
         ), id).stream().findFirst();
     }
 }

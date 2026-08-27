@@ -12,9 +12,12 @@ public enum FieldTypeEnum {
      *
      * @param name the uppercase field type name from the database
      * @return the corresponding FieldTypeEnum value
-     * @throws IllegalArgumentException if the name does not match any enum constant
+     * @throws IllegalArgumentException if the name is null, empty, or does not match any enum constant
      */
     public static FieldTypeEnum fromName(String name) {
-        return valueOf(name.toUpperCase());
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Field type name must not be null or blank");
+        }
+        return valueOf(name.trim().toUpperCase());
     }
 }

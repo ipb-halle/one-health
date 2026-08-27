@@ -40,7 +40,7 @@ public class MetadataRegistry {
      * Get an unmodifiable map of all node types keyed by name (e.g. "Organism", "Compound").
      */
     public Map<String, NodeTypeInfo> getNodeTypesByName() {
-        return nodeTypesByName;
+        return Collections.unmodifiableMap(nodeTypesByName);
     }
 
     /**
@@ -48,14 +48,14 @@ public class MetadataRegistry {
      * The returned map and its contained lists are unmodifiable.
      */
     public Map<FieldTypeEnum, List<FieldDefinitionInfo>> getFieldDefsByType() {
-        return fieldDefsByType;
+        return Collections.unmodifiableMap(fieldDefsByType);
     }
 
     /**
      * Get an unmodifiable map of all field definitions keyed by name (e.g. "title", "description").
      */
     public Map<String, FieldDefinitionInfo> getFieldDefsByName() {
-        return fieldDefsByName;
+        return Collections.unmodifiableMap(fieldDefsByName);
     }
 
     /**

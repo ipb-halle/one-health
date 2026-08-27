@@ -51,6 +51,19 @@ public final class FieldDefinitionInfo {
 
     @Override
     public String toString() {
-        return "FieldDefinitionInfo{id=%d, name='%s', type=%s}".formatted(id, name, fieldType);
+        return "FieldDefinitionInfo{id=%d, name='%s', type=%s}".formatted(id, name.replace("'", "\\'"), fieldType);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FieldDefinitionInfo that = (FieldDefinitionInfo) o;
+        return id == that.id && name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, name);
     }
 }

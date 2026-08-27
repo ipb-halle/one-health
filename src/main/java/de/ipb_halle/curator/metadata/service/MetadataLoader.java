@@ -42,6 +42,11 @@ public class MetadataLoader {
         Map<FieldTypeEnum, List<FieldDefinitionInfo>> fieldDefsByType = groupFieldDefsByType(allFieldDefs);
         Map<String, FieldDefinitionInfo> fieldDefsByName = mapFieldDefsByName(allFieldDefs);
 
+        if (nodeTypesByName.isEmpty() || fieldDefsByName.isEmpty()) {
+            logger.error("Metadata loading failed: node_types or field_definitions table is empty. Application will not function correctly.");
+            throw new IllegalStateException("Critical metadata tables are empty — application cannot proceed without node types and field definitions");
+        }
+
         registry.initialize(nodeTypesByName, fieldDefsByType, fieldDefsByName);
 
         logger.info("Metadata loaded: {} node types, {} field definitions",

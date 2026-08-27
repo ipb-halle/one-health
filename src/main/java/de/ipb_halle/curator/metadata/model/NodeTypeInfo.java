@@ -44,4 +44,17 @@ public final class NodeTypeInfo {
     public String toString() {
         return "NodeTypeInfo{id=%d, name='%s'}".formatted(id, name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeTypeInfo that = (NodeTypeInfo) o;
+        return id == that.id && name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, name);
+    }
 }
