@@ -84,24 +84,7 @@ Property values in profile-specific files **override** the base file.
 - `src/main/resources/application-prod.properties` — production settings
 
 #### Switching Environments
-
-```bash
-# Development (local PostgreSQL on localhost, open-in-view=true for debugging)
-java -jar curator.jar --spring.profiles.active=dev
-
-# Production (production database, open-in-view=false, secure connection pooling)
-java -jar curator.jar --spring.profiles.active=prod
-
-# Testing (profile is handled by @SpringBootTest / @Testcontainers; no active profile needed)
-mvn test
-```
-
-#### Environment Variable Override
-Sensitive values can be injected via environment variables at runtime:
-```bash
-SPRING_DATASOURCE_PASSWORD=mysecret123 java -jar curator.jar --spring.profiles.active=prod
-```
-This is the **recommended** approach for secrets — never hardcode them in properties files.
+Default environment is 'dev'. Switching to production environment will be accomplished with a command line switch: ```--spring.profiles.active=prod```, see `run.sh`
 
 #### Typical Profile Property Overrides
 | Property | `dev` | `prod` |
@@ -123,13 +106,28 @@ de.ipb_halle.curator/
 ├── onehealth/                  ← business domain: OneHealth data source
 │   ├── SampleEntity.java       ← JPA entity
 │   ├── SampleEntityDTO.java    ← DTO (transfer object)
-│   ├── repository/             ← Spring Data repositories (interfaces)
-│   ├── service/                ← business logic services (@Service)
-│   └── conversion/             ← converter classes (@Component)
+│   └── ...                     ← related classes and enums at the same level
 ├── another_source/             ← future: separate business domain
 ```
 
-All models, DTOs, repository interfaces, and services for a given source live within its package. Avoid technical-layer packages (`model/`, `dao/`, `dto/` at the root level).
+All models, DTOs, repositories, and services for a given source live within its package. Avoid technical-layer packages (`model/`, `dao/`, `dto/`) at the root level.
+
+### Package Depth
+
+Sub-packages should only be used when they contain **3 to 5 or more** classes or enums. A hierarchy with fewer than 10–20 total classes should be flattened — sub-packages clutter navigation without providing organizational value. Once a package grows large enough to benefit from logical grouping, split into sub-packages at that threshold.
+
+Examples:
+
+Small domain (≤10 files) — keep flat:
+```
+de.ipb_halle.curator/metadata/
+├── MetadataRegistry.java
+├── MetadataLoader.java
+├── MetadataRepository.java
+└── FieldTypeEnum.java
+```
+
+Larger domain (≥15 files) — sub-packages become justified at that point.
 
 ### Component Responsibilities
 - Controllers should be called directly - additional faceade layers are not wanted
