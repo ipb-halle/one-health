@@ -17,8 +17,6 @@ public class TestcontainersConfiguration {
     private final static String SCHEMA_DIR = "util/schema/";
     private final static String INIT_DIR = "/docker-entrypoint-initdb.d/";
 
-    private static final PostgreSQLContainer postgres = buildPostgreSQLContainer();
-
     @Bean
     @ServiceConnection
     Neo4jContainer neo4jContainer() {
@@ -28,7 +26,7 @@ public class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     PostgreSQLContainer postgreSqlContainer() throws Exception {
-        return postgres;
+        return buildPostgreSQLContainer();
     }
 
     private static PostgreSQLContainer buildPostgreSQLContainer() {

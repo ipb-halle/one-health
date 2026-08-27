@@ -129,7 +129,7 @@ All models, DTOs, repository interfaces, and services for a given source live wi
 
 ## 4. Coding Conventions
 
-### Dependency Injection 
+### Dependency Injection
 The project makes use of field injection with `@Autowired`. Constructor injection is to be used sparingly for helper classes, which do not constitute a service or bean.
 
 ### Transaction Management
@@ -156,7 +156,7 @@ This rule extends beyond JPQL: no derived delete methods, no implicit query gene
 **Rule:** Use `open-in-view=true` **only** in the dev profile. Set to `false` (or remove it) in all other profiles. Fetch required data explicitly via JPQL `JOIN FETCH` clauses in production code.
 
 ### DTO-to-Entity Mapping Policy
-- DTO-to-Entity Mapping and vice versa is done by conversion classes, which are annotated with `@Component` 
+- DTO-to-Entity Mapping and vice versa is done by conversion classes, which are annotated with `@Component`
 - partial mapping is allowed - DTOs do not necessarily contain all entity fields
 - ModelMapper is strictly forbidden, because does not provide compile time checks and will be evaluated at runtime only
 - MapStruct may be acceptable for simple cases (i.e. an entity DTO pair which has many properties but is otherwise simple). A decision will be made on a case by case basis. Agents may suggest changes but need explicit approval.
@@ -229,14 +229,37 @@ All code must observe the five SOLID principles. This is mandatory, not optional
 
 ---
 
-## 8. Chemical Structure Handling
+## 8. Logging Policy
 
-The database includes chemical structure information. The main application requires substructure searches on this data, but the curation database does not need this capability. Ensure chemical structure columns and indices are preserved during any schema changes. This project uses standard strings for chemical structures.
+The application uses **Logback** (included transitively via Spring Boot) for all logging. No additional dependencies are required.
 
+### Log File Configuration
+
+- All output goes to stdout (console).
+- Application packages (`de.ipb_halle.curator.*`) additionally write to `curator.log`.
+- Framework logs (Spring, Hibernate, Neo4j) go only to console at WARN level.
+- The log file directory is configurable via the standard Spring Boot property `LOG_DIR`:
+
+```bash
+# CLI override (highest precedence)
+java -jar curator.jar -DLOG_DIR=/var/log/curator
+
+# Environment variable
+export LOG_DIR=/var/log/curator
+java -jar curator.jar
+
+# Profile file
+src/main/resources/application-prod.properties: logging.log.dir=/var/log/curator
 
 ---
 
-## 9. Obsolete / Deleted Record Handling
+## 9. Chemical Structure Handling
+
+The database includes chemical structure information. The main application requires substructure searches on this data, but the curation database does not need this capability. Ensure chemical structure columns and indices are preserved during any schema changes. This project uses standard strings for chemical structures.
+
+---
+
+## 10. Obsolete / Deleted Record Handling
 Records marked obsolete or deleted in original sources are soft deleted:
 - Soft delete flag (`is_obsolete BOOLEAN DEFAULT false`)?
 

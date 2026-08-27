@@ -17,17 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class SampleEntityService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SampleEntityService.class);
 
     private final SampleEntityRepository repository;
     private final SampleEntityConverter converter;
     private final EntityManager entityManager;
 
     public SampleEntityService(SampleEntityRepository repository,
-                               SampleEntityConverter converter,
-                               EntityManager entityManager) {
+            SampleEntityConverter converter,
+            EntityManager entityManager) {
         this.repository = repository;
         this.converter = converter;
         this.entityManager = entityManager;
@@ -60,17 +64,18 @@ public class SampleEntityService {
     }
 
     /**
-     * Fetch a list of SampleEntities by their value property.
-     * Simple query → JPQL via repository.
+     * Fetch a list of SampleEntities by their value property. Simple query →
+     * JPQL via repository.
      */
     @Transactional(readOnly = true)
     public List<SampleEntityDTO> findByValue(int value) {
+        logger.info("findByValue called");
         return converter.toDTOList(repository.findByValueJPQL(value));
     }
 
     /**
-     * Fetch a list of SampleEntities using the Criteria API.
-     * Demonstrates complex / dynamic query building (e.g. optional filters).
+     * Fetch a list of SampleEntities using the Criteria API. Demonstrates
+     * complex / dynamic query building (e.g. optional filters).
      */
     @Transactional(readOnly = true)
     public List<SampleEntityDTO> findByCriteria(String namePattern, Integer minValue, Integer maxValue) {
@@ -97,7 +102,8 @@ public class SampleEntityService {
     }
 
     /**
-     * Fetch a list of SampleEntities via Specification (also Criteria-based under the hood).
+     * Fetch a list of SampleEntities via Specification (also Criteria-based
+     * under the hood).
      */
     @Transactional(readOnly = true)
     public List<SampleEntityDTO> findBySpecification(Specification<SampleEntity> spec) {

@@ -28,6 +28,27 @@ class SampleEntityRepositoryJPQLTest {
     @Autowired
     private SampleEntityRepository repository;
 
+/*
+    This is static and would not have access to the 'postgres' field.
+    The PostgreSQLContainer is created dynamically for each test (we
+    changed it from singleton pattern to per test dynamic creation.
+    I think: therefore we cannot obtain an instance in the static
+    context and Spring has to auto-wire everything by itself.
+
+    Keep this until we have more ...Repository...Tests as references
+    for AI agents. Otherwise they might suggest to introduce DynamicPropertySources
+    over and over.
+
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        PostgreSQLContainer pg = TestcontainersConfiguration.getPostgreSQLContainer();
+        registry.add("spring.datasource.url", pg::getJdbcUrl);
+        registry.add("jakarta.persistence.jdbc.url", pg::getJdbcUrl);
+        registry.add("hibernate.dialect", () -> "org.hibernate.dialect.PostgreSQLDialect");
+        registry.add("spring.datasource.username", () -> pg.getUsername());
+        registry.add("spring.datasource.password", () -> pg.getPassword());
+    }
+*/
     private void createTestData(UUID id, String name, int value) {
         String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";
         DbTestHelper helper = new DbTestHelper(postgres);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_DIR" value="${LOG_DIR:-./log}"/>
+    <property name="APP_NAME" value="curator"/>
+
+    <!-- All output to stdout -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- App-specific file: de.ipb_halle.curator.* only -->
+    <appender name="AppFile" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/${APP_NAME}.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- App packages: console + file -->
+    <logger name="de.ipb_halle.curator" level="INFO" additivity="false">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="AppFile"/>
+    </logger>
+
+    <!-- Framework logs: WARN only to console (quiet noise) -->
+    <logger name="org.springframework" level="WARN" additivity="true">
+        <appender-ref ref="Console"/>
+    </logger>
+    <logger name="org.hibernate" level="WARN" additivity="true">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- Default: INFO to console -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+    </root>
+</configuration>
