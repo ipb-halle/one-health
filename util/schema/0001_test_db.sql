@@ -1,8 +1,71 @@
 \connect curator
 \connect - curator
 
+CREATE TABLE node_types (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    name        VARCHAR,
+    graph_label VARCHAR,
+    description VARCHAR,
+    ui_color    INTEGER
+);
+INSERT INTO node_types (name, graph_label, description, ui_color) VALUES
+    ('Organism', 'ORGANISM', 'Living cellular organism', 0x297e00),
+    ('Compound', 'COMPOUND', 'Chemical compound, ideally produced by a living organism and thus a natural product', 0x343ea0),
+    ('Disease', 'DISEASE', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a);
+
+CREATE TABLE field_types (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    name        VARCHAR UNIQUE NOT NULL,
+    description VARCHAR,
+    table_name  VARCHAR
+);
+INSERT INTO field_types (name, description, table_name) VALUES
+    ('TEXT', 'general text types', 'text_fields');
+
+
+CREATE TABLE field_definitions (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    type        INTEGER NOT NULL REFERENCES field_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    name        VARCHAR NOT NULL,
+    description VARCHAR,
+    mandatory   BOOLEAN NOT NULL DEFAULT FALSE,
+    multivalued BOOLEAN NOT NULL DEFAULT FALSE
+);
+INSERT INTO field_definitions (type, name, description, mandatory, multivalued) VALUES
+    (1, 'primary name', 'primary name for a given node type', false, false),
+    (1, 'synonym', 'alternative names for a given node type', false, true);
+
+
+CREATE TABLE nodes (
+    id          UUID NOT NULL PRIMARY KEY,
+    type        INTEGER NOT NULL REFERENCES node_types (id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE text_fields (
+    node_id     UUID NOT NULL REFERENCES nodes (id),
+    field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_order INTEGER NOT NULL DEFAULT 0,
+    value       VARCHAR,
+    PRIMARY KEY (node_id, field_id, field_order)
+);
+CREATE INDEX text_fields_fulltext_index ON text_fields (value);
+CREATE INDEX text_fields_field_index ON text_fields (field_id, value);
+
+CREATE TABLE int_fields (
+    node_id     UUID NOT NULL REFERENCES nodes (id),
+    field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_order INTEGER NOT NULL DEFAULT 0,
+    value       BIGINT,
+    PRIMARY KEY (node_id, field_id)
+);
+CREATE INDEX int_fields_field_index ON text_fields (field_id, value);
+
+/*
+ * compounds ...
+ */
+
 CREATE TABLE sample_entity (
-    id          uuid not null primary key,
-    name        varchar,
-    value       integer
+    id          UUID NOT NULL PRIMARY KEY,
+    name        VARCHAR,
+    value       INTEGER
 );

@@ -1,0 +1,84 @@
+package de.ipb_halle.curator.metadata.service;
+
+import de.ipb_halle.curator.metadata.MetadataRegistry;
+import de.ipb_halle.curator.metadata.enums.FieldTypeEnum;
+import de.ipb_halle.curator.metadata.model.FieldDefinitionInfo;
+import de.ipb_halle.curator.metadata.model.NodeTypeInfo;
+import de.ipb_halle.curator.metadata.repository.MetadataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * Loads all metadata from the database on application startup and populates
+ * the {@link MetadataRegistry} with immutable maps keyed by name.
+ */
+@Service
+public class MetadataLoader {
+
+    private static final Logger logger = LoggerFactory.getLogger(MetadataLoader.class);
+
+    private final MetadataRepository metadataRepository;
+    private final MetadataRegistry registry;
+
+    public MetadataLoader(MetadataRepository metadataRepository, MetadataRegistry registry) {
+        this.metadataRepository = metadataRepository;
+        this.registry = registry;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void loadMetadata() {
+        logger.info("Loading metadata from database...");
+
+        Map<String, NodeTypeInfo> nodeTypesByName = loadNodeTypesByName();
+        List<FieldDefinitionInfo> allFieldDefs = loadAllFieldDefinitions();
+        Map<FieldTypeEnum, List<FieldDefinitionInfo>> fieldDefsByType = groupFieldDefsByType(allFieldDefs);
+        Map<String, FieldDefinitionInfo> fieldDefsByName = mapFieldDefsByName(allFieldDefs);
+
+        registry.initialize(nodeTypesByName, fieldDefsByType, fieldDefsByName);
+
+        logger.info("Metadata loaded: {} node types, {} field definitions",
+                nodeTypesByName.size(), fieldDefsByName.size());
+    }
+
+    private Map<String, NodeTypeInfo> loadNodeTypesByName() {
+        List<NodeTypeInfo> nodeTypes = metadataRepository.findAllNodeTypes();
+        return nodeTypes.stream()
+                .collect(Collectors.toMap(
+                        NodeTypeInfo::getName,
+                        nt -> nt,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private List<FieldDefinitionInfo> loadAllFieldDefinitions() {
+        return metadataRepository.findAllFieldDefinitions();
+    }
+
+    private Map<FieldTypeEnum, List<FieldDefinitionInfo>> groupFieldDefsByType(List<FieldDefinitionInfo> fieldDefs) {
+        return fieldDefs.stream()
+                .collect(Collectors.groupingBy(
+                        FieldDefinitionInfo::getFieldType,
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ));
+    }
+
+    private Map<String, FieldDefinitionInfo> mapFieldDefsByName(List<FieldDefinitionInfo> fieldDefs) {
+        return fieldDefs.stream()
+                .collect(Collectors.toMap(
+                        FieldDefinitionInfo::getName,
+                        fd -> fd,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
+    }
+}

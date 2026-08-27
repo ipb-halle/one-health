@@ -1,0 +1,20 @@
+package de.ipb_halle.curator.metadata.enums;
+
+/**
+ * Represents the available field types from the {@code field_types} table.
+ * This enum is populated from the database on startup and should not be modified at runtime.
+ */
+public enum FieldTypeEnum {
+    TEXT;
+
+    /**
+     * Creates a FieldTypeEnum from its uppercase name string.
+     *
+     * @param name the uppercase field type name from the database
+     * @return the corresponding FieldTypeEnum value
+     * @throws IllegalArgumentException if the name does not match any enum constant
+     */
+    public static FieldTypeEnum fromName(String name) {
+        return valueOf(name.toUpperCase());
+    }
+}

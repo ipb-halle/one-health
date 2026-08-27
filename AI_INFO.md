@@ -130,7 +130,9 @@ All models, DTOs, repository interfaces, and services for a given source live wi
 ## 4. Coding Conventions
 
 ### Dependency Injection
-The project makes use of field injection with `@Autowired`. Constructor injection is to be used sparingly for helper classes, which do not constitute a service or bean.
+Field injection with `@Autowired` is the primary method for dependency injection. Constructor injection is to be used sparingly for 
+helper classes. These helper classes must do not constitute a service or bean. Their usage scope should be limited, e.g. to a certain 
+package.
 
 ### Transaction Management
 - Use `@Transactional(readOnly = true)` on all methods that only read data. This enables Hibernate read-only optimization.
