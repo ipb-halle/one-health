@@ -7,8 +7,8 @@ import de.ipb_halle.curator.metadata.model.NodeTypeInfo;
 import de.ipb_halle.curator.metadata.repository.MetadataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -17,11 +17,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Loads all metadata from the database on application startup and populates
- * the {@link MetadataRegistry} with immutable maps keyed by name.
+ * Phase 0 of the ETL startup pipeline: loads all metadata from the database
+ * into the {@link MetadataRegistry}. Runs before any other CLI runner.
  */
 @Service
-public class MetadataLoader {
+@Order(0)
+public class MetadataLoader implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(MetadataLoader.class);
 
@@ -33,8 +34,8 @@ public class MetadataLoader {
         this.registry = registry;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void loadMetadata() {
+    @Override
+    public void run(String... args) throws Exception {
         logger.info("Loading metadata from database...");
 
         Map<String, NodeTypeInfo> nodeTypesByName = loadNodeTypesByName();

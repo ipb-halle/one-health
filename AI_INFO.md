@@ -28,10 +28,21 @@ This ensures releases can be compared and cited reliably. Records marked obsolet
 ## 2. Architecture
 
 ### Runtime
+
 The application is a Spring Boot executable JAR run as a single commandline process:
 ```
 java -jar curator.jar
 ```
+
+This project is an **ETL pipeline** — it does not expose any REST API or HTTP endpoint. The entire processing logic is driven by one or more `CommandLineRunner` implementations, each representing a startup phase.
+
+#### Startup Pipeline (CommandLineRunner)
+
+Startup logic is implemented via `CommandLineRunner` beans annotated with `@Order`. Runners execute sequentially during application startup, after the Spring context is fully initialized:
+
+- Always annotate with `@Order` — unannotated runners have undefined order
+- If a runner throws an uncaught exception, the application stops and subsequent runners are skipped
+- All runners run in a single thread
 
 ### Persistence
 - **Primary database:** PostgreSQL — all compiled/curated data lives here.
