@@ -11,7 +11,7 @@ const OrcidCallbackPageComponent: React.FC = () => {
         const authenticate = async () => {
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
-            const state = params.get('state');
+            const state = params.get('state') || sessionStorage.getItem('orcid_state');
 
             if (!code || !state) {
                 console.error('Missing ORCID authorization code or state.');

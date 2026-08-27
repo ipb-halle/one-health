@@ -25,8 +25,6 @@ paths:
       summary: Logout current user
       description: |
         Invalidates the current authentication session.
-        For JWT-based authentication this endpoint can be used
-        for token blacklisting in the future.
       operationId: logout
       security:
         - bearerAuth: []
@@ -68,7 +66,7 @@ paths:
       tags:
         - Auth
       summary: Authenticate with ORCID 
-      description: Validates the ORCID authorization code and state and returns a JWT bearer token.
+      description: Validates the ORCID authorization code and state and returns the ORCID OAuth2 access token, not an N1H-generated JWT.
       operationId: orcidLogin
       security: []
 
@@ -182,11 +180,10 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
       description: |
-        JWT Bearer Token authentication.
+        ORCID OAuth2 bearer access token authentication.
         Example:
-        Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+        Authorization: Bearer 12345678-1234-1234-1234-1234567890ab
 
   schemas:
       
@@ -214,7 +211,7 @@ components:
       required:
         - code
         - state
-
+      
       properties:
         code:
           type: string
@@ -253,12 +250,12 @@ components:
       properties:
         token:
           type: string
-          description: JWT access token
-          example: eyJhbGciOiJIUzI1NiJ9...
+          description: ORCID OAuth2 access token
+          example: 12345678-1234-1234-1234-1234567890ab
 
         expiresInSeconds:
           type: integer
-          description: Token validity in seconds
+          description: Token validity in seconds returned by ORCID (expires_in)
           example: 3600
 
         user:

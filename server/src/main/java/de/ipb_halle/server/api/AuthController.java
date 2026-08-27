@@ -6,7 +6,6 @@ import de.ipb_halle.model.LogoutResponse;
 import de.ipb_halle.model.OrcidAuthUrlResponse;
 import de.ipb_halle.model.OrcidTokenRequest;
 import de.ipb_halle.model.User;
-import de.ipb_halle.server.auth.JwtService;
 import de.ipb_halle.server.auth.OrcidService;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
 import de.ipb_halle.server.postgre.models.UserEntity;
@@ -42,16 +41,13 @@ public class AuthController implements AuthApi {
 
     private final UserRepository userRepository;
     private final OrcidService orcidService;
-    private final JwtService jwtService;
 
     public AuthController(
             UserRepository userRepository,
-            OrcidService orcidService,
-            JwtService jwtService) {
+            OrcidService orcidService) {
 
         this.userRepository = userRepository;
         this.orcidService = orcidService;
-        this.jwtService = jwtService;
     }
 
     @Override
@@ -109,10 +105,11 @@ public class AuthController implements AuthApi {
             return ResponseEntity.status(401).build();
         }
 
-        String jwt = jwtService.generateToken(userEntity);
-
         LoginResponse response = new LoginResponse();
-        response.setToken(jwt);
+        response.setToken(orcidResponse.getAccessToken());
+        if (orcidResponse.getExpiresIn() != null) {
+            response.setExpiresInSeconds(orcidResponse.getExpiresIn().intValue());
+        }
         response.setUser(UserMapper.MAPPER.toDto(userEntity));
 
         return ResponseEntity.ok(response);

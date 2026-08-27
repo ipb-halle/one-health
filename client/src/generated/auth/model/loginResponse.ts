@@ -8,9 +8,9 @@
 import type { User } from './user';
 
 export interface LoginResponse {
-  /** JWT access token */
+  /** ORCID OAuth2 access token */
   token: string;
-  /** Token validity in seconds */
+  /** Token validity in seconds returned by ORCID (expires_in) */
   expiresInSeconds: number;
   user: User;
 }

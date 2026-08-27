@@ -60,12 +60,15 @@ public class OrcidService {
 
         @JsonProperty("name")
         private String name;
-
+        
         @JsonProperty("token_type")
         private String tokenType;
 
         @JsonProperty("scope")
         private String scope;
+
+        @JsonProperty("expires_in")
+        private Long expiresIn;
 
         public String getAccessToken() {
             return accessToken;
@@ -85,6 +88,10 @@ public class OrcidService {
 
         public String getScope() {
             return scope;
+        }
+
+        public Long getExpiresIn() {
+            return expiresIn;
         }
     }
 }

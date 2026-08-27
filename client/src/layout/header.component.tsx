@@ -65,6 +65,7 @@ const Header: React.FC = () => {
         icon: 'pi pi-user',
         command: async () => {
             const response = await getOrcidAuthorizeUrl();
+            sessionStorage.setItem('orcid_state', response.state);
             window.location.href = response.url;
         },
     };
@@ -211,6 +212,7 @@ const Header: React.FC = () => {
                             className="mobile-shortcut-btn mobile-user-btn"
                             onClick={async () => {
                                 const response = await getOrcidAuthorizeUrl();
+                                sessionStorage.setItem('orcid_state', response.state);
                                 window.location.href = response.url;
                             }}
                             title="Sign in with ORCID"

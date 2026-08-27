@@ -5,7 +5,8 @@ import { authService } from './auth.service';
 const axiosInstance = axios.create({
     //baseURL: getApiBaseUrl(),
     //baseURL: import.meta.env.VITE_API_URL,
-    baseURL: 'http://a.localhost:5173/api',
+//    baseURL: 'http://a.localhost:5173/api',
+    baseURL: '/api',
 });
 
 

@@ -40,8 +40,6 @@ import { customAxiosInstance } from '../../../app/services/orval-axios';
 
 /**
  * Invalidates the current authentication session.
-For JWT-based authentication this endpoint can be used
-for token blacklisting in the future.
 
  * @summary Logout current user
  */
@@ -197,7 +195,7 @@ export function useGetOrcidAuthorizeUrl<TData = Awaited<ReturnType<typeof getOrc
 
 
 /**
- * Validates the ORCID authorization code and state and returns a JWT bearer token.
+ * Validates the ORCID authorization code and state and returns the ORCID OAuth2 access token, not an N1H-generated JWT.
  * @summary Authenticate with ORCID
  */
 export const orcidLogin = (
