@@ -1,4 +1,4 @@
-package de.ipb_halle.curator.metadata.enums;
+package de.ipb_halle.curator.metadata;
 
 /**
  * Represents the available field types from the {@code field_types} table.

@@ -1,8 +1,5 @@
 package de.ipb_halle.curator.metadata;
 
-import de.ipb_halle.curator.metadata.enums.FieldTypeEnum;
-import de.ipb_halle.curator.metadata.model.FieldDefinitionInfo;
-import de.ipb_halle.curator.metadata.model.NodeTypeInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

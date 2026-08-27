@@ -1,7 +1,6 @@
-package de.ipb_halle.curator.metadata.repository;
+package de.ipb_halle.curator.metadata;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
-import de.ipb_halle.curator.metadata.model.NodeTypeInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

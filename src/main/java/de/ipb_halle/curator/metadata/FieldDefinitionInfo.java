@@ -1,6 +1,4 @@
-package de.ipb_halle.curator.metadata.model;
-
-import de.ipb_halle.curator.metadata.enums.FieldTypeEnum;
+package de.ipb_halle.curator.metadata;
 
 /**
  * Immutable descriptor for a {@code field_definitions} row.

@@ -1,4 +1,4 @@
-package de.ipb_halle.curator.metadata.model;
+package de.ipb_halle.curator.metadata;
 
 /**
  * Immutable descriptor for a {@code node_types} row.

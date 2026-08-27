@@ -1,6 +1,5 @@
-package de.ipb_halle.curator.metadata.cli;
+package de.ipb_halle.curator.metadata;
 
-import de.ipb_halle.curator.metadata.MetadataRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;

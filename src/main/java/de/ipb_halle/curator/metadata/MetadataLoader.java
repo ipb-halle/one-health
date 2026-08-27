@@ -1,10 +1,5 @@
-package de.ipb_halle.curator.metadata.service;
+package de.ipb_halle.curator.metadata;
 
-import de.ipb_halle.curator.metadata.MetadataRegistry;
-import de.ipb_halle.curator.metadata.enums.FieldTypeEnum;
-import de.ipb_halle.curator.metadata.model.FieldDefinitionInfo;
-import de.ipb_halle.curator.metadata.model.NodeTypeInfo;
-import de.ipb_halle.curator.metadata.repository.MetadataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
