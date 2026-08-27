@@ -1,7 +1,5 @@
-package de.ipb_halle.curator.onehealth.conversion;
+package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.onehealth.SampleEntity;
-import de.ipb_halle.curator.onehealth.dto.SampleEntityDTO;
 import org.springframework.stereotype.Component;
 
 /**

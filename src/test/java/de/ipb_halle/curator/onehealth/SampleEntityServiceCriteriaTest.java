@@ -1,8 +1,7 @@
-package de.ipb_halle.curator.onehealth.service;
+package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.DbTestHelper;
 import de.ipb_halle.curator.TestcontainersConfiguration;
-import de.ipb_halle.curator.onehealth.dto.SampleEntityDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.junit.jupiter.Testcontainers;

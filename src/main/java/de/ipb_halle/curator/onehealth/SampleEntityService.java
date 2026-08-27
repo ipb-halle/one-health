@@ -1,9 +1,5 @@
-package de.ipb_halle.curator.onehealth.service;
+package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.onehealth.SampleEntity;
-import de.ipb_halle.curator.onehealth.conversion.SampleEntityConverter;
-import de.ipb_halle.curator.onehealth.dto.SampleEntityDTO;
-import de.ipb_halle.curator.onehealth.repository.SampleEntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

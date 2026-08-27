@@ -1,6 +1,5 @@
-package de.ipb_halle.curator.onehealth.repository;
+package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.onehealth.SampleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

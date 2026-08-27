@@ -1,4 +1,4 @@
-package de.ipb_halle.curator.onehealth.dto;
+package de.ipb_halle.curator.onehealth;
 
 import java.util.UUID;
 
