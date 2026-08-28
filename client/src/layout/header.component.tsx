@@ -13,7 +13,8 @@ import { PanelMenu } from 'primereact/panelmenu';
 import { Sidebar } from 'primereact/sidebar';
 
 import HistoryModal from '@/features/search/search-history/components/general-search-history-modal.component';
-import { getOrcidAuthorizeUrl } from '@/generated/auth/auth/auth';
+import { getOrcidAuthorizeUrl, logout } from '@/generated/auth/auth/auth';
+import { authService } from '@/app/services/auth.service';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -61,12 +62,22 @@ const Header: React.FC = () => {
     };
 
     const authItems: MenuItem = {
-        label: 'Sign in with ORCID',
+        label: authService.isAuthenticated() ? 'Log out' : 'Sign in with ORCID',
         icon: 'pi pi-user',
         command: async () => {
-            const response = await getOrcidAuthorizeUrl();
-            sessionStorage.setItem('orcid_state', response.state);
-            window.location.href = response.url;
+            if (authService.isAuthenticated()) {
+                try {
+                    await logout();
+                } finally {
+                    authService.logout();
+                    window.location.reload();
+                }
+            }
+            else {
+                const response = await getOrcidAuthorizeUrl();
+                sessionStorage.setItem('orcid_state', response.state);
+                window.location.href = response.url;
+            }
         },
     };
 
@@ -211,9 +222,19 @@ const Header: React.FC = () => {
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
                             onClick={async () => {
-                                const response = await getOrcidAuthorizeUrl();
-                                sessionStorage.setItem('orcid_state', response.state);
-                                window.location.href = response.url;
+                                if (authService.isAuthenticated()) {
+                                    try {
+                                        await logout();
+                                    } finally {
+                                        authService.logout();
+                                        window.location.reload();
+                                    }
+                                }
+                                else {
+                                    const response = await getOrcidAuthorizeUrl();
+                                    sessionStorage.setItem('orcid_state', response.state);
+                                    window.location.href = response.url;
+                                }
                             }}
                             title="Sign in with ORCID"
                         >

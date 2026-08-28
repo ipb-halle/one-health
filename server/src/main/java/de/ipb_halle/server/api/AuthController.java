@@ -74,8 +74,7 @@ public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<LogoutResponse> logout() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'logout'");
+        return ResponseEntity.ok(new LogoutResponse("Logged out successfully"));
     }
 
     @Override
