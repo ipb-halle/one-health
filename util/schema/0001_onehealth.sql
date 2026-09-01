@@ -16,9 +16,11 @@ INSERT INTO element_types (element_class, label, name, description, ui_color) VA
     ('NODE', 'COMPOUND', 'Compound', 'Chemical compound, ideally produced by a living organism and thus a natural product', 0x343ea0),
     ('NODE', 'DISEASE', 'Disease', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a);
 
+CREATE TYPE field_class AS ENUM ('TEXT');
+
 CREATE TABLE field_types (
     id          SERIAL NOT NULL PRIMARY KEY,
-    type        VARCHAR UNIQUE NOT NULL,
+    type        field_class UNIQUE NOT NULL,
     description VARCHAR,
     table_name  VARCHAR
 );
