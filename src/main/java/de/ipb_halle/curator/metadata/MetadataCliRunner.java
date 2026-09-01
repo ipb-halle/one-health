@@ -6,9 +6,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
- * Phase 1: Verifies metadata availability after application startup.
- * Prints configured node types to stdout for quick visual confirmation.
- * <p>
+ * Phase 1: dummy workload
+ * Prints field definition data to demonstrate workability.
  * Runs with order 1 — subsequent ETL phases should use @Order(2) and above.
  */
 @Component
@@ -24,7 +23,7 @@ public class MetadataCliRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (!registry.isInitialized()) {
-            System.err.println("ERROR: Metadata not loaded. Application will proceed without node types or field definitions.");
+            System.err.println("ERROR: Metadata not loaded. Application will proceed without elements or field definitions.");
             return;
         }
 
@@ -34,7 +33,7 @@ public class MetadataCliRunner implements CommandLineRunner {
                 .forEach(fieldDef -> {
                     System.out.printf("%s\n", registry.getFieldDefinition(fieldDef.getId()));
                     System.out.printf("    %s\n", registry.getFieldType(fieldDef.getFieldTypeId()));
-                    System.out.printf("    %s\n", registry.getNodeType(fieldDef.getNodeTypeId()));
+                    System.out.printf("    %s\n", registry.getElementType(fieldDef.getElementTypeId()));
                     System.out.println();
                 });
     }

@@ -3,37 +3,33 @@ package de.ipb_halle.curator.metadata;
 import de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toMap;
 
 /**
  * Singleton holder for all immutable metadata maps loaded from the database at startup.
- * Provides read-only access to node types, field type groupings, and field definitions by name.
+ * Provides read-only access to element_types, field type groupings, and field definitions by name.
  */
 @Component
 public class MetadataRegistry {
 
-    private Map<Integer, NodeType> nodeTypesById;
+    private Map<Integer, ElementType> elementTypesById;
     private Map<FieldTypeEnum, FieldType> fieldTypesByType;
     private Map<Integer, FieldType> fieldTypesById;
     private Map<Integer, FieldDefinitionDTO> fieldDefinitionsById;
     private Map<String, FieldDefinitionDTO> fieldDefinitionsByKey;
-    private boolean nodeTypesInitialized = false;
+    private boolean elementTypesInitialized = false;
     private boolean fieldTypesInitialized = false;
     private boolean fieldDefinitionsInitialized = false;
 
-    public void initializeNodeTypes(List<NodeType> nodeTypes) {
-        if (nodeTypesInitialized) {
-            throw new RuntimeException("Duplicate initialization of NodeTypes");
+    public void initializeElementTypes(List<ElementType> elementTypes) {
+        if (elementTypesInitialized) {
+            throw new RuntimeException("Duplicate initialization of ElementTypes");
         }
-        nodeTypesById = nodeTypes.stream().collect(toMap(NodeType::getId, Function.identity()));
-        nodeTypesInitialized = true;
+        elementTypesById = elementTypes.stream().collect(toMap(ElementType::getId, Function.identity()));
+        elementTypesInitialized = true;
     }
 
     public void  initializeFieldTypes(List<FieldType> fieldTypes) {
@@ -46,8 +42,8 @@ public class MetadataRegistry {
     }
 
     public void initializeFieldDefinitions(List<FieldDefinition> fieldDefinitions) {
-        if (! (nodeTypesInitialized && fieldTypesInitialized)) {
-            throw new RuntimeException("Missing initialization of NodeTypes or FieldTypes");
+        if (! (elementTypesInitialized && fieldTypesInitialized)) {
+            throw new RuntimeException("Missing initialization of ElementTypes or FieldTypes");
         }
         if (fieldDefinitionsInitialized) {
             throw new RuntimeException("Duplicate initialization of FieldDefinitions");
@@ -55,7 +51,7 @@ public class MetadataRegistry {
         List<FieldDefinitionDTO> dtos = fieldDefinitions.stream()
                 .map(fieldDef -> new FieldDefinitionDTO(fieldDef,
                         fieldTypesById.get(fieldDef.getFieldTypeId()),
-                        nodeTypesById.get(fieldDef.getNodeTypeId())))
+                        elementTypesById.get(fieldDef.getElementTypeId())))
                 .toList();
 
         fieldDefinitionsById = dtos.stream().collect(toMap(FieldDefinitionDTO::getId, Function.identity()));
@@ -63,8 +59,8 @@ public class MetadataRegistry {
         fieldDefinitionsInitialized = true;
     }
 
-    public NodeType getNodeType(Integer id) {
-        return nodeTypesById.get(id);
+    public ElementType getElementType(Integer id) {
+        return elementTypesById.get(id);
     }
 
     public FieldType getFieldType(Integer id) {
@@ -84,6 +80,6 @@ public class MetadataRegistry {
     }
 
     public boolean isInitialized() {
-        return nodeTypesInitialized && fieldTypesInitialized && fieldDefinitionsInitialized;
+        return elementTypesInitialized && fieldTypesInitialized && fieldDefinitionsInitialized;
     }
 }

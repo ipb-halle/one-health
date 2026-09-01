@@ -30,13 +30,13 @@ public class MetadataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         logger.info("Loading metadata from database...");
 
-        registry.initializeNodeTypes(loadNodeTypes());
+        registry.initializeElementTypes(loadElementTypes());
         registry.initializeFieldTypes(loadFieldTypes());
         registry.initializeFieldDefinitions(loadFieldDefinitions());
     }
 
-    private List<NodeType> loadNodeTypes() {
-        return repository.findAllNodeTypes();
+    private List<ElementType> loadElementTypes() {
+        return repository.findAllElementTypes();
     }
 
     private List<FieldType> loadFieldTypes() {

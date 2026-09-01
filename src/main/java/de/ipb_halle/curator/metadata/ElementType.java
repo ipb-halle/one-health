@@ -1,27 +1,28 @@
 package de.ipb_halle.curator.metadata;
 
 /**
- * Immutable descriptor for a {@code node_types} row.
+ * Immutable descriptor for a {@code element_types} row.
  * Loaded at startup from the database and made available via {@link de.ipb_halle.curator.metadata.MetadataRegistry}.
  */
-public final class NodeType {
+public final class ElementType {
 
-    private enum ElementType {
+    public enum ElementClass {
         NODE,
         EDGE;
     }
 
     private final int id;
-    private final String name;
+    private final ElementClass elementClass;
     private final String label;
+    private final String name;
     private final String description;
-//    private final ElementType elementType;
     private final Integer uiColor;
 
-    public NodeType(int id, String name, String label, String description, Integer uiColor) {
+    public ElementType(int id, ElementClass elementClass, String label, String name, String description, Integer uiColor) {
         this.id = id;
-        this.name = name;
+        this.elementClass = elementClass;
         this.label = label;
+        this.name = name;
         this.description = description;
         this.uiColor = uiColor;
     }
@@ -30,12 +31,16 @@ public final class NodeType {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public ElementClass getElementClass() {
+        return elementClass;
     }
 
     public String getLabel() {
         return label;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
@@ -48,14 +53,14 @@ public final class NodeType {
 
     @Override
     public String toString() {
-        return "NodeTypeInfo{id=%d, name='%s'}".formatted(id, name);
+        return "ElementType{id=%d, class=%s, label='%s'}".formatted(id, elementClass.toString(), label);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NodeType that = (NodeType) o;
+        ElementType that = (ElementType) o;
         return id == that.id && name.equals(that.name);
     }
 

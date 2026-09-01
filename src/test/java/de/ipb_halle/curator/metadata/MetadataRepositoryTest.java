@@ -20,9 +20,9 @@ class MetadataRepositoryTest {
     private MetadataRepository repository;
 
     @Test
-    void testFindAllNodeTypes() {
-        List<NodeType> nodeTypes = repository.findAllNodeTypes();
-        assertThat(nodeTypes).hasSize(3);
+    void testFindAllElementTypes() {
+        List<ElementType> elements = repository.findAllElementTypes();
+        assertThat(elements).hasSize(3);
     }
 
     @Test

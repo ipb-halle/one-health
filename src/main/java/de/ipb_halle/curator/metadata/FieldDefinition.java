@@ -8,17 +8,17 @@ public final class FieldDefinition {
 
     private final int id;
     private final int fieldTypeId;
-    private final int nodeTypeId;
+    private final int elementTypeId;
     private final String name;
     private final String description;
     private final boolean mandatory;
     private final boolean multivalued;
 
-    public FieldDefinition(int id, int fieldTypeId, int nodeTypeId, String name,
+    public FieldDefinition(int id, int fieldTypeId, int elementTypeId, String name,
                                String description, boolean mandatory, boolean multivalued) {
         this.id = id;
         this.fieldTypeId = fieldTypeId;
-        this.nodeTypeId = nodeTypeId;
+        this.elementTypeId = elementTypeId;
         this.name = name;
         this.description = description;
         this.mandatory = mandatory;
@@ -33,8 +33,8 @@ public final class FieldDefinition {
         return fieldTypeId;
     }
 
-    public int getNodeTypeId() {
-        return nodeTypeId;
+    public int getElementTypeId() {
+        return elementTypeId;
     }
 
     public String getName() {

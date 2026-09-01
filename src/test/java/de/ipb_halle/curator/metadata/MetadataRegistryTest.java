@@ -24,8 +24,8 @@ class MetadataRegistryTest {
     }
 
     @Test
-    void getNodeTypesByName_returnsOrganismRecord() {
-        NodeType organism = registry.getNodeType(1);
+    void getElementTypeById_returnsOrganismRecord() {
+        ElementType organism = registry.getElementType(1);
 
         assertThat(organism).isNotNull();
         assertThat(organism.getLabel()).isEqualTo("ORGANISM");
