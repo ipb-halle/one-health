@@ -89,6 +89,10 @@ public class AuthController implements AuthApi {
 
         UserEntity userEntity = userRepository
                 .findByOrcid(orcid)
+                .map(existingUser -> {
+                    existingUser.setDisplayName(orcidResponse.getName());
+                    return userRepository.save(existingUser);
+                })
                 .orElseGet(() -> {
                     UserEntity newUserEntity = new UserEntity();
 
