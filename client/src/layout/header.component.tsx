@@ -236,10 +236,13 @@ const Header: React.FC = () => {
                                     window.location.href = response.url;
                                 }
                             }}
-                            title="Sign in with ORCID"
+                            title={authService.isAuthenticated() ? 'Log out' : 'Sign in with ORCID'}
                         >
                             <i className="pi pi-user shortcut-icon" />
                         </button>
+
+
+
                     </div>
                 </header>
 
