@@ -18,6 +18,9 @@ public class MetadataCliRunner implements CommandLineRunner {
     @Autowired
     private MetadataRegistry registry;
 
+    @Autowired
+    private MetadataRepository repository;
+
     @Override
     public void run(String... args) throws Exception {
         if (!registry.isInitialized()) {
@@ -25,24 +28,14 @@ public class MetadataCliRunner implements CommandLineRunner {
             return;
         }
 
-        System.out.println("=== Node Types ===");
-        registry.getNodeTypesByName().forEach((name, info) ->
-                System.out.printf("  [%d] %s (%s) — color=0x%x%n",
-                        info.getId(), name, info.getGraphLabel(), info.getUiColor())
-        );
-
         System.out.println();
         System.out.println("=== Field Definitions ===");
-        registry.getFieldDefsByName().forEach((name, info) ->
-                System.out.printf("  [%d] %s (type=%s, mandatory=%b, multivalued=%b)%n",
-                        info.getId(), name, info.getFieldType(),
-                        info.isMandatory(), info.isMultivalued())
-        );
-
-        System.out.println();
-        System.out.println("=== Field Type Groups ===");
-        registry.getFieldDefsByType().forEach((type, defs) -> {
-            System.out.printf("  %s: %d definition(s)%n", type, defs.size());
-        });
+        repository.findAllFieldDefinitions().stream()
+                .forEach(fieldDef -> {
+                    System.out.printf("%s\n", registry.getFieldDefinition(fieldDef.getId()));
+                    System.out.printf("    %s\n", registry.getFieldType(fieldDef.getFieldTypeId()));
+                    System.out.printf("    %s\n", registry.getNodeType(fieldDef.getNodeTypeId()));
+                    System.out.println();
+                });
     }
 }

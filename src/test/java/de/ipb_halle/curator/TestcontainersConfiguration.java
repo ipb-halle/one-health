@@ -34,7 +34,7 @@ public class TestcontainersConfiguration {
                 .withDatabaseName("curator")
                 .withUsername("curator")
                 .withPassword("curator");
-        container = addInitDbFile(container, "0001_test_db.sql");
+        container = addInitDbFile(container, "0001_onehealth.sql");
         container.start();
         return container;
     }

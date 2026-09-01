@@ -4,18 +4,24 @@ package de.ipb_halle.curator.metadata;
  * Immutable descriptor for a {@code node_types} row.
  * Loaded at startup from the database and made available via {@link de.ipb_halle.curator.metadata.MetadataRegistry}.
  */
-public final class NodeTypeInfo {
+public final class NodeType {
+
+    private enum ElementType {
+        NODE,
+        EDGE;
+    }
 
     private final int id;
     private final String name;
-    private final String graphLabel;
+    private final String label;
     private final String description;
+//    private final ElementType elementType;
     private final Integer uiColor;
 
-    public NodeTypeInfo(int id, String name, String graphLabel, String description, Integer uiColor) {
+    public NodeType(int id, String name, String label, String description, Integer uiColor) {
         this.id = id;
         this.name = name;
-        this.graphLabel = graphLabel;
+        this.label = label;
         this.description = description;
         this.uiColor = uiColor;
     }
@@ -28,8 +34,8 @@ public final class NodeTypeInfo {
         return name;
     }
 
-    public String getGraphLabel() {
-        return graphLabel;
+    public String getLabel() {
+        return label;
     }
 
     public String getDescription() {
@@ -49,7 +55,7 @@ public final class NodeTypeInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NodeTypeInfo that = (NodeTypeInfo) o;
+        NodeType that = (NodeType) o;
         return id == that.id && name.equals(that.name);
     }
 

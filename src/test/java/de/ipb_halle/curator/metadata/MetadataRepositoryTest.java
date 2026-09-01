@@ -14,16 +14,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Testcontainers
 @Import(TestcontainersConfiguration.class)
-class MetadataRepositoryFieldTypesTest {
+class MetadataRepositoryTest {
 
     @Autowired
     private MetadataRepository repository;
 
     @Test
-    void findAllFieldTypes_returnsTextEnum() {
-        List<FieldTypeEnum> fieldTypes = repository.findAllFieldTypes();
+    void testFindAllNodeTypes() {
+        List<NodeType> nodeTypes = repository.findAllNodeTypes();
+        assertThat(nodeTypes).hasSize(3);
+    }
 
+    @Test
+    void testFindAllFieldTypes() {
+        List<FieldType> fieldTypes = repository.findAllFieldTypes();
         assertThat(fieldTypes).hasSize(1);
-        assertThat(fieldTypes.get(0)).isEqualTo(FieldTypeEnum.TEXT);
+    }
+
+    @Test
+    void testFindAllFieldDefinitions() {
+        List<FieldDefinition> fieldDefinitions = repository.findAllFieldDefinitions();
+        assertThat(fieldDefinitions).hasSize(6);
     }
 }

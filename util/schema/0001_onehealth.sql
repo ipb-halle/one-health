@@ -4,36 +4,40 @@
 CREATE TABLE node_types (
     id          SERIAL NOT NULL PRIMARY KEY,
     name        VARCHAR,
-    graph_label VARCHAR,
+    label VARCHAR,
     description VARCHAR,
     ui_color    INTEGER
 );
-INSERT INTO node_types (name, graph_label, description, ui_color) VALUES
+INSERT INTO node_types (name, label, description, ui_color) VALUES
     ('Organism', 'ORGANISM', 'Living cellular organism', 0x297e00),
     ('Compound', 'COMPOUND', 'Chemical compound, ideally produced by a living organism and thus a natural product', 0x343ea0),
     ('Disease', 'DISEASE', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a);
 
 CREATE TABLE field_types (
     id          SERIAL NOT NULL PRIMARY KEY,
-    name        VARCHAR UNIQUE NOT NULL,
+    type        VARCHAR UNIQUE NOT NULL,
     description VARCHAR,
     table_name  VARCHAR
 );
-INSERT INTO field_types (name, description, table_name) VALUES
+INSERT INTO field_types (type, description, table_name) VALUES
     ('TEXT', 'general text types', 'text_fields');
-
 
 CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
-    type        INTEGER NOT NULL REFERENCES field_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_type_id       INTEGER NOT NULL REFERENCES field_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    node_type_id        INTEGER NOT NULL REFERENCES node_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
     name        VARCHAR NOT NULL,
     description VARCHAR,
     mandatory   BOOLEAN NOT NULL DEFAULT FALSE,
     multivalued BOOLEAN NOT NULL DEFAULT FALSE
 );
-INSERT INTO field_definitions (type, name, description, mandatory, multivalued) VALUES
-    (1, 'primary name', 'primary name for a given node type', false, false),
-    (1, 'synonym', 'alternative names for a given node type', false, true);
+INSERT INTO field_definitions (field_type_id, node_type_id, name, description, mandatory, multivalued) VALUES
+    (1, 1, 'primary name', 'primary node name', false, false),
+    (1, 2, 'primary name', 'primary node name', false, false),
+    (1, 3, 'primary name', 'primary node name', false, false),
+    (1, 1, 'synonym', 'alternative node names', false, true),
+    (1, 2, 'synonym', 'alternative node names', false, true),
+    (1, 3, 'synonym', 'alternative node names', false, true);
 
 
 CREATE TABLE nodes (

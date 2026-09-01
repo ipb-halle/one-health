@@ -1,11 +1,16 @@
 package de.ipb_halle.curator.metadata;
 
+import de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Singleton holder for all immutable metadata maps loaded from the database at startup.
@@ -14,51 +19,71 @@ import java.util.Map;
 @Component
 public class MetadataRegistry {
 
-    private Map<String, NodeTypeInfo> nodeTypesByName;
-    private Map<FieldTypeEnum, List<FieldDefinitionInfo>> fieldDefsByType;
-    private Map<String, FieldDefinitionInfo> fieldDefsByName;
+    private Map<Integer, NodeType> nodeTypesById;
+    private Map<FieldTypeEnum, FieldType> fieldTypesByType;
+    private Map<Integer, FieldType> fieldTypesById;
+    private Map<Integer, FieldDefinitionDTO> fieldDefinitionsById;
+    private Map<String, FieldDefinitionDTO> fieldDefinitionsByKey;
+    private boolean nodeTypesInitialized = false;
+    private boolean fieldTypesInitialized = false;
+    private boolean fieldDefinitionsInitialized = false;
 
-    /**
-     * Initialize all maps. Must be called exactly once during application startup.
-     */
-    public void initialize(Map<String, NodeTypeInfo> nodeTypesByName,
-                           Map<FieldTypeEnum, List<FieldDefinitionInfo>> fieldDefsByType,
-                           Map<String, FieldDefinitionInfo> fieldDefsByName) {
-        this.nodeTypesByName = Collections.unmodifiableMap(new LinkedHashMap<>(nodeTypesByName));
-        Map<FieldTypeEnum, List<FieldDefinitionInfo>> copy = new LinkedHashMap<>();
-        for (Map.Entry<FieldTypeEnum, List<FieldDefinitionInfo>> entry : fieldDefsByType.entrySet()) {
-            copy.put(entry.getKey(), List.copyOf(entry.getValue()));
+    public void initializeNodeTypes(List<NodeType> nodeTypes) {
+        if (nodeTypesInitialized) {
+            throw new RuntimeException("Duplicate initialization of NodeTypes");
         }
-        this.fieldDefsByType = Collections.unmodifiableMap(copy);
-        this.fieldDefsByName = Collections.unmodifiableMap(new LinkedHashMap<>(fieldDefsByName));
+        nodeTypesById = nodeTypes.stream().collect(toMap(NodeType::getId, Function.identity()));
+        nodeTypesInitialized = true;
     }
 
-    /**
-     * Get an unmodifiable map of all node types keyed by name (e.g. "Organism", "Compound").
-     */
-    public Map<String, NodeTypeInfo> getNodeTypesByName() {
-        return Collections.unmodifiableMap(nodeTypesByName);
+    public void  initializeFieldTypes(List<FieldType> fieldTypes) {
+        if (fieldTypesInitialized) {
+            throw new RuntimeException("Duplicate initialization of FieldTypes");
+        }
+        fieldTypesById = fieldTypes.stream().collect(toMap(FieldType::getId, Function.identity()));
+        fieldTypesByType = fieldTypes.stream().collect(toMap(FieldType::getType, Function.identity()));
+        fieldTypesInitialized = true;
     }
 
-    /**
-     * Get a field type grouping: maps each FieldTypeEnum to its list of field definitions.
-     * The returned map and its contained lists are unmodifiable.
-     */
-    public Map<FieldTypeEnum, List<FieldDefinitionInfo>> getFieldDefsByType() {
-        return Collections.unmodifiableMap(fieldDefsByType);
+    public void initializeFieldDefinitions(List<FieldDefinition> fieldDefinitions) {
+        if (! (nodeTypesInitialized && fieldTypesInitialized)) {
+            throw new RuntimeException("Missing initialization of NodeTypes or FieldTypes");
+        }
+        if (fieldDefinitionsInitialized) {
+            throw new RuntimeException("Duplicate initialization of FieldDefinitions");
+        }
+        List<FieldDefinitionDTO> dtos = fieldDefinitions.stream()
+                .map(fieldDef -> new FieldDefinitionDTO(fieldDef,
+                        fieldTypesById.get(fieldDef.getFieldTypeId()),
+                        nodeTypesById.get(fieldDef.getNodeTypeId())))
+                .toList();
+
+        fieldDefinitionsById = dtos.stream().collect(toMap(FieldDefinitionDTO::getId, Function.identity()));
+        fieldDefinitionsByKey = dtos.stream().collect(toMap(FieldDefinitionDTO::getKey, Function.identity()));
+        fieldDefinitionsInitialized = true;
     }
 
-    /**
-     * Get an unmodifiable map of all field definitions keyed by name (e.g. "title", "description").
-     */
-    public Map<String, FieldDefinitionInfo> getFieldDefsByName() {
-        return Collections.unmodifiableMap(fieldDefsByName);
+    public NodeType getNodeType(Integer id) {
+        return nodeTypesById.get(id);
     }
 
-    /**
-     * Check if metadata has been loaded (registry initialized).
-     */
+    public FieldType getFieldType(Integer id) {
+        return fieldTypesById.get(id);
+    }
+
+    public FieldType getFieldType(FieldTypeEnum type) {
+        return fieldTypesByType.get(type);
+    }
+
+    public FieldDefinitionDTO getFieldDefinition(Integer id) {
+        return fieldDefinitionsById.get(id);
+    }
+
+    public FieldDefinitionDTO getFieldDefinition(String key) {
+        return fieldDefinitionsByKey.get(key);
+    }
+
     public boolean isInitialized() {
-        return nodeTypesByName != null && !nodeTypesByName.isEmpty();
+        return nodeTypesInitialized && fieldTypesInitialized && fieldDefinitionsInitialized;
     }
 }
