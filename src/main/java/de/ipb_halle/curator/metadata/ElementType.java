@@ -1,5 +1,8 @@
 package de.ipb_halle.curator.metadata;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Immutable descriptor for a {@code element_types} row.
  * Loaded at startup from the database and made available via {@link de.ipb_halle.curator.metadata.MetadataRegistry}.
@@ -17,6 +20,7 @@ public final class ElementType {
     private final String name;
     private final String description;
     private final Integer uiColor;
+    private final List<FieldDefinitionDTO> fieldDefinitions;
 
     public ElementType(int id, ElementClass elementClass, String label, String name, String description, Integer uiColor) {
         this.id = id;
@@ -25,6 +29,7 @@ public final class ElementType {
         this.name = name;
         this.description = description;
         this.uiColor = uiColor;
+        this.fieldDefinitions = new ArrayList<> ();
     }
 
     public int getId() {
@@ -49,6 +54,10 @@ public final class ElementType {
 
     public Integer getUiColor() {
         return uiColor;
+    }
+
+    public List<FieldDefinitionDTO> getFieldDefinitions() {
+        return fieldDefinitions;
     }
 
     @Override

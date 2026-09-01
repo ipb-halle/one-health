@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Singleton holder for all immutable metadata maps loaded from the database at startup.
  * Provides read-only access to element_types, field type groupings, and field definitions by name.
+ * Order of initialization matters.
  */
 @Component
 public class MetadataRegistry {
@@ -49,14 +50,21 @@ public class MetadataRegistry {
             throw new RuntimeException("Duplicate initialization of FieldDefinitions");
         }
         List<FieldDefinitionDTO> dtos = fieldDefinitions.stream()
-                .map(fieldDef -> new FieldDefinitionDTO(fieldDef,
-                        fieldTypesById.get(fieldDef.getFieldTypeId()),
-                        elementTypesById.get(fieldDef.getElementTypeId())))
+                .map(fieldDef -> registerFieldDefinition(fieldDef))
                 .toList();
 
         fieldDefinitionsById = dtos.stream().collect(toMap(FieldDefinitionDTO::getId, Function.identity()));
         fieldDefinitionsByKey = dtos.stream().collect(toMap(FieldDefinitionDTO::getKey, Function.identity()));
         fieldDefinitionsInitialized = true;
+    }
+
+    private FieldDefinitionDTO registerFieldDefinition(FieldDefinition fieldDef) {
+        ElementType elementType = getElementType(fieldDef.getElementTypeId());
+        FieldDefinitionDTO dto = new FieldDefinitionDTO(fieldDef,
+                        getFieldType(fieldDef.getFieldTypeId()),
+                        elementType);
+        elementType.getFieldDefinitions().add(dto);
+        return dto;
     }
 
     public ElementType getElementType(Integer id) {
