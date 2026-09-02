@@ -17,14 +17,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String orcid;
-
     private String displayName;
-
-    @Column(unique = true)
-    private String email;
-   
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,27 +38,11 @@ public class UserEntity {
     }
 
     public String getDisplayName() {
-    return displayName;
+        return displayName;
     }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getOrcid() {
-        return orcid;
-    }
-
-    public void setOrcid(String orcid) {
-        this.orcid = orcid;
     }
 
     public UserRole getRole() {
