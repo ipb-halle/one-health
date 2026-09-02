@@ -71,14 +71,6 @@ function MobileHomePageComponent() {
                             >
                                 <i className="pi pi-search" />
                             </button>
-                            <button
-                                className="mobile-search-info-btn"
-                                onClick={helpClickedHandler}
-                                aria-label="Tutorial and Info"
-                                title="Watch tutorial"
-                            >
-                                <i className="pi pi-info-circle" />
-                            </button>
                         </div>
                     </div>
                     <div className="mobile-results-header">
@@ -114,14 +106,7 @@ function MobileHomePageComponent() {
                             >
                                 <i className="pi pi-search" />
                             </button>
-                            <button
-                                className="mobile-search-info-btn"
-                                // onClick={helpClickedHandler}
-                                aria-label="Tutorial and Info"
-                                title="Watch tutorial"
-                            >
-                                <i className="pi pi-info-circle" />
-                            </button>
+            
                         </div>
                     </div>
 
