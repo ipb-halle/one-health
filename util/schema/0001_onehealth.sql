@@ -47,7 +47,14 @@ INSERT INTO field_definitions (field_type_id, element_type_id, name, description
 
 CREATE TABLE elements (
     id          UUID NOT NULL PRIMARY KEY,
-    type        INTEGER NOT NULL REFERENCES element_types (id) ON UPDATE CASCADE ON DELETE CASCADE
+    type_id     INTEGER NOT NULL REFERENCES element_types (id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE relations (
+    left_id     UUID NOT NULL REFERENCES elements (id),
+    relation_id UUID NOT NULL REFERENCES elements (id),
+    right_id    UUID NOT NULL REFERENCES elements (id),
+    PRIMARY KEY (left_id, relation_id, right_id)
 );
 
 CREATE TABLE text_fields (

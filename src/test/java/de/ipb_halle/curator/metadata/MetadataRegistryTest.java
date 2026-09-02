@@ -30,5 +30,6 @@ class MetadataRegistryTest {
         assertThat(organism).isNotNull();
         assertThat(organism.getLabel()).isEqualTo("ORGANISM");
         assertThat(organism.getUiColor().longValue()).isEqualTo(0x297e00);
+        assertThat(organism.getFieldDefinitions().size()).isEqualTo(2);
     }
 }
