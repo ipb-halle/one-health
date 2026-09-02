@@ -10,7 +10,9 @@ import de.ipb_halle.server.auth.OrcidService;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.models.UserRole;
+import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.repositories.UserRepository;
+import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 
 import jakarta.validation.Valid;
 
@@ -40,13 +42,16 @@ public class AuthController implements AuthApi {
     private String redirectUri;
 
     private final UserRepository userRepository;
+    private final UserAuthenticationRepository userAuthenticationRepository;
     private final OrcidService orcidService;
 
     public AuthController(
             UserRepository userRepository,
+            UserAuthenticationRepository userAuthenticationRepository,
             OrcidService orcidService) {
 
         this.userRepository = userRepository;
+        this.userAuthenticationRepository = userAuthenticationRepository;
         this.orcidService = orcidService;
     }
 
@@ -87,21 +92,46 @@ public class AuthController implements AuthApi {
             return ResponseEntity.status(401).build();
         }
 
-        UserEntity userEntity = userRepository
-                .findByOrcid(orcid)
-                .map(existingUser -> {
+        UserEntity userEntity = userAuthenticationRepository
+                .findByOrcidId(orcid)
+                .map(authentication -> {
+                    UserEntity existingUser = authentication.getUser();
                     existingUser.setDisplayName(orcidResponse.getName());
-                    return userRepository.save(existingUser);
+                    userRepository.save(existingUser);
+
+                    authentication.setAccessToken(orcidResponse.getAccessToken());
+
+                    if (orcidResponse.getExpiresIn() != null) {
+                        authentication.setExpiresAt(
+                                java.time.LocalDateTime.now()
+                                        .plusSeconds(orcidResponse.getExpiresIn()));
+                    }
+
+                    userAuthenticationRepository.save(authentication);
+                    return existingUser;
                 })
                 .orElseGet(() -> {
                     UserEntity newUserEntity = new UserEntity();
-
-                    newUserEntity.setOrcid(orcid);
                     newUserEntity.setDisplayName(orcidResponse.getName());
-                    newUserEntity.setEmail(null);
-                    newUserEntity.setRole(UserRole.CURATOR);
+                    newUserEntity.setRole(UserRole.VIEWER);
                     newUserEntity.setEnabled(true);
-                    return userRepository.save(newUserEntity);
+
+                    UserEntity savedUser = userRepository.save(newUserEntity);
+
+                    UserAuthenticationEntity authentication = new UserAuthenticationEntity();
+                    authentication.setUser(savedUser);
+                    authentication.setRegistrationMethod("ORCID");
+                    authentication.setOrcidId(orcid);
+                    authentication.setAccessToken(orcidResponse.getAccessToken());
+
+                    if (orcidResponse.getExpiresIn() != null) {
+                        authentication.setExpiresAt(
+                                java.time.LocalDateTime.now()
+                                        .plusSeconds(orcidResponse.getExpiresIn()));
+                    }
+
+                    userAuthenticationRepository.save(authentication);
+                    return savedUser;
                 });
 
         if (!Boolean.TRUE.equals(userEntity.getEnabled())) {
