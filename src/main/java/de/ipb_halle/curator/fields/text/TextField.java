@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator.fields.text;
 
+import de.ipb_halle.curator.fields.Field;
 import de.ipb_halle.curator.fields.FieldId;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
@@ -22,7 +23,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name="text_fields")
-public class TextField {
+public class TextField implements Field {
 
     public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
 
@@ -37,6 +38,7 @@ public class TextField {
         this.value = value;
     }
 
+    @Override
     public IFieldId getId() {
         return this.id;
     }

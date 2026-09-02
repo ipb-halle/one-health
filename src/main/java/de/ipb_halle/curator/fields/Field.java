@@ -12,5 +12,5 @@ package de.ipb_halle.curator.fields;
  * @author fblocal
  */
 public interface Field {
-    public IFieldId getFieldId();
+    public IFieldId getId();
 }
