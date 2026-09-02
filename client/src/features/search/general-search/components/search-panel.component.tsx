@@ -59,20 +59,7 @@ const SearchPanel: React.FC = () => {
                         flexDirection: 'column',
                         marginTop: '20px',
                     }}>
-                    <div style={{ display: 'flex' }}>
-                        <GeneralSearchInput />
-                        <Button
-                            id="page-title-help-button"
-                            icon="pi pi-question-circle"
-                            style={{ marginLeft: '5px' }}
-                            onClick={helpClickedHandler}
-                            tooltip={`Watch tutorial`}
-                            tooltipOptions={{
-                                position: 'bottom',
-                                showDelay: 1000,
-                            }}
-                        />
-                    </div>
+
 
                     {/* TODO: implement as Buttons?*/}
                     <div className="general-search-links">
