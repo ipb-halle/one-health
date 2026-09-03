@@ -23,6 +23,7 @@ const OrcidCallbackPageComponent: React.FC = () => {
                     state,
                 });
                 authService.setSession(response);
+                sessionStorage.removeItem('orcid_state');
                 navigate('/');
             } catch (error) {
                 console.error('ORCID authentication failed:', error);

@@ -70,6 +70,7 @@ const Header: React.FC = () => {
                     await logout();
                 } finally {
                     authService.logout();
+                    sessionStorage.removeItem('orcid_state');
                     window.location.reload();
                 }
             }
@@ -227,6 +228,7 @@ const Header: React.FC = () => {
                                         await logout();
                                     } finally {
                                         authService.logout();
+                                        sessionStorage.removeItem('orcid_state');
                                         window.location.reload();
                                     }
                                 }

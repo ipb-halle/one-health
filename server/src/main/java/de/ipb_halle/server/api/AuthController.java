@@ -65,7 +65,8 @@ public class AuthController implements AuthApi {
                 + "&response_type=code"
                 + "&scope=openid"
                 + "&redirect_uri=" + URLEncoder.encode(redirectUri, StandardCharsets.UTF_8)
-                + "&state=" + URLEncoder.encode(state, StandardCharsets.UTF_8);
+                + "&state=" + URLEncoder.encode(state, StandardCharsets.UTF_8)
+                + "&prompt=login";
 
         return ResponseEntity.ok(
                 new OrcidAuthUrlResponse(URI.create(url), state));
