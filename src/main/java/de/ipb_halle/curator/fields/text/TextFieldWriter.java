@@ -7,11 +7,10 @@
  */
 package de.ipb_halle.curator.fields.text;
 
-import de.ipb_halle.curator.fields.FieldId;
 import de.ipb_halle.curator.fields.IFieldId;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,13 @@ public class TextFieldWriter {
     @Autowired
     private TextFieldRepository repository;
 
-    public void write(Path csvPath) throws IOException {
-        try (var writer = Files.newBufferedWriter(csvPath)) {
+    /**
+     *
+     * @param output, preferably use a BufferedOutputStream
+     * @throws IOException
+     */
+    public void write(OutputStream output) throws IOException {
+        try (var writer = new OutputStreamWriter(output)) {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
                     .setHeader(TextField.HEADER)
                     .get());

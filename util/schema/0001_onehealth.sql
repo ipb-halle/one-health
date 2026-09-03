@@ -17,7 +17,7 @@ INSERT INTO element_types (element_class, label, name, description, ui_color) VA
     ('NODE', 'DISEASE', 'Disease', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a),
     ('EDGE', 'TREATS', 'treats', 'Agent beneficially influences condition', 0x0);
 
-CREATE TYPE field_class AS ENUM ('TEXT');
+CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER');
 
 CREATE TABLE field_types (
     id          SERIAL NOT NULL PRIMARY KEY,

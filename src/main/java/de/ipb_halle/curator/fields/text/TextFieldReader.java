@@ -8,8 +8,8 @@
 package de.ipb_halle.curator.fields.text;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.UUID;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -27,8 +27,12 @@ public class TextFieldReader {
     @Autowired
     private TextFieldRepository repository;
 
-    public void read(Path csvPath) throws IOException {
-        try (var reader = Files.newBufferedReader(csvPath)) {
+    /**
+     * @param input, for performance reasons, the InputStream should be a BufferedInputStream
+     * @throws IOException
+     */
+    public void read(InputStream input) throws IOException {
+        try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.POSTGRESQL_CSV.builder()
                     .setHeader(TextField.HEADER)
                     .get());

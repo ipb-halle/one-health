@@ -24,10 +24,13 @@ public class Element {
     public final static String[] HEADER = { "id", "type" };
 
     @Id
-    private final UUID id;
+    private UUID id;
 
     @Column(name="type_id")
-    private final int typeId;
+    private int typeId;
+
+    public Element() {
+    }
 
     public Element(UUID id, int type) {
         this.id = id;
@@ -38,7 +41,6 @@ public class Element {
         this.id = UUID.randomUUID();
         this.typeId = typeId;
     }
-
 
     public UUID getId() {
         return id;
