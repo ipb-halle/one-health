@@ -21,6 +21,8 @@ log/
 *.ipr
 
 ### NetBeans ###
+nb-configuration.xml
+licenseheader.txt
 /nbproject/private/
 /nbbuild/
 /dist/
