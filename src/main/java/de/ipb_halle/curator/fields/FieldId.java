@@ -51,8 +51,7 @@ public class FieldId implements IFieldId {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this.elementId)
-                + (29 * this.fieldId);
+        return java.util.Objects.hash(this.elementId, this.fieldId);
     }
 
     @Override

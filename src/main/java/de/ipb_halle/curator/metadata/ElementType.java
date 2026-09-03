@@ -64,17 +64,4 @@ public final class ElementType {
     public String toString() {
         return "ElementType{id=%d, class=%s, label='%s'}".formatted(id, elementClass.toString(), label);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ElementType that = (ElementType) o;
-        return id == that.id && name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(id, name);
-    }
 }

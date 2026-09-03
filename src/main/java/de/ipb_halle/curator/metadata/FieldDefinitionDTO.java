@@ -72,17 +72,4 @@ public final class FieldDefinitionDTO {
         return "FieldDefinitionInfo{id=%d, fieldType='%s' element='%s', name='%s'}"
                 .formatted(id, fieldType.getType().toString(), elementType.getLabel(), name.replace("'", "\\'"));
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FieldDefinitionDTO that = (FieldDefinitionDTO) o;
-        return id == that.id && elementType.equals(that.elementType) && name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(id, elementType, name);
-    }
 }

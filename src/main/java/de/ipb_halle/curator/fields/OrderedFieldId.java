@@ -53,9 +53,7 @@ public class OrderedFieldId implements IFieldId {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.elementId)
-                + (37997 * this.fieldId)
-                + (91823 * this.order + 1);
+        return java.util.Objects.hash(this.elementId, this.fieldId, this.order);
     }
 
     @Override
