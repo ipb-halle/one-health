@@ -20,10 +20,10 @@ import java.util.UUID;
 public class FieldId implements IFieldId {
 
     @Column(name="element_id")
-    private UUID elementId;
+    private final UUID elementId;
 
     @Column(name="field_id")
-    private int fieldId;
+    private final int fieldId;
 
     public FieldId(UUID elementId, int fieldId) {
         this.elementId = elementId;
@@ -35,17 +35,9 @@ public class FieldId implements IFieldId {
         return elementId;
     }
 
-    public void setElementId(UUID elementId) {
-        this.elementId = elementId;
-    }
-
     @Override
     public int getFieldId() {
         return fieldId;
-    }
-
-    public void setFieldId(int fieldId) {
-        this.fieldId = fieldId;
     }
 
     @Override

@@ -14,7 +14,8 @@ CREATE TABLE element_types (
 INSERT INTO element_types (element_class, label, name, description, ui_color) VALUES
     ('NODE', 'ORGANISM', 'Organism', 'Living cellular organism', 0x297e00),
     ('NODE', 'COMPOUND', 'Compound', 'Chemical compound, ideally produced by a living organism and thus a natural product', 0x343ea0),
-    ('NODE', 'DISEASE', 'Disease', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a);
+    ('NODE', 'DISEASE', 'Disease', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a),
+    ('EDGE', 'TREATS', 'treats', 'Agent beneficially influences condition', 0x0);
 
 CREATE TYPE field_class AS ENUM ('TEXT');
 
@@ -51,14 +52,14 @@ CREATE TABLE elements (
 );
 
 CREATE TABLE relations (
-    left_id     UUID NOT NULL REFERENCES elements (id),
-    relation_id UUID NOT NULL REFERENCES elements (id),
-    right_id    UUID NOT NULL REFERENCES elements (id),
+    left_id     UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    relation_id UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    right_id    UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (left_id, relation_id, right_id)
 );
 
 CREATE TABLE text_fields (
-    element_id  UUID NOT NULL REFERENCES elements (id),
+    element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_order INTEGER NOT NULL DEFAULT 0,
     value       VARCHAR,
@@ -68,7 +69,7 @@ CREATE INDEX text_fields_fulltext_index ON text_fields (value);
 CREATE INDEX text_fields_field_index ON text_fields (field_id, value);
 
 CREATE TABLE int_fields (
-    element_id  UUID NOT NULL REFERENCES elements (id),
+    element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_order INTEGER NOT NULL DEFAULT 0,
     value       BIGINT,

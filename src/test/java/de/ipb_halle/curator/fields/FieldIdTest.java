@@ -23,13 +23,15 @@ public class FieldIdTest {
         UUID id2 = UUID.randomUUID();
 
         IFieldId f1 = new FieldId(id1, 1);
-        IFieldId f2 = new FieldId(id1, 1);
+        FieldId f2 = new FieldId(id1, 1);
+        f2.setOrder(5);
         IFieldId f3 = new FieldId(id1, 2);
         IFieldId f4 = new FieldId(id2, 1);
 
         assertThat(f1.getElementId()).isEqualTo(id1);
         assertThat(f1.getFieldId()).isEqualTo(1);
         assertThat(f1.getOrder()).isEqualTo(0);
+        assertThat(f2.getOrder()).isEqualTo(0);
         assertThat(f1.hashCode()).isEqualTo(f2.hashCode());
         assertThat(f1.hashCode()).isNotEqualTo(f3.hashCode());
         assertThat(f1.hashCode()).isNotEqualTo(f4.hashCode());
@@ -39,6 +41,7 @@ public class FieldIdTest {
         assertThat(f1.equals(id1)).isFalse();
         assertThat(f1.equals(f3)).isFalse();
         assertThat(f1.equals(f4)).isFalse();
+        assertThat(f1.equals(f1)).isTrue();
         assertThat(f1.equals(f2)).isTrue();
     }
 }

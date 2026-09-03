@@ -20,10 +20,10 @@ import java.util.UUID;
 public class OrderedFieldId implements IFieldId {
 
     @Column(name="element_id")
-    private UUID elementId;
+    private final UUID elementId;
 
     @Column(name="field_id")
-    private int fieldId;
+    private final int fieldId;
 
     @Column(name="field_order")
     private int order;

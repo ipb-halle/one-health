@@ -42,6 +42,7 @@ public class OrderedFieldIdTest {
         assertThat(f1.equals(f3)).isFalse();
         assertThat(f1.equals(f4)).isFalse();
         assertThat(f1.equals(f5)).isFalse();
+        assertThat(f1.equals(f1)).isTrue();
         assertThat(f1.equals(f2)).isTrue();
         f2.setOrder(6);
         assertThat(f1.equals(f2)).isFalse();
