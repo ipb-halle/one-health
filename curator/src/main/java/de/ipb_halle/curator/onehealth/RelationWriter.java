@@ -8,8 +8,8 @@
 package de.ipb_halle.curator.onehealth;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,8 +25,8 @@ public class RelationWriter {
     @Autowired
     private RelationRepository repository;
 
-    public void write(Path csvPath) throws IOException {
-        try (var writer = Files.newBufferedWriter(csvPath)) {
+    public void write(OutputStream output) throws IOException {
+        try (var writer = new OutputStreamWriter(output)) {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
                     .setHeader(Relation.HEADER)
                     .get());

@@ -25,6 +25,8 @@ yarn-error.log*
 
 HELP.md
 server/target/
+curator/target/
+curator/log/
 
 server/.mvn/wrapper/maven-wrapper.jar
 
@@ -59,7 +61,6 @@ build/
 ### VS Code ###
 .vscode/
 .DS_Store
-*.csv
 
 /data/
 client/src/assets/.nfs0000000123d9124f00000369

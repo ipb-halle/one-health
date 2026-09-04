@@ -20,13 +20,16 @@ import java.util.UUID;
 public class RelationId {
 
     @Column(name = "left_id")
-    private final UUID leftId;
+    private UUID leftId;
 
     @Column(name = "relation_id")
-    private final UUID relationId;
+    private UUID relationId;
 
     @Column(name = "right_id")
-    private final UUID rightId;
+    private UUID rightId;
+
+    public RelationId() {
+    }
 
     public RelationId(UUID leftId, UUID relationId, UUID rightId) {
         this.leftId = leftId;

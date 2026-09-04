@@ -23,7 +23,10 @@ public class Relation {
     public final static String[] HEADER = {"left_id", "relation_id", "right_id" };
 
     @EmbeddedId
-    private final RelationId id;
+    private RelationId id;
+
+    public Relation() {
+    }
 
     public Relation(UUID leftId, UUID relationId, UUID rightId) {
         id = new RelationId(leftId, relationId, rightId);

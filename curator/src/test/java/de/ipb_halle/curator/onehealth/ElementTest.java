@@ -27,7 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @Import(TestcontainersConfiguration.class)
-public class ElementDTOTest {
+public class ElementTest {
 
     private final static int ELEMENT_TYPE_ID = 1;
     private final static int FIELD_DEFINITION_ID = 1;
@@ -56,5 +56,15 @@ public class ElementDTOTest {
         assertThat(dto2.getId()).isEqualByComparingTo(id1);
         assertThat(dto2.getType().getId()).isEqualTo(type.getId());
         assertThat(dto2.getFields().size()).isEqualTo(0);
+
+        dto = new ElementDTO(type);
+        assertThat(dto.getId()).isInstanceOf(UUID.class);
+    }
+
+    @Test
+    public void testElement() {
+        Element e = new Element(ELEMENT_TYPE_ID);
+        assertThat(e.getTypeId()).isEqualTo(ELEMENT_TYPE_ID);
+        assertThat(e.getId()).isInstanceOf(UUID.class);
     }
 }
