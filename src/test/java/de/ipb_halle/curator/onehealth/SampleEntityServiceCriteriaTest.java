@@ -25,15 +25,13 @@ class SampleEntityServiceCriteriaTest {
     @Autowired
     private SampleEntityService service;
 
-    private void clearTable() {
+    private void clearTable(DbTestHelper helper) {
         String sql = "DELETE FROM sample_entity";
-        DbTestHelper helper = new DbTestHelper(postgres);
         helper.dbUpdate(sql);
     }
 
-    private void createTestData(UUID id, String name, int value) {
+    private void createTestData(DbTestHelper helper, UUID id, String name, int value) {
         String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";
-        DbTestHelper helper = new DbTestHelper(postgres);
         helper.dbUpdate(sql, id, name, value);
     }
 
@@ -41,15 +39,17 @@ class SampleEntityServiceCriteriaTest {
     void findByCriteria_namePattern() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
+        try (DbTestHelper helper = new DbTestHelper(postgres)) {
 
-        // Insert via JDBC (JPQL queries won't see uncommitted data)
-        createTestData(id1, "Apple", 5);
-        createTestData(id2, "Banana", 10);
+            // Insert via JDBC (JPQL queries won't see uncommitted data)
+            createTestData(helper, id1, "Apple", 5);
+            createTestData(helper, id2, "Banana", 10);
 
-        List<SampleEntityDTO> result = service.findByCriteria("ppl", null, null);
+            List<SampleEntityDTO> result = service.findByCriteria("ppl", null, null);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getName()).isEqualTo("Apple");
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getName()).isEqualTo("Apple");
+        }
     }
 
     @Test
@@ -58,18 +58,20 @@ class SampleEntityServiceCriteriaTest {
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
 
-        clearTable();
+        try (DbTestHelper helper = new DbTestHelper(postgres)) {
+            clearTable(helper);
 
-        // Manually insert data via native SQL
-        createTestData(id1, "Low", 5);
-        createTestData(id2, "Medium", 50);
-        createTestData(id3, "High", 100);
+            // Manually insert data via native SQL
+            createTestData(helper, id1, "Low", 5);
+            createTestData(helper, id2, "Medium", 50);
+            createTestData(helper, id3, "High", 100);
 
-        // Use Criteria API to filter by value range
-        List<SampleEntityDTO> result = service.findByCriteria(null, 10, 60);
+            // Use Criteria API to filter by value range
+            List<SampleEntityDTO> result = service.findByCriteria(null, 10, 60);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getName()).isEqualTo("Medium");
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getName()).isEqualTo("Medium");
+        }
     }
 
     @Test
@@ -93,14 +95,16 @@ class SampleEntityServiceCriteriaTest {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
 
-        // entityManager.createQuery("DELETE FROM SampleEntity").executeUpdate();
-        clearTable();
+        try (DbTestHelper helper = new DbTestHelper(postgres)) {
+            // entityManager.createQuery("DELETE FROM SampleEntity").executeUpdate();
+            clearTable(helper);
 
-        createTestData(id1, "X", 42);
-        createTestData(id2, "Y", 42);
+            createTestData(helper, id1, "X", 42);
+            createTestData(helper, id2, "Y", 42);
 
-        List<SampleEntityDTO> result = service.findByValue(42);
+            List<SampleEntityDTO> result = service.findByValue(42);
 
-        assertThat(result).hasSize(2);
+            assertThat(result).hasSize(2);
+        }
     }
 }

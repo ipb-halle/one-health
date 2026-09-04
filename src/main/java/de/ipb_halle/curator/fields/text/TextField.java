@@ -8,7 +8,6 @@
 package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.Field;
-import de.ipb_halle.curator.fields.FieldId;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import jakarta.persistence.Column;
@@ -28,10 +27,14 @@ public class TextField implements Field {
     public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
 
     @EmbeddedId
-    private final OrderedFieldId id;
+    private OrderedFieldId id;
 
     @Column
     private String value;
+
+    public TextField() {
+
+    }
 
     public TextField(UUID elementId, int fieldDefinitionId, int order, String value) {
         this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);

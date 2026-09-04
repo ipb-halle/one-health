@@ -35,6 +35,7 @@ public class TextFieldReader {
         try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.POSTGRESQL_CSV.builder()
                     .setHeader(TextField.HEADER)
+                    .setSkipHeaderRecord(true)
                     .get());
             parser.forEach(record -> { parseRecord(record); });
         }

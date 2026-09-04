@@ -7,6 +7,10 @@
  */
 package de.ipb_halle.curator;
 
+import com.zaxxer.hikari.HikariDataSource;
+import java.io.Closeable;
+import java.util.UUID;
+// import javax.sql.DataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -15,24 +19,43 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  *
  * @author fblocal
  */
-public class DbTestHelper {
+public class DbTestHelper implements Closeable {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+    private HikariDataSource dataSource;
 
     public DbTestHelper(PostgreSQLContainer pg) {
-        configureJdbcTemplate(pg);
+        jdbcTemplate = configureJdbcTemplate(pg);
     }
 
-    private void configureJdbcTemplate(PostgreSQLContainer postgreSQL) {
-        jdbcTemplate = new JdbcTemplate(DataSourceBuilder
+    private JdbcTemplate configureJdbcTemplate(PostgreSQLContainer postgreSQL) {
+        dataSource = DataSourceBuilder
                 .create()
                 .url(postgreSQL.getJdbcUrl())
                 .username(postgreSQL.getUsername())
                 .password(postgreSQL.getPassword())
-                .build());
+                .type(HikariDataSource.class)
+                .build();
+        dataSource.setMaximumPoolSize(1);
+        return new JdbcTemplate(dataSource);
+    }
+
+    public void deleteElements() {
+        jdbcTemplate.execute("DELETE FROM elements");
     }
 
     public void dbUpdate(String query, Object... params) {
         jdbcTemplate.update(query, params);
+    }
+
+    public UUID createElement(int typeId) {
+        UUID id = UUID.randomUUID();
+        jdbcTemplate.update("INSERT INTO elements (id, type_id) VALUES (?,?)", id, typeId);
+        return id;
+    }
+
+    @Override
+    public void close() {
+        dataSource.close();
     }
 }

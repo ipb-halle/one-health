@@ -48,23 +48,24 @@ class SampleEntityRepositoryJPQLTest {
         registry.add("spring.datasource.password", () -> pg.getPassword());
     }
 */
-    private void createTestData(UUID id, String name, int value) {
+    private void createTestData(DbTestHelper helper, UUID id, String name, int value) {
         String sql = "INSERT INTO sample_entity (id, name, value) VALUES (?, ?, ?)";
-        DbTestHelper helper = new DbTestHelper(postgres);
         helper.dbUpdate(sql, id, name, value);
     }
 
     @Test
     void saveAndFindByUUID_JPQL() {
         // insert directly into testcontainer database to bypass Hibernate
-        UUID testId = UUID.randomUUID();
-        createTestData(testId, "TestEntity", 42);
+        try (DbTestHelper helper = new DbTestHelper(postgres)) {
+            UUID testId = UUID.randomUUID();
+            createTestData(helper, testId, "TestEntity", 42);
 
-        Optional<SampleEntity> result = repository.findByIdJPQL(testId);
+            Optional<SampleEntity> result = repository.findByIdJPQL(testId);
 
-        assertThat(result).isPresent();
-        assertThat(result.get().getName()).isEqualTo("TestEntity");
-        assertThat(result.get().getValue()).isEqualTo(42);
+            assertThat(result).isPresent();
+            assertThat(result.get().getName()).isEqualTo("TestEntity");
+            assertThat(result.get().getValue()).isEqualTo(42);
+        }
     }
 
     @Test
@@ -73,14 +74,16 @@ class SampleEntityRepositoryJPQLTest {
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
 
-        createTestData(id1, "Alpha", 10);
-        createTestData(id2, "Beta", 10);
-        createTestData(id3, "Gamma", 20);
+        try (DbTestHelper helper = new DbTestHelper(postgres)) {
+            createTestData(helper, id1, "Alpha", 10);
+            createTestData(helper, id2, "Beta", 10);
+            createTestData(helper, id3, "Gamma", 20);
 
-        List<SampleEntity> result = repository.findByValueJPQL(10);
+            List<SampleEntity> result = repository.findByValueJPQL(10);
 
-        assertThat(result).hasSize(2);
-        assertThat(result).extracting(SampleEntity::getName)
-                .containsExactly("Alpha", "Beta");
+            assertThat(result).hasSize(2);
+            assertThat(result).extracting(SampleEntity::getName)
+                    .containsExactly("Alpha", "Beta");
+        }
     }
 }
