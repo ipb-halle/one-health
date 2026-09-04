@@ -13,6 +13,7 @@ import de.ipb_halle.server.postgre.models.UserRole;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.repositories.UserRepository;
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
+import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 
 import jakarta.validation.Valid;
 
@@ -86,29 +87,25 @@ public class AuthController implements AuthApi {
     @Override
     public ResponseEntity<LoginResponse> orcidLogin(
             @Valid OrcidTokenRequest orcidTokenRequest) {
-        OrcidService.OrcidTokenResponse orcidResponse = orcidService.exchangeCode(orcidTokenRequest.getCode());
+
+        OrcidService.OrcidTokenResponse orcidResponse = 
+            orcidService.exchangeCode(orcidTokenRequest.getCode());
 
         String orcid = orcidResponse.getOrcid();
+
         if (orcid == null || orcid.isBlank()) {
             return ResponseEntity.status(401).build();
         }
 
         UserEntity userEntity = userAuthenticationRepository
-                .findByOrcidId(orcid)
+                .findByProviderAndProviderSubjectId(
+                    AuthenticationProvider.ORCID, 
+                    orcid)
                 .map(authentication -> {
                     UserEntity existingUser = authentication.getUser();
                     existingUser.setDisplayName(orcidResponse.getName());
                     userRepository.save(existingUser);
 
-                    authentication.setAccessToken(orcidResponse.getAccessToken());
-
-                    if (orcidResponse.getExpiresIn() != null) {
-                        authentication.setExpiresAt(
-                                java.time.LocalDateTime.now()
-                                        .plusSeconds(orcidResponse.getExpiresIn()));
-                    }
-
-                    userAuthenticationRepository.save(authentication);
                     return existingUser;
                 })
                 .orElseGet(() -> {
@@ -116,21 +113,16 @@ public class AuthController implements AuthApi {
                     newUserEntity.setDisplayName(orcidResponse.getName());
                     newUserEntity.setRole(UserRole.VIEWER);
                     newUserEntity.setEnabled(true);
+                    newUserEntity.setRegisteredVia(AuthenticationProvider.ORCID);   
 
                     UserEntity savedUser = userRepository.save(newUserEntity);
 
-                    UserAuthenticationEntity authentication = new UserAuthenticationEntity();
+                    UserAuthenticationEntity authentication = 
+                        new UserAuthenticationEntity();
                     authentication.setUser(savedUser);
-                    authentication.setRegistrationMethod("ORCID");
-                    authentication.setOrcidId(orcid);
-                    authentication.setAccessToken(orcidResponse.getAccessToken());
-
-                    if (orcidResponse.getExpiresIn() != null) {
-                        authentication.setExpiresAt(
-                                java.time.LocalDateTime.now()
-                                        .plusSeconds(orcidResponse.getExpiresIn()));
-                    }
-
+                    authentication.setProvider(AuthenticationProvider.ORCID);
+                    authentication.setProviderSubjectId(orcid);
+           
                     userAuthenticationRepository.save(authentication);
                     return savedUser;
                 });
@@ -141,12 +133,14 @@ public class AuthController implements AuthApi {
 
         LoginResponse response = new LoginResponse();
         response.setToken(orcidResponse.getAccessToken());
+
         if (orcidResponse.getExpiresIn() != null) {
-            response.setExpiresInSeconds(orcidResponse.getExpiresIn().intValue());
+            response.setExpiresInSeconds(
+                orcidResponse.getExpiresIn().intValue());
         }
+
         response.setUser(UserMapper.MAPPER.toDto(userEntity));
 
         return ResponseEntity.ok(response);
     }
-
 }

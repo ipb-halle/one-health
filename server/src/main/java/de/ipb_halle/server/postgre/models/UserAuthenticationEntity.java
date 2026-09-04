@@ -3,30 +3,32 @@ package de.ipb_halle.server.postgre.models;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import org.apache.jena.sparql.function.library.print;
-
 @Entity
-@Table(name = "user_authentication")
+@Table(
+    name = "user_authentication",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_user_authentication_provider_subject",
+            columnNames = {"provider", "provider_subject_id"}
+        )
+    }
+)
 public class UserAuthenticationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String registrationMethod;
+    private AuthenticationProvider provider;
 
-    @Column(nullable = false, unique = true)
-    private String orcidId;
-
-    @Column(nullable = false)
-    private String accessToken;
-
-    private LocalDateTime expiresAt;
+    @Column(name = "provider_subject_id", nullable = false)
+    private String providerSubjectId;
 
     public UserAuthenticationEntity() {
     }
@@ -49,35 +51,19 @@ public class UserAuthenticationEntity {
         this.user = user;
     }
 
-    public String getRegistrationMethod() {
-        return registrationMethod;
+    public AuthenticationProvider  getProvider() {
+        return provider;
     }
 
-    public void setRegistrationMethod(String registrationMethod) {
-        this.registrationMethod = registrationMethod;
+    public void setProvider(AuthenticationProvider provider) {
+        this.provider = provider;
     }
 
-    public String getOrcidId() {
-        return orcidId;
+    public String getProviderSubjectId() {
+        return providerSubjectId;
     }
 
-    public void setOrcidId(String orcidId) {
-        this.orcidId = orcidId;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
+    public void setProviderSubjectId(String providerSubjectId) {
+        this.providerSubjectId = providerSubjectId;
     }
 }

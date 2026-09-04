@@ -25,6 +25,10 @@ public class UserEntity {
 
     @Column(nullable = false)
     private Boolean enabled;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AuthenticationProvider registeredVia;
 
     public UserEntity() {
     }
@@ -59,6 +63,14 @@ public class UserEntity {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public AuthenticationProvider getRegisteredVia() {
+    return registeredVia;
+    }
+
+    public void setRegisteredVia(AuthenticationProvider registeredVia) {
+        this.registeredVia = registeredVia;
     }
 
 }
