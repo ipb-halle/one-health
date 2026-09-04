@@ -66,7 +66,10 @@ paths:
       tags:
         - Auth
       summary: Authenticate with ORCID 
-      description: Validates the ORCID authorization code and state and returns the ORCID OAuth2 access token, not an N1H-generated JWT.
+      description: |
+        Exchanges the ORCID authorization code for ORCID identity information,
+        creates or retrieves the corresponding N1H user, and returns an
+        N1H-generated JWT access token.
       operationId: orcidLogin
       security: []
 
@@ -180,10 +183,11 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
       description: |
-        ORCID OAuth2 bearer access token authentication.
+        N1H application authentication using a JWT access token.
         Example:
-        Authorization: Bearer 12345678-1234-1234-1234-1234567890ab
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
   schemas:
       
@@ -250,12 +254,14 @@ components:
       properties:
         token:
           type: string
-          description: ORCID OAuth2 access token
-          example: 12345678-1234-1234-1234-1234567890ab
+          description: N1H application JWT access token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
         expiresInSeconds:
           type: integer
-          description: Token validity in seconds returned by ORCID (expires_in)
+          format: int32
+          minimum: 1
+          description: Number of seconds until the N1H JWT expires.
           example: 3600
 
         user:
