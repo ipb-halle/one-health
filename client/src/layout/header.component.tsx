@@ -88,6 +88,7 @@ const Header: React.FC = () => {
                 navigate('/');
             },
         },
+        /*
         {
             label: 'Compound Search',
             icon: 'fa fa-atom',
@@ -119,7 +120,7 @@ const Header: React.FC = () => {
                 screenDeviceStore.setMenuVisibility(false);
                 setHistoryVisible(true);
             },
-        },
+        },*/
         {
             label: 'Documentation',
             icon: 'pi pi-book',
