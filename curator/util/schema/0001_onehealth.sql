@@ -17,7 +17,7 @@ INSERT INTO element_types (element_class, label, name, description, ui_color) VA
     ('NODE', 'DISEASE', 'Disease', 'A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.', 0xb1002a),
     ('EDGE', 'TREATS', 'treats', 'Agent beneficially influences condition', 0x0);
 
-CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER');
+CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID');
 
 CREATE TABLE field_types (
     id          SERIAL NOT NULL PRIMARY KEY,
@@ -26,7 +26,11 @@ CREATE TABLE field_types (
     table_name  VARCHAR
 );
 INSERT INTO field_types (type, description, table_name) VALUES
-    ('TEXT', 'general text types', 'text_fields');
+    ('TEXT', 'general text types', 'text_fields'),
+    ('INTEGER', 'integral types', 'integer_fields'),
+    ('ENUM', 'enumeration types', 'integer_fields'),
+    ('UUID', 'universally unique identifiers', 'uuid_fields');
+
 
 CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
@@ -43,7 +47,8 @@ INSERT INTO field_definitions (field_type_id, element_type_id, name, description
     (1, 3, 'primary name', 'primary node name', false, false),
     (1, 1, 'synonym', 'alternative node names', false, true),
     (1, 2, 'synonym', 'alternative node names', false, true),
-    (1, 3, 'synonym', 'alternative node names', false, true);
+    (1, 3, 'synonym', 'alternative node names', false, true),
+    (2, 1, 'NCBItaxonId', 'link to the NCBI taxonomy', false, false);
 
 
 CREATE TABLE elements (
@@ -68,14 +73,14 @@ CREATE TABLE text_fields (
 CREATE INDEX text_fields_fulltext_index ON text_fields (value);
 CREATE INDEX text_fields_field_index ON text_fields (field_id, value);
 
-CREATE TABLE int_fields (
+CREATE TABLE integer_fields (
     element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_order INTEGER NOT NULL DEFAULT 0,
     value       BIGINT,
-    PRIMARY KEY (element_id, field_id)
+    PRIMARY KEY (element_id, field_id, field_order)
 );
-CREATE INDEX int_fields_field_index ON text_fields (field_id, value);
+CREATE INDEX integer_fields_field_index ON integer_fields (field_id, value);
 
 /*
  * compounds ...

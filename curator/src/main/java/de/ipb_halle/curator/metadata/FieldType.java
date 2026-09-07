@@ -6,13 +6,16 @@ package de.ipb_halle.curator.metadata;
 public class FieldType {
 
     public enum FieldTypeEnum {
-        TEXT;
+        TEXT,
+        INTEGER,
+        ENUM,
+        UUID;
     }
 
-    private int id;
-    private FieldTypeEnum type;
-    private String description;
-    private String tableName;
+    private final int id;
+    private final FieldTypeEnum type;
+    private final String description;
+    private final String tableName;
 
     public FieldType(int id, FieldTypeEnum type, String description, String tableName) {
         this.id = id;
