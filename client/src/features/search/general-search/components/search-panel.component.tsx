@@ -60,7 +60,7 @@ const SearchPanel: React.FC = () => {
                         marginTop: '20px',
                     }}>
 
-
+                    <GeneralSearchInput />
                     {/* TODO: implement as Buttons?*/}
                     <div className="general-search-links">
                         <Toast ref={toast} />
