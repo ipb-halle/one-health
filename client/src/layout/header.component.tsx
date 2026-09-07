@@ -22,6 +22,21 @@ const Header: React.FC = () => {
     const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
 
     const [historyVisible, setHistoryVisible] = useState<boolean>(false);
+    const user = authService.getUser();
+    const getInitials = (displayName?: string): string => {
+        if (!displayName) {
+            return 'U';
+        }
+        const parts = displayName.trim().split(/\s+/);
+        if (parts.length === 1) {
+            return parts[0].charAt(0).toUpperCase();
+        }
+        return (
+            parts[0].charAt(0) +
+            parts[parts.length - 1].charAt(0)
+        ).toUpperCase();
+    }
+    const userInitials = getInitials(user?.displayName);
 
     const legalItems: MenuItem = {
         label: 'Legal',
@@ -62,7 +77,9 @@ const Header: React.FC = () => {
     };
 
     const authItems: MenuItem = {
-        label: authService.isAuthenticated() ? 'Log out' : 'Sign in with ORCID',
+        label: authService.isAuthenticated()
+            ? `${userInitials} ${user?.displayName ?? 'User'} . Log out`
+            : 'Sign in with ORCID',
         icon: 'pi pi-user',
         command: async () => {
             if (authService.isAuthenticated()) {
@@ -238,9 +255,17 @@ const Header: React.FC = () => {
                                     window.location.href = response.url;
                                 }
                             }}
-                            title={authService.isAuthenticated() ? 'Log out' : 'Sign in with ORCID'}
+                            title={
+                                authService.isAuthenticated()
+                                    ? `Log out ${user?.displayName ?? ''}`
+                                    : 'Sign in with ORCID'
+                            }
                         >
-                            <i className="pi pi-user shortcut-icon" />
+                            {authService.isAuthenticated() ? (
+                                <span className="shortcut-icon">{userInitials}</span>
+                            ) : (
+                                <i className="pi pi-user shortcut-icon" />
+                            )}
                         </button>
 
 
