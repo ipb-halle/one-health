@@ -88,8 +88,11 @@ public class AuthController implements AuthApi {
     public ResponseEntity<LoginResponse> orcidLogin(
             @Valid OrcidTokenRequest orcidTokenRequest) {
 
-        OrcidService.OrcidTokenResponse orcidResponse = 
-            orcidService.exchangeCode(orcidTokenRequest.getCode());
+        OrcidService.OrcidTokenResponse orcidResponse = orcidService.exchangeCode(orcidTokenRequest.getCode());
+
+        if (orcidResponse == null) {
+            return ResponseEntity.status(401).build();
+        }
 
         String orcid = orcidResponse.getOrcid();
 
@@ -99,8 +102,8 @@ public class AuthController implements AuthApi {
 
         UserEntity userEntity = userAuthenticationRepository
                 .findByProviderAndProviderSubjectId(
-                    AuthenticationProvider.ORCID, 
-                    orcid)
+                        AuthenticationProvider.ORCID,
+                        orcid)
                 .map(authentication -> {
                     UserEntity existingUser = authentication.getUser();
                     existingUser.setDisplayName(orcidResponse.getName());
@@ -113,16 +116,15 @@ public class AuthController implements AuthApi {
                     newUserEntity.setDisplayName(orcidResponse.getName());
                     newUserEntity.setRole(UserRole.VIEWER);
                     newUserEntity.setEnabled(true);
-                    newUserEntity.setRegisteredVia(AuthenticationProvider.ORCID);   
+                    newUserEntity.setRegisteredVia(AuthenticationProvider.ORCID);
 
                     UserEntity savedUser = userRepository.save(newUserEntity);
 
-                    UserAuthenticationEntity authentication = 
-                        new UserAuthenticationEntity();
+                    UserAuthenticationEntity authentication = new UserAuthenticationEntity();
                     authentication.setUser(savedUser);
                     authentication.setProvider(AuthenticationProvider.ORCID);
                     authentication.setProviderSubjectId(orcid);
-           
+
                     userAuthenticationRepository.save(authentication);
                     return savedUser;
                 });
@@ -136,7 +138,7 @@ public class AuthController implements AuthApi {
 
         if (orcidResponse.getExpiresIn() != null) {
             response.setExpiresInSeconds(
-                orcidResponse.getExpiresIn().intValue());
+                    orcidResponse.getExpiresIn().intValue());
         }
 
         response.setUser(UserMapper.MAPPER.toDto(userEntity));

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 @Service
 public class OrcidService {
@@ -33,6 +34,9 @@ public class OrcidService {
     }
 
     public OrcidTokenResponse exchangeCode(String code) {
+        if (code == null || code.isBlank()) {
+            return null;
+        }
 
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
 
@@ -42,12 +46,18 @@ public class OrcidService {
         form.add("code", code);
         form.add("redirect_uri", redirectUri);
 
-        return restClient.post()
-                .uri(tokenUrl)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(form)
-                .retrieve()
-                .body(OrcidTokenResponse.class);
+        try {
+            OrcidTokenResponse response = restClient.post()
+                    .uri(tokenUrl)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(form)
+                    .retrieve()
+                    .body(OrcidTokenResponse.class);
+
+            return response;
+        } catch (RestClientException e) {
+            return null;
+        }
     }
 
     public static class OrcidTokenResponse {
@@ -60,7 +70,7 @@ public class OrcidService {
 
         @JsonProperty("name")
         private String name;
-        
+
         @JsonProperty("token_type")
         private String tokenType;
 
