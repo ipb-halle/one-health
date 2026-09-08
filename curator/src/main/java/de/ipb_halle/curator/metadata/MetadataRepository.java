@@ -29,6 +29,28 @@ public class MetadataRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional(readOnly = true)
+    public List<DynEnum> findAllDynEnums() {
+        String sql = "SELECT id, field_id, label, description FROM dyn_enums";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new DynEnum(
+                rs.getInt("id"),
+                rs.getInt("field_id"),
+                rs.getString("label"),
+                rs.getString("description")
+        ));
+    }
+
+    @Transactional(readOnly = false)
+    public DynEnum save(DynEnum dynEnum) {
+        String sql = "INSERT INTO dyn_enums (field_id, label, description) VALUES (?,?,?) RETURNING id AS id";
+        return jdbcTemplate.query(sql, (rs, rownum) -> new DynEnum(
+                rs.getInt("id"),
+                dynEnum.getFieldDefinitionId(),
+                dynEnum.getLabel(),
+                dynEnum.getDescription())
+        ).get(0);
+    }
+
     /**
      * Load all elements from the database.
      */

@@ -7,6 +7,9 @@
  */
 package de.ipb_halle.curator.fields.integer;
 
+import de.ipb_halle.curator.metadata.DynEnum;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,6 +30,9 @@ public class IntegerFieldReader {
     @Autowired
     private IntegerFieldRepository repository;
 
+    @Autowired
+    private MetadataRegistry registry;
+
     /**
      * @param input, for performance reasons, the InputStream should be a BufferedInputStream
      * @throws IOException
@@ -42,12 +48,23 @@ public class IntegerFieldReader {
     }
 
     private void parseRecord(CSVRecord record) {
-        IntegerField field = new IntegerField(
-                UUID.fromString(record.get(IntegerField.HEADER[0])),
-                Integer.parseInt(record.get(IntegerField.HEADER[1])),
-                Integer.parseInt(record.get(IntegerField.HEADER[2])),
-                Integer.valueOf(record.get(IntegerField.HEADER[3]))
-        );
-        repository.save(field);
+        UUID elementId = UUID.fromString(record.get(IntegerField.HEADER[0]));
+        Integer fieldDefinitionId = Integer.valueOf(record.get(IntegerField.HEADER[1]));
+        int order = Integer.parseInt(record.get(IntegerField.HEADER[2]));
+        Integer value = Integer.valueOf(record.get(IntegerField.HEADER[3]));
+
+        FieldDefinitionDTO fieldDefinition = registry.getFieldDefinition(fieldDefinitionId);
+        switch(fieldDefinition.getFieldType().getType()) {
+            case INTEGER:
+                repository.save(new IntegerField(
+                                elementId, fieldDefinitionId, order, value));
+                break;
+            case ENUM:
+
+                DynEnum dynEnum = registry.getDynEnum(fieldDefinitionId, value);
+                repository.save(new DynEnumField(
+                        elementId, dynEnum, order).getEntity());
+                break;
+        }
     }
 }

@@ -40,6 +40,11 @@ public class MetadataLoader implements CommandLineRunner {
         registry.initializeElementTypes(loadElementTypes());
         registry.initializeFieldTypes(loadFieldTypes());
         registry.initializeFieldDefinitions(loadFieldDefinitions());
+        registry.initializeDynEnums(loadDynEnums());
+    }
+
+    private List<DynEnum> loadDynEnums() {
+        return repository.findAllDynEnums();
     }
 
     private List<ElementType> loadElementTypes() {

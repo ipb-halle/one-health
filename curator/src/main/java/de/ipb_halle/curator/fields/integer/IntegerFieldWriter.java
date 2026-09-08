@@ -36,8 +36,8 @@ public class IntegerFieldWriter {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
                     .setHeader(IntegerField.HEADER)
                     .get());
-            repository.findAll().stream().forEach(textField -> {
-                writeRecord(printer, textField);
+            repository.findAll().stream().forEach(integerField -> {
+                writeRecord(printer, integerField);
             });
         }
     }
