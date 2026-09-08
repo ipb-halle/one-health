@@ -90,15 +90,15 @@ function MobileHomePageComponent() {
                                 className="mobile-search-input"
                                 value={generalSearchStore.query}
                                 onChange={(e) => generalSearchStore.setQuery(e.target.value)}
-                                //onKeyDown={(e) => {
-                                //  if (e.key === 'Enter') generalSearchStore.runQuery();
-                                // }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') generalSearchStore.runQuery();
+                                }}
 
                                 placeholder="Search in knowledge base (e.g. disease name, ...)"
                             />
                             <button
                                 className="mobile-search-btn"
-                                //onClick={() => generalSearchStore.runQuery()}
+                                onClick={() => generalSearchStore.runQuery()}
                                 aria-label="Search"
                                 title="Search"
                             >
