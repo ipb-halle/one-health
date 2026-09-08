@@ -21,5 +21,11 @@ INSERT INTO field_definitions (field_type_id, element_type_id, name, description
     (1, 1, 'synonym', 'alternative node names', false, true),
     (1, 2, 'synonym', 'alternative node names', false, true),
     (1, 3, 'synonym', 'alternative node names', false, true),
-    (2, 1, 'NCBItaxonId', 'link to the NCBI taxonomy', false, false);
+    (2, 1, 'NCBItaxonId', 'link to the NCBI taxonomy', false, false),
+    (3, 1, 'Growth form', 'whether the plant grows as herb, shrub or tree', false, false);
+
+INSERT INTO dyn_enums (field_id, label, description) VALUES
+    (8, 'HERB', 'plant growing as a herb'),
+    (8, 'SHRUB', 'plant growing as a shrub'),
+    (8, 'TREE', 'plant growing as a tree');
 

@@ -10,6 +10,8 @@ package de.ipb_halle.curator.metadata;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.metadata.ElementType.ElementClass;
 import de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum;
+import java.util.Map;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +41,7 @@ class MetadataRegistryTest {
         assertThat(organism).isNotNull();
         assertThat(organism.getLabel()).isEqualTo("ORGANISM");
         assertThat(organism.getUiColor().longValue()).isEqualTo(0x297e00);
-        assertThat(organism.getFieldDefinitions().size()).isEqualTo(3);
+        assertThat(organism.getFieldDefinitions().size()).isEqualTo(4);
     }
 
     @Test
@@ -59,5 +61,37 @@ class MetadataRegistryTest {
         assertThat(ft.getType()).isEqualTo(FieldTypeEnum.TEXT);
         assertThat(ft.getDescription()).isEqualTo("general text types");
         assertThat(ft.getTableName()).isEqualTo("text_fields");
+    }
+
+    @Test
+    void testMultiInitializationFails() {
+        Assertions.assertThatThrownBy(() -> registry.initializeDynEnums(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> registry.initializeElementTypes(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> registry.initializeFieldTypes(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> registry.initializeFieldDefinitions(null))
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void testDynEnum() {
+        DynEnum dynEnum = registry.getDynEnum(8, "HERB");
+        assertThat(dynEnum.getId()).isEqualTo(1);
+        assertThat(dynEnum.getFieldDefinitionId()).isEqualTo(8);
+        assertThat(dynEnum.getLabel()).isEqualTo("HERB");
+        assertThat(dynEnum.getDescription()).isEqualTo("plant growing as a herb");
+        Map<String, DynEnum> map = registry.getDynEnumsByLabel(8);
+        assertThat(map.size()).isEqualTo(3);
+
+        Assertions.assertThatThrownBy(() -> registry.getDynEnumsByLabel(7))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        // attempts to lookup illegal values result in IllegalArgumentException
+        Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, "PLANET"))
+                .isInstanceOf(IllegalArgumentException.class);
+        Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, 1))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

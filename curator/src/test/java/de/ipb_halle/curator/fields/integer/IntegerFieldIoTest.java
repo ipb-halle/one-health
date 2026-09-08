@@ -21,6 +21,7 @@ import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.UUID;
+import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 public class IntegerFieldIoTest {
 
     public final static String INTEGERFIELDS_CSV = "integer_fields.csv";
-    public final static String INTEGERFIELDS_MD5 = "693f36ab7549c5e33865f10781df251d";
+    public final static String BROKEN_DYNENUM_CSV = "dyn_enum_broken.csv";
+    public final static String INTEGERFIELDS_MD5 = "51785187dd955c6afe7e5c1e293c35a6";
 
     public final static String INTEGERFIELD_NAME = "ORGANISM:NCBItaxonId";
     public final static String INTEGERFIELD_QUERY = "INSERT INTO integer_fields (element_id, field_id, field_order, value) VALUES (?,?,?,?)";
@@ -100,4 +102,14 @@ public class IntegerFieldIoTest {
         }
     }
 
+    @Test
+    public void testIllegalDynEnum() throws Exception {
+        try (DbTestHelper helper = new DbTestHelper(container)) {
+            setup(helper);
+
+            InputStream input = this.getClass().getResourceAsStream(BROKEN_DYNENUM_CSV);
+            Assertions.assertThatThrownBy(() -> reader.read(input))
+                    .isExactlyInstanceOf(IllegalArgumentException.class);
+        }
+    }
 }

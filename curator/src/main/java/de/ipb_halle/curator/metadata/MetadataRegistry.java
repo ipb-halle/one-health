@@ -111,14 +111,16 @@ public class MetadataRegistry {
     }
 
     public DynEnum getDynEnum(Integer fieldId, String label) {
-        if (dynEnumsByLabel.containsKey(fieldId)) {
+        if (dynEnumsByLabel.containsKey(fieldId)
+                && dynEnumsByLabel.get(fieldId).containsKey(label)) {
             return dynEnumsByLabel.get(fieldId).get(label);
         }
         throw new IllegalArgumentException("DynEnum not defined for fieldId '%d'".formatted(fieldId));
     }
 
     public DynEnum getDynEnum(Integer fieldId, Integer id) {
-        if (dynEnumsById.containsKey(fieldId)) {
+        if (dynEnumsById.containsKey(fieldId)
+                && dynEnumsById.get(fieldId).containsKey(id)) {
             return dynEnumsById.get(fieldId).get(id);
         }
         throw new IllegalArgumentException("DynEnum not defined for fieldId '%d'".formatted(fieldId));
