@@ -21,13 +21,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+
 import de.ipb_halle.server.postgre.models.UserRole;
 
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
-                
+
         @Mock
         private UserRepository userRepository;
 
@@ -47,7 +49,7 @@ class AuthControllerTest {
                 OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
 
                 when(orcidService.exchangeCode("auth-code"))
-                        .thenReturn(null);
+                                .thenReturn(null);
 
                 // Act
                 ResponseEntity<?> response = authController.orcidLogin(request);
@@ -60,54 +62,116 @@ class AuthControllerTest {
 
         @Test
         void orcidLogin_newUser_createsUserWithDefaultProperties() {
-        // Arrange
-        OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
 
-        OrcidService.OrcidTokenResponse orcidResponse =
-                mock(OrcidService.OrcidTokenResponse.class);
+                // Arrange
+                OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
 
-        when(orcidService.exchangeCode("auth-code"))
-                .thenReturn(orcidResponse);
+                OrcidService.OrcidTokenResponse orcidResponse = mock(OrcidService.OrcidTokenResponse.class);
 
-        when(orcidResponse.getOrcid())
-                .thenReturn("0000-0001-2345-6789");
+                when(orcidService.exchangeCode("auth-code"))
+                                .thenReturn(orcidResponse);
 
-        when(orcidResponse.getName())
-                .thenReturn("Dr. Jane Doe");
+                when(orcidResponse.getOrcid())
+                                .thenReturn("0000-0001-2345-6789");
 
-        when(orcidResponse.getAccessToken())
-                        .thenReturn("orcid-access-token");
+                when(orcidResponse.getName())
+                                .thenReturn("Dr. Jane Doe");
 
+                when(orcidResponse.getAccessToken())
+                                .thenReturn("orcid-access-token");
 
-        // Simulate a first-time ORCID login with no existing authentication identity
-        when(userAuthenticationRepository.findByProviderAndProviderSubjectId(
-                AuthenticationProvider.ORCID,
-                "0000-0001-2345-6789"))
-                .thenReturn(Optional.empty());
+                // Simulate a first-time ORCID login with no existing authentication identity
+                when(userAuthenticationRepository.findByProviderAndProviderSubjectId(
+                                AuthenticationProvider.ORCID,
+                                "0000-0001-2345-6789"))
+                                .thenReturn(Optional.empty());
 
-        when(userRepository.save(any(UserEntity.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                when(userRepository.save(any(UserEntity.class)))
+                                .thenAnswer(invocation -> invocation.getArgument(0));
 
-        when(userAuthenticationRepository.save(any(UserAuthenticationEntity.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                when(userAuthenticationRepository.save(any(UserAuthenticationEntity.class)))
+                                .thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
-        authController.orcidLogin(request);
+                // Act
+                authController.orcidLogin(request);
 
-        // Assert
-        ArgumentCaptor<UserEntity> userCaptor =
-                ArgumentCaptor.forClass(UserEntity.class);
+                // Assert
+                ArgumentCaptor<UserEntity> userCaptor = ArgumentCaptor.forClass(UserEntity.class);
 
-        verify(userRepository).save(userCaptor.capture());
+                verify(userRepository).save(userCaptor.capture());
 
-        UserEntity newUser = userCaptor.getValue();
+                UserEntity newUser = userCaptor.getValue();
 
-        // Verify the default properties assigned to newly registered users
-        assertThat(newUser.getDisplayName()).isEqualTo("Dr. Jane Doe");
-        assertThat(newUser.getRole()).isEqualTo(UserRole.VIEWER);
-        assertThat(newUser.getEnabled()).isTrue();
-        assertThat(newUser.getRegisteredVia())
-                .isEqualTo(AuthenticationProvider.ORCID);
+                // Verify the default properties assigned to newly registered users
+                assertThat(newUser.getDisplayName()).isEqualTo("Dr. Jane Doe");
+                assertThat(newUser.getRole()).isEqualTo(UserRole.VIEWER);
+                assertThat(newUser.getEnabled()).isTrue();
+                assertThat(newUser.getRegisteredVia())
+                                .isEqualTo(AuthenticationProvider.ORCID);
         }
-    
+
+        @Test
+        void orcidLogin_existingUser_updatesDisplayNameAndDoesNotCreateDuplicate() {
+
+                // Arrange
+                OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
+
+                OrcidService.OrcidTokenResponse orcidResponse = mock(OrcidService.OrcidTokenResponse.class);
+
+                // Simulate an existing user
+                UserEntity existingUser = new UserEntity();
+                existingUser.setId(1L);
+                existingUser.setDisplayName("Old Name");
+                existingUser.setRole(UserRole.VIEWER);
+                existingUser.setEnabled(true);
+                existingUser.setRegisteredVia(AuthenticationProvider.ORCID);
+
+                UserAuthenticationEntity authentication = new UserAuthenticationEntity();
+                authentication.setUser(existingUser);
+                authentication.setProvider(AuthenticationProvider.ORCID);
+                authentication.setProviderSubjectId("0000-0001-2345-6789");
+
+                when(orcidService.exchangeCode("auth-code"))
+                                .thenReturn(orcidResponse);
+
+                when(orcidResponse.getOrcid())
+                                .thenReturn("0000-0001-2345-6789");
+
+                when(orcidResponse.getName())
+                                .thenReturn("Dr. Jane Doe");
+
+                when(orcidResponse.getAccessToken())
+                                .thenReturn("orcid-access-token");
+
+                // Simulate a returning ORCID user whose identity is already linked
+                // to an existing user
+                when(userAuthenticationRepository.findByProviderAndProviderSubjectId(
+                                AuthenticationProvider.ORCID,
+                                "0000-0001-2345-6789"))
+                                .thenReturn(Optional.of(authentication));
+
+                when(userRepository.save(existingUser))
+                                .thenReturn(existingUser);
+
+                // Act
+                ResponseEntity<?> response = authController.orcidLogin(request);
+
+                // Assert
+                assertThat(response.getStatusCode())
+                                .isEqualTo(HttpStatus.OK);
+
+                // The existing account is updated rather than creating a new local user.
+                assertThat(existingUser.getDisplayName())
+                                .isEqualTo("Dr. Jane Doe");
+
+                verify(userRepository).save(existingUser);
+
+                verify(userAuthenticationRepository)
+                                .findByProviderAndProviderSubjectId(
+                                                AuthenticationProvider.ORCID,
+                                                "0000-0001-2345-6789");
+
+                verify(userAuthenticationRepository, never())
+                                .save(any(UserAuthenticationEntity.class));
+        }
 }
