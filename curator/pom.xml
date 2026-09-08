@@ -11,7 +11,7 @@
 	<groupId>de.ipb_halle</groupId>
 	<artifactId>curator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>OneHealt Curator</name>
+	<name>OneHealth Curator</name>
 	<description>Aggregation and Curation of the OneHealth Knowledge Graph</description>
 	<url/>
 	<licenses>

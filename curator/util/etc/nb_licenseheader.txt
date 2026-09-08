@@ -1,0 +1,7 @@
+${licenseFirst!""}
+${licensePrefix}SPDX-License-Identifier: Apache-2.0
+${licensePrefix}SPDX-FileCopyrightText: 2026 Leibniz-Institut f. Pflanzenbiochemie
+${licensePrefix}
+${licensePrefix}Curator
+${licensePrefix}Curator provides an ETL pipeline to the One Health project.
+${licenseLast!""}

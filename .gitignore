@@ -49,6 +49,7 @@ server/.mvn/wrapper/maven-wrapper.jar
 *.ipr
 
 ### NetBeans ###
+nb-configuration.xml
 /nbproject/private/
 /nbbuild/
 /dist/

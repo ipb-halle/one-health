@@ -80,19 +80,19 @@ public class IntegerFieldIoTest {
         try (DbTestHelper helper = new DbTestHelper(container)) {
             setup(helper);
 
-            // InputStream input = this.getClass().getResourceAsStream(INTEGERFIELDS_CSV);
+            InputStream input = this.getClass().getResourceAsStream(INTEGERFIELDS_CSV);
 
             /*
              * for generation of test data use this instead of the 'OutputStream output = ByteArrayOutputStream(...);': below
+             *
+             * createTextFields(helper);
+             * OutputStream outputStream = new FileOutputStream("/tmp/integer_fields.csv");
              */
-             createTextFields(helper);
-             OutputStream outputStream = new FileOutputStream("/tmp/integer_fields.csv");
-             /* */
 
-            // OutputStream outputStream = new ByteArrayOutputStream();
+            OutputStream outputStream = new ByteArrayOutputStream();
             DigestOutputStream output = new DigestOutputStream(outputStream, MessageDigest.getInstance("MD5"));
 
-            // reader.read(input);
+            reader.read(input);
             writer.write(output);
             MessageDigest digest = output.getMessageDigest();
             HexFormat format = HexFormat.of().withLowerCase();
