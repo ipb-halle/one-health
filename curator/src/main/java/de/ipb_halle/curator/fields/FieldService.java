@@ -7,7 +7,11 @@
  */
 package de.ipb_halle.curator.fields;
 
+import de.ipb_halle.curator.fields.integer.IntegerField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldConverter;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
+import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldConverter;
 import de.ipb_halle.curator.fields.text.TextFieldRepository;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.ArrayList;
@@ -28,16 +32,23 @@ public class FieldService {
     private IntegerFieldRepository integerRepository;
 
     @Autowired
+    private IntegerFieldConverter integerConverter;
+
+    @Autowired
     private TextFieldRepository textRepository;
 
     @Autowired
-    private MetadataRegistry registry;
+    private TextFieldConverter textConverter;
 
     @Transactional(readOnly = true)
-    public List<Field> loadFields(UUID elementId) {
-        List<Field> results = new ArrayList<> ();
-        results.addAll(textRepository.findTextFields(elementId));
-        results.addAll(integerRepository.findIntegerFields(elementId));
+    public List<FieldDTO> loadFields(UUID elementId) {
+        List<FieldDTO> results = new ArrayList<> ();
+        List<TextField> textFields = textRepository.findTextFields(elementId);
+        results.addAll(textConverter.createDTOs(textFields));
+
+        List<IntegerField> integerFields = integerRepository.findIntegerFields(elementId);
+        results.addAll(integerConverter.createDTOs(integerFields));
+
         return results;
     }
 }

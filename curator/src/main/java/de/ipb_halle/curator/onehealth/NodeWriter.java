@@ -12,6 +12,9 @@ import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,38 +30,38 @@ public class NodeWriter {
     private MetadataRegistry registry;
 
     @Autowired
-    private ElementRepository repository;
+    private ElementService service;
 
     public void writeNodes(ElementType elementType, OutputStream output) throws IOException {
-        String[] headers = getHeaders(elementType);
-
         try (var writer = new OutputStreamWriter(output)) {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(headers)
+                    .setHeader(getHeaders(elementType))
                     .get());
-            repository.findElementsByType(elementType.getId())
-                    .stream().forEach(element -> {
-                        ElementDTO dto = ElementDTO.createElementDTO(element, elementType);
-                        getFields(dto);
+            service.loadByType(elementType)
+                    .stream().forEach(dto -> {
                         writeRecord(printer, dto);
                     });
         }
-
-        repository.findElementsByType(elementType.getId());
     }
 
     private String[] getHeaders(ElementType elementType) {
         return  new String[] {"id", "label"};
     }
 
-    private void getFields(ElementDTO dto) {
-
+    private Object[] getCells(ElementDTO dto) {
+        List<Object> cells = new ArrayList<> ();
+        cells.add(dto.getId());
+        cells.addAll(dto.getFields()
+                .stream()
+                .map(f -> f.toCSVcell())
+                .collect(Collectors.toList()));
+        cells.add(dto.getType().getLabel());
+        return cells.toArray();
     }
 
     private void writeRecord(CSVPrinter printer, ElementDTO dto) {
         try {
-            printer.printRecord(dto.getId().toString(),
-                    String.valueOf(dto.getType().getLabel()));
+            printer.printRecord(getCells(dto));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }

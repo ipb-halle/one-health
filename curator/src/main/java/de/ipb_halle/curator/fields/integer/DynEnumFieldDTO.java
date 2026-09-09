@@ -8,23 +8,26 @@
 package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.metadata.DynEnum;
-import de.ipb_halle.curator.fields.Field;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
-import java.util.UUID;
+import de.ipb_halle.curator.fields.FieldDTO;
 
 /**
  *
  * @author fblocal
  */
-public class DynEnumField implements Field {
+public class DynEnumFieldDTO implements FieldDTO {
 
     private final OrderedFieldId id;
     private DynEnum value;
 
-    public DynEnumField(UUID elementId, DynEnum value, Integer order) {
-            this.id = new OrderedFieldId(elementId, value.getFieldDefinitionId(), order);
+    private DynEnumFieldDTO(IFieldId fieldId, DynEnum value) {
+            this.id = new OrderedFieldId(fieldId);
             this.value = value;
+    }
+
+    public static DynEnumFieldDTO createDTO(IFieldId fieldId, DynEnum value) {
+        return new DynEnumFieldDTO(fieldId, value);
     }
 
     public IntegerField getEntity() {

@@ -9,39 +9,45 @@ package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import java.util.UUID;
+import de.ipb_halle.curator.fields.FieldDTO;
 
 /**
  *
  * @author fblocal
  */
-@Entity
-@Table(name="integer_fields")
-public class IntegerField {
+public class IntegerFieldDTO implements FieldDTO {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
-
-    @EmbeddedId
     private OrderedFieldId id;
 
-    @Column
     private Integer value;
 
-    public IntegerField() {
-
+    private IntegerFieldDTO(IFieldId id, Integer value) {
+        this.id = new OrderedFieldId(id);
+        this.value = value;
     }
 
-    public IntegerField(UUID elementId, int fieldDefinitionId, int order, Integer value) {
+    private IntegerFieldDTO(UUID elementId, int fieldDefinitionId, int order, Integer value) {
         this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
         this.value = value;
     }
 
+    public static IntegerFieldDTO createDTO(IntegerField field) {
+        return new IntegerFieldDTO(field.getId(), field.getValue());
+    }
+
+    public IntegerField createEntity() {
+        return new IntegerField(id.getElementId(), id.getFieldId(), id.getOrder(), value);
+    }
+
+    @Override
     public IFieldId getId() {
         return this.id;
+    }
+
+    @Override
+    public Object toCSVcell() {
+        return value;
     }
 
     public Integer getValue() {
@@ -51,5 +57,4 @@ public class IntegerField {
     public void setValue(Integer value) {
         this.value = value;
     }
-
 }

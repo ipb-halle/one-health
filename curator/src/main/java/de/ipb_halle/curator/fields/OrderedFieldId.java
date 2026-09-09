@@ -32,6 +32,12 @@ public class OrderedFieldId implements IFieldId {
 
     }
 
+    public OrderedFieldId(IFieldId id) {
+        this.elementId = id.getElementId();
+        this.fieldId = id.getFieldId();
+        this.order = id.getOrder();
+    }
+
     public OrderedFieldId(UUID elementId, int fieldId, int order) {
         this.elementId = elementId;
         this.fieldId = fieldId;

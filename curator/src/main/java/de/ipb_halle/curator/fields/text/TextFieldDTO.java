@@ -9,45 +9,39 @@ package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import java.util.UUID;
 import de.ipb_halle.curator.fields.FieldDTO;
 
 /**
  *
  * @author fblocal
  */
-@Entity
-@Table(name="text_fields")
-public class TextField {
+public class TextFieldDTO implements FieldDTO {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
+    private final OrderedFieldId id;
 
-    @EmbeddedId
-    private OrderedFieldId id;
-
-    @Column
     private String value;
 
-    public TextField() {
-
-    }
-
-    public TextField(IFieldId id, String value) {
+    private TextFieldDTO(IFieldId id, String value) {
         this.id = new OrderedFieldId(id);
         this.value = value;
     }
 
-    public TextField(UUID elementId, int fieldDefinitionId, int order, String value) {
-        this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
-        this.value = value;
+    public TextField createEntity() {
+        return new TextField(id, value);
     }
 
+    public static TextFieldDTO createDTO(TextField field) {
+        return new TextFieldDTO(field.getId(), field.getValue());
+    }
+
+    @Override
     public IFieldId getId() {
         return this.id;
+    }
+
+    @Override
+    public Object toCSVcell() {
+        return value;
     }
 
     public String getValue() {

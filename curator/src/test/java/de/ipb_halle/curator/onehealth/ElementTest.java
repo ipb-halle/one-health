@@ -9,6 +9,7 @@ package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -44,15 +45,15 @@ public class ElementTest {
 
         FieldDefinitionDTO fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
         TextField field = new TextField(id1, fieldDef.getId(), 0, "Sample Organism");
-        dto.addField(field);
+        dto.addField(TextFieldDTO.createDTO(field));
         assertThat(dto.getFields().size()).isEqualTo(1);
 
-        Element element = dto.createElement();
+        Element element = dto.createEntity();
         assertThat(element.getId()).isEqualByComparingTo(id1);
         assertThat(element.getTypeId()).isEqualTo(type.getId());
 
         ElementType type2 = registry.getElementType(element.getTypeId());
-        ElementDTO dto2 = ElementDTO.createElementDTO(element, type2);
+        ElementDTO dto2 = ElementDTO.createDTO(element, type2);
         assertThat(dto2.getId()).isEqualByComparingTo(id1);
         assertThat(dto2.getType().getId()).isEqualTo(type.getId());
         assertThat(dto2.getFields().size()).isEqualTo(0);

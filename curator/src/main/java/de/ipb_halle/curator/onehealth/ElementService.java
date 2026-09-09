@@ -7,7 +7,8 @@
  */
 package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.metadata.MetadataRegistry;
+import de.ipb_halle.curator.fields.FieldService;
+import de.ipb_halle.curator.metadata.ElementType;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,20 @@ public class ElementService {
     private EntityManager em;
 
     @Autowired
-    private MetadataRegistry registry;
+    private ElementConverter converter;
 
+    @Autowired
+    private ElementRepository repository;
+
+    @Autowired
+    private FieldService fieldService;
+
+    public List<ElementDTO> loadByType(ElementType type) {
+       List<Element> elements =  repository.findElementsByType(type.getId());
+       List<ElementDTO> dtos = converter.createDTOs(elements);
+       dtos.stream().forEach(e -> e.addFields(fieldService.loadFields(e.getId())));
+       return dtos;
+    }
 
     public List<ElementDTO> loadByCriteria() {
     /*

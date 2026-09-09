@@ -7,12 +7,12 @@
  */
 package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.fields.Field;
 import de.ipb_halle.curator.metadata.ElementType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import de.ipb_halle.curator.fields.FieldDTO;
 
 /**
  *
@@ -24,7 +24,7 @@ public class ElementDTO {
 
     private final ElementType type;
 
-    private final List<Field> fields;
+    private final List<FieldDTO> fields;
 
     public ElementDTO(UUID id, ElementType type) {
         this.id = id;
@@ -38,19 +38,19 @@ public class ElementDTO {
         this.fields = new ArrayList<> ();
     }
 
-    public static ElementDTO createElementDTO(Element element, ElementType type) {
+    public static ElementDTO createDTO(Element element, ElementType type) {
         return new ElementDTO(element.getId(), type);
     }
 
-    public Element createElement() {
+    public Element createEntity() {
         return new Element(id, type.getId());
     }
 
-    public void addField(Field field) {
+    public void addField(FieldDTO field) {
         this.fields.add(field);
     }
 
-    public void addFields(Collection<Field> fields) {
+    public void addFields(Collection<FieldDTO> fields) {
         this.fields.addAll(fields);
     }
 
@@ -58,7 +58,7 @@ public class ElementDTO {
         return id;
     }
 
-    public List<Field> getFields() {
+    public List<FieldDTO> getFields() {
         return fields;
     }
 

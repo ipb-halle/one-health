@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator.fields.integer;
 
+import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -33,6 +34,9 @@ public class IntegerFieldReader {
     @Autowired
     private MetadataRegistry registry;
 
+    @Autowired
+    private IntegerFieldConverter converter;
+
     /**
      * @param input, for performance reasons, the InputStream should be a BufferedInputStream
      * @throws IOException
@@ -48,25 +52,15 @@ public class IntegerFieldReader {
     }
 
     private void parseRecord(CSVRecord record) {
-        UUID elementId = UUID.fromString(record.get(IntegerField.HEADER[0]));
-        Integer fieldDefinitionId = Integer.valueOf(record.get(IntegerField.HEADER[1]));
-        int order = Integer.parseInt(record.get(IntegerField.HEADER[2]));
-        Integer value = Integer.valueOf(record.get(IntegerField.HEADER[3]));
-
-        FieldDefinitionDTO fieldDefinition = registry.getFieldDefinition(fieldDefinitionId);
-        switch(fieldDefinition.getFieldType().getType()) {
-            case INTEGER:
-                repository.save(new IntegerField(
-                                elementId, fieldDefinitionId, order, value));
-                break;
-            case ENUM:
-
-                DynEnum dynEnum = registry.getDynEnum(fieldDefinitionId, value);
-                repository.save(new DynEnumField(
-                        elementId, dynEnum, order).getEntity());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid FieldType");
+        IntegerField field = new IntegerField(
+                UUID.fromString(record.get(IntegerField.HEADER[0])),
+                Integer.parseInt(record.get(IntegerField.HEADER[1])),
+                Integer.parseInt(record.get(IntegerField.HEADER[2])),
+                Integer.valueOf(record.get(IntegerField.HEADER[3])));
+        // validation by turning into DTO
+        FieldDTO dto = converter.createDTO(field);
+        if (dto != null) {
+            repository.save(field);
         }
     }
 }
