@@ -33,6 +33,13 @@ public interface TextFieldRepository extends JpaRepository<TextField, OrderedFie
     /**
      * Fetch a list of TextFields for a given Entity.
      */
+    @Query("SELECT t FROM TextField t WHERE t.id.elementId = :elementId "
+            + "ORDER BY t.id.fieldId, t.id.order ASC")
+    List<TextField> findTextFields(UUID elementId);
+
+    /**
+     * Fetch a list of TextFields for a given Entity.
+     */
     @Query("SELECT t FROM TextField t WHERE t.id.elementId = :elementId AND "
             + "t.id.fieldId = :fieldId ORDER BY t.id.order ASC")
     List<TextField> findTextFields(UUID elementId, int fieldId);

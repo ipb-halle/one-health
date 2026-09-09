@@ -40,7 +40,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 public class IntegerFieldIoTest {
 
     public final static String INTEGERFIELDS_CSV = "integer_fields.csv";
-    public final static String BROKEN_DYNENUM_CSV = "dyn_enum_broken.csv";
+    public final static String BROKEN_CSV_1 = "dyn_enum_broken_1.csv";
+    public final static String BROKEN_CSV_2 = "dyn_enum_broken_2.csv";
     public final static String INTEGERFIELDS_MD5 = "51785187dd955c6afe7e5c1e293c35a6";
 
     public final static String INTEGERFIELD_NAME = "ORGANISM:NCBItaxonId";
@@ -107,8 +108,11 @@ public class IntegerFieldIoTest {
         try (DbTestHelper helper = new DbTestHelper(container)) {
             setup(helper);
 
-            InputStream input = this.getClass().getResourceAsStream(BROKEN_DYNENUM_CSV);
-            Assertions.assertThatThrownBy(() -> reader.read(input))
+            final InputStream input1 = this.getClass().getResourceAsStream(BROKEN_CSV_1);
+            Assertions.assertThatThrownBy(() -> reader.read(input1))
+                    .isExactlyInstanceOf(IllegalArgumentException.class);
+            final InputStream input2 = this.getClass().getResourceAsStream(BROKEN_CSV_2);
+            Assertions.assertThatThrownBy(() -> reader.read(input2))
                     .isExactlyInstanceOf(IllegalArgumentException.class);
         }
     }

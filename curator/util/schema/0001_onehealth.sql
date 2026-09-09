@@ -28,7 +28,8 @@ CREATE TABLE field_definitions (
     name        VARCHAR NOT NULL,
     description VARCHAR,
     mandatory   BOOLEAN NOT NULL DEFAULT FALSE,
-    multivalued BOOLEAN NOT NULL DEFAULT FALSE
+    multivalued BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE (element_type_id, name)
 );
 
 

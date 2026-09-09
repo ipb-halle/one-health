@@ -39,6 +39,11 @@ public class DynEnumField implements Field {
         return this.id;
     }
 
+    @Override
+    public Object toCSVcell() {
+        return value.getLabel();
+    }
+
     public DynEnum getValue() {
         return value;
     }
@@ -46,5 +51,4 @@ public class DynEnumField implements Field {
     public void setValue(DynEnum value) {
         this.value = value;
     }
-
 }

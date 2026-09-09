@@ -13,4 +13,5 @@ package de.ipb_halle.curator.fields;
  */
 public interface Field {
     public IFieldId getId();
+    public Object toCSVcell();
 }

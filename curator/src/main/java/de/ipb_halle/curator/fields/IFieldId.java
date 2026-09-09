@@ -15,10 +15,9 @@ import java.util.UUID;
  */
 public interface IFieldId {
 
-    UUID getElementId();
+    public UUID getElementId();
 
-    int getFieldId();
+    public int getFieldId();
 
-    int getOrder();
-
+    public int getOrder();
 }

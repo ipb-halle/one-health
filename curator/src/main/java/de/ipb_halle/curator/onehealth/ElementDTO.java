@@ -10,6 +10,7 @@ package de.ipb_halle.curator.onehealth;
 import de.ipb_halle.curator.fields.Field;
 import de.ipb_halle.curator.metadata.ElementType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,11 @@ public class ElementDTO {
     }
 
     public void addField(Field field) {
-        fields.add(field);
+        this.fields.add(field);
+    }
+
+    public void addFields(Collection<Field> fields) {
+        this.fields.addAll(fields);
     }
 
     public UUID getId() {

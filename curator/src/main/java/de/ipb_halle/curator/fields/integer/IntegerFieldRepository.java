@@ -33,6 +33,13 @@ public interface IntegerFieldRepository extends JpaRepository<IntegerField, Orde
     /**
      * Fetch a list of IntegerFields for a given Entity.
      */
+    @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId "
+            + "ORDER BY t.id.fieldId, t.id.order ASC")
+    List<IntegerField> findIntegerFields(UUID elementId);
+
+    /**
+     * Fetch a list of IntegerFields for a given Entity.
+     */
     @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId AND "
             + "t.id.fieldId = :fieldId ORDER BY t.id.order ASC")
     List<IntegerField> findIntegerFields(UUID elementId, int fieldId);

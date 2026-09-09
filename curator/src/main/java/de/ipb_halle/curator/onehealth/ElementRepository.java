@@ -28,6 +28,8 @@ public interface ElementRepository extends JpaRepository<Element, UUID>, JpaSpec
     @Query("SELECT e FROM Element e WHERE e.id = :id")
     Optional<Element> findElement(UUID id);
 
+    @Query("SELECT e FROM Element e WHERE e.typeId = :id")
+    List<Element> findElementsByType(int id);
 
     /**
      * Fetch all Elements (supports dynamic criteria via {@link JpaSpecificationExecutor}).

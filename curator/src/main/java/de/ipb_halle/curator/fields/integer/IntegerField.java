@@ -46,6 +46,11 @@ public class IntegerField implements Field {
         return this.id;
     }
 
+    @Override
+    public Object toCSVcell() {
+        return value;
+    }
+
     public Integer getValue() {
         return value;
     }

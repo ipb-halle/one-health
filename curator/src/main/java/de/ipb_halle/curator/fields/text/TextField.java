@@ -46,6 +46,11 @@ public class TextField implements Field {
         return this.id;
     }
 
+    @Override
+    public Object toCSVcell() {
+        return value;
+    }
+
     public String getValue() {
         return value;
     }

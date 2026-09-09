@@ -65,6 +65,8 @@ public class IntegerFieldReader {
                 repository.save(new DynEnumField(
                         elementId, dynEnum, order).getEntity());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid FieldType");
         }
     }
 }
