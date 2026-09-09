@@ -78,9 +78,3 @@ CREATE INDEX integer_fields_field_index ON integer_fields (field_id, value);
 /*
  * compounds ...
  */
-
-CREATE TABLE sample_entity (
-    id          UUID NOT NULL PRIMARY KEY,
-    name        VARCHAR,
-    value       INTEGER
-);

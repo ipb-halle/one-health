@@ -44,8 +44,8 @@ public class ElementService {
     public List<ElementDTO> loadByCriteria() {
     /*
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<SampleEntity> cq = cb.createQuery(SampleEntity.class);
-        Root<SampleEntity> root = cq.from(SampleEntity.class);
+        CriteriaQuery<Element> cq = cb.createQuery(Element.class);
+        Root<Element> root = cq.from(Element.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class ElementService {
         cq.where(predicates.toArray(new Predicate[0]));
         cq.orderBy(cb.asc(root.get("name")));
 
-        return converter.toDTOList(entityManager.createQuery(cq).getResultList());
+        return converter.createDTOs(entityManager.createQuery(cq).getResultList());
 
     */
         return new ArrayList<> ();
