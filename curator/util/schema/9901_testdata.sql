@@ -14,15 +14,15 @@ INSERT INTO field_types (type, description, table_name) VALUES
     ('UUID', 'universally unique identifiers', 'uuid_fields');
 
 
-INSERT INTO field_definitions (field_type_id, element_type_id, name, description, mandatory, multivalued) VALUES
-    (1, 1, 'primary name', 'primary node name', false, false),
-    (1, 2, 'primary name', 'primary node name', false, false),
-    (1, 3, 'primary name', 'primary node name', false, false),
-    (1, 1, 'synonym', 'alternative node names', false, true),
-    (1, 2, 'synonym', 'alternative node names', false, true),
-    (1, 3, 'synonym', 'alternative node names', false, true),
-    (2, 1, 'NCBItaxonId', 'link to the NCBI taxonomy', false, false),
-    (3, 1, 'Growth form', 'whether the plant grows as herb, shrub or tree', false, false);
+INSERT INTO field_definitions (field_type_id, element_type_id, graph_export_order, name, description, mandatory, multivalued) VALUES
+    (1, 1, 1, 'primary name', 'primary node name', false, false),
+    (1, 2, 1, 'primary name', 'primary node name', false, false),
+    (1, 3, 1, 'primary name', 'primary node name', false, false),
+    (1, 1, null, 'synonym', 'alternative node names', false, true),
+    (1, 2, null, 'synonym', 'alternative node names', false, true),
+    (1, 3, null, 'synonym', 'alternative node names', false, true),
+    (2, 1, null, 'NCBItaxonId', 'link to the NCBI taxonomy', false, false),
+    (3, 1, null, 'Growth form', 'whether the plant grows as herb, shrub or tree', false, false);
 
 INSERT INTO dyn_enums (field_id, label, description) VALUES
     (8, 'HERB', 'plant growing as a herb'),

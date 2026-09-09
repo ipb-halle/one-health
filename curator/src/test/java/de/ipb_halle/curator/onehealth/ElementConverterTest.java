@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  * SPDX-FileCopyrightText: 2026 Leibniz-Institut f. Pflanzenbiochemie
- * 
+ *
  * Curator
  * Curator provides an ETL pipeline to the One Health project.
  */
@@ -44,7 +44,7 @@ public class ElementConverterTest {
         return TextFieldDTO.createDTO(f);
     }
 
-    @Test    
+    @Test
     public void testConverter() {
         List<Element> elements = new ArrayList<> ();
 
@@ -56,13 +56,13 @@ public class ElementConverterTest {
 
         Element e = converter.createEntity(dto1);
         elements.add(e);
-        
+
         assertThat(e.getId()).isEqualTo(dto1.getId());
         assertThat(e.getTypeId()).isEqualTo(type.getId());
 
         elements.add(converter.createEntity(dto2));
         assertThat(converter.createDTOs(elements).size()).isEqualTo(2);
-        
+
         ElementDTO dto3 = converter.createDTO(elements.get(0));
         assertThat(dto3.getId()).isEqualTo(dto1.getId());
     }

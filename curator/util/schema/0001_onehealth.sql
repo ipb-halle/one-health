@@ -25,6 +25,7 @@ CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
     field_type_id     INTEGER NOT NULL REFERENCES field_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
     element_type_id   INTEGER NOT NULL REFERENCES element_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    graph_export_order  INTEGER,
     name        VARCHAR NOT NULL,
     description VARCHAR,
     mandatory   BOOLEAN NOT NULL DEFAULT FALSE,

@@ -8,6 +8,7 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.metadata.ElementType;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,9 +28,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeWriter {
     @Autowired
-    private MetadataRegistry registry;
-
-    @Autowired
     private ElementService service;
 
     public void writeNodes(ElementType elementType, OutputStream output) throws IOException {
@@ -45,7 +43,18 @@ public class NodeWriter {
     }
 
     private String[] getHeaders(ElementType elementType) {
-        return  new String[] {"id", "label"};
+        List<FieldDefinitionDTO> fields = elementType.getFieldDefinitions();
+        fields = fields.stream()
+                .filter(f -> (f.getGraphExportOrder() != null))
+                .collect(Collectors.toList());
+        fields.sort((f,g) -> f.getGraphExportOrder().compareTo(g.getGraphExportOrder()));
+        List<String> headers = new ArrayList<> ();
+        headers.add("id");
+        headers.addAll(fields.stream()
+                .map(f -> f.getName())
+                .collect(Collectors.toList()));
+        headers.add("label");
+        return headers.toArray(new String[0]);
     }
 
     private Object[] getCells(ElementDTO dto) {

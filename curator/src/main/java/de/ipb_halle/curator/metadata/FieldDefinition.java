@@ -16,16 +16,18 @@ public final class FieldDefinition {
     private final int id;
     private final int fieldTypeId;
     private final int elementTypeId;
+    private final Integer graphExportOrder;
     private final String name;
     private final String description;
     private final boolean mandatory;
     private final boolean multivalued;
 
-    public FieldDefinition(int id, int fieldTypeId, int elementTypeId, String name,
+    public FieldDefinition(int id, int fieldTypeId, int elementTypeId, Integer graphExportOrder, String name,
                                String description, boolean mandatory, boolean multivalued) {
         this.id = id;
         this.fieldTypeId = fieldTypeId;
         this.elementTypeId = elementTypeId;
+        this.graphExportOrder = graphExportOrder;
         this.name = name;
         this.description = description;
         this.mandatory = mandatory;
@@ -42,6 +44,10 @@ public final class FieldDefinition {
 
     public int getElementTypeId() {
         return elementTypeId;
+    }
+
+    public Integer getGraphExportOrder() {
+        return graphExportOrder;
     }
 
     public String getName() {

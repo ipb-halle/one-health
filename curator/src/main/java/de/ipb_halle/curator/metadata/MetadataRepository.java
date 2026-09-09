@@ -90,12 +90,14 @@ public class MetadataRepository {
      */
     @Transactional(readOnly = true)
     public List<FieldDefinition> findAllFieldDefinitions() {
-        String sql = "SELECT id, field_type_id, element_type_id, name, description, "
-                + "mandatory, multivalued FROM field_definitions fd";
+        String sql = "SELECT id, field_type_id, element_type_id, graph_export_order, "
+                + "name, description, mandatory, multivalued "
+                + "FROM field_definitions fd";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new FieldDefinition(
                 rs.getInt("id"),
                 rs.getInt("field_type_id"),
                 rs.getInt("element_type_id"),
+                rs.getObject("graph_export_order", Integer.class),
                 rs.getString("name"),
                 rs.getString("description"),
                 rs.getBoolean("mandatory"),

@@ -16,6 +16,7 @@ public final class FieldDefinitionDTO {
     private final int id;
     private final FieldType fieldType;
     private final ElementType elementType;
+    private final Integer graphExportOrder;
     private final String name;
     private final String description;
     private final boolean mandatory;
@@ -23,6 +24,7 @@ public final class FieldDefinitionDTO {
 
     public FieldDefinitionDTO(FieldDefinition fieldDef, FieldType fieldType, ElementType element) {
         this.id = fieldDef.getId();
+        this.graphExportOrder = fieldDef.getGraphExportOrder();
         this.fieldType = fieldType;
         this.elementType = element;
         this.name = fieldDef.getName();
@@ -33,6 +35,10 @@ public final class FieldDefinitionDTO {
 
     public int getId() {
         return id;
+    }
+
+    public Integer getGraphExportOrder() {
+        return graphExportOrder;
     }
 
     public FieldType getFieldType() {
