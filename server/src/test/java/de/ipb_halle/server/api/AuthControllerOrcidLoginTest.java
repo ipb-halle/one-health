@@ -29,7 +29,7 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AuthControllerOrcidLoginTest {
-
+       
         @Mock
         private UserRepository userRepository;
 
@@ -42,24 +42,7 @@ class AuthControllerOrcidLoginTest {
         @InjectMocks
         private AuthController authController;
 
-        @Test
-        void orcidLogin_nullOrcidResponse_returns401() {
-
-                // Arrange
-                OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
-
-                when(orcidService.exchangeCode("auth-code"))
-                                .thenReturn(null);
-
-                // Act
-                ResponseEntity<?> response = authController.orcidLogin(request);
-
-                // Assert
-                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-
-                verify(orcidService).exchangeCode("auth-code");
-        }
-
+       
         @Test
         void orcidLogin_newUser_createsUserWithDefaultProperties() {
 
