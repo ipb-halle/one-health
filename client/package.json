@@ -28,7 +28,7 @@
     "mobx-react-lite": "4.1.0",
     "mobx-state-tree": "7.1.0",
     "openchemlib": "8.21.0",
-    "plotly.js": "2.35.3",
+    "plotly.js": "2.34.0",
     "primeicons": "6.0.1",
     "primereact": "10.9.6",
     "qs": "^6.16.0",
