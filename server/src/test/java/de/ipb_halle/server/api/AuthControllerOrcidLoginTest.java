@@ -28,7 +28,7 @@ import de.ipb_halle.server.postgre.models.UserRole;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-class AuthControllerTest {
+class AuthControllerOrcidLoginTest {
 
         @Mock
         private UserRepository userRepository;
@@ -111,7 +111,7 @@ class AuthControllerTest {
         }
 
         @Test
-        void orcidLogin_existingUser_updatesDisplayNameAndDoesNotCreateDuplicate() {
+        void orcidLogin_existingUser_reusesAccount() {
 
                 // Arrange
                 OrcidTokenRequest request = new OrcidTokenRequest("auth-code", "state");
