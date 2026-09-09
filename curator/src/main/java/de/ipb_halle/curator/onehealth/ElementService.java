@@ -41,8 +41,8 @@ public class ElementService {
        return dtos;
     }
 
-    public List<ElementDTO> loadByCriteria() {
     /*
+    public List<ElementDTO> loadByCriteria() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Element> cq = cb.createQuery(Element.class);
         Root<Element> root = cq.from(Element.class);
@@ -63,8 +63,6 @@ public class ElementService {
         cq.orderBy(cb.asc(root.get("name")));
 
         return converter.createDTOs(entityManager.createQuery(cq).getResultList());
-
-    */
-        return new ArrayList<> ();
     }
+    */
 }
