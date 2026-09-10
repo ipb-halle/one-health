@@ -15,7 +15,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18.18.0
+        node-version: 22.22.1
     - name: Install Node.js dependencies
       run: cd client && yarn install
     - name: Audit Node.js dependencies
