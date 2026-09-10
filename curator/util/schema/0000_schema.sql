@@ -1,10 +1,27 @@
+/*
+ * Curator database setup
+ */
 \set CURATOR_DATABASE curator
 \set CURATOR_SCHEMA curator
 \set CURATOR_USER curator
 \set CURATOR_PW curator
+
 -- quoted variables --
 \set CURATOR_PW_QUOTED '\'' :CURATOR_PW '\''
+\set CURATOR_DATABASE_QUOTED '\'' :CURATOR_DATABASE '\''
 
+-- terminate active sessions --
+SELECT pg_terminate_backend(pg_stat_activity.pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = :CURATOR_DATABASE_QUOTED
+  AND pid <> pg_backend_pid();
+
+-- cleanup --
+DROP SCHEMA IF EXISTS :CURATOR_SCHEMA CASCADE;
+DROP DATABASE IF EXISTS :CURATOR_DATABASE;
+DROP USER IF EXISTS :CURATOR_USER;
+
+-- creation --
 CREATE USER :CURATOR_USER PASSWORD :CURATOR_PW_QUOTED;
 CREATE DATABASE :CURATOR_DATABASE WITH ENCODING 'UTF8' OWNER :CURATOR_USER;
 
@@ -26,5 +43,4 @@ REVOKE ALL ON ALL TABLES IN SCHEMA :CURATOR_SCHEMA FROM public;
 -- check for usefull extensions and install it --
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-\connect - :CURATOR_USER
-
+\i schema/0001_onehealth.sql

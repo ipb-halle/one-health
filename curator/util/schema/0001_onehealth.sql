@@ -1,5 +1,4 @@
-\connect curator
-\connect - curator
+\connect curator curator
 
 CREATE TYPE element_class AS ENUM ('NODE', 'EDGE');
 CREATE TABLE element_types (
