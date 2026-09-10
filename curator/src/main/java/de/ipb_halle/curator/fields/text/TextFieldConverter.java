@@ -8,8 +8,12 @@
 package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.IFieldId;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,12 +23,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextFieldConverter {
 
+    @Autowired
+    private MetadataRegistry registry;
+
    public TextField createEntity(TextFieldDTO fieldDTO) {
         return fieldDTO.createEntity();
     }
 
     public FieldDTO createDTO(TextField field) {
-        return TextFieldDTO.createDTO(field);
+        IFieldId fieldId = field.getId();
+        FieldDefinitionDTO fieldDefinition = registry.getFieldDefinition(fieldId.getFieldId());
+        return TextFieldDTO.createDTO(field, fieldDefinition);
     }
 
     public List<FieldDTO> createDTOs(List<TextField> fields) {

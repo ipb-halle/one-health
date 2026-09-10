@@ -41,7 +41,7 @@ public class ElementConverterTest {
     private FieldDTO createTextFieldDTO(ElementDTO e, String value) {
         FieldDefinitionDTO fd = registry.getFieldDefinition("ORGANISM:primary name");
         TextField f = new TextField(e.getId(), fd.getId(), 0, value);
-        return TextFieldDTO.createDTO(f);
+        return TextFieldDTO.createDTO(f, fd);
     }
 
     @Test

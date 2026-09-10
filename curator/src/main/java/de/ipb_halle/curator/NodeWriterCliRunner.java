@@ -52,9 +52,12 @@ public class NodeWriterCliRunner implements CommandLineRunner {
         elementType.getFieldDefinitions().stream()
                 .forEach(fieldDef -> {
                     System.out.printf("%s\n", registry.getFieldDefinition(fieldDef.getId()));
-                    System.out.printf("    %s\n", fieldDef.getElementType().getLabel());
-                    System.out.printf("    %s\n", fieldDef.getFieldType().getDescription());
+                    System.out.printf("    %s\n", fieldDef.getKey());
+                    System.out.printf("    %s\n", fieldDef.getDescription());
                     System.out.println();
                 });
+        System.out.println();
+        System.out.println("=== Nodes ===");
+        nodeWriter.writeNodes(elementType, System.out);
     }
 }

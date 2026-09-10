@@ -8,35 +8,28 @@
 package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.IFieldId;
-import de.ipb_halle.curator.fields.OrderedFieldId;
 import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 
 /**
  *
  * @author fblocal
  */
-public class TextFieldDTO implements FieldDTO {
-
-    private final OrderedFieldId id;
+public class TextFieldDTO extends FieldDTO {
 
     private String value;
 
-    private TextFieldDTO(IFieldId id, String value) {
-        this.id = new OrderedFieldId(id);
+    private TextFieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition, String value) {
+        super(id, fieldDefinition);
         this.value = value;
     }
 
     public TextField createEntity() {
-        return new TextField(id, value);
+        return new TextField(getId(), value);
     }
 
-    public static TextFieldDTO createDTO(TextField field) {
-        return new TextFieldDTO(field.getId(), field.getValue());
-    }
-
-    @Override
-    public IFieldId getId() {
-        return this.id;
+    public static TextFieldDTO createDTO(TextField field, FieldDefinitionDTO fieldDefinition) {
+        return new TextFieldDTO(field.getId(), fieldDefinition, field.getValue());
     }
 
     @Override

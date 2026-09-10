@@ -7,11 +7,48 @@
  */
 package de.ipb_halle.curator.fields;
 
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import java.util.Iterator;
+
 /**
  *
  * @author fblocal
  */
-public interface FieldDTO {
-    public IFieldId getId();
-    public Object toCSVcell();
+public abstract class FieldDTO {
+    private final IFieldId id;
+    private final FieldDefinitionDTO fieldDefinition;
+    private FieldDTO linkedFieldDTO;
+
+    public FieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition) {
+        this.id = id;
+        this.fieldDefinition = fieldDefinition;
+        this.linkedFieldDTO = null;
+    }
+
+    public IFieldId getId() {
+        return this.id;
+    }
+
+    public String getFieldName() {
+        return this.fieldDefinition.getName();
+    }
+
+    public FieldDefinitionDTO getFieldDefinition() {
+        return this.fieldDefinition;
+    }
+
+    public abstract Object toCSVcell();
+
+    public FieldDTO getLinkedFieldDTO() {
+        return linkedFieldDTO;
+    }
+
+    public FieldDTO linkFieldDTO(FieldDTO fieldDTO) {
+        linkedFieldDTO = fieldDTO;
+        return this;
+    }
+
+    public Iterator<FieldDTO> iterator() {
+        return new FieldDtoIterator(this);
+    }
 }

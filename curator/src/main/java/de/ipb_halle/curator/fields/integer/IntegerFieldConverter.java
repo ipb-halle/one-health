@@ -40,14 +40,15 @@ public class IntegerFieldConverter {
     }
 
     public FieldDTO createDTO(IntegerField field) {
-        FieldType fieldType = getFieldType(field);
+        FieldDefinitionDTO fieldDefinition = getFieldDefinition(field);
+        FieldType fieldType = getFieldType(fieldDefinition);
         switch(fieldType.getType()) {
             case INTEGER:
-                return IntegerFieldDTO.createDTO(field);
+                return IntegerFieldDTO.createDTO(field, fieldDefinition);
 
             case ENUM:
-                DynEnum dynEnum = getDynEnum(field);
-                return DynEnumFieldDTO.createDTO(field.getId(), dynEnum);
+                DynEnum dynEnum = getDynEnum(fieldDefinition, field);
+                return DynEnumFieldDTO.createDTO(field.getId(), fieldDefinition, dynEnum);
 
             default:
                 throw new IllegalArgumentException("Invalid FieldType");
@@ -59,15 +60,16 @@ public class IntegerFieldConverter {
         return fields.stream().map(f -> createDTO(f)).collect(Collectors.toList());
     }
 
-    private FieldType getFieldType(IntegerField field) {
+    private FieldDefinitionDTO getFieldDefinition(IntegerField field) {
         IFieldId id = field.getId();
-        FieldDefinitionDTO fieldDefDTO = registry.getFieldDefinition(id.getFieldId());
+        return registry.getFieldDefinition(id.getFieldId());
+    }
+
+    private FieldType getFieldType(FieldDefinitionDTO fieldDefDTO) {
         return fieldDefDTO.getFieldType();
     }
 
-    private DynEnum getDynEnum(IntegerField field) {
-        IFieldId id = field.getId();
-        FieldDefinitionDTO fieldDefDTO = registry.getFieldDefinition(id.getFieldId());
+    private DynEnum getDynEnum(FieldDefinitionDTO fieldDefDTO, IntegerField field) {
         return registry.getDynEnum(fieldDefDTO.getId(), field.getValue());
     }
 }

@@ -11,39 +11,30 @@ import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import java.util.UUID;
 import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 
 /**
  *
  * @author fblocal
  */
-public class IntegerFieldDTO implements FieldDTO {
-
-    private OrderedFieldId id;
+public class IntegerFieldDTO extends FieldDTO {
 
     private Integer value;
 
-    private IntegerFieldDTO(IFieldId id, Integer value) {
-        this.id = new OrderedFieldId(id);
+    private IntegerFieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition, Integer value) {
+        super(id, fieldDefinition);
         this.value = value;
     }
 
-    private IntegerFieldDTO(UUID elementId, int fieldDefinitionId, int order, Integer value) {
-        this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
-        this.value = value;
-    }
-
-    public static IntegerFieldDTO createDTO(IntegerField field) {
-        return new IntegerFieldDTO(field.getId(), field.getValue());
+    public static IntegerFieldDTO createDTO(IntegerField field, FieldDefinitionDTO fieldDefinition) {
+        return new IntegerFieldDTO(field.getId(), fieldDefinition, field.getValue());
     }
 
     public IntegerField createEntity() {
+        IFieldId id = getId();
         return new IntegerField(id.getElementId(), id.getFieldId(), id.getOrder(), value);
     }
 
-    @Override
-    public IFieldId getId() {
-        return this.id;
-    }
 
     @Override
     public Object toCSVcell() {

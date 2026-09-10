@@ -45,7 +45,7 @@ public class ElementTest {
 
         FieldDefinitionDTO fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
         TextField field = new TextField(id1, fieldDef.getId(), 0, "Sample Organism");
-        dto.addField(TextFieldDTO.createDTO(field));
+        dto.addField(TextFieldDTO.createDTO(field, fieldDef));
         assertThat(dto.getFields().size()).isEqualTo(1);
 
         Element element = dto.createEntity();

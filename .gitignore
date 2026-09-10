@@ -50,7 +50,7 @@ server/.mvn/wrapper/maven-wrapper.jar
 
 ### NetBeans ###
 nb-configuration.xml
-/nbproject/private/
+nbproject/
 /nbbuild/
 /dist/
 /nbdist/
@@ -64,4 +64,3 @@ build/
 .DS_Store
 
 /data/
-client/src/assets/.nfs0000000123d9124f00000369
