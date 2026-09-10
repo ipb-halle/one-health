@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "type": "module",
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.7.2",
@@ -28,7 +29,7 @@
     "mobx-react-lite": "4.1.0",
     "mobx-state-tree": "7.1.0",
     "openchemlib": "8.21.0",
-    "plotly.js": "2.34.0",
+    "plotly.js": "^4.1.0",
     "primeicons": "6.0.1",
     "primereact": "10.9.6",
     "qs": "^6.16.0",
@@ -44,6 +45,9 @@
     "smiles-drawer": "2.0.3",
     "web-vitals": "5.1.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
+  },
+  "resolutions": {
+    "maplibre-gl": "^6.4.1"
   },
   "scripts": {
     "start": "vite --mode development",
