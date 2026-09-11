@@ -25,7 +25,7 @@ import { Slider } from 'primereact/slider';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { INeighborhoodExplorerStore } from '../../store/inversify/neighborhood-explorer-store';
-import { ITutorialStore, STORES } from '../../store/inversify';
+import { STORES } from '../../store/inversify';
 import { useNavigate } from 'react-router-dom';
 import CompoundSearchPageTourComponent from './compound-search-page-tour.component';
 import MolecularDrawComponent from '../../shared/components/molecular-draw.component';

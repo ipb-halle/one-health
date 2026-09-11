@@ -1,10 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import React from 'react';
-import { LoadingPlaceholderComponent } from '../../../../shared/components';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { dependencyFactory } from '../../../../app/di';
-import { ITutorialStore, STORES } from '../../../../store/inversify';
 import { Link } from 'react-router-dom';
 import GeneralSearchPageTourComponent from './general-search-tour.component';
 import './general-search.component.scss';

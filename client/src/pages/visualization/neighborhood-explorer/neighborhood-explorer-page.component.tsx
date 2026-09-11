@@ -9,7 +9,6 @@ import NeighborhoodExplorerComponent from '../../../features/visualization/neigh
 import NeighborhoodExplorerTour from '../../../features/visualization/neighborhood-explorer/components/neighborhood-explorer-tour.component';
 import {
     ILocalStorageStore,
-    ITutorialStore,
     LOCAL_STORAGE_KEYS,
     STORES,
 } from '../../../store/inversify';
