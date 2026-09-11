@@ -28,6 +28,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
         SERVICES.IEntityService,
     );
     const tutorialStore = useContext(RootStoreContext).tutorialStore;
+    const warningStore = useContext(RootStoreContext).warningStore;
     const { messageService } = useContext(MessageServiceContext);
     const localStorageStore = dependencyFactory.get<ILocalStorageStore>(
         STORES.ILocalStorageStore,
@@ -35,11 +36,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (
-            localStorageStore.getBooleanKeyValue(
-                LOCAL_STORAGE_KEYS.showNeighborhoodExplorerWarning,
-            )
-        )
+        if (warningStore.showNeighborhoodExplorerWarning)
             confirmTermsAndConditions();
     }, []);
 
@@ -50,12 +47,7 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
             message: toolDisclaimer,
             acceptLabel: 'Understood',
             rejectLabel: 'Back',
-            accept: () => {
-                localStorageStore.setBooleanKeyValue(
-                    LOCAL_STORAGE_KEYS.showNeighborhoodExplorerWarning,
-                    false,
-                );
-            },
+            accept: () => warningStore.ChangeShowNeighborhoodExplorerWarning(false),
             reject: () => {
                 navigate('/');
             },
