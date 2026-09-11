@@ -39,6 +39,8 @@ import { useNavigate } from 'react-router-dom';
 import { toolDisclaimer } from '../../../shared';
 
 import React from 'react';
+import { RootStoreContext } from '@/app/providers/store-provider';
+import { observer } from 'mobx-react-lite';
 
 // ToDo: this code fixes the "old import method" for Plotly 2.6.0 and
 // we need to upgrade to Plotly 4.x asap to get rid of this.
@@ -99,11 +101,9 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         STORES.ILocalStorageStore,
     );
 
-    const [runTutorial, setRunTutorial] = useState<boolean>(
-        localStorageStore.getBooleanKeyValue(
-            LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryTutorial,
-        ),
-    );
+    const tutorialStore = useContext(RootStoreContext).tutorialStore;
+
+    /*const [runTutorial, setRunTutorial] = useState<boolean>(false);
 
     const helpClickedHandler = () => {
         setRunTutorial(true);
@@ -115,7 +115,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
             LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryTutorial,
             false,
         );
-    };
+    };*/
 
     const confirmTermsAndConditions = () => {
         confirmDialog({
@@ -447,14 +447,18 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
     return (
         <>
             <CoOccurrencesSummaryTour
-                run={runTutorial}
-                callback={helpTourCallback}></CoOccurrencesSummaryTour>
+                run={tutorialStore.showCoOccurrencesSummaryTutorial}
+                callback={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(false)}>
+
+                </CoOccurrencesSummaryTour>
             <div className="page-container-wide">
                 <PageTitle
                     title="Co-Occurrences Summary"
                     icon="fa fa-circle-nodes"
                     help={true}
-                    helpClickedHandler={helpClickedHandler}></PageTitle>
+                    helpClickedHandler={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(true)}>
+
+                    </PageTitle>
 
                 <ConfirmDialog />
 
@@ -750,4 +754,4 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
     );
 };
 
-export default CoOccurrenceSummaryPageComponent;
+export default observer(CoOccurrenceSummaryPageComponent);
