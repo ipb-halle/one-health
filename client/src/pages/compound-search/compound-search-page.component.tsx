@@ -30,6 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import CompoundSearchPageTourComponent from './compound-search-page-tour.component';
 import MolecularDrawComponent from '../../shared/components/molecular-draw.component';
 import OpenChemLib from 'openchemlib/full';
+import { RootStoreContext } from '@/app/providers/store-provider';
+import { observer } from 'mobx-react-lite';
 
 export interface CompoundSearchQuery {
     value?: string;
@@ -46,6 +48,8 @@ export interface ExactSearchQuery {
 }
 
 export const CompoundSearchPageComponent: React.FC = () => {
+
+    const tutorialStore = useContext(RootStoreContext).tutorialStore;
     const navigate = useNavigate();
 
     const maxResultsOptions = [50, 100, 150, 200, 250, 500, 1000].map((x) => {
@@ -82,24 +86,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
     });
     const [exactQuery, setExactQuery] = useState<ExactSearchQuery>({});
     const [selectedCompounds, setSelectedCompounds] = useState<any[]>([]);
-
-    const tutorialStore = dependencyFactory.get<ITutorialStore>(
-        STORES.ITutorialStore,
-    );
-
-    const [runTutorial, setRunTutorial] = useState<boolean>(
-        tutorialStore.getShowCompoundSearchTutorial(),
-    );
-
-    const helpClickedHandler = () => {
-        setRunTutorial(true);
-    };
-
-    const helpTourCallback = () => {
-        tutorialStore.setShowCompoundSearchTutorial(false);
-        setRunTutorial(false);
-        // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
-    };
 
     useEffect(() => {
         let newEditor = OpenChemLib.StructureEditor.createSVGEditor(
@@ -304,12 +290,13 @@ export const CompoundSearchPageComponent: React.FC = () => {
                 icon="fa fa-atom"
                 title="Structure Search"
                 help={true}
-                helpClickedHandler={helpClickedHandler}
-            />
+                helpClickedHandler={() => {tutorialStore.ChangeShowTutorial(true)}}/>           
 
             <CompoundSearchPageTourComponent
-                run={runTutorial}
-                callback={helpTourCallback}></CompoundSearchPageTourComponent>
+                run={tutorialStore.showTutorial}
+                callback={() => tutorialStore.ChangeShowTutorial(false)}>
+
+                </CompoundSearchPageTourComponent>
 
             <div className="row" style={{ marginBottom: 20 }}>
                 <div className="col-6">
@@ -689,4 +676,4 @@ export const CompoundSearchPageComponent: React.FC = () => {
     );
 };
 
-export default CompoundSearchPageComponent;
+export default observer(CompoundSearchPageComponent);
