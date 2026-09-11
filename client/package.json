@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "type": "module",
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.7.2",
@@ -10,10 +11,11 @@
     "@fortawesome/free-regular-svg-icons": "6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
     "@fortawesome/react-fontawesome": "0.2.2",
+    "@tanstack/react-query": "^5.102.8",
     "@testing-library/user-event": "13.5.0",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
-    "axios": "1.16.0",
+    "axios": "^1.20.0",
     "bootstrap": "5.3.7",
     "chart.js": "^4.5.1",
     "csv-parser": "3.2.0",
@@ -27,16 +29,16 @@
     "mobx-react-lite": "4.1.0",
     "mobx-state-tree": "7.1.0",
     "openchemlib": "8.21.0",
-    "plotly.js": "2.35.3",
+    "plotly.js": "^4.1.0",
     "primeicons": "6.0.1",
     "primereact": "10.9.6",
-    "qs": "6.15.1",
+    "qs": "^6.16.0",
     "react": "18.3.1",
     "react-cytoscapejs": "2.0.0",
     "react-dom": "18.3.1",
     "react-joyride": "2.9.3",
     "react-plotly.js": "2.6.0",
-    "react-router-dom": "6.30.3",
+    "react-router-dom": "^7.18.3",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "sass": "1.89.2",
@@ -44,13 +46,17 @@
     "web-vitals": "5.1.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
   },
+  "resolutions": {
+    "maplibre-gl": "^6.4.1",
+    "js-yaml": "4.3.2"
+  },
   "scripts": {
     "start": "vite --mode development",
     "build": "vite build --mode production",
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "preview": "vite preview"
+    "test": "yarn jest",
+    "preview": "vite preview",
+    "generate:api": "npx orval --config orval.config.ts"
   },
   "browserslist": {
     "production": [
@@ -85,14 +91,15 @@
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
-    "jest": "30.0.5",
-    "jest-environment-jsdom": "30.0.5",
+    "jest": "30.5.1",
+    "jest-environment-jsdom": "30.5.1",
     "jsdom": "26.1.0",
+    "orval": "8.30.0",
     "prettier": "3.6.2",
-    "ts-jest": "29.4.4",
+    "ts-jest": "^29.4.12",
     "typescript": "4.9.5",
     "typescript-eslint": "8.37.0",
-    "vite": "8.1.5",
+    "vite": "^7.3.6",
     "vite-plugin-eslint": "1.8.1"
   }
 }

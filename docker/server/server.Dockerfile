@@ -1,5 +1,5 @@
 # Use a base image with Maven installed
-FROM maven:3.8.3-openjdk-17-slim AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,9 +15,10 @@ COPY server/src ./src
 
 # Build the application
 RUN mvn package -Dmaven.test.skip
+#RUN mvn clean package -DskipTests 
 
 # Create a new image for running the application
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 # Set the working directory
 WORKDIR /app
@@ -26,4 +27,4 @@ WORKDIR /app
 COPY --from=build /app/target/server.jar ./app.jar
 
 # Command to run the application
-CMD ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]

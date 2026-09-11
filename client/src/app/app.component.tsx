@@ -1,5 +1,4 @@
 import '../assets/styles/Style.scss';
-
 import './app.component.scss';
 import { RootStoreContext } from './providers/store-provider';
 import { useContext, useEffect } from 'react';

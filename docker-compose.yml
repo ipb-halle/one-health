@@ -20,13 +20,19 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
+    environment:
+      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
+      ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
+      ORCID_AUTHORIZE_URL: ${ORCID_AUTHORIZE_URL:-https://orcid.org/oauth/authorize}
+      ORCID_TOKEN_URL: ${ORCID_TOKEN_URL:-https://orcid.org/oauth/token}
+      ORCID_REDIRECT_URI: ${ORCID_REDIRECT_URI:-http://a.localhost:5174/auth/orcid/callback}      
     networks:
       - one-health-network
     depends_on:
       postgredb:
-          condition: service_healthy  # ensures the correct start of postgredb
+        condition: service_healthy # ensures the correct start of postgredb
       graphdb:
-          condition: service_healthy
+        condition: service_healthy
 
   client:
     container_name: one-health-client
@@ -35,13 +41,14 @@ services:
       dockerfile: ./docker/client/client.Dockerfile
     ports:
       - "80:80"
+      - "5180:80"
     # - "443:443"
     hostname: www.example.com
     networks:
       - one-health-network
     volumes:
-      - /srv/www/conf:/usr/local/apache2/conf
       - /srv/www/letsencrypt/.well-known:/usr/local/apache2/htdocs/.well-known
+
     depends_on:
       - server
 
@@ -56,7 +63,7 @@ services:
       NEO4J_AUTH: neo4j/password
       NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
     healthcheck:
-      test: ["CMD-SHELL", "wget --spider http://localhost:7474"]
+      test: [ "CMD-SHELL", "wget --spider http://localhost:7474" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -70,13 +77,13 @@ services:
     networks:
       - one-health-network
     volumes:
-      -  onehealth_pgsql:/var/lib/postgresql/data
+      - onehealth_pgsql:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: one_healt_huser
+      POSTGRES_USER: one_health_user
       POSTGRES_PASSWORD: one_health_password
       POSTGRES_DB: one_health
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U one_healt_huser -d one_health"]
+      test: [ "CMD-SHELL", "pg_isready -U one_health_user -d one_health" ]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -93,4 +100,3 @@ volumes:
   onehealth_neo4j:
     external: true
     name: onehealth_neo4j
-

@@ -1,9 +1,110 @@
-@use '../assets/styles/Constants' as *;
+@use '../assets/styles/Constants' as c;
 
 .p-menubar {
     background-color: white;
-    box-shadow: $app-box-shadow;
+    box-shadow: c.$app-box-shadow;
     border: none;
     display: flex;
     align-items: flex-end;
+}
+
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    padding: 0 12px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    box-sizing: border-box;
+
+    .mobile-header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .mobile-menu-btn {
+            background: transparent;
+            border: none;
+            padding: 6px;
+            font-size: 20px;
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+
+            &:hover,
+            &:active {
+                background-color: #f1f5f9;
+            }
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+
+            .mobile-logo-img {
+                height: 28px;
+                width: auto;
+            }
+
+            .mobile-brand-title {
+                font-weight: 800;
+                font-size: 15px;
+                color: #0f172a;
+                letter-spacing: 0.3px;
+                font-family: inherit;
+            }
+        }
+    }
+
+    .mobile-header-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        .mobile-shortcut-btn {
+            background: transparent;
+            border: none;
+            padding: 2px 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #334155;
+            text-decoration: none;
+
+            .shortcut-icon {
+                font-size: 17px;
+                color: #1e293b;
+                margin-bottom: 2px;
+            }
+
+            .shortcut-label {
+                font-size: 9px;
+                font-weight: 600;
+                color: #475569;
+                white-space: nowrap;
+                line-height: 1;
+            }
+
+            &.mobile-user-btn {
+                .shortcut-icon {
+                    font-size: 20px;
+                }
+            }
+
+            &:hover,
+            &:active {
+                opacity: 0.8;
+            }
+        }
+    }
 }
