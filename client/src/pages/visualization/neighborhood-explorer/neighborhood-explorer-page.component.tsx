@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import { toolDisclaimer } from '../../../shared';
 
 import React from 'react';
+import { RootStoreContext } from '@/app/providers/store-provider';
+import { observer } from 'mobx-react-lite';
 
 const MemoChart = React.memo(CytoscapeInteractiveChartComponent);
 
@@ -26,32 +28,12 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     const entityService = dependencyFactory.get<IEntityService>(
         SERVICES.IEntityService,
     );
-    const tutorialStore = dependencyFactory.get<ITutorialStore>(
-        STORES.ITutorialStore,
-    );
+    const tutorialStore = useContext(RootStoreContext).tutorialStore;
     const { messageService } = useContext(MessageServiceContext);
     const localStorageStore = dependencyFactory.get<ILocalStorageStore>(
         STORES.ILocalStorageStore,
     );
     const navigate = useNavigate();
-
-    const [runTutorial, setRunTutorial] = useState<boolean>(
-        localStorageStore.getBooleanKeyValue(
-            LOCAL_STORAGE_KEYS.showNeighborhoodExplorerTutorial,
-        ),
-    );
-
-    const helpClickedHandler = () => {
-        setRunTutorial(true);
-    };
-
-    const helpTourCallback = () => {
-        setRunTutorial(false);
-        localStorageStore.setBooleanKeyValue(
-            LOCAL_STORAGE_KEYS.showNeighborhoodExplorerTutorial,
-            false,
-        );
-    };
 
     useEffect(() => {
         if (
@@ -88,15 +70,19 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
                 icon="fa fa-compass"
                 title="Neighborhood Explorer"
                 help={true}
-                helpClickedHandler={helpClickedHandler}></PageTitle>
+                helpClickedHandler={() => tutorialStore.ChangeShowNeighborhoodExplorerTutorial(true)}>
+
+                </PageTitle>
 
             <NeighborhoodExplorerTour
-                run={runTutorial}
-                callback={helpTourCallback}></NeighborhoodExplorerTour>
+                run={tutorialStore.showNeighborhoodExplorerTutorial}
+                callback={() => tutorialStore.ChangeShowNeighborhoodExplorerTutorial(false)}>
+
+                </NeighborhoodExplorerTour>
 
             <NeighborhoodExplorerComponent graphService={entityService} />
         </div>
     );
 };
 
-export default NeighborhoodExplorerPageComponent;
+export default observer(NeighborhoodExplorerPageComponent);
