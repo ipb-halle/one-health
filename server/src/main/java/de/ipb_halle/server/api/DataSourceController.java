@@ -11,13 +11,15 @@ import de.ipb_halle.server.services.interfaces.IDataSourceService;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "api/data-source")
-public class DataSourceController extends PagedDataController<DataSourceDTO, DataSourceDTO, String> {
+// public class DataSourceController extends PagedDataController<DataSourceDTO,
+// DataSourceDTO, String> {
+public class DataSourceController {
 
     private final IDataSourceService dataSourceService;
 
     public DataSourceController(IDataSourceService crudHandler) {
 
-        super(crudHandler);
+        // super(crudHandler);
         this.dataSourceService = crudHandler;
     }
 
