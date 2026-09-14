@@ -77,10 +77,8 @@ import {
 
 import {
     ILocalStorageStore,
-    ITutorialStore,
     LocalStorageStore,
     STORES,
-    TutorialStore,
 } from '../../store/inversify';
 
 import {
@@ -135,11 +133,6 @@ dependencyFactory
         SERVICES.ICoOcurrenceVisualizationHistoryService,
     )
     .to(MockCoOcurrenceVisualizationHistoryService)
-    .inSingletonScope();
-
-dependencyFactory
-    .bind<ITutorialStore>(STORES.ITutorialStore)
-    .to(TutorialStore)
     .inSingletonScope();
 
 dependencyFactory
