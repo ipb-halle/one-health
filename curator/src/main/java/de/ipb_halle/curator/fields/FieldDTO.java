@@ -38,17 +38,4 @@ public abstract class FieldDTO {
     }
 
     public abstract Object toCSVcell();
-
-    public FieldDTO getLinkedFieldDTO() {
-        return linkedFieldDTO;
-    }
-
-    public FieldDTO linkFieldDTO(FieldDTO fieldDTO) {
-        linkedFieldDTO = fieldDTO;
-        return this;
-    }
-
-    public Iterator<FieldDTO> iterator() {
-        return new FieldDtoIterator(this);
-    }
 }

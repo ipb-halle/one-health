@@ -11,6 +11,7 @@ import de.ipb_halle.curator.metadata.ElementType;
 import java.util.Collection;
 import java.util.UUID;
 import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.MultiValueFieldDTO;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,11 +50,20 @@ public class ElementDTO {
 
     public void addField(FieldDTO field) {
         String key = field.getFieldName();
+        boolean multivalued = field.getFieldDefinition().isMultivalued();
         if(fields.containsKey(key)) {
-            field.linkFieldDTO(fields.get(key));
-
+            if (multivalued) {
+                ((MultiValueFieldDTO) fields.get(key)).addValue(field);
+                return;
+            }
+            throw new UnsupportedOperationException("Multiple values for singleton field");
+        } else {
+            if (multivalued) {
+                fields.put(key, new MultiValueFieldDTO(field));
+            } else {
+                fields.put(key, field);
+            }
         }
-        fields.put(key, field);
     }
 
     public void addFields(Collection<FieldDTO> fields) {
