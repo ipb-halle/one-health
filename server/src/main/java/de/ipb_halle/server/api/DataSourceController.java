@@ -29,11 +29,13 @@ public class DataSourceController extends PagedDataController<DataSourceDTO, Dat
      * return "hello";
      * }
      */
-
-    @PostMapping("map-entities/{id}")
-    public String MapDataSource(@PathVariable String id, @RequestBody EntityTypeMappingDTO mapping) {
-        return dataSourceService.MapEntities(id, mapping);
-    }
+    /*
+     * @PostMapping("map-entities/{id}")
+     * public String MapDataSource(@PathVariable String id, @RequestBody
+     * EntityTypeMappingDTO mapping) {
+     * return dataSourceService.MapEntities(id, mapping);
+     * }
+     */
 
     @PostMapping("map-links/{id}")
     public String MapDataSource(@PathVariable String id, @RequestBody LinkTypeMappingDTO mapping) {
