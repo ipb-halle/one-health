@@ -20,6 +20,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
+    ports:
+      - "8080:8080"
     networks:
       - one-health-network
     depends_on:
