@@ -76,8 +76,6 @@ import {
 } from '../../features/visualization/co-ocurrence-search/services/co-ocurrence-visualization-history-service';
 
 import {
-    ILocalStorageStore,
-    LocalStorageStore,
     STORES,
 } from '../../store/inversify';
 
@@ -152,10 +150,6 @@ dependencyFactory
     .bind<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore)
     .to(NeighborhoodExplorerStore)
     .inSingletonScope();
-
-dependencyFactory
-    .bind<ILocalStorageStore>(STORES.ILocalStorageStore)
-    .to(LocalStorageStore);
 
 dependencyFactory
     .bind<MessageService>(SERVICES.MessageService)

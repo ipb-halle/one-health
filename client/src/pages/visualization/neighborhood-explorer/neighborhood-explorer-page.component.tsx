@@ -7,11 +7,6 @@ import MessageServiceContext from '../../../app/providers/messages/message-servi
 import { PageTitle } from '../../../shared/components';
 import NeighborhoodExplorerComponent from '../../../features/visualization/neighborhood-explorer/components/neighborhood-explorer.component';
 import NeighborhoodExplorerTour from '../../../features/visualization/neighborhood-explorer/components/neighborhood-explorer-tour.component';
-import {
-    ILocalStorageStore,
-    LOCAL_STORAGE_KEYS,
-    STORES,
-} from '../../../store/inversify';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 import { toolDisclaimer } from '../../../shared';
@@ -30,9 +25,6 @@ const NeighborhoodExplorerPageComponent: React.FC = () => {
     const tutorialStore = useContext(RootStoreContext).tutorialStore;
     const warningStore = useContext(RootStoreContext).warningStore;
     const { messageService } = useContext(MessageServiceContext);
-    const localStorageStore = dependencyFactory.get<ILocalStorageStore>(
-        STORES.ILocalStorageStore,
-    );
     const navigate = useNavigate();
 
     useEffect(() => {

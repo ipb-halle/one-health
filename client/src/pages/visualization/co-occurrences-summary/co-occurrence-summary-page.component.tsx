@@ -96,20 +96,6 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
 
     const tutorialStore = useContext(RootStoreContext).tutorialStore;
 
-    /*const [runTutorial, setRunTutorial] = useState<boolean>(false);
-
-    const helpClickedHandler = () => {
-        setRunTutorial(true);
-    };
-
-    const helpTourCallback = () => {
-        setRunTutorial(false);
-        localStorageStore.setBooleanKeyValue(
-            LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryTutorial,
-            false,
-        );
-    };*/
-
     const confirmTermsAndConditions = () => {
         confirmDialog({
             header: 'Disclaimer',

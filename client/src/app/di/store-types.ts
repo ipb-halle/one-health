@@ -2,7 +2,6 @@
 
 const STORES = {
     INeighborhoodExplorerStore: Symbol.for('INeighborhoodExplorerStore'),
-    ILocalStorageStore: Symbol.for('ILocalStorageStore'),
 };
 
 export { STORES };
