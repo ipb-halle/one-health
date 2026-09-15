@@ -23,11 +23,6 @@ import {
 } from '../../features/metadata/services/link-type-service';
 
 import {
-    IMetadataService,
-    MetadataService,
-} from '../../features/metadata/services/metadata-service';
-
-import {
     IPropertyService,
     PropertyService,
 } from '../../features/metadata/services/property-service';
@@ -88,7 +83,6 @@ import {
     NeighborhoodExplorerStore,
 } from '../../store/inversify/neighborhood-explorer-store';
 
-
 const dependencyFactory = new Container();
 
 dependencyFactory
@@ -110,10 +104,6 @@ dependencyFactory
 dependencyFactory
     .bind<IDataSourceService>(SERVICES.IDataSourceService)
     .to(DataSourceService);
-
-dependencyFactory
-    .bind<IMetadataService>(SERVICES.IMetadataService)
-    .to(MetadataService);
 
 dependencyFactory
     .bind<IOntologyService>(SERVICES.IOntologyService)
