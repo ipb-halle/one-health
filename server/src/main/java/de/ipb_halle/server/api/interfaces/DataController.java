@@ -13,19 +13,10 @@ import java.util.List;
 @Controller
 public abstract class DataController<TDTO extends DTO<TKey>, TKey extends Comparable<TKey>> {
 
-    private final ICrudHandler<TDTO, TKey> crudHandler;
+    protected final ICrudHandler<TDTO, TKey> crudHandler;
 
     public DataController(ICrudHandler<TDTO, TKey> crudHandler) {
         this.crudHandler = crudHandler;
-    }
-
-    @PostMapping()
-    public ResponseEntity<TDTO> Create(@RequestBody TDTO dto) {
-        TDTO result = crudHandler.Create(dto);
-        if (result != null)
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     /*
