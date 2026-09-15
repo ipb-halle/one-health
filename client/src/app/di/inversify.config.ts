@@ -3,11 +3,6 @@
 import { Container } from 'inversify';
 
 import {
-    IDataSourceService,
-    DataSourceService,
-} from '../../features/metadata/services/data-source-service';
-
-import {
     IEntityTypeService,
     EntityTypeService,
 } from '../../features/metadata/services/entity-type-service';
@@ -100,10 +95,6 @@ dependencyFactory
 dependencyFactory
     .bind<IPropertyService>(SERVICES.IPropertyService)
     .to(PropertyService);
-
-dependencyFactory
-    .bind<IDataSourceService>(SERVICES.IDataSourceService)
-    .to(DataSourceService);
 
 dependencyFactory
     .bind<IOntologyService>(SERVICES.IOntologyService)

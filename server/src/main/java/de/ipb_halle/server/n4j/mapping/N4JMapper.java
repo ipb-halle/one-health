@@ -178,12 +178,7 @@ public interface N4JMapper {
         return dto;
     }
 
-    // Data Source
-
-
     N4JKeyword map(KeywordDTO dto);
-
-    N4JDataSource map(DataSourceDTO dto);
 
     N4JPropertyInfo map(PropertyInfoDTO dto);
 
@@ -191,7 +186,6 @@ public interface N4JMapper {
 
 
     KeywordDTO map(N4JKeyword object);
-    DataSourceDTO map(N4JDataSource object);
     PropertyInfoDTO map(N4JPropertyInfo object);
 
 }

@@ -5,7 +5,6 @@ const SERVICES = {
     IEntityTypeService: Symbol.for('IEntityTypeService'),
     ILinkTypeService: Symbol.for('ILinkTypeService'),
     IPropertyService: Symbol.for('IPropertyService'),
-    IDataSourceService: Symbol.for('IDataSourceService'),
     IEntityService: Symbol.for('IEntityService'),
     IGraphVisualizationHistoryService: Symbol.for(
         'IGraphVisualizationHistoryService',

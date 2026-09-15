@@ -16,12 +16,10 @@ public class LinkTypeDTO extends DTO<String> {
     private String description;
     private Set<KeywordDTO> keywords;
     private Set<PropertyInfoDTO> properties;
-    private Set<DataSourceDTO> sources;
-
     public LinkTypeDTO() {
     }
 
-    public LinkTypeDTO(String id, String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties, Set<DataSourceDTO> sources) {
+    public LinkTypeDTO(String id, String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties) {
         this.id = id;
         this.name = name;
         this.direction = direction;
@@ -32,10 +30,9 @@ public class LinkTypeDTO extends DTO<String> {
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
-    public LinkTypeDTO(String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties, Set<DataSourceDTO> sources) {
+    public LinkTypeDTO(String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties) {
         this.name = name;
         this.direction = direction;
         this.leftEntityTypeId = leftEntityTypeId;
@@ -45,7 +42,6 @@ public class LinkTypeDTO extends DTO<String> {
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
     public LinkTypeDTO(String id,String name, String direction, String leftEntityTypeId, Cardinality leftCardinality, String rightEntityTypeId, Cardinality rightCardinality, String description) {
@@ -139,11 +135,5 @@ public class LinkTypeDTO extends DTO<String> {
         this.properties = properties;
     }
 
-    public Set<DataSourceDTO> getSources() {
-        return sources;
-    }
-
-    public void setSources(Set<DataSourceDTO> sources) {
-        this.sources = sources;
-    }
 }
+
