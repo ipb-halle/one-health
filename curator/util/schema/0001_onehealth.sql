@@ -1,4 +1,15 @@
-\connect curator curator
+\set CURATOR_DATABASE curator
+\set CURATOR_SCHEMA curator
+\set CURATOR_USER curator
+
+\connect :CURATOR_DATABASE
+\i /opt/bingo/bingo_install.sql
+GRANT USAGE ON SCHEMA bingo TO :CURATOR_USER;
+GRANT SELECT ON bingo.bingo_config TO :CURATOR_USER;
+GRANT SELECT ON bingo.bingo_tau_config TO :CURATOR_USER;
+
+\set search_path :CURATOR_SCHEMA
+\connect - :CURATOR_USER
 
 CREATE TYPE element_class AS ENUM ('NODE', 'EDGE');
 CREATE TABLE element_types (

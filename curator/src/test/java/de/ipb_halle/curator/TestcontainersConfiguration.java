@@ -21,6 +21,7 @@ import org.testcontainers.utility.MountableFile;
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
 
+    private final static String PG_IMAGE_NAME = "pg17_bingo1.46.0";
     private final static String SCHEMA_DIR = "util/schema/";
     private final static String INIT_DIR = "/docker-entrypoint-initdb.d/";
 
@@ -37,7 +38,9 @@ public class TestcontainersConfiguration {
     }
 
     private static PostgreSQLContainer buildPostgreSQLContainer() {
-        PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres:latest"))
+        DockerImageName imageName = DockerImageName.parse(PG_IMAGE_NAME)
+                .asCompatibleSubstituteFor("postgres");
+        PostgreSQLContainer container = new PostgreSQLContainer(imageName)
                 .withDatabaseName("curator")
                 .withUsername("curator")
                 .withPassword("curator");
