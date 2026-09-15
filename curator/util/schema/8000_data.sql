@@ -1,0 +1,41 @@
+/*
+ * One-Health data set configuration
+ * This data is to be moved to the One Health Data repository
+ */
+\set CURATOR_DATABASE curator
+\set CURATOR_SCHEMA curator
+\set CURATOR_USER curator
+
+\connect :CURATOR_DATABASE :CURATOR_USER
+\set search_path :CURATOR_SCHEMA
+
+INSERT INTO element_types (element_class, label, name, description, ui_color) VALUES
+    ('NODE', 'ORGANISM', 'Organism', 'Living cellular organism', 0x297e00),
+    ('NODE', 'COMPOUND', 'Compound', 'Chemical compound, ideally produced by a living organism and thus a natural product', 0x343ea0),
+    ('EDGE', 'PRODUCES', 'produces', 'Living organism is capable to produce a natural product', 0x0);
+
+INSERT INTO relation_types (left_type_id, relation_type_id, right_type_id) VALUES
+    (1,2,3);
+
+INSERT INTO field_types (type, description, table_name) VALUES
+/* 1 */
+    ('TEXT', 'general text types', 'text_fields'),
+    ('INTEGER', 'integral types', 'integer_fields'),
+    ('ENUM', 'enumeration types', 'integer_fields'),
+    ('UUID', 'universally unique identifiers', 'uuid_fields'),
+    ('FLOAT', 'floating point types', 'float_fields'),
+/* 6 */
+    ('STRUCTURE', 'a chemical structure, preferably SMILES, specifying constitution and configuration', 'compound_fields');
+
+INSERT INTO data_sources (name, description, handler, source_url) VALUES
+    ('COCONUT', 'COlleCtion of Open NatUral producTs (https://coconut.naturalproducts.net', '', '');
+
+CREATE TABLE element_mappings (data_source_id, element_type_id, mapping) VALUES
+    (1, 1, 'ORGANISM:synonym'),
+    (1, 2, 'COMPOUND:CoconutId');
+
+INSERT INTO field_definitions (field_type_id, element_type_id, graph_export_order, name, description, mandatory, multivalued) VALUES
+    (1, 2, null, 'synonyms', 'synonym names for compound', false, false),
+    (6, 2, null, 'structure', 'chemical constitution and configuration', true, false),
+    (1, 2, null, 'InChI-Key', 'InChi-Key as computed from structure', false, false),
+    (1, 2, null, 'CoconutId', 'Record identifier used by COCONUT DB (https://coconut.naturalproducts.net)', false, false);

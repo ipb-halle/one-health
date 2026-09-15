@@ -21,8 +21,14 @@ CREATE TABLE element_types (
     ui_color    INTEGER
 );
 
+CREATE TABLE relation_types (
+    left_type_id        INTEGER NOT NULL REFERENCES element_types (id)  ON UPDATE CASCADE ON DELETE CASCADE,
+    relation_type_id    INTEGER NOT NULL REFERENCES element_types (id)  ON UPDATE CASCADE ON DELETE CASCADE,
+    right_type_id       INTEGER NOT NULL REFERENCES element_types (id)  ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (left_type_id, relation_type_id, right_type_id)
+);
 
-CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID');
+CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'FLOAT', 'STRUCTURE');
 CREATE TABLE field_types (
     id          SERIAL NOT NULL PRIMARY KEY,
     type        field_class UNIQUE NOT NULL,
@@ -30,6 +36,27 @@ CREATE TABLE field_types (
     table_name  VARCHAR
 );
 
+CREATE TABLE data_sources (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    name        VARCHAR,
+    description VARCHAR,
+    handler     VARCHAR,
+    source_url  VARCHAR
+);
+
+CREATE TABLE element_mappings (
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    data_source_id      INTEGER NOT NULL REFERENCES data_sources (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    element_type_id     INTEGER NOT NULL REFERENCES element_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    mapping             VARCHAR NOT NULL
+);
+
+CREATE TABLE field_mappings (
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    data_source_id      INTEGER NOT NULL REFERENCES data_sources (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_name          VARCHAR NOT NULL,
+    mapping             VARCHAR NOT NULL
+);
 
 CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
@@ -86,6 +113,22 @@ CREATE TABLE integer_fields (
 );
 CREATE INDEX integer_fields_field_index ON integer_fields (field_id, value);
 
-/*
- * compounds ...
- */
+CREATE TABLE float_fields (
+    element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_order INTEGER NOT NULL DEFAULT 0,
+    value       FLOAT,
+    PRIMARY KEY (element_id, field_id, field_order)
+);
+CREATE INDEX float_fields_field_index ON integer_fields (field_id, value);
+
+
+CREATE TABLE compound_fields (
+    element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    inchi       TEXT,
+    value       TEXT,
+    PRIMARY KEY (element_id, field_id)
+);
+CREATE INDEX compound_fields_inchi_idx USING (inchi);
+CREATE INDEX compound_fields_value_idx USING bingo_idx (value bingo.molecule);
