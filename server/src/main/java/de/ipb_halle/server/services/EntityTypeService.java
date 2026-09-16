@@ -7,8 +7,6 @@ import de.ipb_halle.server.data.dtos.EntityTypeDTO;
 import de.ipb_halle.server.data.dtos.SelectableOption;
 import de.ipb_halle.server.data.interfaces.IEntityTypeRepository;
 import de.ipb_halle.server.services.interfaces.IEntityTypeService;
-import de.ipb_halle.server.services.interfaces.PageResult;
-import de.ipb_halle.server.services.interfaces.QueryCommand;
 
 import java.util.List;
 
@@ -43,13 +41,6 @@ public class EntityTypeService implements IEntityTypeService {
 
         return entityRepository.GetAll();
     }
-
-    @Override
-    public PageResult<EntityTypeDTO> GetPage(QueryCommand queryCommand) {
-        var items = entityRepository.GetAll();
-        return new PageResult<>(items.size(), items);
-    }
-
 
     @Override
     public EntityTypeDTO Update(EntityTypeDTO dto) {
