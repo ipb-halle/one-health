@@ -1,7 +1,6 @@
 // This file contains the service symbols used for dependency injection
 const SERVICES = {
     IOntologyService: Symbol.for('IOntologyService'),
-    IKeywordService: Symbol.for('IKeywordService'),
     IEntityTypeService: Symbol.for('IEntityTypeService'),
     ILinkTypeService: Symbol.for('ILinkTypeService'),
     IPropertyService: Symbol.for('IPropertyService'),

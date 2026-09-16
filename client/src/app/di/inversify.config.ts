@@ -8,11 +8,6 @@ import {
 } from '../../features/metadata/services/entity-type-service';
 
 import {
-    IKeywordService,
-    KeywordService,
-} from '../../features/metadata/services/keyword-service';
-
-import {
     ILinkTypeService,
     LinkTypeService,
 } from '../../features/metadata/services/link-type-service';
@@ -83,10 +78,6 @@ const dependencyFactory = new Container();
 dependencyFactory
     .bind<IEntityTypeService>(SERVICES.IEntityTypeService)
     .to(EntityTypeService);
-
-dependencyFactory
-    .bind<IKeywordService>(SERVICES.IKeywordService)
-    .to(KeywordService);
 
 dependencyFactory
     .bind<ILinkTypeService>(SERVICES.ILinkTypeService)
