@@ -8,8 +8,6 @@ import de.ipb_halle.server.data.interfaces.ILinkTypeRepository;
 import de.ipb_halle.server.n4j.mapping.N4JMapper;
 import de.ipb_halle.server.n4j.models.N4JEntityType;
 import de.ipb_halle.server.n4j.models.N4JLinkType;
-import de.ipb_halle.server.services.interfaces.PageResult;
-import de.ipb_halle.server.services.interfaces.QueryCommand;
 
 import java.util.List;
 
@@ -36,12 +34,4 @@ public class N4JLinkTypeRepository implements ILinkTypeRepository {
     }
 
 
-    @Override
-    public PageResult<LinkTypeDTO> GetPage(QueryCommand query) {
-        List<LinkTypeDTO> result = neo4jTemplate.findAll(N4JLinkType.class)
-                .stream()
-                .map(N4JMapper.MAPPER::map)
-                .toList();
-        return new PageResult<>(result.size(), result);
-    }
 }
