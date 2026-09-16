@@ -19,19 +19,6 @@ public abstract class DataController<TDTO extends DTO<TKey>, TKey extends Compar
         this.crudHandler = crudHandler;
     }
 
-    /*
-     * @PutMapping()
-     * 
-     * @ResponseStatus(HttpStatus.OK)
-     * public ResponseEntity<TDTO> Update(@RequestBody TDTO dto){
-     * TDTO result = crudHandler.Update(dto);
-     * if (result != null)
-     * return new ResponseEntity<>(result, HttpStatus.CREATED);
-     * 
-     * return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-     * }
-     */
-
     @GetMapping("{id}")
     public ResponseEntity<TDTO> Get(@PathVariable TKey id) {
         TDTO result = crudHandler.Get(id);
@@ -40,13 +27,6 @@ public abstract class DataController<TDTO extends DTO<TKey>, TKey extends Compar
 
         return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
-
-    /*
-     * @DeleteMapping("{id}")
-     * public void Delete(@PathVariable TKey id) {
-     * crudHandler.Delete(id);
-     * }
-     */
 
     @GetMapping("all")
     public ResponseEntity<List<TDTO>> Get() {

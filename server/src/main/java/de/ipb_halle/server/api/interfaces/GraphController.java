@@ -9,7 +9,6 @@ import de.ipb_halle.server.data.dtos.GraphDTO;
 import de.ipb_halle.server.data.dtos.LinkDTO;
 import de.ipb_halle.server.services.interfaces.IGraphService;
 
-import java.io.Console;
 import java.util.List;
 
 public class GraphController {
@@ -18,12 +17,6 @@ public class GraphController {
     public GraphController(IGraphService graphService) {
         this.graphService = graphService;
     }
-    /*
-     * @GetMapping("get-initial")
-     * public ResponseEntity<GraphDTO> GetInitialGraph() {
-     * return new ResponseEntity<>(graphService.GetInitialSet(), HttpStatus.OK);
-     * }
-     */
 
     @PostMapping("get-node-expansion/{id}")
     public ResponseEntity<GraphDTO> GetAdjacentNodes(@PathVariable String id, @RequestBody List<String> nodes) {
