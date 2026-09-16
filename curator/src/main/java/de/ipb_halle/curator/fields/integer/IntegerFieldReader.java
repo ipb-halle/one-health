@@ -7,9 +7,10 @@
  */
 package de.ipb_halle.curator.fields.integer;
 
+import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldDTO;
-import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,7 @@ public class IntegerFieldReader {
     private MetadataRegistry registry;
 
     @Autowired
-    private IntegerFieldConverter converter;
+    private FieldConverter converter;
 
     /**
      * @param input, for performance reasons, the InputStream should be a BufferedInputStream
@@ -52,12 +53,18 @@ public class IntegerFieldReader {
     }
 
     private void parseRecord(CSVRecord record) {
+        int fieldDefinitionId = Integer.parseInt(record.get(IntegerField.HEADER[1]));
+        FieldDefinitionDTO fieldDef = registry.getFieldDefinition(fieldDefinitionId);
+        if (fieldDef.getFieldType().getBaseType() != FieldType.INTEGER) {
+            throw new IllegalArgumentException("Parsing non-INTEGER field");
+        }
         IntegerField field = new IntegerField(
                 UUID.fromString(record.get(IntegerField.HEADER[0])),
-                Integer.parseInt(record.get(IntegerField.HEADER[1])),
+                fieldDefinitionId,
                 Integer.parseInt(record.get(IntegerField.HEADER[2])),
                 Integer.valueOf(record.get(IntegerField.HEADER[3])));
         // validation by turning into DTO
+
         FieldDTO dto = converter.createDTO(field);
         if (dto != null) {
             repository.save(field);

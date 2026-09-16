@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator.fields.integer;
 
+import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public interface IntegerFieldRepository extends JpaRepository<IntegerField, Orde
      */
     @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId "
             + "ORDER BY t.id.fieldId, t.id.order ASC")
-    List<IntegerField> findIntegerFields(UUID elementId);
+    List<FieldEntity> findIntegerFields(UUID elementId);
 
     /**
      * Fetch a list of IntegerFields for a given Entity.

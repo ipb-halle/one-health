@@ -63,16 +63,16 @@ public class ElementServiceTest {
 
     @Test
     public void testLoadByField() throws Exception {
-/*
-        FieldType fieldType = registry.getFieldType(1);
-        FieldDefinitionDTO fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
-        IFieldId fieldId = new OrderedFieldId(null, fieldType.getId(), 0);
-        TextField textField = new TextField(fieldId, "common sage");
-        TextFieldDTO field = TextFieldDTO.createDTO(textField, fieldDef);
+        try (DbTestHelper helper = new DbTestHelper(container)) {
+            creator.setupFull(helper);
+            FieldDefinitionDTO fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
+            IFieldId fieldId = new OrderedFieldId(null, fieldDef.getId(), 0);
+            TextField textField = new TextField(fieldId, "common sage");
+            TextFieldDTO field = TextFieldDTO.createDTO(textField, fieldDef);
 
-        List<ElementDTO> elementDTOs = service.loadByFieldValue(field);
-        assertThat(elementDTOs.size()).isEqualTo(1);
-        assertThat(elementDTOs.get(0).getId()).isEqualTo(UUID.fromString(ElementIoTest.ORGANISM_ID1));
-*/
+            ElementDTO elementDTO = service.loadByFieldValue(field);
+            assertThat(elementDTO).isNotNull();
+            assertThat(elementDTO.getId()).isEqualTo(UUID.fromString(ElementIoTest.ORGANISM_ID1));
+        }
     }
 }

@@ -5,9 +5,10 @@
  * Curator
  * Curator provides an ETL pipeline to the One Health project.
  */
-package de.ipb_halle.curator.fields.integer;
+package de.ipb_halle.curator.fields.real;
 
 import de.ipb_halle.curator.fields.FieldEntity;
+import de.ipb_halle.curator.fields.integer.*;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import jakarta.persistence.Column;
@@ -21,8 +22,8 @@ import java.util.UUID;
  * @author fblocal
  */
 @Entity
-@Table(name="integer_fields")
-public class IntegerField implements FieldEntity<Integer> {
+@Table(name="real_fields")
+public class RealField implements FieldEntity<Double> {
 
     public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
 
@@ -30,13 +31,13 @@ public class IntegerField implements FieldEntity<Integer> {
     private OrderedFieldId id;
 
     @Column
-    private Integer value;
+    private Double value;
 
-    public IntegerField() {
+    public RealField() {
 
     }
 
-    public IntegerField(UUID elementId, int fieldDefinitionId, int order, Integer value) {
+    public RealField(UUID elementId, int fieldDefinitionId, int order, Double value) {
         this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
         this.value = value;
     }
@@ -46,11 +47,11 @@ public class IntegerField implements FieldEntity<Integer> {
     }
 
     @Override
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

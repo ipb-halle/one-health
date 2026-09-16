@@ -21,6 +21,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,19 +52,25 @@ public class ElementService {
     }
 
 
-    public List<ElementDTO> loadByFieldValue(FieldDTO field) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Element> cq = cb.createQuery(Element.class);
-        Root<Element> root = cq.from(Element.class);
-        Join join = joinField(root, field);
-
-        cq.where(getPredicate(cb, join, field));
-        cq.select(root).distinct(true);
-        List<ElementDTO> dtos = converter.createDTOs(entityManager
-                .createQuery(cq)
-                .getResultList());
-        dtos.stream().forEach(e -> e.addFields(fieldService.loadFields(e.getId())));
-        return dtos;
+    public ElementDTO loadByFieldValue(FieldDTO queryField) {
+        List <FieldDTO> fields = fieldService.loadFieldsByValue(queryField, null, 0);
+        if (fields.size() == 1) {
+            UUID elementId = fields.get(0).getId().getElementId();
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Element> cq = cb.createQuery(Element.class);
+            Root<Element> root = cq.from(Element.class);
+            cq.where(cb.equal(root.get("id"), elementId));
+            cq.select(root);
+            List<Element> result = entityManager.createQuery(cq).getResultList();
+            if (result.size() == 1) {
+                ElementDTO element = converter.createDTO(result.get(0));
+                element.addFields(fieldService.loadFields(elementId));
+                return element;
+            } else {
+                throw new IllegalStateException("Obtained multiple Elements for single id");
+            }
+        }
+        return null;
     }
 
     private Join joinField(Root root, FieldDTO field) {

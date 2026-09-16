@@ -11,6 +11,7 @@ import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import java.util.UUID;
 import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 
 /**
@@ -26,7 +27,7 @@ public class IntegerFieldDTO extends FieldDTO<IntegerField> {
         this.value = value;
     }
 
-    public static IntegerFieldDTO createDTO(IntegerField field, FieldDefinitionDTO fieldDefinition) {
+    public static IntegerFieldDTO createDTO(FieldEntity<Integer> field, FieldDefinitionDTO fieldDefinition) {
         return new IntegerFieldDTO(field.getId(), fieldDefinition, field.getValue());
     }
 

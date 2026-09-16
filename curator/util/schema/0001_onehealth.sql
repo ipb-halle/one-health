@@ -28,7 +28,7 @@ CREATE TABLE relation_types (
     PRIMARY KEY (left_type_id, relation_type_id, right_type_id)
 );
 
-CREATE TYPE field_type_enum AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'FLOAT', 'STRUCTURE');
+CREATE TYPE field_type_enum AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'REAL', 'STRUCTURE');
 
 CREATE TABLE data_sources (
     id          SERIAL NOT NULL PRIMARY KEY,
@@ -107,11 +107,11 @@ CREATE TABLE integer_fields (
 );
 CREATE INDEX integer_fields_field_index ON integer_fields (field_id, value);
 
-CREATE TABLE float_fields (
+CREATE TABLE real_fields (
     element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_order INTEGER NOT NULL DEFAULT 0,
-    value       FLOAT,
+    value       DOUBLE PRECISION,
     PRIMARY KEY (element_id, field_id, field_order)
 );
 CREATE INDEX float_fields_field_index ON integer_fields (field_id, value);

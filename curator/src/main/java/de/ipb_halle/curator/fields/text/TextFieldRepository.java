@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator.fields.text;
 
+import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import de.ipb_halle.curator.fields.integer.IntegerField;
 import java.util.List;
@@ -36,7 +37,7 @@ public interface TextFieldRepository extends JpaRepository<TextField, OrderedFie
      */
     @Query("SELECT t FROM TextField t WHERE t.id.elementId = :elementId "
             + "ORDER BY t.id.fieldId, t.id.order ASC")
-    List<TextField> findTextFields(UUID elementId);
+    List<FieldEntity> findTextFields(UUID elementId);
 
     /**
      * Fetch a list of TextFields for a given Entity.

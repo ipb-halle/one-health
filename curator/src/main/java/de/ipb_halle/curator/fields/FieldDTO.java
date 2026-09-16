@@ -7,22 +7,21 @@
  */
 package de.ipb_halle.curator.fields;
 
+import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
-import java.util.Iterator;
+import de.ipb_halle.curator.metadata.FieldType;
 
 /**
  *
  * @author fblocal
  */
-public abstract class FieldDTO <T> {
+public abstract class FieldDTO <T extends FieldEntity> {
     private final IFieldId id;
     private final FieldDefinitionDTO fieldDefinition;
-    private FieldDTO linkedFieldDTO;
 
     public FieldDTO (IFieldId id, FieldDefinitionDTO fieldDefinition) {
         this.id = id;
         this.fieldDefinition = fieldDefinition;
-        this.linkedFieldDTO = null;
     }
 
     public IFieldId getId() {
@@ -33,8 +32,16 @@ public abstract class FieldDTO <T> {
         return this.fieldDefinition.getName();
     }
 
+    public FieldType getFieldType() {
+        return this.fieldDefinition.getFieldType();
+    }
+
     public FieldDefinitionDTO getFieldDefinition() {
         return this.fieldDefinition;
+    }
+
+    public String getTableName() {
+        return fieldDefinition.getFieldType().getTableName();
     }
 
     public boolean isMultivalued() {

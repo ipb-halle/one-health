@@ -5,44 +5,42 @@
  * Curator
  * Curator provides an ETL pipeline to the One Health project.
  */
-package de.ipb_halle.curator.fields.text;
+package de.ipb_halle.curator.fields.compound;
 
+import de.ipb_halle.curator.fields.FieldEntity;
+import de.ipb_halle.curator.fields.FieldId;
 import de.ipb_halle.curator.fields.IFieldId;
-import de.ipb_halle.curator.fields.OrderedFieldId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.UUID;
-import de.ipb_halle.curator.fields.FieldEntity;
 
 /**
  *
  * @author fblocal
  */
 @Entity
-@Table(name="text_fields")
-public class TextField implements FieldEntity<String> {
+@Table(name="compound_fields")
+public class CompoundField implements FieldEntity<String> {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
+    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value", "compound"};
 
     @EmbeddedId
-    private OrderedFieldId id;
+    private FieldId id;
 
     @Column
     private String value;
 
-    public TextField() {
+    @Column
+    private String compound;
+
+    public CompoundField() {
 
     }
 
-    public TextField(IFieldId id, String value) {
-        this.id = new OrderedFieldId(id);
-        this.value = value;
-    }
-
-    public TextField(UUID elementId, int fieldDefinitionId, int order, String value) {
-        this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
+    public CompoundField(UUID elementId, int fieldDefinitionId, int order, String value) {
+        this.id = new FieldId(elementId, fieldDefinitionId);
         this.value = value;
     }
 
@@ -59,4 +57,11 @@ public class TextField implements FieldEntity<String> {
         this.value = value;
     }
 
+    public String getCompound() {
+        return compound;
+    }
+
+    public void setCompound(String compound) {
+        this.compound = compound;
+    }
 }

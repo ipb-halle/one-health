@@ -8,12 +8,12 @@
 package de.ipb_halle.curator.fields;
 
 import de.ipb_halle.curator.fields.integer.IntegerField;
-import de.ipb_halle.curator.fields.integer.IntegerFieldConverter;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
 import de.ipb_halle.curator.fields.text.TextField;
-import de.ipb_halle.curator.fields.text.TextFieldConverter;
 import de.ipb_halle.curator.fields.text.TextFieldRepository;
-import de.ipb_halle.curator.metadata.MetadataRegistry;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,38 +28,52 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class FieldService {
+    private final static String QUERY_BY_VALUE
+            = "SELECT element_id, field_id,  field_order, value %s FROM %s "
+            + "WHERE value = ? %s LIMIT 100 OFFSET ?";
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
+    private FieldConverter converter;
 
     @Autowired
     private IntegerFieldRepository integerRepository;
 
     @Autowired
-    private IntegerFieldConverter integerConverter;
-
-    @Autowired
     private TextFieldRepository textRepository;
-
-    @Autowired
-    private TextFieldConverter textConverter;
 
     public List<FieldDTO> loadFields(UUID elementId) {
         List<FieldDTO> results = new ArrayList<> ();
-        List<TextField> textFields = textRepository.findTextFields(elementId);
-        results.addAll(textConverter.createDTOs(textFields));
+        List<FieldEntity> textFields = textRepository.findTextFields(elementId);
+        results.addAll(converter.createDTOs(textFields));
 
-        List<IntegerField> integerFields = integerRepository.findIntegerFields(elementId);
-        results.addAll(integerConverter.createDTOs(integerFields));
+        List<FieldEntity> integerFields = integerRepository.findIntegerFields(elementId);
+        results.addAll(converter.createDTOs(integerFields));
 
         return results;
     }
 
-    public List<FieldDTO> loadFielsByValue(FieldDTO field) {
-        return new ArrayList<>();
+    public List<FieldDTO> loadFieldsByValue(FieldDTO value, FieldDefinitionDTO fieldDef, int offset) {
+        String extraFields = "";
+        String tableName = value.getTableName();
+        String fieldIdCondition = (fieldDef != null) ? " AND field_id = ? " : "";
+        String sql = QUERY_BY_VALUE.formatted(extraFields, tableName, fieldIdCondition);
+        Query query = entityManager.createNativeQuery(sql, value.getFieldType().getBaseEntity());
+        int paramIndex = 1;
+        query.setParameter(paramIndex++, value.createEntity().getValue());
+        if (fieldDef != null) {
+            query.setParameter(paramIndex++, fieldDef.getId());
+        }
+        query.setParameter(paramIndex++, offset);
+        return converter.createDTOs(query.getResultList());
     }
 
     @Transactional
     public void saveField(FieldDTO field) {
         if (field.isMultivalued()) {
-            saveFields(field);
+            saveFields((MultiValueFieldDTO) field);
         } else {
             saveSingleField(field);
         }
@@ -76,8 +90,8 @@ public class FieldService {
         }
     }
 
-    private void saveFields(FieldDTO<List> field) {
-        field.createEntity()
+    private void saveFields(MultiValueFieldDTO field) {
+        field.getValues()
                 .stream()
                 .forEach(f -> saveField((FieldDTO) f));
     }

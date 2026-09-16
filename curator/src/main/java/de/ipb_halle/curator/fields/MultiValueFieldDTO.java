@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author fblocal
  */
-public class MultiValueFieldDTO extends FieldDTO<List> {
+public class MultiValueFieldDTO extends FieldDTO<ListEntity> {
 
     private List<FieldDTO> values;
 
@@ -43,7 +43,7 @@ public class MultiValueFieldDTO extends FieldDTO<List> {
     }
 
     @Override
-    public List createEntity() {
-        return values;
+    public ListEntity createEntity() {
+        return new ListEntity(values);
     }
 }
