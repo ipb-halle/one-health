@@ -2,7 +2,6 @@
 const SERVICES = {
     IOntologyService: Symbol.for('IOntologyService'),
     IEntityTypeService: Symbol.for('IEntityTypeService'),
-    ILinkTypeService: Symbol.for('ILinkTypeService'),
     IPropertyService: Symbol.for('IPropertyService'),
     IEntityService: Symbol.for('IEntityService'),
     IGraphVisualizationHistoryService: Symbol.for(
