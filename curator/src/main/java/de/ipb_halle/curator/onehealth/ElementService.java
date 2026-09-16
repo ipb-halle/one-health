@@ -77,7 +77,7 @@ public class ElementService {
 
     private Object getFieldValue(FieldDTO field) {
         FieldType fieldType = getFieldType(field);
-        switch(fieldType.getType()) {
+        switch(fieldType) {
             case TEXT :
                 return ((TextField) field.createEntity()).getValue();
             case INTEGER :

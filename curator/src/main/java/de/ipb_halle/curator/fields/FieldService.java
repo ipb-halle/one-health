@@ -66,7 +66,7 @@ public class FieldService {
     }
 
     private void saveSingleField(FieldDTO field) {
-        switch(field.getFieldDefinition().getFieldType().getType()) {
+        switch(field.getFieldDefinition().getFieldType()) {
             case TEXT:
                 textRepository.save((TextField) field.createEntity());
                 break;

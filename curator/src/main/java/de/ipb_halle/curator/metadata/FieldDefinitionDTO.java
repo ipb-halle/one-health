@@ -22,10 +22,10 @@ public final class FieldDefinitionDTO {
     private final boolean mandatory;
     private final boolean multivalued;
 
-    public FieldDefinitionDTO(FieldDefinition fieldDef, FieldType fieldType, ElementType element) {
+    public FieldDefinitionDTO(FieldDefinition fieldDef, ElementType element) {
         this.id = fieldDef.getId();
         this.graphExportOrder = fieldDef.getGraphExportOrder();
-        this.fieldType = fieldType;
+        this.fieldType = fieldDef.getFieldType();
         this.elementType = element;
         this.name = fieldDef.getName();
         this.description = fieldDef.getDescription();
@@ -76,6 +76,6 @@ public final class FieldDefinitionDTO {
     @Override
     public String toString() {
         return "FieldDefinitionInfo{id=%d, fieldType='%s' element='%s', name='%s'}"
-                .formatted(id, fieldType.getType().toString(), elementType.getLabel(), name.replace("'", "\\'"));
+                .formatted(id, fieldType.toString(), elementType.getLabel(), name.replace("'", "\\'"));
     }
 }

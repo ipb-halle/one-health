@@ -33,12 +33,6 @@ class MetadataRepositoryTest {
     }
 
     @Test
-    void testFindAllFieldTypes() {
-        List<FieldType> fieldTypes = repository.findAllFieldTypes();
-        assertThat(fieldTypes).hasSize(4);
-    }
-
-    @Test
     void testFindAllFieldDefinitions() {
         List<FieldDefinition> fieldDefinitions = repository.findAllFieldDefinitions();
         assertThat(fieldDefinitions).hasSize(8);

@@ -7,7 +7,6 @@
  */
 package de.ipb_halle.curator.metadata;
 
-import de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum;
 import java.util.Collections;
 import java.util.HashMap;
 import org.springframework.stereotype.Component;
@@ -32,13 +31,10 @@ public class MetadataRegistry {
     private Map<Integer, Map<String, DynEnum>> dynEnumsByLabel;
     private Map<Integer, Map<Integer, DynEnum>> dynEnumsById;
     private Map<Integer, ElementType> elementTypesById;
-    private Map<FieldTypeEnum, FieldType> fieldTypesByType;
-    private Map<Integer, FieldType> fieldTypesById;
     private Map<Integer, FieldDefinitionDTO> fieldDefinitionsById;
     private Map<String, FieldDefinitionDTO> fieldDefinitionsByKey;
     private boolean dynEnumsInitialized = false;
     private boolean elementTypesInitialized = false;
-    private boolean fieldTypesInitialized = false;
     private boolean fieldDefinitionsInitialized = false;
 
     public void initializeDynEnums(List<DynEnum> dynEnums) {
@@ -76,18 +72,9 @@ public class MetadataRegistry {
         elementTypesInitialized = true;
     }
 
-    public void  initializeFieldTypes(List<FieldType> fieldTypes) {
-        if (fieldTypesInitialized) {
-            throw new RuntimeException("Duplicate initialization of FieldTypes");
-        }
-        fieldTypesById = fieldTypes.stream().collect(toMap(FieldType::getId, Function.identity()));
-        fieldTypesByType = fieldTypes.stream().collect(toMap(FieldType::getType, Function.identity()));
-        fieldTypesInitialized = true;
-    }
-
     public void initializeFieldDefinitions(List<FieldDefinition> fieldDefinitions) {
-        if (! (elementTypesInitialized && fieldTypesInitialized)) {
-            throw new RuntimeException("Missing initialization of ElementTypes or FieldTypes");
+        if (! (elementTypesInitialized)) {
+            throw new RuntimeException("Missing initialization of ElementTypes");
         }
         if (fieldDefinitionsInitialized) {
             throw new RuntimeException("Duplicate initialization of FieldDefinitions");
@@ -104,7 +91,6 @@ public class MetadataRegistry {
     private FieldDefinitionDTO registerFieldDefinition(FieldDefinition fieldDef) {
         ElementType elementType = getElementType(fieldDef.getElementTypeId());
         FieldDefinitionDTO dto = new FieldDefinitionDTO(fieldDef,
-                        getFieldType(fieldDef.getFieldTypeId()),
                         elementType);
         elementType.getFieldDefinitions().add(dto);
         return dto;
@@ -146,14 +132,6 @@ public class MetadataRegistry {
         return elementTypesById.get(id);
     }
 
-    public FieldType getFieldType(Integer id) {
-        return fieldTypesById.get(id);
-    }
-
-    public FieldType getFieldType(FieldTypeEnum type) {
-        return fieldTypesByType.get(type);
-    }
-
     public FieldDefinitionDTO getFieldDefinition(Integer id) {
         return fieldDefinitionsById.get(id);
     }
@@ -163,6 +141,6 @@ public class MetadataRegistry {
     }
 
     public boolean isInitialized() {
-        return elementTypesInitialized && fieldTypesInitialized && fieldDefinitionsInitialized;
+        return elementTypesInitialized && fieldDefinitionsInitialized;
     }
 }

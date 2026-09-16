@@ -8,13 +8,12 @@
 package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.fields.FieldDTO;
-import de.ipb_halle.curator.fields.FieldId;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import de.ipb_halle.curator.metadata.FieldType;
-import static de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum.ENUM;
-import static de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum.INTEGER;
+import static de.ipb_halle.curator.metadata.FieldType.ENUM;
+import static de.ipb_halle.curator.metadata.FieldType.INTEGER;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +41,7 @@ public class IntegerFieldConverter {
     public FieldDTO createDTO(IntegerField field) {
         FieldDefinitionDTO fieldDefinition = getFieldDefinition(field);
         FieldType fieldType = getFieldType(fieldDefinition);
-        switch(fieldType.getType()) {
+        switch(fieldType) {
             case INTEGER:
                 return IntegerFieldDTO.createDTO(field, fieldDefinition);
 

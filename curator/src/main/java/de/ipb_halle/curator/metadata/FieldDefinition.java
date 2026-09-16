@@ -14,7 +14,7 @@ package de.ipb_halle.curator.metadata;
 public final class FieldDefinition {
 
     private final int id;
-    private final int fieldTypeId;
+    private final FieldType fieldType;
     private final int elementTypeId;
     private final Integer graphExportOrder;
     private final String name;
@@ -22,10 +22,10 @@ public final class FieldDefinition {
     private final boolean mandatory;
     private final boolean multivalued;
 
-    public FieldDefinition(int id, int fieldTypeId, int elementTypeId, Integer graphExportOrder, String name,
+    public FieldDefinition(int id, FieldType fieldType, int elementTypeId, Integer graphExportOrder, String name,
                                String description, boolean mandatory, boolean multivalued) {
         this.id = id;
-        this.fieldTypeId = fieldTypeId;
+        this.fieldType = fieldType;
         this.elementTypeId = elementTypeId;
         this.graphExportOrder = graphExportOrder;
         this.name = name;
@@ -38,8 +38,8 @@ public final class FieldDefinition {
         return id;
     }
 
-    public int getFieldTypeId() {
-        return fieldTypeId;
+    public FieldType getFieldType() {
+        return fieldType;
     }
 
     public int getElementTypeId() {

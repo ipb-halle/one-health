@@ -9,7 +9,6 @@ package de.ipb_halle.curator.metadata;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.metadata.ElementType.ElementClass;
-import de.ipb_halle.curator.metadata.FieldType.FieldTypeEnum;
 import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,8 +57,7 @@ class MetadataRegistryTest {
         assertThat(et.getName()).isEqualTo("Organism");
         assertThat(et.getDescription()).isEqualTo("Living cellular organism");
         FieldType ft =dto.getFieldType();
-        assertThat(ft.getType()).isEqualTo(FieldTypeEnum.TEXT);
-        assertThat(ft.getDescription()).isEqualTo("general text types");
+        assertThat(ft).isEqualTo(FieldType.TEXT);
         assertThat(ft.getTableName()).isEqualTo("text_fields");
     }
 
@@ -68,8 +66,6 @@ class MetadataRegistryTest {
         Assertions.assertThatThrownBy(() -> registry.initializeDynEnums(null))
                 .isInstanceOf(RuntimeException.class);
         Assertions.assertThatThrownBy(() -> registry.initializeElementTypes(null))
-                .isInstanceOf(RuntimeException.class);
-        Assertions.assertThatThrownBy(() -> registry.initializeFieldTypes(null))
                 .isInstanceOf(RuntimeException.class);
         Assertions.assertThatThrownBy(() -> registry.initializeFieldDefinitions(null))
                 .isInstanceOf(RuntimeException.class);

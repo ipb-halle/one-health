@@ -38,7 +38,6 @@ public class MetadataLoader implements CommandLineRunner {
         logger.info("Loading metadata from database...");
 
         registry.initializeElementTypes(loadElementTypes());
-        registry.initializeFieldTypes(loadFieldTypes());
         registry.initializeFieldDefinitions(loadFieldDefinitions());
         registry.initializeDynEnums(loadDynEnums());
     }
@@ -49,10 +48,6 @@ public class MetadataLoader implements CommandLineRunner {
 
     private List<ElementType> loadElementTypes() {
         return repository.findAllElementTypes();
-    }
-
-    private List<FieldType> loadFieldTypes() {
-        return repository.findAllFieldTypes();
     }
 
     private List<FieldDefinition> loadFieldDefinitions() {

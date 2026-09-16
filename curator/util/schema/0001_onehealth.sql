@@ -28,13 +28,7 @@ CREATE TABLE relation_types (
     PRIMARY KEY (left_type_id, relation_type_id, right_type_id)
 );
 
-CREATE TYPE field_class AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'FLOAT', 'STRUCTURE');
-CREATE TABLE field_types (
-    id          SERIAL NOT NULL PRIMARY KEY,
-    type        field_class UNIQUE NOT NULL,
-    description VARCHAR,
-    table_name  VARCHAR
-);
+CREATE TYPE field_type_enum AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'FLOAT', 'STRUCTURE');
 
 CREATE TABLE data_sources (
     id          SERIAL NOT NULL PRIMARY KEY,
@@ -60,7 +54,7 @@ CREATE TABLE field_mappings (
 
 CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
-    field_type_id     INTEGER NOT NULL REFERENCES field_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    field_type        field_type_enum NOT NULL,
     element_type_id   INTEGER NOT NULL REFERENCES element_types(id) ON UPDATE CASCADE ON DELETE CASCADE,
     graph_export_order  INTEGER,
     name        VARCHAR NOT NULL,
