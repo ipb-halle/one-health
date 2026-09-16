@@ -8,6 +8,7 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.DbTestHelper;
+import de.ipb_halle.curator.TestDataCreator;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.fields.integer.IntegerFieldIoTest;
 import de.ipb_halle.curator.fields.integer.IntegerFieldReader;
@@ -52,29 +53,12 @@ public class NodeWriterTest {
     private MetadataRegistry registry;
 
     @Autowired
-    private ElementReader elementReader;
-
-    @Autowired
-    private IntegerFieldReader integerReader;
-
-    @Autowired
-    private TextFieldReader textReader;
-
-
-    private void setup(DbTestHelper helper) throws IOException {
-        helper.deleteElements();
-        InputStream input = ElementReader.class.getResourceAsStream(ElementIoTest.ELEMENTS_CSV);
-        elementReader.read(input);
-        input = TextFieldReader.class.getResourceAsStream(TextFieldIoTest.TEXTFIELDS_CSV);
-        textReader.read(input);
-        input = IntegerFieldReader.class.getResourceAsStream(IntegerFieldIoTest.INTEGERFIELDS_CSV);
-        integerReader.read(input);
-    }
+    private TestDataCreator creator;
 
     @Test
     public void testWriteNodes() throws Exception {
         try (DbTestHelper helper = new DbTestHelper(container)) {
-            setup(helper);
+            creator.setupFull(helper);
             ElementType type = registry.getElementType(1);
             // OutputStream output = new FileOutputStream("/tmp/nodeWriter.csv");
             OutputStream output = OutputStream.nullOutputStream();

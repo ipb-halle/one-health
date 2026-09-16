@@ -8,15 +8,16 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.DbTestHelper;
+import de.ipb_halle.curator.TestDataCreator;
 import de.ipb_halle.curator.TestcontainersConfiguration;
-import static de.ipb_halle.curator.fields.integer.IntegerFieldIoTest.INTEGERFIELD_NAME;
-import static de.ipb_halle.curator.fields.integer.IntegerFieldIoTest.INTEGERFIELD_QUERY;
-import de.ipb_halle.curator.fields.text.TextFieldIoTest;
-import de.ipb_halle.curator.fields.text.TextFieldReader;
+import de.ipb_halle.curator.fields.IFieldId;
+import de.ipb_halle.curator.fields.OrderedFieldId;
+import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
+import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,10 +41,7 @@ public class ElementServiceTest {
     private PostgreSQLContainer container;
 
     @Autowired
-    private ElementReader elementReader;
-
-    @Autowired
-    private TextFieldReader textFieldReader;
+    private TestDataCreator creator;
 
     @Autowired
     private MetadataRegistry registry;
@@ -51,26 +49,30 @@ public class ElementServiceTest {
     @Autowired
     private ElementService service;
 
-    /**
-     * Method to generate the initial test data.
-     */
-    private void setup(DbTestHelper helper) throws IOException {
-        helper.deleteElements();
-        InputStream input = ElementReader.class.getResourceAsStream(ElementIoTest.ELEMENTS_CSV);
-        elementReader.read(input);
-        input = TextFieldReader.class.getResourceAsStream(TextFieldIoTest.TEXTFIELDS_CSV);
-        textFieldReader.read(input);
-    }
 
     @Test
-    public void testElementService() throws Exception {
+    public void testLoadByType() throws Exception {
         ElementType type = registry.getElementType(1);
         try (DbTestHelper helper = new DbTestHelper(container)) {
-            setup(helper);
+            creator.setupFull(helper);
             List<ElementDTO> dtos = service.loadByType(type);
             assertThat(dtos.size()).isEqualTo(1);
-            assertThat(dtos.get(0).getFields().size()).isEqualTo(2);
+            assertThat(dtos.get(0).getFields().size()).isEqualTo(4);
         }
     }
 
+    @Test
+    public void testLoadByField() throws Exception {
+/*
+        FieldType fieldType = registry.getFieldType(1);
+        FieldDefinitionDTO fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
+        IFieldId fieldId = new OrderedFieldId(null, fieldType.getId(), 0);
+        TextField textField = new TextField(fieldId, "common sage");
+        TextFieldDTO field = TextFieldDTO.createDTO(textField, fieldDef);
+
+        List<ElementDTO> elementDTOs = service.loadByFieldValue(field);
+        assertThat(elementDTOs.size()).isEqualTo(1);
+        assertThat(elementDTOs.get(0).getId()).isEqualTo(UUID.fromString(ElementIoTest.ORGANISM_ID1));
+*/
+    }
 }

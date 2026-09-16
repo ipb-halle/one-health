@@ -8,13 +8,12 @@
 package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.DbTestHelper;
+import de.ipb_halle.curator.TestDataCreator;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementIoTest;
-import de.ipb_halle.curator.onehealth.ElementReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.DigestOutputStream;
@@ -52,7 +51,7 @@ public class TextFieldIoTest {
     private MetadataRegistry registry;
 
     @Autowired
-    private ElementReader elementReader;
+    private TestDataCreator creator;
 
     @Autowired
     private TextFieldWriter writer;
@@ -77,16 +76,10 @@ public class TextFieldIoTest {
                 synonymFieldId, 3, "Heilsalbei");
     }
 
-    private void setup(DbTestHelper helper) throws IOException {
-        helper.deleteElements();
-        InputStream input = ElementReader.class.getResourceAsStream(ElementIoTest.ELEMENTS_CSV);
-        elementReader.read(input);
-    }
-
     @Test
     public void testReaderAndWriter() throws Exception {
         try (DbTestHelper helper = new DbTestHelper(container)) {
-            setup(helper);
+            creator.setupElements(helper);
 
             InputStream input = this.getClass().getResourceAsStream(TEXTFIELDS_CSV);
 

@@ -16,7 +16,7 @@ import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
  *
  * @author fblocal
  */
-public class DynEnumFieldDTO extends FieldDTO {
+public class DynEnumFieldDTO extends FieldDTO<IntegerField> {
 
     private DynEnum value;
 
@@ -29,7 +29,8 @@ public class DynEnumFieldDTO extends FieldDTO {
         return new DynEnumFieldDTO(fieldId, fieldDefinition, value);
     }
 
-    public IntegerField getEntity() {
+    @Override
+    public IntegerField createEntity() {
         IFieldId id = getId();
         return new IntegerField(id.getElementId(),
                 id.getFieldId(),

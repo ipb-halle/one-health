@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author fblocal
  */
 @Service
+@Transactional(readOnly = true)
 public class FieldService {
 
     @Autowired
@@ -40,7 +41,6 @@ public class FieldService {
     @Autowired
     private TextFieldConverter textConverter;
 
-    @Transactional(readOnly = true)
     public List<FieldDTO> loadFields(UUID elementId) {
         List<FieldDTO> results = new ArrayList<> ();
         List<TextField> textFields = textRepository.findTextFields(elementId);
@@ -50,5 +50,35 @@ public class FieldService {
         results.addAll(integerConverter.createDTOs(integerFields));
 
         return results;
+    }
+
+    public List<FieldDTO> loadFielsByValue(FieldDTO field) {
+        return new ArrayList<>();
+    }
+
+    @Transactional
+    public void saveField(FieldDTO field) {
+        if (field.isMultivalued()) {
+            saveFields(field);
+        } else {
+            saveSingleField(field);
+        }
+    }
+
+    private void saveSingleField(FieldDTO field) {
+        switch(field.getFieldDefinition().getFieldType().getType()) {
+            case TEXT:
+                textRepository.save((TextField) field.createEntity());
+                break;
+            case INTEGER:
+                integerRepository.save((IntegerField) field.createEntity());
+                break;
+        }
+    }
+
+    private void saveFields(FieldDTO<List> field) {
+        field.createEntity()
+                .stream()
+                .forEach(f -> saveField((FieldDTO) f));
     }
 }

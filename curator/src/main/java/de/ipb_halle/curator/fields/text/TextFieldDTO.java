@@ -15,7 +15,7 @@ import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
  *
  * @author fblocal
  */
-public class TextFieldDTO extends FieldDTO {
+public class TextFieldDTO extends FieldDTO<TextField> {
 
     private String value;
 
@@ -24,6 +24,7 @@ public class TextFieldDTO extends FieldDTO {
         this.value = value;
     }
 
+    @Override
     public TextField createEntity() {
         return new TextField(getId(), value);
     }

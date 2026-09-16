@@ -17,7 +17,7 @@ import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
  *
  * @author fblocal
  */
-public class IntegerFieldDTO extends FieldDTO {
+public class IntegerFieldDTO extends FieldDTO<IntegerField> {
 
     private Integer value;
 

@@ -14,12 +14,12 @@ import java.util.Iterator;
  *
  * @author fblocal
  */
-public abstract class FieldDTO {
+public abstract class FieldDTO <T> {
     private final IFieldId id;
     private final FieldDefinitionDTO fieldDefinition;
     private FieldDTO linkedFieldDTO;
 
-    public FieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition) {
+    public FieldDTO (IFieldId id, FieldDefinitionDTO fieldDefinition) {
         this.id = id;
         this.fieldDefinition = fieldDefinition;
         this.linkedFieldDTO = null;
@@ -37,5 +37,10 @@ public abstract class FieldDTO {
         return this.fieldDefinition;
     }
 
+    public boolean isMultivalued() {
+        return false;
+    }
+
     public abstract Object toCSVcell();
+    public abstract T createEntity();
 }

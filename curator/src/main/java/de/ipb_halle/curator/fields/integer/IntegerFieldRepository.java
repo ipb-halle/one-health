@@ -44,6 +44,10 @@ public interface IntegerFieldRepository extends JpaRepository<IntegerField, Orde
             + "t.id.fieldId = :fieldId ORDER BY t.id.order ASC")
     List<IntegerField> findIntegerFields(UUID elementId, int fieldId);
 
+    @Query("SELECT t FROM IntegerField t WHERE t.value = :value AND "
+            + "t.id.fieldId = COALESCE(:fieldId, t.id.fieldId) LIMIT 1000")
+    List<IntegerField> findIntegerFieldsByValue(Integer value, Integer fieldId);
+
     /**
      * Fetch all IntegerFields (supports dynamic criteria via {@link JpaSpecificationExecutor}).
      */

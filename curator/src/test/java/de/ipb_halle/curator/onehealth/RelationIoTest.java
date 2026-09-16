@@ -8,6 +8,7 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.DbTestHelper;
+import de.ipb_halle.curator.TestDataCreator;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -50,7 +51,7 @@ public class RelationIoTest {
     private RelationReader reader;
 
     @Autowired
-    private ElementReader elementReader;
+    private TestDataCreator creator;
 
     /**
      * Method to generate the initial test data.
@@ -66,17 +67,11 @@ public class RelationIoTest {
                 UUID.fromString(ElementIoTest.DISEASE_ID1));
     }
 
-    private void setup(DbTestHelper helper) throws IOException {
-        helper.deleteElements();
-        InputStream input = ElementReader.class.getResourceAsStream(ElementIoTest.ELEMENTS_CSV);
-        elementReader.read(input);
-    }
-
 
     @Test
     public void testReaderAndWriter() throws Exception {
         try (DbTestHelper helper = new DbTestHelper(container)) {
-            setup(helper);
+            creator.setupElements(helper);
             InputStream input = this.getClass().getResourceAsStream(RELATIONS_CSV);
 
             /*

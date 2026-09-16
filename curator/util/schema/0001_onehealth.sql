@@ -122,13 +122,13 @@ CREATE TABLE float_fields (
 );
 CREATE INDEX float_fields_field_index ON integer_fields (field_id, value);
 
-
+/* we use the InChI as the value field to allow quick searches for equality */
 CREATE TABLE compound_fields (
     element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    inchi       TEXT,
     value       TEXT,
+    compound    TEXT,
     PRIMARY KEY (element_id, field_id)
 );
-CREATE INDEX compound_fields_inchi_idx USING (inchi);
-CREATE INDEX compound_fields_value_idx USING bingo_idx (value bingo.molecule);
+CREATE INDEX compound_fields_inchi_idx ON compound_fields (value);
+CREATE INDEX compound_fields_compound_idx ON compound_fields USING bingo_idx (compound bingo.molecule);
