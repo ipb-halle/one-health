@@ -20,8 +20,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
-    ports:
-      - "8080:8080"
     networks:
       - one-health-network
     depends_on:
@@ -35,9 +33,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/client/client.Dockerfile
-    ports:
-      - "80:80"
-    # - "443:443"
     hostname: www.example.com
     networks:
       - one-health-network
