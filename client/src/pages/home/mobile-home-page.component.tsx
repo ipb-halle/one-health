@@ -1,13 +1,9 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
 import CompactResultDisplay from "@/features/search/general-search/components/compact-result-display";
-//import GeneralSearchPageTourComponent from "@/features/search/general-search/components/general-search-tour.component";
-//import { dependencyFactory } from "@/app/di";
-//import { ITutorialStore, STORES } from "@/store/inversify";
 import { observer } from "mobx-react-lite";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useContext, useState } from "react";
-//import { useNavigate } from "react-router-dom";
 import earthImage from '../../assets/img/earth_image.png';
 
 import './mobile-home-page.component.scss';
@@ -16,7 +12,6 @@ const statistics = [{ value: "25,000+", label: "Publications", icon: "fa-regular
 
 function MobileHomePageComponent() {
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
-    //  const historySearchStore = useContext(RootStoreContext).historySearchStore;
 
     const isSearchingActive = generalSearchStore.isSearching !== null;
 

@@ -126,39 +126,6 @@ const Header: React.FC = () => {
                 navigate('/');
             },
         },
-        /*
-        {
-            label: 'Compound Search',
-            icon: 'fa fa-atom',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                //     navigate('/search/structure-search');
-            },
-        },
-        {
-            label: 'Neighborhood Explorer',
-            icon: 'pi pi-compass',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                // navigate('/neighborhood-explorer');
-            },
-        },
-        {
-            label: 'Co-occurrences Search',
-            icon: 'pi pi-chart-line',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                // navigate('/visualization/co-occurrence-search/');
-            },
-        },
-        {
-            label: 'Search History',
-            icon: 'pi pi-history',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                setHistoryVisible(true);
-            },
-        },*/
         {
             label: 'Documentation',
             icon: 'pi pi-book',
@@ -217,26 +184,6 @@ const Header: React.FC = () => {
                     </div>
 
                     <div className="mobile-header-right">
-
-                        {
-                            /*<button
-                                className="mobile-shortcut-btn"
-                                onClick={() => navigate('/search/structure-search')}
-                                title="Compound Search"
-                            >
-                                <i className="fa-solid fa-atom shortcut-icon" />
-                                <span className="shortcut-label">Compound Search</span>
-                            </button>
-    
-                            <button
-                                className="mobile-shortcut-btn"
-                                onClick={() => setHistoryVisible(true)}
-                                title="!"
-                            >
-                                <i className="pi pi-history shortcut-icon" />
-                                <span className="shortcut-label">Search History</span>
-                            </button>*/
-                        }
 
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
