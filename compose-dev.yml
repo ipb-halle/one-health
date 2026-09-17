@@ -25,6 +25,8 @@ services:
 
   client:
     hostname: localhost
+    ports:
+      - "80:80"
 
   graphdb:
     ports:
