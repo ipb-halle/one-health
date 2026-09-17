@@ -56,7 +56,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
     "test": "yarn jest",
     "preview": "vite preview",
-    "generate:api": "npx orval --config orval.config.ts"
+    "generate:api": "orval --config orval.config.ts"
   },
   "browserslist": {
     "production": [
