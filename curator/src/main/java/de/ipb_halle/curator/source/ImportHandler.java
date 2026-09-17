@@ -11,7 +11,6 @@ import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementService;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  *
@@ -23,6 +22,6 @@ public interface ImportHandler {
     public ImportHandler setFieldService(FieldService fieldService);
     public ImportHandler setMetadataRegistry(MetadataRegistry registry);
 
-    public void importSource(URL source) throws IOException;
+    public void importSource(DataSource source) throws IOException;
 
 }

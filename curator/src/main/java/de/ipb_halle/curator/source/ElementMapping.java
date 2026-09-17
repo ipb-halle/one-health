@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator.source;
 
+import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import java.util.Objects;
 
@@ -14,24 +15,30 @@ import java.util.Objects;
  *
  * @author fblocal
  */
-public class FieldMapping {
+public class ElementMapping {
 
     private final Integer id;
     private final DataSource dataSource;
+    private final ElementType elementType;
     private final String sourceFieldName;
-    private final FieldDefinitionDTO mappingField;
-    private final boolean multivalued;
+    private final boolean multivalued;        // is the source field multivalued?
+    private final FieldDefinitionDTO identityMappingField;
 
-    public FieldMapping(FieldMappingEntity fm, DataSource dataSource, FieldDefinitionDTO mappingField) {
-        this.id = fm.getId();
-        this.sourceFieldName = fm.getSourceFieldName();
-        this.multivalued = fm.isMultivalued();
-        this.dataSource = dataSource;
-        this.mappingField = mappingField;
+    public ElementMapping(ElementMappingEntity em, DataSource ds, ElementType elementType, FieldDefinitionDTO identityMappingField) {
+        this.id = em.getId();
+        this.sourceFieldName = em.getSourceFieldName();
+        this.multivalued = em.isMultivalued();
+        this.dataSource = ds;
+        this.elementType = elementType;
+        this.identityMappingField = identityMappingField;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public ElementType getElementType() {
+        return elementType;
     }
 
     public DataSource getDataSource() {
@@ -42,8 +49,8 @@ public class FieldMapping {
         return sourceFieldName;
     }
 
-    public FieldDefinitionDTO getMappingField() {
-        return mappingField;
+    public FieldDefinitionDTO getIdentityMappingField() {
+        return identityMappingField;
     }
 
     public boolean isMultivalued() {
@@ -52,8 +59,8 @@ public class FieldMapping {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.id);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -68,7 +75,7 @@ public class FieldMapping {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final FieldMapping other = (FieldMapping) obj;
+        final ElementMapping other = (ElementMapping) obj;
         return Objects.equals(this.id, other.id);
     }
 }

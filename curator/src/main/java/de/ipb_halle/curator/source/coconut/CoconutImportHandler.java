@@ -10,6 +10,7 @@ package de.ipb_halle.curator.source.coconut;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementService;
+import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.FieldMapping;
 import de.ipb_halle.curator.source.ImportHandler;
 import java.io.File;
@@ -57,8 +58,8 @@ public class CoconutImportHandler implements ImportHandler {
 
 
     @Override
-    public void importSource(URL source) throws IOException {
-        try (InputStream input = new FileInputStream(new File(source.toURI()))) {
+    public void importSource(DataSource dataSource) throws IOException {
+        try (InputStream input = new FileInputStream(new File(dataSource.getSourceUrl().toURI()))) {
             parseCoconutCSV(input);
         } catch (URISyntaxException ex) {
            throw new RuntimeException(ex.getMessage());
