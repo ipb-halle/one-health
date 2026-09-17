@@ -35,10 +35,10 @@ class MetadataRegistryTest {
 
     @Test
     void getElementTypeById_returnsOrganismRecord() {
-        ElementType organism = registry.getElementType(1);
+        ElementType organism = registry.getElementType("ORGANISM");
 
         assertThat(organism).isNotNull();
-        assertThat(organism.getLabel()).isEqualTo("ORGANISM");
+        assertThat(organism.getElementClass()).isEqualTo(ElementClass.NODE);
         assertThat(organism.getUiColor().longValue()).isEqualTo(0x297e00);
         assertThat(organism.getFieldDefinitions().size()).isEqualTo(4);
     }
@@ -52,7 +52,7 @@ class MetadataRegistryTest {
         assertThat(dto.isMandatory()).isFalse();
         assertThat(dto.isMultivalued()).isFalse();
         ElementType et = dto.getElementType();
-        assertThat(et.getLabel()).isEqualTo("ORGANISM");
+        assertThat(et.getId()).isEqualTo("ORGANISM");
         assertThat(et.getElementClass()).isEqualTo(ElementClass.NODE);
         assertThat(et.getName()).isEqualTo("Organism");
         assertThat(et.getDescription()).isEqualTo("Living cellular organism");

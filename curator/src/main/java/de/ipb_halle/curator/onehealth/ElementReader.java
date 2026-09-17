@@ -40,7 +40,7 @@ public class ElementReader {
     private void parseRecord(CSVRecord record) {
         Element element = new Element(
                 UUID.fromString(record.get(Element.HEADER[0])),
-                Integer.parseInt(record.get(Element.HEADER[1]))
+                record.get(Element.HEADER[1])
         );
         repository.save(element);
     }

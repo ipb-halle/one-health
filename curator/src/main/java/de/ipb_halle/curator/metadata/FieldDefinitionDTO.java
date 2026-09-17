@@ -54,7 +54,7 @@ public final class FieldDefinitionDTO {
      * separated by a colon (e.g."ORGANISM:primary name").
      */
     public String getKey() {
-        return elementType.getLabel() + ":" + name;
+        return elementType.getId() + ":" + name;
     }
 
     public String getName() {
@@ -76,6 +76,6 @@ public final class FieldDefinitionDTO {
     @Override
     public String toString() {
         return "FieldDefinitionInfo{id=%d, fieldType='%s' element='%s', name='%s'}"
-                .formatted(id, fieldType.toString(), elementType.getLabel(), name.replace("'", "\\'"));
+                .formatted(id, fieldType.toString(), elementType.getId(), name.replace("'", "\\'"));
     }
 }

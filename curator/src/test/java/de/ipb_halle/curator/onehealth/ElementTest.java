@@ -30,7 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Import(TestcontainersConfiguration.class)
 public class ElementTest {
 
-    private final static int ELEMENT_TYPE_ID = 1;
+    private final static String ELEMENT_TYPE_ID = "ORGANISM";
     private final static int FIELD_DEFINITION_ID = 1;
 
     @Autowired

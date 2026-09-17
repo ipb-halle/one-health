@@ -45,7 +45,7 @@ public class NodeWriterCliRunner implements CommandLineRunner {
             System.err.println("ERROR: Metadata not loaded. Application will proceed without elements or field definitions.");
             return;
         }
-        ElementType elementType = registry.getElementType(1);
+        ElementType elementType = registry.getElementType("ORGANISM");
 
         System.out.println();
         System.out.println("=== Field Definitions ===");

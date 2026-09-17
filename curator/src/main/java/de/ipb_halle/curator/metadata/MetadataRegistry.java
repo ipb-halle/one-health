@@ -30,7 +30,7 @@ public class MetadataRegistry {
 
     private Map<Integer, Map<String, DynEnum>> dynEnumsByLabel;
     private Map<Integer, Map<Integer, DynEnum>> dynEnumsById;
-    private Map<Integer, ElementType> elementTypesById;
+    private Map<String, ElementType> elementTypesById;
     private Map<Integer, FieldDefinitionDTO> fieldDefinitionsById;
     private Map<String, FieldDefinitionDTO> fieldDefinitionsByKey;
     private boolean dynEnumsInitialized = false;
@@ -128,7 +128,7 @@ public class MetadataRegistry {
     }
 
 
-    public ElementType getElementType(Integer id) {
+    public ElementType getElementType(String id) {
         return elementTypesById.get(id);
     }
 

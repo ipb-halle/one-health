@@ -34,10 +34,10 @@ public class RelationTest {
         try (DbTestHelper helper = new DbTestHelper(container)) {
 
             helper.deleteElements();
-            UUID id1 = helper.createElement(1);
-            UUID id2 = helper.createElement(3);
-            UUID id3 = helper.createElement(4);
-            UUID id4 = helper.createElement(1);
+            UUID id1 = helper.createElement("ORGANISM");
+            UUID id2 = helper.createElement("DISEASE");
+            UUID id3 = helper.createElement("TREATS");
+            UUID id4 = helper.createElement("ORGANISM");
 
             Relation rel1 = new Relation(id1, id2, id3);
             Relation rel2 = new Relation(id4, id2, id3);

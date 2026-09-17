@@ -48,7 +48,7 @@ public class DbTestHelper implements Closeable {
         jdbcTemplate.update(query, params);
     }
 
-    public UUID createElement(int typeId) {
+    public UUID createElement(String typeId) {
         UUID id = UUID.randomUUID();
         jdbcTemplate.update("INSERT INTO elements (id, type_id) VALUES (?,?)", id, typeId);
         return id;

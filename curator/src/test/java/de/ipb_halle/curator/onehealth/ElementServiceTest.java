@@ -52,7 +52,7 @@ public class ElementServiceTest {
 
     @Test
     public void testLoadByType() throws Exception {
-        ElementType type = registry.getElementType(1);
+        ElementType type = registry.getElementType("ORGANISM");
         try (DbTestHelper helper = new DbTestHelper(container)) {
             creator.setupFull(helper);
             List<ElementDTO> dtos = service.loadByType(type);

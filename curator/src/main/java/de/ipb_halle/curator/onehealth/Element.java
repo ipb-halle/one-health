@@ -27,17 +27,17 @@ public class Element {
     private UUID id;
 
     @Column(name="type_id")
-    private int typeId;
+    private String typeId;
 
     public Element() {
     }
 
-    public Element(UUID id, int type) {
+    public Element(UUID id, String type) {
         this.id = id;
         this.typeId = type;
     }
 
-    public Element(int typeId) {
+    public Element(String typeId) {
         this.id = UUID.randomUUID();
         this.typeId = typeId;
     }
@@ -46,7 +46,7 @@ public class Element {
         return id;
     }
 
-    public int getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 }

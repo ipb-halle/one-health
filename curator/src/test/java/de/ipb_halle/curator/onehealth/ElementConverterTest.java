@@ -48,7 +48,7 @@ public class ElementConverterTest {
     public void testConverter() {
         List<Element> elements = new ArrayList<> ();
 
-        ElementType type = registry.getElementType(1);
+        ElementType type = registry.getElementType("ORGANISM");
         ElementDTO dto1 = new ElementDTO(type);
         dto1.addField(createTextFieldDTO(dto1, "Hello World"));
         ElementDTO dto2 = new ElementDTO(type);

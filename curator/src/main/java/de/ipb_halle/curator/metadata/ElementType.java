@@ -21,34 +21,28 @@ public final class ElementType {
         EDGE;
     }
 
-    private final int id;
+    private final String id;
     private final ElementClass elementClass;
-    private final String label;
     private final String name;
     private final String description;
     private final Integer uiColor;
     private final List<FieldDefinitionDTO> fieldDefinitions;
 
-    public ElementType(int id, ElementClass elementClass, String label, String name, String description, Integer uiColor) {
+    public ElementType(String id, ElementClass elementClass, String name, String description, Integer uiColor) {
         this.id = id;
         this.elementClass = elementClass;
-        this.label = label;
         this.name = name;
         this.description = description;
         this.uiColor = uiColor;
         this.fieldDefinitions = new ArrayList<> ();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     public ElementClass getElementClass() {
         return elementClass;
-    }
-
-    public String getLabel() {
-        return label;
     }
 
     public String getName() {
@@ -69,6 +63,6 @@ public final class ElementType {
 
     @Override
     public String toString() {
-        return "ElementType{id=%d, class=%s, label='%s'}".formatted(id, elementClass.toString(), label);
+        return "ElementType{id=%s, class=%s, name='%s'}".formatted(id, elementClass.toString(), name);
     }
 }

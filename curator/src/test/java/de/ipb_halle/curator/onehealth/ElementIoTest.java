@@ -34,7 +34,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 public class ElementIoTest {
 
     public final static String ELEMENTS_CSV = "elements.csv";
-    public final static String ELEMENTS_MD5 = "0d858d1ebf38602e3768d837e041fda6";
+    public final static String ELEMENTS_MD5 = "6e68c65581952479be139be502743b40";
 
     public final static String ORGANISM_ID1 = "20452447-b178-4fc2-a3bc-9ee03fe9bb19";
     public final static String COMPOUND_ID1 = "8d459233-5099-4c65-b928-a1df86484d2a";
@@ -54,10 +54,10 @@ public class ElementIoTest {
      * Method to generate the initial test data.
      */
     private void createElements(DbTestHelper helper) {
-        helper.createElement(1);
-        helper.createElement(2);
-        helper.createElement(3);
-        helper.createElement(4);
+        helper.createElement("ORGANISM");
+        helper.createElement("COMPOUND");
+        helper.createElement("DISEASE");
+        helper.createElement("TREATS");
     }
 
     @Test

@@ -71,7 +71,7 @@ public class NodeWriter {
             FieldDTO fieldDTO = dto.getField(fieldName);
             cells.add((fieldDTO != null) ? fieldDTO.toCSVcell() : null);
         }
-        cells.add(dto.getType().getLabel());
+        cells.add(dto.getType().getId());
         return cells.toArray();
     }
 

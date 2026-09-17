@@ -59,7 +59,7 @@ public class NodeWriterTest {
     public void testWriteNodes() throws Exception {
         try (DbTestHelper helper = new DbTestHelper(container)) {
             creator.setupFull(helper);
-            ElementType type = registry.getElementType(1);
+            ElementType type = registry.getElementType("ORGANISM");
             // OutputStream output = new FileOutputStream("/tmp/nodeWriter.csv");
             OutputStream output = OutputStream.nullOutputStream();
             DigestOutputStream digestStream = new DigestOutputStream(output, MessageDigest.getInstance("MD5"));

@@ -54,11 +54,10 @@ public class MetadataRepository {
      */
     @Transactional(readOnly = true)
     public List<ElementType> findAllElementTypes() {
-        String sql = "SELECT id, element_class, label, name, description, ui_color FROM element_types";
+        String sql = "SELECT id, element_class, name, description, ui_color FROM element_types";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new ElementType(
-                rs.getInt("id"),
+                rs.getString("id"),
                 ElementClass.valueOf(rs.getString("element_class")),
-                rs.getString("label"),
                 rs.getString("name"),
                 rs.getString("description"),
                 rs.getObject("ui_color", Integer.class)
@@ -78,7 +77,7 @@ public class MetadataRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> new FieldDefinition(
                 rs.getInt("id"),
                 FieldType.valueOf(rs.getString("field_type")),
-                rs.getInt("element_type_id"),
+                rs.getString("element_type_id"),
                 rs.getObject("graph_export_order", Integer.class),
                 rs.getString("name"),
                 rs.getString("description"),
