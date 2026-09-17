@@ -93,7 +93,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
             1,
         );
         setEditor(newEditor);
-        // metadataService.getBySMILES("[H]OC(=O)C=1C(OC(=O)C([H])([H])[H])=C([H])C([H])=C([H])C1[H]", messageService!);
     }, []);
 
     const onMolFileUpload = async (e: FileUploadSelectEvent) => {
