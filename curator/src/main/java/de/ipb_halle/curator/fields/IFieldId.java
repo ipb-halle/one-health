@@ -20,4 +20,6 @@ public interface IFieldId {
     public int getFieldId();
 
     public int getOrder();
+
+    public void setElementId(UUID elementId);
 }

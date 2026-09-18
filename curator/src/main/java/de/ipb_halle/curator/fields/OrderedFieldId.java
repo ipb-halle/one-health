@@ -57,6 +57,14 @@ public class OrderedFieldId implements IFieldId {
         return order;
     }
 
+    public void setElementId(UUID elementId) {
+        if (this.elementId == null) {
+            this.elementId = elementId;
+        } else {
+            throw new UnsupportedOperationException("Cannot replace existing element id.");
+        }
+    }
+
     public void setOrder(int order) {
         this.order = order;
     }

@@ -7,6 +7,7 @@
  */
 package de.ipb_halle.curator;
 
+import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementService;
@@ -36,6 +37,9 @@ public class CuratorCliRunner implements CommandLineRunner {
     private ElementService elementService;
 
     @Autowired
+    private FieldConverter fieldConverter;
+
+    @Autowired
     private FieldService fieldService;
 
     @Autowired
@@ -48,6 +52,7 @@ public class CuratorCliRunner implements CommandLineRunner {
                     getConstructor(new Class[0])
                     .newInstance();
             handler.setElementService(elementService);
+            handler.setFieldConverter(fieldConverter);
             handler.setFieldService(fieldService);
             handler.setMetadataRegistry(metadataRegistry);
             handler.importSource(source);

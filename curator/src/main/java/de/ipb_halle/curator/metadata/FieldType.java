@@ -23,7 +23,7 @@ public enum FieldType {
         ENUM("integer_fields", IntegerField.class, INTEGER),
         UUID("text_fields", TextField.class, TEXT),
         REAL("real_fields", RealField.class, null),
-        STRUCTURE("compound_fields", CompoundField.class, null);
+        COMPOUND("compound_fields", CompoundField.class, null);
 
         private final String tableName;
         private final Class  baseEntity;

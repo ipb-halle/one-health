@@ -30,7 +30,7 @@ public class CompoundField implements FieldEntity<String> {
     private FieldId id;
 
     @Column
-    private String value;
+    private String value;   // the InChI
 
     @Column
     private String compound;
@@ -39,7 +39,7 @@ public class CompoundField implements FieldEntity<String> {
 
     }
 
-    public CompoundField(UUID elementId, int fieldDefinitionId, int order, String value) {
+    public CompoundField(UUID elementId, int fieldDefinitionId, int order, String value, String compound) {
         this.id = new FieldId(elementId, fieldDefinitionId);
         this.value = value;
     }

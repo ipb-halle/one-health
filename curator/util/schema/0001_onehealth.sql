@@ -33,7 +33,7 @@ CREATE TABLE relation_types (
 );
 
 
-CREATE TYPE field_type_enum AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'REAL', 'STRUCTURE');
+CREATE TYPE field_type_enum AS ENUM ('TEXT', 'ENUM', 'INTEGER', 'UUID', 'REAL', 'COMPOUND');
 CREATE TABLE field_definitions (
     id          SERIAL NOT NULL PRIMARY KEY,
     field_type        field_type_enum NOT NULL,

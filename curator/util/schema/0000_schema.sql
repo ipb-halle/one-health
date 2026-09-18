@@ -43,4 +43,4 @@ REVOKE ALL ON ALL TABLES IN SCHEMA :CURATOR_SCHEMA FROM public;
 -- check for usefull extensions and install it --
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-\i schema/0001_onehealth.sql
+\i 0001_onehealth.sql

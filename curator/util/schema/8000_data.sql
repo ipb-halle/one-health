@@ -20,33 +20,24 @@ INSERT INTO element_types (element_class, id, name, description, ui_color) VALUE
 INSERT INTO relation_types (left_type_id, relation_type_id, right_type_id) VALUES
     ('ORGANISM','PRODUCES','COMPOUND');
 
-INSERT INTO field_types (type, description, table_name) VALUES
-/* 1 */
-    ('TEXT', 'general text types', 'text_fields'),
-    ('INTEGER', 'integral types', 'integer_fields'),
-    ('ENUM', 'enumeration types', 'integer_fields'),
-    ('UUID', 'universally unique identifiers', 'uuid_fields'),
-    ('FLOAT', 'floating point types', 'float_fields'),
-/* 6 */
-    ('STRUCTURE', 'a chemical structure, preferably SMILES, specifying constitution and configuration', 'compound_fields');
-
 INSERT INTO field_definitions (field_type, element_type_id, graph_export_order, name, description, mandatory, multivalued) VALUES
     ('TEXT', 'COMPOUND', null, 'synonyms', 'synonym names for compound', false, false),
-    ('STRUCTURE', 'COMPOUND', null, 'structure', 'chemical constitution and configuration', true, false),
+    ('COMPOUND', 'COMPOUND', null, 'structure', 'chemical constitution and configuration', true, false),
     ('TEXT', 'COMPOUND', null, 'InChI-Key', 'InChi-Key as computed from structure', false, false),
-    ('TEXT', 'COMPOUND', null, 'CoconutId', 'Record identifier used by COCONUT DB (https://coconut.naturalproducts.net)', false, false);
+    ('TEXT', 'COMPOUND', null, 'CoconutId', 'Record identifier used by COCONUT DB (https://coconut.naturalproducts.net)', false, false),
+    ('TEXT', 'ORGANISM', null, 'synonyms',  'synonym names for organisms', false, true);
 
 /*
  * data sources
  */
-INSERT INTO data_sources (name, description, handler, source_url) VALUES
-    ('COCONUT', 'COlleCtion of Open NatUral producTs (https://coconut.naturalproducts.net', '', '');
+INSERT INTO data_sources (id, description, handler, source_url) VALUES
+    ('COCONUT', 'COlleCtion of Open NatUral producTs (https://coconut.naturalproducts.net', 'de.ipb_halle.curator.source.coconut.CoconutImportHandler', 'file://coconut.csv');
 
-INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name, identity_mapping) VALUES
+INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name, identity_mapping, multivalued) VALUES
     ('COCONUT', 'ORGANISM', 'organisms', 'ORGANISM:synonym', true),
     ('COCONUT', 'COMPOUND', 'standard_inchi', 'COMPOUND:structure', false);
 
-INSERT INTO field_mappings (data_source_id, source_field_name, mapping) VALUES
-    ('COCONUT', 'COMPOUND', 'identifier', 'COMPOUND:CoconutId', false),
-    ('COCONUT', 'COMPOUND', 'synonyms', 'COMPOUND:synonyms', true);
+INSERT INTO field_mappings (data_source_id, source_field_name, mapping, multivalued) VALUES
+    ('COCONUT', 'identifier', 'COMPOUND:CoconutId', false),
+    ('COCONUT', 'synonyms', 'COMPOUND:synonyms', true);
 

@@ -7,6 +7,8 @@
  */
 package de.ipb_halle.curator.fields;
 
+import de.ipb_halle.curator.fields.compound.CompoundField;
+import de.ipb_halle.curator.fields.compound.CompoundFieldRepository;
 import de.ipb_halle.curator.fields.integer.IntegerField;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
 import de.ipb_halle.curator.fields.text.TextField;
@@ -39,6 +41,9 @@ public class FieldService {
     private FieldConverter converter;
 
     @Autowired
+    private CompoundFieldRepository compoundRepository;
+
+    @Autowired
     private IntegerFieldRepository integerRepository;
 
     @Autowired
@@ -46,12 +51,9 @@ public class FieldService {
 
     public List<FieldDTO> loadFields(UUID elementId) {
         List<FieldDTO> results = new ArrayList<> ();
-        List<FieldEntity> textFields = textRepository.findTextFields(elementId);
-        results.addAll(converter.createDTOs(textFields));
-
-        List<FieldEntity> integerFields = integerRepository.findIntegerFields(elementId);
-        results.addAll(converter.createDTOs(integerFields));
-
+        results.addAll(converter.createDTOs(compoundRepository.findCompoundFields(elementId)));
+        results.addAll(converter.createDTOs(textRepository.findTextFields(elementId)));
+        results.addAll(converter.createDTOs(integerRepository.findIntegerFields(elementId)));
         return results;
     }
 
@@ -87,6 +89,10 @@ public class FieldService {
             case INTEGER:
                 integerRepository.save((IntegerField) field.createEntity());
                 break;
+            case COMPOUND:
+                compoundRepository.save((CompoundField) field.createEntity());
+            default:
+                throw new UnsupportedOperationException("save not supported for field type");
         }
     }
 
