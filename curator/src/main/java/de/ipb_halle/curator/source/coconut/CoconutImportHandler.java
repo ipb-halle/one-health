@@ -55,7 +55,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
     }
 
     private void parseRecord(DataSource dataSource, CSVRecord record) {
-        this.elementsDTOsByType = new HashMap<> ();
+        this.elementDTOsByType = new HashMap<> ();
         handleElements(dataSource, record);
         handleFields(dataSource, record);
     }
@@ -79,7 +79,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
             String value = record.get(fm.getSourceFieldName());
             FieldDefinitionDTO fieldDefinitionDTO = fm.getMappingField();
             ElementType elementType = fieldDefinitionDTO.getElementType();
-            List<ElementDTO> typedElementDTOs = elementsDTOsByType.get(elementType.getId());
+            List<ElementDTO> typedElementDTOs = elementDTOsByType.get(elementType.getId());
             for (ElementDTO dto : typedElementDTOs) {
                 FieldDTO field = createField(dto.getId(), fieldDefinitionDTO, value);
                 dto.addField(field);
@@ -89,8 +89,8 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
 
     private void addElement(ElementDTO elementDTO) {
         ElementType elementType = elementDTO.getType();
-        List<ElementDTO> typedElementDTOs = elementsDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
-        elementsDTOsByType.put(elementType.getId(), typedElementDTOs);
+        List<ElementDTO> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
+        elementDTOsByType.put(elementType.getId(), typedElementDTOs);
         typedElementDTOs.add(elementDTO);
     }
 }

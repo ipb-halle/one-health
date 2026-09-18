@@ -87,10 +87,12 @@ public class FieldService {
                 textRepository.save((TextField) field.createEntity());
                 break;
             case INTEGER:
+            case ENUM:
                 integerRepository.save((IntegerField) field.createEntity());
                 break;
             case COMPOUND:
                 compoundRepository.save((CompoundField) field.createEntity());
+                break;
             default:
                 throw new UnsupportedOperationException("save not supported for field type");
         }

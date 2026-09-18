@@ -9,7 +9,6 @@ package de.ipb_halle.curator.source.testHandler;
 
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
-import de.ipb_halle.curator.onehealth.Element;
 import de.ipb_halle.curator.onehealth.ElementDTO;
 import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.source.DataSource;
@@ -18,15 +17,10 @@ import de.ipb_halle.curator.source.FieldMapping;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.csv.DuplicateHeaderMode;
 
 /**
  * Simple ImportHandler for testing purposes
@@ -36,10 +30,11 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
 
     @Override
     public void importSource(DataSource dataSource) throws IOException {
-        InputStream input = this.getClass().getResourceAsStream(dataSource.getSourceUrl().getFile());
+        String file = dataSource.getSourceUrl().getFile();
+        InputStream input = this.getClass().getResourceAsStream(file);
         parseSource(dataSource, input);
     }
-    
+
     private void parseSource(DataSource dataSource, InputStream input) throws IOException {
         try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.DEFAULT.builder()

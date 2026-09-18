@@ -37,7 +37,7 @@ INSERT INTO dyn_enums (field_id, label, description) VALUES
  * test data source
  */
 INSERT INTO data_sources (id, description, handler, source_url) VALUES
-    ('TEST_ORGANISMS', 'Source of test data', 'de.ipb_halle.curator.source.testHandler.TestOrganismImportHandler', 'file://testOrganisms.csv');
+    ('TEST_ORGANISMS', 'Source of test data', 'de.ipb_halle.curator.source.testHandler.TestOrganismImportHandler', 'file:testOrganisms.csv');
 
 INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name, identity_mapping, multivalued) VALUES
     ('TEST_ORGANISMS', 'ORGANISM', 'ncbitaxon', 'ORGANISM:NCBItaxonId', false);

@@ -100,8 +100,8 @@ public class ElementService {
             fieldService.saveField(field);
         }
     }
-    
-    
+
+
     private FieldType getFieldType(FieldDTO field) {
         return field.getFieldDefinition().getFieldType();
     }

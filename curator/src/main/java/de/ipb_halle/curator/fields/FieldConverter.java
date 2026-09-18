@@ -39,12 +39,21 @@ public class FieldConverter {
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:
-            case ENUM:
                 return createDTO(new IntegerField(
                         elementId,
                         fieldDefinition.getId(),
                         0,
                         Integer.valueOf(value)));
+            case ENUM:
+                DynEnum dynEnum = registry.getDynEnum(fieldDefinition.getId(), value);
+                if (dynEnum == null) {
+                    throw new IllegalArgumentException("Undefined DynEnum value: " + value);
+                }
+                return createDTO(new IntegerField(
+                        elementId,
+                        fieldDefinition.getId(),
+                        0,
+                        dynEnum.getId()));
             case TEXT:
                 return createDTO(new TextField(
                         elementId,
