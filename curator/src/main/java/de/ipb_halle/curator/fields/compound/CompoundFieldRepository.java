@@ -22,35 +22,36 @@ import org.springframework.stereotype.Repository;
  * @author fblocal
  */
 @Repository
-public interface CompoundFieldRepository extends JpaRepository<CompoundField, OrderedFieldId>, JpaSpecificationExecutor<CompoundField> {
+public interface CompoundFieldRepository extends JpaRepository<CompoundFieldEntity, OrderedFieldId>, JpaSpecificationExecutor<CompoundFieldEntity> {
 
     /**
-     * Fetch a single CompoundField by its compound key (element_id, field_definition_id, order) using JPQL.
+     * Fetch a single CompoundFieldEntity by its compound key 
+     * (element_id, field_definition_id, order) using JPQL.
      */
-    @Query("SELECT t FROM CompoundField t WHERE t.id.elementId = :elementId "
+    @Query("SELECT t FROM CompoundFieldEntity t WHERE t.id.elementId = :elementId "
             + "AND t.id.fieldId = :fieldId")
-    Optional<CompoundField> findCompoundField(UUID elementId, int fieldId);
+    Optional<CompoundFieldEntity> findCompoundField(UUID elementId, int fieldId);
 
     /**
-     * Fetch a list of CompoundFields for a given Entity.
+     * Fetch a list of CompoundFieldEntities for a given Element.
      */
-    @Query("SELECT t FROM CompoundField t WHERE t.id.elementId = :elementId "
+    @Query("SELECT t FROM CompoundFieldEntity t WHERE t.id.elementId = :elementId "
             + "ORDER BY t.id.fieldId ASC")
     List<FieldEntity> findCompoundFields(UUID elementId);
 
     /**
-     * Fetch a list of CompoundFields for a given Entity.
+     * Fetch a list of CompoundFieldEntities for a given Element
      */
-    @Query("SELECT t FROM CompoundField t WHERE t.id.elementId = :elementId AND "
+    @Query("SELECT t FROM CompoundFieldEntity t WHERE t.id.elementId = :elementId AND "
             + "t.id.fieldId = :fieldId")
-    List<CompoundField> findCompoundFields(UUID elementId, int fieldId);
+    List<CompoundFieldEntity> findCompoundFields(UUID elementId, int fieldId);
 
-    @Query("SELECT t FROM CompoundField t WHERE t.value = :value AND "
+    @Query("SELECT t FROM CompoundFieldEntity t WHERE t.value = :value AND "
             + "t.id.fieldId = COALESCE(:fieldId, t.id.fieldId) LIMIT 1000")
-    List<CompoundField> findCompoundFieldsByValue(String value, Integer fieldId);
+    List<CompoundFieldEntity> findCompoundFieldsByValue(String value, Integer fieldId);
 
     /**
-     * Fetch all CompoundFields (supports dynamic criteria via {@link JpaSpecificationExecutor}).
+     * Fetch all CompoundFieldEntities (supports dynamic criteria via {@link JpaSpecificationExecutor}).
      */
-    List<CompoundField> findAll();
+    List<CompoundFieldEntity> findAll();
 }

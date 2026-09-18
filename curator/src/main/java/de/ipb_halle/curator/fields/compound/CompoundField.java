@@ -7,61 +7,50 @@
  */
 package de.ipb_halle.curator.fields.compound;
 
-import de.ipb_halle.curator.fields.FieldEntity;
-import de.ipb_halle.curator.fields.FieldId;
+import de.ipb_halle.curator.fields.integer.*;
 import de.ipb_halle.curator.fields.IFieldId;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import java.util.UUID;
+import de.ipb_halle.curator.fields.AbstractField;
+import de.ipb_halle.curator.fields.FieldEntity;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
  * @author fblocal
  */
-@Entity
-@Table(name="compound_fields")
-public class CompoundField implements FieldEntity<String> {
+public class CompoundField extends AbstractField<CompoundFieldEntity> {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value", "compound"};
-
-    @EmbeddedId
-    private FieldId id;
-
-    @Column
-    private String value;   // the InChI
-
-    @Column
+    private String value;
     private String compound;
 
-    public CompoundField() {
-
-    }
-
-    public CompoundField(UUID elementId, int fieldDefinitionId, int order, String value, String compound) {
-        this.id = new FieldId(elementId, fieldDefinitionId);
+    private CompoundField(IFieldId id, FieldDefinition fieldDefinition, String value, String  compound) {
+        super(id, fieldDefinition);
         this.value = value;
     }
 
-    public IFieldId getId() {
-        return this.id;
+    public static CompoundField createDTO(FieldEntity<String> field, FieldDefinition fieldDefinition) {
+        return new CompoundField(field.getId(), fieldDefinition, field.getValue(), "");
     }
 
+    public CompoundFieldEntity createEntity() {
+        IFieldId id = getId();
+        return new CompoundFieldEntity(id.getElementId(), id.getFieldId(), id.getOrder(), value, compound);
+    }
+
+
     @Override
+    public Object toCSVcell() {
+        return value;
+    }
+
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getCompound() {
-        return compound;
-    }
-
     public void setCompound(String compound) {
         this.compound = compound;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

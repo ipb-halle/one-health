@@ -7,9 +7,9 @@
  */
 package de.ipb_halle.curator.metadata;
 
-import de.ipb_halle.curator.fields.compound.CompoundField;
+import de.ipb_halle.curator.fields.compound.CompoundFieldEntity;
 import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
-import de.ipb_halle.curator.fields.real.RealField;
+import de.ipb_halle.curator.fields.real.RealFieldEntity;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 
 /**
@@ -22,8 +22,8 @@ public enum FieldType {
         INTEGER("integer_fields", IntegerFieldEntity.class, null),
         ENUM("integer_fields", IntegerFieldEntity.class, INTEGER),
         UUID("text_fields", TextFieldEntity.class, TEXT),
-        REAL("real_fields", RealField.class, null),
-        COMPOUND("compound_fields", CompoundField.class, null);
+        REAL("real_fields", RealFieldEntity.class, null),
+        COMPOUND("compound_fields", CompoundFieldEntity.class, null);
 
         private final String tableName;
         private final Class  baseEntity;

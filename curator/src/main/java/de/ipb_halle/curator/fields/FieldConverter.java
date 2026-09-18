@@ -7,12 +7,12 @@
  */
 package de.ipb_halle.curator.fields;
 
+import de.ipb_halle.curator.fields.compound.CompoundFieldEntity;
 import de.ipb_halle.curator.fields.compound.CompoundField;
-import de.ipb_halle.curator.fields.compound.CompoundFieldDTO;
 import de.ipb_halle.curator.fields.integer.DynEnumField;
 import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.integer.IntegerField;
-import de.ipb_halle.curator.fields.real.RealField;
+import de.ipb_halle.curator.fields.real.RealFieldEntity;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.metadata.DynEnum;
@@ -61,13 +61,13 @@ public class FieldConverter {
                         0,
                         value));
             case REAL:
-                return createDTO(new RealField(
+                return createDTO(new RealFieldEntity(
                         elementId,
                         fieldDefinition.getId(),
                         0,
                         Double.valueOf(value)));
             case COMPOUND:
-                return createDTO(new CompoundField(
+                return createDTO(new CompoundFieldEntity(
                         elementId,
                         fieldDefinition.getId(),
                         0,
@@ -95,7 +95,7 @@ public class FieldConverter {
             case TEXT:
                 return TextField.createDTO(entity, fieldDefinition);
             case COMPOUND:
-                return CompoundFieldDTO.createDTO(entity, fieldDefinition);
+                return CompoundField.createDTO(entity, fieldDefinition);
             default:
                 throw new UnsupportedOperationException("Not implemented yet.");
         }

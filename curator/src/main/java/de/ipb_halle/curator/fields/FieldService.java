@@ -7,7 +7,7 @@
  */
 package de.ipb_halle.curator.fields;
 
-import de.ipb_halle.curator.fields.compound.CompoundField;
+import de.ipb_halle.curator.fields.compound.CompoundFieldEntity;
 import de.ipb_halle.curator.fields.compound.CompoundFieldRepository;
 import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
@@ -91,7 +91,7 @@ public class FieldService {
                 integerRepository.save((IntegerFieldEntity) field.createEntity());
                 break;
             case COMPOUND:
-                compoundRepository.save((CompoundField) field.createEntity());
+                compoundRepository.save((CompoundFieldEntity) field.createEntity());
                 break;
             default:
                 throw new UnsupportedOperationException("save not supported for field type");
