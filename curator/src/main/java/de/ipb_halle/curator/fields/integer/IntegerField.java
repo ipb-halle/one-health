@@ -7,45 +7,41 @@
  */
 package de.ipb_halle.curator.fields.integer;
 
-import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import java.util.UUID;
+import de.ipb_halle.curator.fields.AbstractField;
+import de.ipb_halle.curator.fields.FieldEntity;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
  * @author fblocal
  */
-@Entity
-@Table(name="integer_fields")
-public class IntegerField implements FieldEntity<Integer> {
+public class IntegerField extends AbstractField<IntegerFieldEntity> {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
-
-    @EmbeddedId
-    private OrderedFieldId id;
-
-    @Column
     private Integer value;
 
-    public IntegerField() {
-
-    }
-
-    public IntegerField(UUID elementId, int fieldDefinitionId, int order, Integer value) {
-        this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
+    private IntegerField(IFieldId id, FieldDefinition fieldDefinition, Integer value) {
+        super(id, fieldDefinition);
         this.value = value;
     }
 
-    public IFieldId getId() {
-        return this.id;
+    public static IntegerField createDTO(FieldEntity<Integer> field, FieldDefinition fieldDefinition) {
+        return new IntegerField(field.getId(), fieldDefinition, field.getValue());
     }
 
+    public IntegerFieldEntity createEntity() {
+        IFieldId id = getId();
+        return new IntegerFieldEntity(id.getElementId(), id.getFieldId(), id.getOrder(), value);
+    }
+
+
     @Override
+    public Object toCSVcell() {
+        return value;
+    }
+
     public Integer getValue() {
         return value;
     }
@@ -53,5 +49,4 @@ public class IntegerField implements FieldEntity<Integer> {
     public void setValue(Integer value) {
         this.value = value;
     }
-
 }

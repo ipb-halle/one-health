@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.metadata;
 
 import de.ipb_halle.curator.fields.compound.CompoundField;
-import de.ipb_halle.curator.fields.integer.IntegerField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.real.RealField;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 
@@ -19,8 +19,8 @@ import de.ipb_halle.curator.fields.text.TextFieldEntity;
 public enum FieldType {
 
         TEXT("text_fields", TextFieldEntity.class, null),
-        INTEGER("integer_fields", IntegerField.class, null),
-        ENUM("integer_fields", IntegerField.class, INTEGER),
+        INTEGER("integer_fields", IntegerFieldEntity.class, null),
+        ENUM("integer_fields", IntegerFieldEntity.class, INTEGER),
         UUID("text_fields", TextFieldEntity.class, TEXT),
         REAL("real_fields", RealField.class, null),
         COMPOUND("compound_fields", CompoundField.class, null);

@@ -16,23 +16,23 @@ import de.ipb_halle.curator.metadata.FieldDefinition;
  *
  * @author fblocal
  */
-public class DynEnumFieldDTO extends AbstractField<IntegerField> {
+public class DynEnumField extends AbstractField<IntegerFieldEntity> {
 
     private DynEnum value;
 
-    private DynEnumFieldDTO(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
+    private DynEnumField(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
         super(fieldId, fieldDefinition);
         this.value = value;
     }
 
-    public static DynEnumFieldDTO createDTO(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
-        return new DynEnumFieldDTO(fieldId, fieldDefinition, value);
+    public static DynEnumField createDTO(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
+        return new DynEnumField(fieldId, fieldDefinition, value);
     }
 
     @Override
-    public IntegerField createEntity() {
+    public IntegerFieldEntity createEntity() {
         IFieldId id = getId();
-        return new IntegerField(id.getElementId(),
+        return new IntegerFieldEntity(id.getElementId(),
                 id.getFieldId(),
                 id.getOrder(),
                 value.getId());

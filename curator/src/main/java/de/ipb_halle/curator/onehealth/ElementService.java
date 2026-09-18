@@ -9,7 +9,7 @@ package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldService;
-import de.ipb_halle.curator.fields.integer.IntegerField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldType;
@@ -88,7 +88,7 @@ public class ElementService {
             case TEXT :
                 return ((TextFieldEntity) field.createEntity()).getValue();
             case INTEGER :
-                return ((IntegerField) field.createEntity()).getValue();
+                return ((IntegerFieldEntity) field.createEntity()).getValue();
             default :
                 return null;
         }

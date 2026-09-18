@@ -25,7 +25,6 @@ public class ElementDTO {
 
     private final ElementType type;
 
-    // private final List<FieldDTO> fields;
     private final Map<String, AbstractField> fields;
 
     public ElementDTO(UUID id, ElementType type) {

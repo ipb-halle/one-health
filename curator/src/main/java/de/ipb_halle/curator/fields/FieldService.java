@@ -9,7 +9,7 @@ package de.ipb_halle.curator.fields;
 
 import de.ipb_halle.curator.fields.compound.CompoundField;
 import de.ipb_halle.curator.fields.compound.CompoundFieldRepository;
-import de.ipb_halle.curator.fields.integer.IntegerField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextFieldRepository;
@@ -88,7 +88,7 @@ public class FieldService {
                 break;
             case INTEGER:
             case ENUM:
-                integerRepository.save((IntegerField) field.createEntity());
+                integerRepository.save((IntegerFieldEntity) field.createEntity());
                 break;
             case COMPOUND:
                 compoundRepository.save((CompoundField) field.createEntity());

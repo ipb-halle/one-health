@@ -22,35 +22,35 @@ import org.springframework.stereotype.Repository;
  * @author fblocal
  */
 @Repository
-public interface IntegerFieldRepository extends JpaRepository<IntegerField, OrderedFieldId>, JpaSpecificationExecutor<IntegerField> {
+public interface IntegerFieldRepository extends JpaRepository<IntegerFieldEntity, OrderedFieldId>, JpaSpecificationExecutor<IntegerFieldEntity> {
 
     /**
-     * Fetch a single IntegerField by its compound key (element_id, field_definition_id, order) using JPQL.
+     * Fetch a single IntegerFieldEntity by its compound key (element_id, field_definition_id, order) using JPQL.
      */
-    @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId "
+    @Query("SELECT t FROM IntegerFieldEntity t WHERE t.id.elementId = :elementId "
             + "AND t.id.fieldId = :fieldId AND t.id.order = :order")
-    Optional<IntegerField> findIntegerField(UUID elementId, int fieldId, int order);
+    Optional<IntegerFieldEntity> findIntegerField(UUID elementId, int fieldId, int order);
 
     /**
-     * Fetch a list of IntegerFields for a given Entity.
+     * Fetch a list of IntegerFields for a given Element.
      */
-    @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId "
+    @Query("SELECT t FROM IntegerFieldEntity t WHERE t.id.elementId = :elementId "
             + "ORDER BY t.id.fieldId, t.id.order ASC")
     List<FieldEntity> findIntegerFields(UUID elementId);
 
     /**
-     * Fetch a list of IntegerFields for a given Entity.
+     * Fetch a list of IntegerFields for a given Element
      */
-    @Query("SELECT t FROM IntegerField t WHERE t.id.elementId = :elementId AND "
+    @Query("SELECT t FROM IntegerFieldEntity t WHERE t.id.elementId = :elementId AND "
             + "t.id.fieldId = :fieldId ORDER BY t.id.order ASC")
-    List<IntegerField> findIntegerFields(UUID elementId, int fieldId);
+    List<IntegerFieldEntity> findIntegerFields(UUID elementId, int fieldId);
 
-    @Query("SELECT t FROM IntegerField t WHERE t.value = :value AND "
+    @Query("SELECT t FROM IntegerFieldEntity t WHERE t.value = :value AND "
             + "t.id.fieldId = COALESCE(:fieldId, t.id.fieldId) LIMIT 1000")
-    List<IntegerField> findIntegerFieldsByValue(Integer value, Integer fieldId);
+    List<IntegerFieldEntity> findIntegerFieldsByValue(Integer value, Integer fieldId);
 
     /**
      * Fetch all IntegerFields (supports dynamic criteria via {@link JpaSpecificationExecutor}).
      */
-    List<IntegerField> findAll();
+    List<IntegerFieldEntity> findAll();
 }

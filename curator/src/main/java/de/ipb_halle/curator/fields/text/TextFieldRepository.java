@@ -9,7 +9,7 @@ package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.fields.OrderedFieldId;
-import de.ipb_halle.curator.fields.integer.IntegerField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

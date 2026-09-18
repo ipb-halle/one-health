@@ -45,7 +45,7 @@ public class IntegerFieldReader {
     public void read(InputStream input) throws IOException {
         try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(IntegerField.HEADER)
+                    .setHeader(IntegerFieldEntity.HEADER)
                     .setSkipHeaderRecord(true)
                     .get());
             parser.forEach(record -> { parseRecord(record); });
@@ -53,16 +53,16 @@ public class IntegerFieldReader {
     }
 
     private void parseRecord(CSVRecord record) {
-        int fieldDefinitionId = Integer.parseInt(record.get(IntegerField.HEADER[1]));
+        int fieldDefinitionId = Integer.parseInt(record.get(IntegerFieldEntity.HEADER[1]));
         FieldDefinition fieldDef = registry.getFieldDefinition(fieldDefinitionId);
         if (fieldDef.getFieldType().getBaseType() != FieldType.INTEGER) {
             throw new IllegalArgumentException("Parsing non-INTEGER field");
         }
-        IntegerField field = new IntegerField(
-                UUID.fromString(record.get(IntegerField.HEADER[0])),
+        IntegerFieldEntity field = new IntegerFieldEntity(
+                UUID.fromString(record.get(IntegerFieldEntity.HEADER[0])),
                 fieldDefinitionId,
-                Integer.parseInt(record.get(IntegerField.HEADER[2])),
-                Integer.valueOf(record.get(IntegerField.HEADER[3])));
+                Integer.parseInt(record.get(IntegerFieldEntity.HEADER[2])),
+                Integer.valueOf(record.get(IntegerFieldEntity.HEADER[3])));
         // validation by turning into DTO
 
         AbstractField dto = converter.createDTO(field);

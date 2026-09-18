@@ -9,9 +9,9 @@ package de.ipb_halle.curator.fields;
 
 import de.ipb_halle.curator.fields.compound.CompoundField;
 import de.ipb_halle.curator.fields.compound.CompoundFieldDTO;
-import de.ipb_halle.curator.fields.integer.DynEnumFieldDTO;
+import de.ipb_halle.curator.fields.integer.DynEnumField;
+import de.ipb_halle.curator.fields.integer.IntegerFieldEntity;
 import de.ipb_halle.curator.fields.integer.IntegerField;
-import de.ipb_halle.curator.fields.integer.IntegerFieldDTO;
 import de.ipb_halle.curator.fields.real.RealField;
 import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
@@ -39,7 +39,7 @@ public class FieldConverter {
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:
-                return createDTO(new IntegerField(
+                return createDTO(new IntegerFieldEntity(
                         elementId,
                         fieldDefinition.getId(),
                         0,
@@ -49,7 +49,7 @@ public class FieldConverter {
                 if (dynEnum == null) {
                     throw new IllegalArgumentException("Undefined DynEnum value: " + value);
                 }
-                return createDTO(new IntegerField(
+                return createDTO(new IntegerFieldEntity(
                         elementId,
                         fieldDefinition.getId(),
                         0,
@@ -83,7 +83,7 @@ public class FieldConverter {
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:
-                return IntegerFieldDTO.createDTO(entity, fieldDefinition);
+                return IntegerField.createDTO(entity, fieldDefinition);
             case ENUM:
                 DynEnum dynEnum = registry.getDynEnum(fieldDefinition.getId(),
                         ((FieldEntity<Integer>) entity).getValue());
@@ -91,7 +91,7 @@ public class FieldConverter {
                     throw new IllegalArgumentException("Unknown DynEnum for fieldId '%d'"
                             .formatted(fieldDefinition.getId()));
                 }
-                return DynEnumFieldDTO.createDTO(entity.getId(), fieldDefinition, dynEnum);
+                return DynEnumField.createDTO(entity.getId(), fieldDefinition, dynEnum);
             case TEXT:
                 return TextField.createDTO(entity, fieldDefinition);
             case COMPOUND:
