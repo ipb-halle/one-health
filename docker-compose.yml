@@ -39,10 +39,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/client/client.Dockerfile
-    ports:
-      - "80:80"
-      - "5180:80"
-    # - "443:443"
+ 
     hostname: www.example.com
     networks:
       - one-health-network
