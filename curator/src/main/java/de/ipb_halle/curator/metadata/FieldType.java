@@ -10,7 +10,7 @@ package de.ipb_halle.curator.metadata;
 import de.ipb_halle.curator.fields.compound.CompoundField;
 import de.ipb_halle.curator.fields.integer.IntegerField;
 import de.ipb_halle.curator.fields.real.RealField;
-import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 
 /**
  * Represents the available field types. This class must correspond to the
@@ -18,10 +18,10 @@ import de.ipb_halle.curator.fields.text.TextField;
  */
 public enum FieldType {
 
-        TEXT("text_fields", TextField.class, null),
+        TEXT("text_fields", TextFieldEntity.class, null),
         INTEGER("integer_fields", IntegerField.class, null),
         ENUM("integer_fields", IntegerField.class, INTEGER),
-        UUID("text_fields", TextField.class, TEXT),
+        UUID("text_fields", TextFieldEntity.class, TEXT),
         REAL("real_fields", RealField.class, null),
         COMPOUND("compound_fields", CompoundField.class, null);
 

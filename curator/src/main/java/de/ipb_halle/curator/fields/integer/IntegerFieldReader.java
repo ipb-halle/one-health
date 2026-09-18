@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.fields.FieldConverter;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -65,7 +65,7 @@ public class IntegerFieldReader {
                 Integer.valueOf(record.get(IntegerField.HEADER[3])));
         // validation by turning into DTO
 
-        FieldDTO dto = converter.createDTO(field);
+        AbstractField dto = converter.createDTO(field);
         if (dto != null) {
             repository.save(field);
         }

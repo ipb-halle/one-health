@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.source;
 
 import de.ipb_halle.curator.fields.FieldConverter;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
@@ -62,13 +62,13 @@ public abstract class AbstractImportHandler implements ImportHandler {
         List<ElementDTO> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
         elementDTOsByType.put(elementType.getId(), typedElementDTOs);
         ElementDTO elementDTO = new ElementDTO(elementType);
-        FieldDTO field = createField(elementDTO.getId(), fieldDefinition, value);
+        AbstractField field = createField(elementDTO.getId(), fieldDefinition, value);
         elementDTO.addField(field);
         typedElementDTOs.add(elementDTO);
         return elementDTO;
     }
 
-    protected FieldDTO createField(UUID elementId, FieldDefinition fieldDefinition, String value) {
+    protected AbstractField createField(UUID elementId, FieldDefinition fieldDefinition, String value) {
         return converter.fromString(elementId, fieldDefinition, value);
     }
 }

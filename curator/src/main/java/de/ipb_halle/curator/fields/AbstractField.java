@@ -7,7 +7,6 @@
  */
 package de.ipb_halle.curator.fields;
 
-import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 
@@ -15,11 +14,11 @@ import de.ipb_halle.curator.metadata.FieldType;
  *
  * @author fblocal
  */
-public abstract class FieldDTO <T extends FieldEntity> {
+public abstract class AbstractField <T extends FieldEntity> {
     private final IFieldId id;
     private final FieldDefinition fieldDefinition;
 
-    public FieldDTO (IFieldId id, FieldDefinition fieldDefinition) {
+    public AbstractField (IFieldId id, FieldDefinition fieldDefinition) {
         this.id = id;
         this.fieldDefinition = fieldDefinition;
     }

@@ -8,49 +8,37 @@
 package de.ipb_halle.curator.fields.text;
 
 import de.ipb_halle.curator.fields.IFieldId;
-import de.ipb_halle.curator.fields.OrderedFieldId;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import java.util.UUID;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldEntity;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
  * @author fblocal
  */
-@Entity
-@Table(name="text_fields")
-public class TextField implements FieldEntity<String> {
+public class TextField extends AbstractField<TextFieldEntity> {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
-
-    @EmbeddedId
-    private OrderedFieldId id;
-
-    @Column
     private String value;
 
-    public TextField() {
-
-    }
-
-    public TextField(IFieldId id, String value) {
-        this.id = new OrderedFieldId(id);
+    private TextField(IFieldId id, FieldDefinition fieldDefinition, String value) {
+        super(id, fieldDefinition);
         this.value = value;
-    }
-
-    public TextField(UUID elementId, int fieldDefinitionId, int order, String value) {
-        this.id = new OrderedFieldId(elementId, fieldDefinitionId, order);
-        this.value = value;
-    }
-
-    public IFieldId getId() {
-        return this.id;
     }
 
     @Override
+    public TextFieldEntity createEntity() {
+        return new TextFieldEntity(getId(), value);
+    }
+
+    public static TextField createDTO(FieldEntity<String> field, FieldDefinition fieldDefinition) {
+        return new TextField(field.getId(), fieldDefinition, field.getValue());
+    }
+
+    @Override
+    public Object toCSVcell() {
+        return value;
+    }
+
     public String getValue() {
         return value;
     }

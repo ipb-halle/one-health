@@ -16,8 +16,8 @@ import java.util.UUID;
  */
 public class ListEntity implements FieldEntity<List> {
 
-    private List<FieldDTO> values;
-    public ListEntity(List<FieldDTO> dtos) {
+    private List<AbstractField> values;
+    public ListEntity(List<AbstractField> dtos) {
         values = dtos;
     }
 
@@ -27,7 +27,7 @@ public class ListEntity implements FieldEntity<List> {
     }
 
     @Override
-    public List<FieldDTO> getValue() {
+    public List<AbstractField> getValue() {
         return values;
     }
 }

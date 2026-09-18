@@ -7,10 +7,10 @@
  */
 package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.fields.integer.IntegerField;
-import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldType;
 import jakarta.persistence.EntityManager;
@@ -52,8 +52,8 @@ public class ElementService {
     }
 
 
-    public ElementDTO loadByFieldValue(FieldDTO queryField) {
-        List <FieldDTO> fields = fieldService.loadFieldsByValue(queryField, null, 0);
+    public ElementDTO loadByFieldValue(AbstractField queryField) {
+        List <AbstractField> fields = fieldService.loadFieldsByValue(queryField, null, 0);
         if (fields.size() == 1) {
             UUID elementId = fields.get(0).getId().getElementId();
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -73,20 +73,20 @@ public class ElementService {
         return null;
     }
 
-    private Join joinField(Root root, FieldDTO field) {
+    private Join joinField(Root root, AbstractField field) {
         FieldType fieldType = getFieldType(field);
         return root.join(fieldType.getTableName());
     }
 
-    private Predicate getPredicate(CriteriaBuilder cb, Join join, FieldDTO field) {
+    private Predicate getPredicate(CriteriaBuilder cb, Join join, AbstractField field) {
         return cb.equal(join.get("value"), getFieldValue(field));
     }
 
-    private Object getFieldValue(FieldDTO field) {
+    private Object getFieldValue(AbstractField field) {
         FieldType fieldType = getFieldType(field);
         switch(fieldType) {
             case TEXT :
-                return ((TextField) field.createEntity()).getValue();
+                return ((TextFieldEntity) field.createEntity()).getValue();
             case INTEGER :
                 return ((IntegerField) field.createEntity()).getValue();
             default :
@@ -96,13 +96,13 @@ public class ElementService {
 
     public void save(ElementDTO dto) {
         repository.save(dto.createEntity());
-        for(FieldDTO field : dto.getFields()) {
+        for(AbstractField field : dto.getFields()) {
             fieldService.saveField(field);
         }
     }
 
 
-    private FieldType getFieldType(FieldDTO field) {
+    private FieldType getFieldType(AbstractField field) {
         return field.getFieldDefinition().getFieldType();
     }
 }

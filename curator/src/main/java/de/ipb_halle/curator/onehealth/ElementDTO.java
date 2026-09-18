@@ -10,7 +10,7 @@ package de.ipb_halle.curator.onehealth;
 import de.ipb_halle.curator.metadata.ElementType;
 import java.util.Collection;
 import java.util.UUID;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.MultiValueFieldDTO;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class ElementDTO {
     private final ElementType type;
 
     // private final List<FieldDTO> fields;
-    private final Map<String, FieldDTO> fields;
+    private final Map<String, AbstractField> fields;
 
     public ElementDTO(UUID id, ElementType type) {
         this.id = id;
@@ -48,7 +48,7 @@ public class ElementDTO {
         return new Element(id, type.getId());
     }
 
-    public void addField(FieldDTO field) {
+    public void addField(AbstractField field) {
         String key = field.getFieldName();
         boolean multivalued = field.getFieldDefinition().isMultivalued();
         if(fields.containsKey(key)) {
@@ -66,7 +66,7 @@ public class ElementDTO {
         }
     }
 
-    public void addFields(Collection<FieldDTO> fields) {
+    public void addFields(Collection<AbstractField> fields) {
         fields.stream().forEach(f -> addField(f));
     }
 
@@ -74,11 +74,11 @@ public class ElementDTO {
         return id;
     }
 
-    public FieldDTO getField(String fieldName) {
+    public AbstractField getField(String fieldName) {
         return fields.get(fieldName);
     }
 
-    public Collection<FieldDTO> getFields() {
+    public Collection<AbstractField> getFields() {
         return fields.values();
     }
 

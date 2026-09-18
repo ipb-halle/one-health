@@ -8,9 +8,9 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
-import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -38,10 +38,10 @@ public class ElementConverterTest {
     @Autowired
     private ElementConverter converter;
 
-    private FieldDTO createTextFieldDTO(ElementDTO e, String value) {
+    private AbstractField createTextField(ElementDTO e, String value) {
         FieldDefinition fd = registry.getFieldDefinition("ORGANISM:primary name");
-        TextField f = new TextField(e.getId(), fd.getId(), 0, value);
-        return TextFieldDTO.createDTO(f, fd);
+        TextFieldEntity f = new TextFieldEntity(e.getId(), fd.getId(), 0, value);
+        return TextField.createDTO(f, fd);
     }
 
     @Test
@@ -50,9 +50,9 @@ public class ElementConverterTest {
 
         ElementType type = registry.getElementType("ORGANISM");
         ElementDTO dto1 = new ElementDTO(type);
-        dto1.addField(createTextFieldDTO(dto1, "Hello World"));
+        dto1.addField(createTextField(dto1, "Hello World"));
         ElementDTO dto2 = new ElementDTO(type);
-        dto2.addField(createTextFieldDTO(dto2, "Foo"));
+        dto2.addField(createTextField(dto2, "Foo"));
 
         Element e = converter.createEntity(dto1);
         elements.add(e);

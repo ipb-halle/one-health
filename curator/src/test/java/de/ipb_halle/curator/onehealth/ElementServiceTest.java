@@ -12,8 +12,8 @@ import de.ipb_halle.curator.TestDataCreator;
 import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
-import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
@@ -67,8 +67,8 @@ public class ElementServiceTest {
             creator.setupFull(helper);
             FieldDefinition fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
             IFieldId fieldId = new OrderedFieldId(null, fieldDef.getId(), 0);
-            TextField textField = new TextField(fieldId, "common sage");
-            TextFieldDTO field = TextFieldDTO.createDTO(textField, fieldDef);
+            TextFieldEntity textField = new TextFieldEntity(fieldId, "common sage");
+            TextField field = TextField.createDTO(textField, fieldDef);
 
             ElementDTO elementDTO = service.loadByFieldValue(field);
             assertThat(elementDTO).isNotNull();

@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.source.coconut;
 
 import de.ipb_halle.curator.source.AbstractImportHandler;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.onehealth.ElementDTO;
@@ -64,7 +64,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
         for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
-            FieldDTO queryField = createField(null, fieldDefinition, value);
+            AbstractField queryField = createField(null, fieldDefinition, value);
             ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
                 createElement(em.getElementType(), fieldDefinition, value);
@@ -81,7 +81,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
             ElementType elementType = fieldDefinition.getElementType();
             List<ElementDTO> typedElementDTOs = elementDTOsByType.get(elementType.getId());
             for (ElementDTO dto : typedElementDTOs) {
-                FieldDTO field = createField(dto.getId(), fieldDefinition, value);
+                AbstractField field = createField(dto.getId(), fieldDefinition, value);
                 dto.addField(field);
             }
         }

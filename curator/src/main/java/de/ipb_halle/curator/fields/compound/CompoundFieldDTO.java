@@ -9,7 +9,7 @@ package de.ipb_halle.curator.fields.compound;
 
 import de.ipb_halle.curator.fields.integer.*;
 import de.ipb_halle.curator.fields.IFieldId;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 
@@ -17,7 +17,7 @@ import de.ipb_halle.curator.metadata.FieldDefinition;
  *
  * @author fblocal
  */
-public class CompoundFieldDTO extends FieldDTO<CompoundField> {
+public class CompoundFieldDTO extends AbstractField<CompoundField> {
 
     private String value;
     private String compound;

@@ -7,10 +7,9 @@
  */
 package de.ipb_halle.curator.onehealth;
 
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
-import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -68,8 +67,8 @@ public class NodeWriter {
         List<Object> cells = new ArrayList<> ();
         cells.add(dto.getId());
         for (String fieldName : fieldNames) {
-            FieldDTO fieldDTO = dto.getField(fieldName);
-            cells.add((fieldDTO != null) ? fieldDTO.toCSVcell() : null);
+            AbstractField field = dto.getField(fieldName);
+            cells.add((field != null) ? field.toCSVcell() : null);
         }
         cells.add(dto.getType().getId());
         return cells.toArray();

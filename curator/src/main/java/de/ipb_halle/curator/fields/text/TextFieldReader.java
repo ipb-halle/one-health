@@ -34,7 +34,7 @@ public class TextFieldReader {
     public void read(InputStream input) throws IOException {
         try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(TextField.HEADER)
+                    .setHeader(TextFieldEntity.HEADER)
                     .setSkipHeaderRecord(true)
                     .get());
             parser.forEach(record -> { parseRecord(record); });
@@ -42,11 +42,11 @@ public class TextFieldReader {
     }
 
     private void parseRecord(CSVRecord record) {
-        TextField field = new TextField(
-                UUID.fromString(record.get(TextField.HEADER[0])),
-                Integer.parseInt(record.get(TextField.HEADER[1])),
-                Integer.parseInt(record.get(TextField.HEADER[2])),
-                record.get(TextField.HEADER[3])
+        TextFieldEntity field = new TextFieldEntity(
+                UUID.fromString(record.get(TextFieldEntity.HEADER[0])),
+                Integer.parseInt(record.get(TextFieldEntity.HEADER[1])),
+                Integer.parseInt(record.get(TextFieldEntity.HEADER[2])),
+                record.get(TextFieldEntity.HEADER[3])
         );
         repository.save(field);
     }

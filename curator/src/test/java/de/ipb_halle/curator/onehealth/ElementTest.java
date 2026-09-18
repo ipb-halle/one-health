@@ -8,8 +8,8 @@
 package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
-import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -44,8 +44,8 @@ public class ElementTest {
         assertThat(dto.getFields().size()).isEqualTo(0);
 
         FieldDefinition fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
-        TextField field = new TextField(id1, fieldDef.getId(), 0, "Sample Organism");
-        dto.addField(TextFieldDTO.createDTO(field, fieldDef));
+        TextFieldEntity field = new TextFieldEntity(id1, fieldDef.getId(), 0, "Sample Organism");
+        dto.addField(TextField.createDTO(field, fieldDef));
         assertThat(dto.getFields().size()).isEqualTo(1);
 
         Element element = dto.createEntity();

@@ -11,7 +11,7 @@ import de.ipb_halle.curator.fields.compound.CompoundField;
 import de.ipb_halle.curator.fields.compound.CompoundFieldRepository;
 import de.ipb_halle.curator.fields.integer.IntegerField;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
-import de.ipb_halle.curator.fields.text.TextField;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextFieldRepository;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import jakarta.persistence.EntityManager;
@@ -49,15 +49,15 @@ public class FieldService {
     @Autowired
     private TextFieldRepository textRepository;
 
-    public List<FieldDTO> loadFields(UUID elementId) {
-        List<FieldDTO> results = new ArrayList<> ();
+    public List<AbstractField> loadFields(UUID elementId) {
+        List<AbstractField> results = new ArrayList<> ();
         results.addAll(converter.createDTOs(compoundRepository.findCompoundFields(elementId)));
         results.addAll(converter.createDTOs(textRepository.findTextFields(elementId)));
         results.addAll(converter.createDTOs(integerRepository.findIntegerFields(elementId)));
         return results;
     }
 
-    public List<FieldDTO> loadFieldsByValue(FieldDTO value, FieldDefinition fieldDef, int offset) {
+    public List<AbstractField> loadFieldsByValue(AbstractField value, FieldDefinition fieldDef, int offset) {
         String extraFields = "";
         String tableName = value.getTableName();
         String fieldIdCondition = (fieldDef != null) ? " AND field_id = ? " : "";
@@ -73,7 +73,7 @@ public class FieldService {
     }
 
     @Transactional
-    public void saveField(FieldDTO field) {
+    public void saveField(AbstractField field) {
         if (field.isMultivalued()) {
             saveFields((MultiValueFieldDTO) field);
         } else {
@@ -81,10 +81,10 @@ public class FieldService {
         }
     }
 
-    private void saveSingleField(FieldDTO field) {
+    private void saveSingleField(AbstractField field) {
         switch(field.getFieldDefinition().getFieldType()) {
             case TEXT:
-                textRepository.save((TextField) field.createEntity());
+                textRepository.save((TextFieldEntity) field.createEntity());
                 break;
             case INTEGER:
             case ENUM:
@@ -101,6 +101,6 @@ public class FieldService {
     private void saveFields(MultiValueFieldDTO field) {
         field.getValues()
                 .stream()
-                .forEach(f -> saveField((FieldDTO) f));
+                .forEach(f -> saveField((AbstractField) f));
     }
 }

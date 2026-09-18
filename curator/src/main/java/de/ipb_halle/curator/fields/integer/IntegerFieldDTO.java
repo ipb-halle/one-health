@@ -10,7 +10,7 @@ package de.ipb_halle.curator.fields.integer;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.OrderedFieldId;
 import java.util.UUID;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldEntity;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 
@@ -18,7 +18,7 @@ import de.ipb_halle.curator.metadata.FieldDefinition;
  *
  * @author fblocal
  */
-public class IntegerFieldDTO extends FieldDTO<IntegerField> {
+public class IntegerFieldDTO extends AbstractField<IntegerField> {
 
     private Integer value;
 

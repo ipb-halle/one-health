@@ -7,7 +7,7 @@
  */
 package de.ipb_halle.curator.source.testHandler;
 
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.onehealth.ElementDTO;
 import de.ipb_halle.curator.source.AbstractImportHandler;
@@ -55,7 +55,7 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
         for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
-            FieldDTO queryField = createField(null, fieldDefinition, value);
+            AbstractField queryField = createField(null, fieldDefinition, value);
             ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
                 return createElement(em.getElementType(), fieldDefinition, value);
@@ -70,7 +70,7 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
             String value = record.get(fm.getSourceFieldName());
             FieldDefinition fieldDefinition = fm.getMappingField();
             if (elementDTO.getField(fieldDefinition.getName()) == null) {
-                FieldDTO field = createField(elementDTO.getId(), fieldDefinition, value);
+                AbstractField field = createField(elementDTO.getId(), fieldDefinition, value);
                 elementDTO.addField(field);
             }
         }

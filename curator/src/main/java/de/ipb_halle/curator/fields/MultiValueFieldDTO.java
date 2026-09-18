@@ -14,11 +14,11 @@ import java.util.List;
  *
  * @author fblocal
  */
-public class MultiValueFieldDTO extends FieldDTO<ListEntity> {
+public class MultiValueFieldDTO extends AbstractField<ListEntity> {
 
-    private List<FieldDTO> values;
+    private List<AbstractField> values;
 
-    public MultiValueFieldDTO(FieldDTO first) {
+    public MultiValueFieldDTO(AbstractField first) {
         super(first.getId(), first.getFieldDefinition());
         values = new ArrayList<> ();
         values.add(first);
@@ -29,11 +29,11 @@ public class MultiValueFieldDTO extends FieldDTO<ListEntity> {
         throw new UnsupportedOperationException("Multivalued Fields cannot be transformed into Neo4J nodes.");
     }
 
-    public void addValue(FieldDTO value) {
+    public void addValue(AbstractField value) {
         values.add(value);
     }
 
-    public List<FieldDTO> getValues() {
+    public List<AbstractField> getValues() {
         return values;
     }
 

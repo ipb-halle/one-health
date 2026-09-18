@@ -9,14 +9,14 @@ package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.fields.IFieldId;
-import de.ipb_halle.curator.fields.FieldDTO;
+import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
  * @author fblocal
  */
-public class DynEnumFieldDTO extends FieldDTO<IntegerField> {
+public class DynEnumFieldDTO extends AbstractField<IntegerField> {
 
     private DynEnum value;
 

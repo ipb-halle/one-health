@@ -13,8 +13,8 @@ import de.ipb_halle.curator.fields.integer.DynEnumFieldDTO;
 import de.ipb_halle.curator.fields.integer.IntegerField;
 import de.ipb_halle.curator.fields.integer.IntegerFieldDTO;
 import de.ipb_halle.curator.fields.real.RealField;
+import de.ipb_halle.curator.fields.text.TextFieldEntity;
 import de.ipb_halle.curator.fields.text.TextField;
-import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
@@ -35,7 +35,7 @@ public class FieldConverter {
     @Autowired
     private MetadataRegistry registry;
 
-    public FieldDTO fromString(UUID elementId, FieldDefinition fieldDefinition, String value) {
+    public AbstractField fromString(UUID elementId, FieldDefinition fieldDefinition, String value) {
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:
@@ -55,7 +55,7 @@ public class FieldConverter {
                         0,
                         dynEnum.getId()));
             case TEXT:
-                return createDTO(new TextField(
+                return createDTO(new TextFieldEntity(
                         elementId,
                         fieldDefinition.getId(),
                         0,
@@ -77,7 +77,7 @@ public class FieldConverter {
         }
     }
 
-    public FieldDTO createDTO(FieldEntity entity) {
+    public AbstractField createDTO(FieldEntity entity) {
         IFieldId fieldId = entity.getId();
         FieldDefinition fieldDefinition = registry.getFieldDefinition(fieldId.getFieldId());
         FieldType fieldType = fieldDefinition.getFieldType();
@@ -93,7 +93,7 @@ public class FieldConverter {
                 }
                 return DynEnumFieldDTO.createDTO(entity.getId(), fieldDefinition, dynEnum);
             case TEXT:
-                return TextFieldDTO.createDTO(entity, fieldDefinition);
+                return TextField.createDTO(entity, fieldDefinition);
             case COMPOUND:
                 return CompoundFieldDTO.createDTO(entity, fieldDefinition);
             default:
@@ -101,7 +101,7 @@ public class FieldConverter {
         }
     }
 
-    public List<FieldDTO> createDTOs(List<FieldEntity> entities) {
+    public List<AbstractField> createDTOs(List<FieldEntity> entities) {
         return entities.stream().map(e -> createDTO(e)).collect(Collectors.toList());
     }
 }

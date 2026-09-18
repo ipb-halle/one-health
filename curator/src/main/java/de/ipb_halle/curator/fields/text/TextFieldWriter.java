@@ -34,7 +34,7 @@ public class TextFieldWriter {
     public void write(OutputStream output) throws IOException {
         try (var writer = new OutputStreamWriter(output)) {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(TextField.HEADER)
+                    .setHeader(TextFieldEntity.HEADER)
                     .get());
             repository.findAll().stream().forEach(textField -> {
                 writeRecord(printer, textField);
@@ -42,7 +42,7 @@ public class TextFieldWriter {
         }
     }
 
-    private void writeRecord(CSVPrinter printer, TextField textField) {
+    private void writeRecord(CSVPrinter printer, TextFieldEntity textField) {
         try {
             IFieldId fieldId = textField.getId();
             printer.printRecord(fieldId.getElementId().toString(),
