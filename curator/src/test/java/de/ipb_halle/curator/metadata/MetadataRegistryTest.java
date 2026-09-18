@@ -93,6 +93,9 @@ class MetadataRegistryTest {
         Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, 1))
                 .isInstanceOf(IllegalArgumentException.class);
 
+        Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, "PLANET"))
+                .isInstanceOf(IllegalArgumentException.class);
+
         final DynEnum temp1 = new DynEnum(null, 7, "CAR", "Motorized vehicle");
         Assertions.assertThatThrownBy(() -> registry.registerDynEnum(temp1))
                 .isInstanceOf(IllegalArgumentException.class);

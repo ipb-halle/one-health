@@ -60,9 +60,4 @@ public final class ElementType {
     public List<FieldDefinitionDTO> getFieldDefinitions() {
         return fieldDefinitions;
     }
-
-    @Override
-    public String toString() {
-        return "ElementType{id=%s, class=%s, name='%s'}".formatted(id, elementClass.toString(), name);
-    }
 }
