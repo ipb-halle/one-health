@@ -145,22 +145,6 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         orientation: 'h',
         visible: true,
         arrangement: 'fixed',
-        // legend: '',
-        // legendrank: 1,
-        // legendgrouptitle: {},
-        // legendwidth: 123,
-        // ids: [],
-        // hoverinfo: 'hello',
-        // meta: 123,
-        // customdata: [],
-        // domain: {},
-        // textfont: {},
-        // selectpoints: 13,
-        // arrangement: 'freeform',
-        // hoverlabel: {},
-        // valueformat: '',
-        // valuesuffix: '',
-        // uirevision: 23,
     };
 
     const chartConfig: Partial<Plotly.Config> = {
@@ -248,8 +232,6 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
             valuex.push(x.value);
             labelx.push(`${x.source} - ${x.label} - ${x.target}`);
         });
-
-        // labelx.push(`${x.source} - ${x.label} - ${x.target}`);
 
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);

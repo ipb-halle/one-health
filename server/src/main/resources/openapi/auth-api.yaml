@@ -1,0 +1,350 @@
+openapi: 3.0.3
+
+info:
+  title: N1H Authentication API
+  version: 1.0.0
+  description: Authentication and authorization API for the N1H platform.
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local Development
+
+tags:
+  - name: Auth
+    description: Authentication and session management
+    
+  - name: Users
+    description: User profile management
+
+paths:
+          
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout current user
+      description: |
+        Invalidates the current authentication session.
+      operationId: logout
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/orcid/authorize-url:
+    get:
+      tags:
+        - Auth
+      summary: Get ORCID authorization URL
+      description: Returns the ORCID OAuth2 authorization URL and state parameter.
+      operationId: getOrcidAuthorizeUrl
+      security: []
+
+      responses:
+        "200":
+          description: ORCID authorization URL generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrcidAuthUrlResponse'
+  
+  /auth/orcid/token:
+    post:
+      tags:
+        - Auth
+      summary: Authenticate with ORCID 
+      description: |
+        Exchanges the ORCID authorization code for ORCID identity information,
+        creates or retrieves the corresponding N1H user, and returns an
+        N1H-generated JWT access token.
+      operationId: orcidLogin
+      security: []
+
+      requestBody:
+        required: true
+        description: ORCID authorization code and state parameter
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrcidTokenRequest'
+
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+        "400":
+          description: Invalid request or missing parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "401":
+          description: Invalid ORCID code or authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: Get current authenticated user
+      description: |
+        Returns information about the currently authenticated user.
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Current authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/me:
+    put:
+      tags:
+        - Users
+      summary: Update current user profile
+      operationId: updateCurrentUser
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        required: true
+        description: Updated user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+              
+      responses:
+        "200":
+          description: User profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User' 
+                
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        N1H application authentication using a JWT access token.
+        Example:
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+  schemas:
+      
+    UpdateUserRequest:
+      type: object
+      required:
+        - email
+      
+      properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Updated display name within N1H.
+          example: "Dr. Jane Doe"
+
+        email:
+          type: string
+          format: email
+          description: Updated contact email address.
+          example: "jane.doe@institution.org"
+        
+    OrcidTokenRequest:
+      type: object
+      required:
+        - code
+        - state
+      
+      properties:
+        code:
+          type: string
+          description: Authorization code returned by ORCID
+          example: 1234567890abcdef
+        state:
+          type: string
+          description: OAuth state value associated with the authorization request.
+          example: random_state_string
+
+    OrcidAuthUrlResponse:
+      type: object
+      required:
+        - url
+        - state
+
+      properties:
+        url:
+          type: string
+          format: uri
+          description: ORCID OAuth2 authorization URL.
+          example: https://orcid.org/oauth/authorize?client_id=APP-1234567890&response_type=code&scope=/authenticate&redirect_uri=https://yourapp.com/callback&state=random_state_string
+        
+        state:
+          type: string
+          description: OAuth state value associated with the authorization request.
+          example: random_state_string
+
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - expiresInSeconds
+        - user
+
+      properties:
+        token:
+          type: string
+          description: N1H application JWT access token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+        expiresInSeconds:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Number of seconds until the N1H JWT expires.
+          example: 3600
+
+        user:
+          $ref: '#/components/schemas/User'
+
+    UserRole:
+      type: string
+      enum:
+        - VIEWER
+        - CURATOR
+        - ADMIN
+      example: ADMIN
+
+    User:
+      type: object
+      required:
+        - id
+        - orcid
+        - displayName
+        - role
+        - enabled
+
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: User's editable display name within N1H
+          example: "Dr. Jane Doe"
+
+        email:
+          type: string
+          format: email
+          example: admin@n1h.org
+
+        orcid:
+          type: string
+          pattern: '^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$'
+          description: User's unique and immutable ORCID identifier.
+          example: "0000-0001-2345-6789"
+
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+        enabled:
+          type: boolean
+          example: true
+
+    LogoutResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Logged out successfully
+
+    MessageResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Operation successful
+
+    ErrorResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Unauthorized request
+
+        code:
+          type: string
+          example: AUTH_401
