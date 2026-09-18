@@ -16,7 +16,7 @@ import de.ipb_halle.curator.fields.real.RealField;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.DynEnum;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.List;
@@ -35,7 +35,7 @@ public class FieldConverter {
     @Autowired
     private MetadataRegistry registry;
 
-    public FieldDTO fromString(UUID elementId, FieldDefinitionDTO fieldDefinition, String value) {
+    public FieldDTO fromString(UUID elementId, FieldDefinition fieldDefinition, String value) {
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:
@@ -79,7 +79,7 @@ public class FieldConverter {
 
     public FieldDTO createDTO(FieldEntity entity) {
         IFieldId fieldId = entity.getId();
-        FieldDefinitionDTO fieldDefinition = registry.getFieldDefinition(fieldId.getFieldId());
+        FieldDefinition fieldDefinition = registry.getFieldDefinition(fieldId.getFieldId());
         FieldType fieldType = fieldDefinition.getFieldType();
         switch(fieldType) {
             case INTEGER:

@@ -15,7 +15,7 @@ import de.ipb_halle.curator.fields.OrderedFieldId;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.List;
@@ -65,7 +65,7 @@ public class ElementServiceTest {
     public void testLoadByField() throws Exception {
         try (DbTestHelper helper = new DbTestHelper(container)) {
             creator.setupFull(helper);
-            FieldDefinitionDTO fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
+            FieldDefinition fieldDef = registry.getFieldDefinition("ORGANISM:synonym");
             IFieldId fieldId = new OrderedFieldId(null, fieldDef.getId(), 0);
             TextField textField = new TextField(fieldId, "common sage");
             TextFieldDTO field = TextFieldDTO.createDTO(textField, fieldDef);

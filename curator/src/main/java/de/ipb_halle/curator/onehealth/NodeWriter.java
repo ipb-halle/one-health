@@ -9,7 +9,7 @@ package de.ipb_halle.curator.onehealth;
 
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,7 +45,7 @@ public class NodeWriter {
     }
 
     private List<String> getExportFieldNames(ElementType elementType) {
-        List<FieldDefinitionDTO> fields = elementType.getFieldDefinitions();
+        List<FieldDefinition> fields = elementType.getFieldDefinitions();
         fields = fields.stream()
                 .filter(f -> (f.getGraphExportOrder() != null))
                 .collect(Collectors.toList());

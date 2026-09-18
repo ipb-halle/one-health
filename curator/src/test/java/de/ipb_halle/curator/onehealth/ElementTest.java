@@ -11,7 +11,7 @@ import de.ipb_halle.curator.TestcontainersConfiguration;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ public class ElementTest {
         ElementDTO dto = new ElementDTO(id1, type);
         assertThat(dto.getFields().size()).isEqualTo(0);
 
-        FieldDefinitionDTO fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
+        FieldDefinition fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
         TextField field = new TextField(id1, fieldDef.getId(), 0, "Sample Organism");
         dto.addField(TextFieldDTO.createDTO(field, fieldDef));
         assertThat(dto.getFields().size()).isEqualTo(1);

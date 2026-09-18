@@ -12,7 +12,7 @@ import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.fields.text.TextFieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class ElementConverterTest {
     private ElementConverter converter;
 
     private FieldDTO createTextFieldDTO(ElementDTO e, String value) {
-        FieldDefinitionDTO fd = registry.getFieldDefinition("ORGANISM:primary name");
+        FieldDefinition fd = registry.getFieldDefinition("ORGANISM:primary name");
         TextField f = new TextField(e.getId(), fd.getId(), 0, value);
         return TextFieldDTO.createDTO(f, fd);
     }

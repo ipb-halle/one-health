@@ -8,53 +8,46 @@
 package de.ipb_halle.curator.metadata;
 
 /**
- * DTO derived from a {@code field_definitions} row.
+ * Immutable descriptor for a {@code field_definitions} row.
  * Loaded at startup from the database and made available via {@link de.ipb_halle.curator.metadata.MetadataRegistry}.
  */
-public final class FieldDefinitionDTO {
+public final class FieldDefinitionEntity {
 
     private final int id;
     private final FieldType fieldType;
-    private final ElementType elementType;
+    private final String elementTypeId;
     private final Integer graphExportOrder;
     private final String name;
     private final String description;
     private final boolean mandatory;
     private final boolean multivalued;
 
-    public FieldDefinitionDTO(FieldDefinition fieldDef, ElementType element) {
-        this.id = fieldDef.getId();
-        this.graphExportOrder = fieldDef.getGraphExportOrder();
-        this.fieldType = fieldDef.getFieldType();
-        this.elementType = element;
-        this.name = fieldDef.getName();
-        this.description = fieldDef.getDescription();
-        this.mandatory = fieldDef.isMandatory();
-        this.multivalued = fieldDef.isMultivalued();
+    public FieldDefinitionEntity(int id, FieldType fieldType, String elementTypeId, Integer graphExportOrder, String name,
+                               String description, boolean mandatory, boolean multivalued) {
+        this.id = id;
+        this.fieldType = fieldType;
+        this.elementTypeId = elementTypeId;
+        this.graphExportOrder = graphExportOrder;
+        this.name = name;
+        this.description = description;
+        this.mandatory = mandatory;
+        this.multivalued = multivalued;
     }
 
     public int getId() {
         return id;
     }
 
-    public Integer getGraphExportOrder() {
-        return graphExportOrder;
-    }
-
     public FieldType getFieldType() {
         return fieldType;
     }
 
-    public ElementType getElementType() {
-        return elementType;
+    public String getElementTypeId() {
+        return elementTypeId;
     }
 
-    /**
-     * Returns a compound key formed by {@code elementType} and {@code name},
-     * separated by a colon (e.g."ORGANISM:primary name").
-     */
-    public String getKey() {
-        return elementType.getId() + ":" + name;
+    public Integer getGraphExportOrder() {
+        return graphExportOrder;
     }
 
     public String getName() {

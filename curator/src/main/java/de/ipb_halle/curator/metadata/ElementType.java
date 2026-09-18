@@ -26,7 +26,7 @@ public final class ElementType {
     private final String name;
     private final String description;
     private final Integer uiColor;
-    private final List<FieldDefinitionDTO> fieldDefinitions;
+    private final List<FieldDefinition> fieldDefinitions;
 
     public ElementType(String id, ElementClass elementClass, String name, String description, Integer uiColor) {
         this.id = id;
@@ -57,7 +57,7 @@ public final class ElementType {
         return uiColor;
     }
 
-    public List<FieldDefinitionDTO> getFieldDefinitions() {
+    public List<FieldDefinition> getFieldDefinitions() {
         return fieldDefinitions;
     }
 }

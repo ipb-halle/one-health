@@ -9,7 +9,7 @@ package de.ipb_halle.curator.fields.integer;
 
 import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldDTO;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class IntegerFieldReader {
 
     private void parseRecord(CSVRecord record) {
         int fieldDefinitionId = Integer.parseInt(record.get(IntegerField.HEADER[1]));
-        FieldDefinitionDTO fieldDef = registry.getFieldDefinition(fieldDefinitionId);
+        FieldDefinition fieldDef = registry.getFieldDefinition(fieldDefinitionId);
         if (fieldDef.getFieldType().getBaseType() != FieldType.INTEGER) {
             throw new IllegalArgumentException("Parsing non-INTEGER field");
         }

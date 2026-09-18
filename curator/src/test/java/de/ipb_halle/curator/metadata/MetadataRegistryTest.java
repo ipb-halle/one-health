@@ -44,19 +44,19 @@ class MetadataRegistryTest {
     }
 
     @Test
-    void testFieldDefinitionDTO() {
-        FieldDefinitionDTO dto = registry.getFieldDefinition("ORGANISM:primary name");
-        assertThat(dto.getName()).isEqualTo("primary name");
-        assertThat(dto.getDescription()).isEqualTo("primary node name");
-        assertThat(dto.getKey()).isEqualTo("ORGANISM:primary name");
-        assertThat(dto.isMandatory()).isFalse();
-        assertThat(dto.isMultivalued()).isFalse();
-        ElementType et = dto.getElementType();
+    void testFieldDefinition() {
+        FieldDefinition fieldDef = registry.getFieldDefinition("ORGANISM:primary name");
+        assertThat(fieldDef.getName()).isEqualTo("primary name");
+        assertThat(fieldDef.getDescription()).isEqualTo("primary node name");
+        assertThat(fieldDef.getKey()).isEqualTo("ORGANISM:primary name");
+        assertThat(fieldDef.isMandatory()).isFalse();
+        assertThat(fieldDef.isMultivalued()).isFalse();
+        ElementType et = fieldDef.getElementType();
         assertThat(et.getId()).isEqualTo("ORGANISM");
         assertThat(et.getElementClass()).isEqualTo(ElementClass.NODE);
         assertThat(et.getName()).isEqualTo("Organism");
         assertThat(et.getDescription()).isEqualTo("Living cellular organism");
-        FieldType ft =dto.getFieldType();
+        FieldType ft =fieldDef.getFieldType();
         assertThat(ft).isEqualTo(FieldType.TEXT);
         assertThat(ft.getTableName()).isEqualTo("text_fields");
     }

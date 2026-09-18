@@ -11,7 +11,7 @@ import de.ipb_halle.curator.fields.integer.*;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.FieldEntity;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
@@ -22,12 +22,12 @@ public class CompoundFieldDTO extends FieldDTO<CompoundField> {
     private String value;
     private String compound;
 
-    private CompoundFieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition, String value, String  compound) {
+    private CompoundFieldDTO(IFieldId id, FieldDefinition fieldDefinition, String value, String  compound) {
         super(id, fieldDefinition);
         this.value = value;
     }
 
-    public static CompoundFieldDTO createDTO(FieldEntity<String> field, FieldDefinitionDTO fieldDefinition) {
+    public static CompoundFieldDTO createDTO(FieldEntity<String> field, FieldDefinition fieldDefinition) {
         return new CompoundFieldDTO(field.getId(), fieldDefinition, field.getValue(), "");
     }
 

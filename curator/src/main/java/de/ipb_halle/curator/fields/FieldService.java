@@ -13,7 +13,7 @@ import de.ipb_halle.curator.fields.integer.IntegerField;
 import de.ipb_halle.curator.fields.integer.IntegerFieldRepository;
 import de.ipb_halle.curator.fields.text.TextField;
 import de.ipb_halle.curator.fields.text.TextFieldRepository;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class FieldService {
         return results;
     }
 
-    public List<FieldDTO> loadFieldsByValue(FieldDTO value, FieldDefinitionDTO fieldDef, int offset) {
+    public List<FieldDTO> loadFieldsByValue(FieldDTO value, FieldDefinition fieldDef, int offset) {
         String extraFields = "";
         String tableName = value.getTableName();
         String fieldIdCondition = (fieldDef != null) ? " AND field_id = ? " : "";

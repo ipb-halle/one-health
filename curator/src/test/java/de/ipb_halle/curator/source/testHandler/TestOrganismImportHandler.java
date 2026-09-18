@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.source.testHandler;
 
 import de.ipb_halle.curator.fields.FieldDTO;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.onehealth.ElementDTO;
 import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.source.DataSource;
@@ -54,11 +54,11 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
     private ElementDTO parseElement(DataSource dataSource, CSVRecord record) {
         for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
             String value = record.get(em.getSourceFieldName());
-            FieldDefinitionDTO fieldDefinitionDTO = em.getIdentityMappingField();
-            FieldDTO queryField = createField(null, fieldDefinitionDTO, value);
+            FieldDefinition fieldDefinition = em.getIdentityMappingField();
+            FieldDTO queryField = createField(null, fieldDefinition, value);
             ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
-                return createElement(em.getElementType(), fieldDefinitionDTO, value);
+                return createElement(em.getElementType(), fieldDefinition, value);
             }
             return elementDTO;
         }
@@ -68,9 +68,9 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
     private void parseFields(DataSource dataSource, CSVRecord record, ElementDTO elementDTO) {
         for (FieldMapping fm : (Set<FieldMapping>) dataSource.getFieldMappings()) {
             String value = record.get(fm.getSourceFieldName());
-            FieldDefinitionDTO fieldDefinitionDTO = fm.getMappingField();
-            if (elementDTO.getField(fieldDefinitionDTO.getName()) == null) {
-                FieldDTO field = createField(elementDTO.getId(), fieldDefinitionDTO, value);
+            FieldDefinition fieldDefinition = fm.getMappingField();
+            if (elementDTO.getField(fieldDefinition.getName()) == null) {
+                FieldDTO field = createField(elementDTO.getId(), fieldDefinition, value);
                 elementDTO.addField(field);
             }
         }

@@ -74,15 +74,15 @@ public class MetadataRepository {
 
     /**
      * Load all field definitions from the database. Resolution of Elements
-     * FieldTypes and FieldDefinitionDTOs is done during initialization of
+     * FieldTypes and FieldDefinitions is done during initialization of
      * the @MetadataRegistry.
      */
     @Transactional(readOnly = true)
-    public List<FieldDefinition> findAllFieldDefinitions() {
+    public List<FieldDefinitionEntity> findAllFieldDefinitions() {
         String sql = "SELECT id, field_type, element_type_id, graph_export_order, "
                 + "name, description, mandatory, multivalued "
                 + "FROM field_definitions fd";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new FieldDefinition(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new FieldDefinitionEntity(
                 rs.getInt("id"),
                 FieldType.valueOf(rs.getString("field_type")),
                 rs.getString("element_type_id"),

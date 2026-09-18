@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.source;
 
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import java.net.MalformedURLException;
 
@@ -66,7 +66,7 @@ public class SourceRegistry {
         for( var em : elementMappings) {
             DataSource ds = dataSourcesById.get(em.getDataSourceId());
             ElementType et = metadataRegistry.getElementType(em.getElementTypeId());
-            FieldDefinitionDTO identityField = metadataRegistry.getFieldDefinition(em.getIdentityMapping());
+            FieldDefinition identityField = metadataRegistry.getFieldDefinition(em.getIdentityMapping());
             if ((ds == null) || (et == null) || (identityField == null)) {
                 throw new IllegalArgumentException("Unresolvable element mapping.");
             }
@@ -85,7 +85,7 @@ public class SourceRegistry {
         }
         for (var fm : fieldMappings) {
             DataSource ds = dataSourcesById.get(fm.getDataSourceId());
-            FieldDefinitionDTO field = metadataRegistry.getFieldDefinition(fm.getMapping());
+            FieldDefinition field = metadataRegistry.getFieldDefinition(fm.getMapping());
             if ((ds==null) || (field == null)) {
                 throw new IllegalArgumentException("Unresolvable field mapping.");
             }

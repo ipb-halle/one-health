@@ -31,8 +31,8 @@ public class MetadataRegistry {
     private Map<Integer, Map<String, DynEnum>> dynEnumsByLabel;
     private Map<Integer, Map<Integer, DynEnum>> dynEnumsById;
     private Map<String, ElementType> elementTypesById;
-    private Map<Integer, FieldDefinitionDTO> fieldDefinitionsById;
-    private Map<String, FieldDefinitionDTO> fieldDefinitionsByKey;
+    private Map<Integer, FieldDefinition> fieldDefinitionsById;
+    private Map<String, FieldDefinition> fieldDefinitionsByKey;
     private boolean dynEnumsInitialized = false;
     private boolean elementTypesInitialized = false;
     private boolean fieldDefinitionsInitialized = false;
@@ -72,28 +72,28 @@ public class MetadataRegistry {
         elementTypesInitialized = true;
     }
 
-    public void initializeFieldDefinitions(List<FieldDefinition> fieldDefinitions) {
+    public void initializeFieldDefinitions(List<FieldDefinitionEntity> fieldDefEntities) {
         if (! (elementTypesInitialized)) {
             throw new RuntimeException("Missing initialization of ElementTypes");
         }
         if (fieldDefinitionsInitialized) {
             throw new RuntimeException("Duplicate initialization of FieldDefinitions");
         }
-        List<FieldDefinitionDTO> dtos = fieldDefinitions.stream()
-                .map(fieldDef -> registerFieldDefinition(fieldDef))
+        List<FieldDefinition> fieldDefinitions = fieldDefEntities.stream()
+                .map(fd -> registerFieldDefinition(fd))
                 .toList();
 
-        fieldDefinitionsById = dtos.stream().collect(toMap(FieldDefinitionDTO::getId, Function.identity()));
-        fieldDefinitionsByKey = dtos.stream().collect(toMap(FieldDefinitionDTO::getKey, Function.identity()));
+        fieldDefinitionsById = fieldDefinitions.stream().collect(toMap(FieldDefinition::getId, Function.identity()));
+        fieldDefinitionsByKey = fieldDefinitions.stream().collect(toMap(FieldDefinition::getKey, Function.identity()));
         fieldDefinitionsInitialized = true;
     }
 
-    private FieldDefinitionDTO registerFieldDefinition(FieldDefinition fieldDef) {
-        ElementType elementType = getElementType(fieldDef.getElementTypeId());
-        FieldDefinitionDTO dto = new FieldDefinitionDTO(fieldDef,
+    private FieldDefinition registerFieldDefinition(FieldDefinitionEntity fieldDefEntity) {
+        ElementType elementType = getElementType(fieldDefEntity.getElementTypeId());
+        FieldDefinition fieldDef = new FieldDefinition(fieldDefEntity,
                         elementType);
-        elementType.getFieldDefinitions().add(dto);
-        return dto;
+        elementType.getFieldDefinitions().add(fieldDef);
+        return fieldDef;
     }
 
     public DynEnum getDynEnum(Integer fieldId, String label) {
@@ -138,11 +138,11 @@ public class MetadataRegistry {
         return elementTypesById.get(id);
     }
 
-    public FieldDefinitionDTO getFieldDefinition(Integer id) {
+    public FieldDefinition getFieldDefinition(Integer id) {
         return fieldDefinitionsById.get(id);
     }
 
-    public FieldDefinitionDTO getFieldDefinition(String key) {
+    public FieldDefinition getFieldDefinition(String key) {
         return fieldDefinitionsByKey.get(key);
     }
 

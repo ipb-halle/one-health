@@ -11,7 +11,7 @@ import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementDTO;
 import de.ipb_halle.curator.onehealth.ElementService;
@@ -58,7 +58,7 @@ public abstract class AbstractImportHandler implements ImportHandler {
         return this;
     }
 
-    protected ElementDTO createElement(ElementType elementType, FieldDefinitionDTO fieldDefinition, String value) {
+    protected ElementDTO createElement(ElementType elementType, FieldDefinition fieldDefinition, String value) {
         List<ElementDTO> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
         elementDTOsByType.put(elementType.getId(), typedElementDTOs);
         ElementDTO elementDTO = new ElementDTO(elementType);
@@ -68,7 +68,7 @@ public abstract class AbstractImportHandler implements ImportHandler {
         return elementDTO;
     }
 
-    protected FieldDTO createField(UUID elementId, FieldDefinitionDTO fieldDefinition, String value) {
+    protected FieldDTO createField(UUID elementId, FieldDefinition fieldDefinition, String value) {
         return converter.fromString(elementId, fieldDefinition, value);
     }
 }

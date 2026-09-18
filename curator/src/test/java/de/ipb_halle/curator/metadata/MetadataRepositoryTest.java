@@ -34,7 +34,7 @@ class MetadataRepositoryTest {
 
     @Test
     void testFindAllFieldDefinitions() {
-        List<FieldDefinition> fieldDefinitions = repository.findAllFieldDefinitions();
+        List<FieldDefinitionEntity> fieldDefinitions = repository.findAllFieldDefinitions();
         assertThat(fieldDefinitions).hasSize(8);
     }
 }

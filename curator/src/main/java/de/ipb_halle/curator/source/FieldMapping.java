@@ -7,7 +7,7 @@
  */
 package de.ipb_halle.curator.source;
 
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import java.util.Objects;
 
 /**
@@ -19,10 +19,10 @@ public class FieldMapping {
     private final Integer id;
     private final DataSource dataSource;
     private final String sourceFieldName;
-    private final FieldDefinitionDTO mappingField;
+    private final FieldDefinition mappingField;
     private final boolean multivalued;
 
-    public FieldMapping(FieldMappingEntity fm, DataSource dataSource, FieldDefinitionDTO mappingField) {
+    public FieldMapping(FieldMappingEntity fm, DataSource dataSource, FieldDefinition mappingField) {
         this.id = fm.getId();
         this.sourceFieldName = fm.getSourceFieldName();
         this.multivalued = fm.isMultivalued();
@@ -42,7 +42,7 @@ public class FieldMapping {
         return sourceFieldName;
     }
 
-    public FieldDefinitionDTO getMappingField() {
+    public FieldDefinition getMappingField() {
         return mappingField;
     }
 

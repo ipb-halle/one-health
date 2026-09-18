@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.fields;
 
 import de.ipb_halle.curator.fields.FieldEntity;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
 
 /**
@@ -17,9 +17,9 @@ import de.ipb_halle.curator.metadata.FieldType;
  */
 public abstract class FieldDTO <T extends FieldEntity> {
     private final IFieldId id;
-    private final FieldDefinitionDTO fieldDefinition;
+    private final FieldDefinition fieldDefinition;
 
-    public FieldDTO (IFieldId id, FieldDefinitionDTO fieldDefinition) {
+    public FieldDTO (IFieldId id, FieldDefinition fieldDefinition) {
         this.id = id;
         this.fieldDefinition = fieldDefinition;
     }
@@ -36,7 +36,7 @@ public abstract class FieldDTO <T extends FieldEntity> {
         return this.fieldDefinition.getFieldType();
     }
 
-    public FieldDefinitionDTO getFieldDefinition() {
+    public FieldDefinition getFieldDefinition() {
         return this.fieldDefinition;
     }
 

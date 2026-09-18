@@ -12,7 +12,7 @@ import de.ipb_halle.curator.fields.OrderedFieldId;
 import java.util.UUID;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.FieldEntity;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
@@ -22,12 +22,12 @@ public class IntegerFieldDTO extends FieldDTO<IntegerField> {
 
     private Integer value;
 
-    private IntegerFieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition, Integer value) {
+    private IntegerFieldDTO(IFieldId id, FieldDefinition fieldDefinition, Integer value) {
         super(id, fieldDefinition);
         this.value = value;
     }
 
-    public static IntegerFieldDTO createDTO(FieldEntity<Integer> field, FieldDefinitionDTO fieldDefinition) {
+    public static IntegerFieldDTO createDTO(FieldEntity<Integer> field, FieldDefinition fieldDefinition) {
         return new IntegerFieldDTO(field.getId(), fieldDefinition, field.getValue());
     }
 

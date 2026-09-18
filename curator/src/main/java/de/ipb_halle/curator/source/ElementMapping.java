@@ -8,7 +8,7 @@
 package de.ipb_halle.curator.source;
 
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import java.util.Objects;
 
 /**
@@ -22,9 +22,9 @@ public class ElementMapping {
     private final ElementType elementType;
     private final String sourceFieldName;
     private final boolean multivalued;        // is the source field multivalued?
-    private final FieldDefinitionDTO identityMappingField;
+    private final FieldDefinition identityMappingField;
 
-    public ElementMapping(ElementMappingEntity em, DataSource ds, ElementType elementType, FieldDefinitionDTO identityMappingField) {
+    public ElementMapping(ElementMappingEntity em, DataSource ds, ElementType elementType, FieldDefinition identityMappingField) {
         this.id = em.getId();
         this.sourceFieldName = em.getSourceFieldName();
         this.multivalued = em.isMultivalued();
@@ -49,7 +49,7 @@ public class ElementMapping {
         return sourceFieldName;
     }
 
-    public FieldDefinitionDTO getIdentityMappingField() {
+    public FieldDefinition getIdentityMappingField() {
         return identityMappingField;
     }
 

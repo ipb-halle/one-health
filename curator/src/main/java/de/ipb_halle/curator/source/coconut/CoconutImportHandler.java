@@ -10,7 +10,7 @@ package de.ipb_halle.curator.source.coconut;
 import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.metadata.ElementType;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.onehealth.ElementDTO;
 import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.ElementMapping;
@@ -63,11 +63,11 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
     private void handleElements(DataSource dataSource, CSVRecord record) {
         for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
             String value = record.get(em.getSourceFieldName());
-            FieldDefinitionDTO fieldDefinitionDTO = em.getIdentityMappingField();
-            FieldDTO queryField = createField(null, fieldDefinitionDTO, value);
+            FieldDefinition fieldDefinition = em.getIdentityMappingField();
+            FieldDTO queryField = createField(null, fieldDefinition, value);
             ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
-                createElement(em.getElementType(), fieldDefinitionDTO, value);
+                createElement(em.getElementType(), fieldDefinition, value);
             } else {
                 addElement(elementDTO);
             }
@@ -77,11 +77,11 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
     private void handleFields(DataSource dataSource, CSVRecord record) {
         for (FieldMapping fm : (Set<FieldMapping>) dataSource.getFieldMappings()) {
             String value = record.get(fm.getSourceFieldName());
-            FieldDefinitionDTO fieldDefinitionDTO = fm.getMappingField();
-            ElementType elementType = fieldDefinitionDTO.getElementType();
+            FieldDefinition fieldDefinition = fm.getMappingField();
+            ElementType elementType = fieldDefinition.getElementType();
             List<ElementDTO> typedElementDTOs = elementDTOsByType.get(elementType.getId());
             for (ElementDTO dto : typedElementDTOs) {
-                FieldDTO field = createField(dto.getId(), fieldDefinitionDTO, value);
+                FieldDTO field = createField(dto.getId(), fieldDefinition, value);
                 dto.addField(field);
             }
         }

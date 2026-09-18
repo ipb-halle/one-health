@@ -10,7 +10,7 @@ package de.ipb_halle.curator.fields.text;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.FieldEntity;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
@@ -20,7 +20,7 @@ public class TextFieldDTO extends FieldDTO<TextField> {
 
     private String value;
 
-    private TextFieldDTO(IFieldId id, FieldDefinitionDTO fieldDefinition, String value) {
+    private TextFieldDTO(IFieldId id, FieldDefinition fieldDefinition, String value) {
         super(id, fieldDefinition);
         this.value = value;
     }
@@ -30,7 +30,7 @@ public class TextFieldDTO extends FieldDTO<TextField> {
         return new TextField(getId(), value);
     }
 
-    public static TextFieldDTO createDTO(FieldEntity<String> field, FieldDefinitionDTO fieldDefinition) {
+    public static TextFieldDTO createDTO(FieldEntity<String> field, FieldDefinition fieldDefinition) {
         return new TextFieldDTO(field.getId(), fieldDefinition, field.getValue());
     }
 

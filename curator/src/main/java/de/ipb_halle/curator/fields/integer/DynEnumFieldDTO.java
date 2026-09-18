@@ -10,7 +10,7 @@ package de.ipb_halle.curator.fields.integer;
 import de.ipb_halle.curator.metadata.DynEnum;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.FieldDTO;
-import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
+import de.ipb_halle.curator.metadata.FieldDefinition;
 
 /**
  *
@@ -20,12 +20,12 @@ public class DynEnumFieldDTO extends FieldDTO<IntegerField> {
 
     private DynEnum value;
 
-    private DynEnumFieldDTO(IFieldId fieldId, FieldDefinitionDTO fieldDefinition, DynEnum value) {
+    private DynEnumFieldDTO(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
         super(fieldId, fieldDefinition);
         this.value = value;
     }
 
-    public static DynEnumFieldDTO createDTO(IFieldId fieldId, FieldDefinitionDTO fieldDefinition, DynEnum value) {
+    public static DynEnumFieldDTO createDTO(IFieldId fieldId, FieldDefinition fieldDefinition, DynEnum value) {
         return new DynEnumFieldDTO(fieldId, fieldDefinition, value);
     }
 
