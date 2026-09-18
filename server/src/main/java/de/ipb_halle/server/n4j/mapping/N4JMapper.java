@@ -2,14 +2,10 @@ package de.ipb_halle.server.n4j.mapping;
 
 import de.ipb_halle.server.data.dtos.*;
 import de.ipb_halle.server.n4j.models.*;
-import de.ipb_halle.server.n4j.models.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-import de.ipb_halle.server.data.dtos.*;
-
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -182,77 +178,7 @@ public interface N4JMapper {
         return dto;
     }
 
-    // Metadata Element
-
-    default MetadataElementDTO EntityTypeToElement(N4JEntityType entity){
-        if (entity == null)
-            return null;
-
-        MetadataElementDTO dto = new MetadataElementDTO();
-
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setDescription(entity.getDescription());
-        dto.setCount(0);
-        dto.setType("entity");
-
-        var properties = Stream.concat(
-                entity.getProperties().stream().map(p -> new PropertyInfoDTO(
-                        p.getId(),
-                        p.getName(),
-                        p.getDescription(),
-                        p.getKey(),
-                        p.getDataType(),
-                        false
-                )),
-
-                entity.getInheritedProperties().stream().map(p -> new PropertyInfoDTO(
-                        p.getId(),
-                        p.getName(),
-                        p.getDescription(),
-                        p.getKey(),
-                        p.getDataType(),
-                        true
-                ))).collect(Collectors.toList());
-
-        dto.setProperties(properties);
-        return dto;
-    }
-
-    default MetadataElementDTO LinkTypeToElement(N4JLinkType entity){
-        if (entity == null)
-            return null;
-
-        MetadataElementDTO dto = new MetadataElementDTO();
-
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setDescription(entity.getDescription());
-        dto.setCount(0);
-        dto.setType("link");
-
-        if (entity.getProperties() != null) {
-            var properties = entity.getProperties().stream().map(p -> new PropertyInfoDTO(
-                    p.getId(),
-                    p.getName(),
-                    p.getDescription(),
-                    false,
-                    p.getDataType(),
-                    false
-            )).collect(Collectors.toList());
-            dto.setProperties(properties);
-        }
-
-
-        return dto;
-    }
-
-    // Data Source
-
-
     N4JKeyword map(KeywordDTO dto);
-
-    N4JDataSource map(DataSourceDTO dto);
 
     N4JPropertyInfo map(PropertyInfoDTO dto);
 
@@ -260,7 +186,6 @@ public interface N4JMapper {
 
 
     KeywordDTO map(N4JKeyword object);
-    DataSourceDTO map(N4JDataSource object);
     PropertyInfoDTO map(N4JPropertyInfo object);
 
 }

@@ -1,14 +1,6 @@
 import { injectable } from 'inversify';
 
 export const LOCAL_STORAGE_KEYS = {
-    // tutorial keys
-    showNeighborhoodExplorerTutorial:
-        'one-health-show-neighborhood-explorer-tutorial',
-    showCoOccurrencesSummaryTutorial:
-        'one-health-show-cooccurrences-summary-tutorial',
-    showCompoundSearchTutorial: 'one-health-show-compound-search-tutorial',
-    showGeneralSearchTutotrial: 'one-health-show-general-search-tutorial',
-
     // warning messages
     showNeighborhoodExplorerWarning:
         'one-health-show-neighborhood-explorer-warning',

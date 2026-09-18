@@ -22,10 +22,12 @@ services:
   server:
     ports:
       - "8080:8080"
-      - "5173:8080"      
+      - "5173:8080"
 
   client:
     hostname: a.localhost
+    ports:
+      - "80:80"
 
   graphdb:
     ports:

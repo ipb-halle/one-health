@@ -9,20 +9,13 @@ import de.ipb_halle.server.data.dtos.GraphDTO;
 import de.ipb_halle.server.data.dtos.LinkDTO;
 import de.ipb_halle.server.services.interfaces.IGraphService;
 
-import java.io.Console;
 import java.util.List;
 
 public class GraphController {
-
     private final IGraphService graphService;
 
     public GraphController(IGraphService graphService) {
         this.graphService = graphService;
-    }
-
-    @GetMapping("get-initial")
-    public ResponseEntity<GraphDTO> GetInitialGraph() {
-        return new ResponseEntity<>(graphService.GetInitialSet(), HttpStatus.OK);
     }
 
     @PostMapping("get-node-expansion/{id}")
@@ -31,7 +24,10 @@ public class GraphController {
     }
 
     @GetMapping("get-links-between")
-    public ResponseEntity<List<LinkDTO>> GetLinksBetween(@RequestParam(name = "sourceId", required = true) String sourceId, @RequestParam(name = "targetId", required = true) String targetId, @RequestParam(name = "type", required = false) String type) {
+    public ResponseEntity<List<LinkDTO>> GetLinksBetween(
+            @RequestParam(name = "sourceId", required = true) String sourceId,
+            @RequestParam(name = "targetId", required = true) String targetId,
+            @RequestParam(name = "type", required = false) String type) {
         var result = graphService.GetLinks(sourceId, targetId, type);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

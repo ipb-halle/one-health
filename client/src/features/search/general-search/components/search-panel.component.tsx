@@ -1,10 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import React from 'react';
-import { LoadingPlaceholderComponent } from '../../../../shared/components';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { dependencyFactory } from '../../../../app/di';
-import { ITutorialStore, STORES } from '../../../../store/inversify';
 import { Link } from 'react-router-dom';
 import GeneralSearchPageTourComponent from './general-search-tour.component';
 import './general-search.component.scss';
@@ -19,35 +15,19 @@ const SearchPanel: React.FC = () => {
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
     const historySearchStore = useContext(RootStoreContext).historySearchStore;
 
-    const tutorialStore = dependencyFactory.get<ITutorialStore>(
-        STORES.ITutorialStore,
-    );
+    const tutorialStore = useContext(RootStoreContext).tutorialStore;
 
     const [historyVisible, setHistoryVisible] = useState<boolean>(false);
-
-    const [runTutorial, setRunTutorial] = useState<boolean>(
-        tutorialStore.getShowGeneralSearchTutorial(),
-    );
-
-    const helpClickedHandler = () => {
-        setRunTutorial(true);
-    };
-
-    const helpTourCallback = () => {
-        setRunTutorial(false);
-        historySearchStore.initHistory();
-        tutorialStore.setShowGeneralSearchTutorial(false);
-        // tutorialStore.setShowCoOccurrencesSummaryTutorial(false);
-    };
-
 
     const toast = useRef(null);
 
     return (
         <div id="general-search-panel">
             <GeneralSearchPageTourComponent
-                run={runTutorial}
-                callback={helpTourCallback}></GeneralSearchPageTourComponent>
+                run={tutorialStore.showGeneralSearchTutorial}
+                callback={() =>
+                    tutorialStore.ChangeShowGeneralSearchTutorial(false)
+                }></GeneralSearchPageTourComponent>
 
             <div className="general-search-header" id="general-search-header">
                 <div
@@ -59,8 +39,25 @@ const SearchPanel: React.FC = () => {
                         flexDirection: 'column',
                         marginTop: '20px',
                     }}>
+                    <div style={{ display: 'flex' }}>
+                        <GeneralSearchInput />
+                        <Button
+                            id="page-title-help-button"
+                            icon="pi pi-question-circle"
+                            style={{ marginLeft: '5px' }}
+                            onClick={() =>
+                                tutorialStore.ChangeShowGeneralSearchTutorial(
+                                    true,
+                                )
+                            }
+                            tooltip={`Watch tutorial`}
+                            tooltipOptions={{
+                                position: 'bottom',
+                                showDelay: 1000,
+                            }}
+                        />
+                    </div>
 
-                    <GeneralSearchInput />
                     {/* TODO: implement as Buttons?*/}
                     <div className="general-search-links">
                         <Toast ref={toast} />

@@ -259,7 +259,7 @@ docker compose up -d postgres
 #### 2. Import the dump
 
 ```bash
-docker exec -i one-health-postgredb psql -U one_healt_huser -d one_health < one_health_dump.20251010.sql
+docker exec -i one-health-postgredb psql -U one_health_user -d one_health < one_health_dump.20251010.sql
 ```
 
 The data will then be stored in the configured named volume.
