@@ -8,6 +8,7 @@
 package de.ipb_halle.curator.source;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
+import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,7 @@ public class ImportHandlerFactoryTest {
         DataSource ds = sourceRegistry.getDataSources().get(0);
         ImportHandler handler = factory.build(ds.getHandler());
         assertThat(handler).isNotNull();
+        Assertions.assertThatCode(() -> handler.importSource(ds))
+                .doesNotThrowAnyException();
     }
 }

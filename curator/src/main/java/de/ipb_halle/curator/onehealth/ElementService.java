@@ -94,6 +94,14 @@ public class ElementService {
         }
     }
 
+    public void save(ElementDTO dto) {
+        repository.save(dto.createEntity());
+        for(FieldDTO field : dto.getFields()) {
+            fieldService.saveField(field);
+        }
+    }
+    
+    
     private FieldType getFieldType(FieldDTO field) {
         return field.getFieldDefinition().getFieldType();
     }

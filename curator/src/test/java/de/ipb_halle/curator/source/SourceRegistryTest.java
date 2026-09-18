@@ -29,6 +29,7 @@ public class SourceRegistryTest {
 
     @Test
     public void testDataSource() {
+        assertThat(sourceRegistry.isInitialized()).isTrue();
         assertThat(sourceRegistry.getDataSources().size()).isGreaterThan(0);
 
         DataSource ds = sourceRegistry.getDataSources().get(0);
