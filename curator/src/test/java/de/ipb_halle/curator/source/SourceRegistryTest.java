@@ -8,6 +8,7 @@
 package de.ipb_halle.curator.source;
 
 import de.ipb_halle.curator.TestcontainersConfiguration;
+import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,18 @@ public class SourceRegistryTest {
     private SourceRegistry sourceRegistry;
 
     @Test
-    public void testDataSource() {
+    public void testDataSource_FailOnDuplicateInitialization() {
         assertThat(sourceRegistry.isInitialized()).isTrue();
+        Assertions.assertThatThrownBy(() -> sourceRegistry.initializeDataSources(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> sourceRegistry.initializeElementMappings(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> sourceRegistry.initializeFieldMappings(null))
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    public void testDataSource() {
         assertThat(sourceRegistry.getDataSources().size()).isGreaterThan(0);
 
         DataSource ds = sourceRegistry.getDataSources().get(0);
