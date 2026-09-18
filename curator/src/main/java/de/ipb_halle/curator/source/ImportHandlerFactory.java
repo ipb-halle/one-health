@@ -7,10 +7,10 @@
  */
 package de.ipb_halle.curator.source;
 
+import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
 import de.ipb_halle.curator.onehealth.ElementService;
-import de.ipb_halle.curator.source.coconut.CoconutImportHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +28,25 @@ public class ImportHandlerFactory {
     private ElementService elementService;
 
     @Autowired
+    private FieldConverter fieldConverter;
+
+    @Autowired
     private FieldService fieldService;
 
 
-    public ImportHandler build() {
-        return new CoconutImportHandler()
-                .setElementService(elementService)
-                .setFieldService(fieldService)
-                .setMetadataRegistry(registry);
+    public ImportHandler build(Class handlerClass) {
+        try {
+            ImportHandler handler = (ImportHandler) handlerClass
+                    .getConstructor(new Class[0])
+                    .newInstance();
+
+            return handler
+                    .setElementService(elementService)
+                    .setFieldConverter(fieldConverter)
+                    .setFieldService(fieldService)
+                    .setMetadataRegistry(registry);
+        } catch (Exception ex) {
+            throw new RuntimeException("Instantiation of ImportHandler failed.", ex);
+        }
     }
 }

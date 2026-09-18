@@ -7,10 +7,10 @@
  */
 package de.ipb_halle.curator.source.coconut;
 
+import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.fields.FieldConverter;
 import de.ipb_halle.curator.fields.FieldDTO;
 import de.ipb_halle.curator.fields.FieldService;
-import de.ipb_halle.curator.fields.OrderedFieldId;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinitionDTO;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
@@ -40,39 +40,7 @@ import org.apache.commons.csv.CSVRecord;
  *
  * @author fblocal
  */
-public class CoconutImportHandler implements ImportHandler {
-
-    private ElementService elementService;
-    private FieldService fieldService;
-    private MetadataRegistry registry;
-    private FieldConverter converter;
-
-    private List<FieldMapping> fieldMappings;
-    private Map<String, List<ElementDTO>> elementsDTOsByType;
-
-    @Override
-    public ImportHandler setElementService(ElementService elementService) {
-        this.elementService = elementService;
-        return this;
-    }
-
-    @Override
-    public ImportHandler setFieldConverter(FieldConverter converter) {
-        this.converter = converter;
-        return this;
-    }
-
-    @Override
-    public ImportHandler setFieldService(FieldService fieldService) {
-        this.fieldService = fieldService;
-        return this;
-    }
-
-    @Override
-    public ImportHandler setMetadataRegistry(MetadataRegistry registry) {
-        this.registry = registry;
-        return this;
-    }
+public class CoconutImportHandler extends AbstractImportHandler implements ImportHandler {
 
     @Override
     public void importSource(DataSource dataSource) throws IOException {
@@ -123,19 +91,6 @@ public class CoconutImportHandler implements ImportHandler {
                 dto.addField(field);
             }
         }
-    }
-
-    private void createElement(ElementType elementType, FieldDefinitionDTO fieldDefinition, String value) {
-        List<ElementDTO> typedElementDTOs = elementsDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
-        elementsDTOsByType.put(elementType.getId(), typedElementDTOs);
-        ElementDTO elementDTO = new ElementDTO(elementType);
-        FieldDTO field = createField(elementDTO.getId(), fieldDefinition, value);
-        elementDTO.addField(field);
-        typedElementDTOs.add(elementDTO);
-    }
-
-    private FieldDTO createField(UUID elementId, FieldDefinitionDTO fieldDefinition, String value) {
-        return converter.fromString(elementId, fieldDefinition, value);
     }
 
     private void addElement(ElementDTO elementDTO) {

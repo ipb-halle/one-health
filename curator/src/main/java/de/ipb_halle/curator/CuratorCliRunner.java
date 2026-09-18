@@ -14,6 +14,7 @@ import de.ipb_halle.curator.onehealth.ElementService;
 import de.ipb_halle.curator.onehealth.NodeWriter;
 import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.ImportHandler;
+import de.ipb_halle.curator.source.ImportHandlerFactory;
 import de.ipb_halle.curator.source.SourceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -28,19 +29,11 @@ import org.springframework.stereotype.Component;
 public class CuratorCliRunner implements CommandLineRunner {
 
     @Autowired
-    private MetadataRegistry metadataRegistry;
-
-    @Autowired
     private SourceRegistry sourceRegistry;
 
     @Autowired
-    private ElementService elementService;
+    private ImportHandlerFactory factory;
 
-    @Autowired
-    private FieldConverter fieldConverter;
-
-    @Autowired
-    private FieldService fieldService;
 
     @Autowired
     private NodeWriter nodeWriter;
@@ -48,13 +41,7 @@ public class CuratorCliRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         for (DataSource source : sourceRegistry.getDataSources()) {
-            ImportHandler handler = (ImportHandler) source.getHandler().
-                    getConstructor(new Class[0])
-                    .newInstance();
-            handler.setElementService(elementService);
-            handler.setFieldConverter(fieldConverter);
-            handler.setFieldService(fieldService);
-            handler.setMetadataRegistry(metadataRegistry);
+            ImportHandler handler = factory.build(source.getHandler());
             handler.importSource(source);
         }
         // nodeWriter.writeNodes(elementType, output);

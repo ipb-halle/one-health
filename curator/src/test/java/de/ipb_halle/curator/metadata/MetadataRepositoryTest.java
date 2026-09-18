@@ -29,7 +29,7 @@ class MetadataRepositoryTest {
     @Test
     void testFindAllElementTypes() {
         List<ElementType> elements = repository.findAllElementTypes();
-        assertThat(elements).hasSize(4);
+        assertThat(elements).hasSize(5);
     }
 
     @Test

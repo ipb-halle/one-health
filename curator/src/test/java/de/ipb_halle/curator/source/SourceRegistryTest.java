@@ -22,18 +22,19 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @Import(TestcontainersConfiguration.class)
-public class ImportHandlerFactoryTest {
+public class SourceRegistryTest {
 
     @Autowired
     private SourceRegistry sourceRegistry;
 
-    @Autowired
-    private ImportHandlerFactory factory;
-
     @Test
-    public void testBuildMethod() {
+    public void testDataSource() {
+        assertThat(sourceRegistry.getDataSources().size()).isGreaterThan(0);
+
         DataSource ds = sourceRegistry.getDataSources().get(0);
-        ImportHandler handler = factory.build(ds.getHandler());
-        assertThat(handler).isNotNull();
+        assertThat(ds.getElementMappings().size()).isGreaterThan(0);
+        assertThat(ds.getFieldMappings().size()).isGreaterThan(2);
+        assertThat(ds.getHandler()).isAssignableTo(ImportHandler.class);
+        assertThat(ds.getSourceUrl()).isNotNull();
     }
 }

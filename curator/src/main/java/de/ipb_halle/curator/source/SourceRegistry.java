@@ -86,10 +86,10 @@ public class SourceRegistry {
         for (var fm : fieldMappings) {
             DataSource ds = dataSourcesById.get(fm.getDataSourceId());
             FieldDefinitionDTO field = metadataRegistry.getFieldDefinition(fm.getMapping());
-            FieldMapping fieldMapping = new FieldMapping(fm, ds, field);
             if ((ds==null) || (field == null)) {
                 throw new IllegalArgumentException("Unresolvable field mapping.");
             }
+            FieldMapping fieldMapping = new FieldMapping(fm, ds, field);
             ds.addFieldMapping(fieldMapping);
         }
         fieldMappingsInitialized = true;
