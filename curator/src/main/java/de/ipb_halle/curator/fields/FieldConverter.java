@@ -78,6 +78,10 @@ public class FieldConverter {
             case ENUM:
                 DynEnum dynEnum = registry.getDynEnum(fieldDefinition.getId(),
                         ((FieldEntity<Integer>) entity).getValue());
+                if (dynEnum == null) {
+                    throw new IllegalArgumentException("Unknown DynEnum for fieldId '%d'"
+                            .formatted(fieldDefinition.getId()));
+                }
                 return DynEnumFieldDTO.createDTO(entity.getId(), fieldDefinition, dynEnum);
             case TEXT:
                 return TextFieldDTO.createDTO(entity, fieldDefinition);

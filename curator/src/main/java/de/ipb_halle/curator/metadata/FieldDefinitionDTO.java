@@ -72,10 +72,4 @@ public final class FieldDefinitionDTO {
     public boolean isMultivalued() {
         return multivalued;
     }
-
-    @Override
-    public String toString() {
-        return "FieldDefinitionInfo{id=%d, fieldType='%s' element='%s', name='%s'}"
-                .formatted(id, fieldType.toString(), elementType.getId(), name.replace("'", "\\'"));
-    }
 }

@@ -12,7 +12,7 @@ package de.ipb_halle.curator.metadata;
  * @author fblocal
  */
 public class DynEnum {
-    private final Integer id;
+    private Integer id;
     private final Integer fieldDefinitionId;
     private final String label;
     private final String description;
@@ -24,9 +24,16 @@ public class DynEnum {
         this.description = description;
     }
 
-
     public Integer getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        if (this.id == null) {
+            this.id = id;
+            return;
+        }
+        throw new IllegalStateException("Cannot reset id field");
     }
 
     public Integer getFieldDefinitionId() {

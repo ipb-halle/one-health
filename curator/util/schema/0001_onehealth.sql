@@ -51,7 +51,8 @@ CREATE TABLE dyn_enums (
     id          SERIAL NOT NULL PRIMARY KEY,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     label       VARCHAR,
-    description VARCHAR
+    description VARCHAR,
+    UNIQUE (field_id, label)
 );
 
 

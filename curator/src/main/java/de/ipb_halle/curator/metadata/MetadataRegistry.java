@@ -97,22 +97,20 @@ public class MetadataRegistry {
     }
 
     public DynEnum getDynEnum(Integer fieldId, String label) {
-        if (dynEnumsByLabel.containsKey(fieldId)
-                && dynEnumsByLabel.get(fieldId).containsKey(label)) {
+        if (dynEnumsByLabel.containsKey(fieldId)) {
             return dynEnumsByLabel.get(fieldId).get(label);
         }
-        throw new IllegalArgumentException("DynEnum not defined for fieldId '%d'".formatted(fieldId));
+        throw new IllegalArgumentException("Field '%d' is not a DynEnum field".formatted(fieldId));
     }
 
     public DynEnum getDynEnum(Integer fieldId, Integer id) {
-        if (dynEnumsById.containsKey(fieldId)
-                && dynEnumsById.get(fieldId).containsKey(id)) {
+        if (dynEnumsById.containsKey(fieldId)) {
             return dynEnumsById.get(fieldId).get(id);
         }
-        throw new IllegalArgumentException("DynEnum not defined for fieldId '%d'".formatted(fieldId));
+        throw new IllegalArgumentException("Field '%d' is not a DynEnum field".formatted(fieldId));
     }
 
-    public Map<String, DynEnum> getDynEnumsByLabel(Integer fieldId) {
+    public Map<String, DynEnum> getDynEnumsByFieldId(Integer fieldId) {
         if (dynEnumsById.containsKey(fieldId)) {
             return Collections.unmodifiableMap (dynEnumsByLabel.get(fieldId));
         }
@@ -120,10 +118,18 @@ public class MetadataRegistry {
     }
 
     public DynEnum registerDynEnum(DynEnum dynEnum) {
+        if (fieldDefinitionsById.get(dynEnum.getFieldDefinitionId()).getFieldType() != FieldType.ENUM) {
+            throw new IllegalArgumentException("Can't register DynEnum for non-DynEnum field '%d'"
+                    .formatted(dynEnum.getFieldDefinitionId()));
+        }
         synchronized (this) {
-            DynEnum saved = repository.save(dynEnum);
-            mapDynEnum(saved);
-            return saved;
+            try {
+                DynEnum saved = repository.save(dynEnum);
+                mapDynEnum(saved);
+                return saved;
+            } catch(Exception e) {
+                throw new IllegalArgumentException("Registration of DynEnum failed.", e);
+            }
         }
     }
 

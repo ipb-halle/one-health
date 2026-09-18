@@ -73,21 +73,32 @@ class MetadataRegistryTest {
 
     @Test
     void testDynEnum() {
-        DynEnum dynEnum = registry.getDynEnum(8, "HERB");
-        assertThat(dynEnum.getId()).isEqualTo(1);
+        DynEnum dynEnum = registry.getDynEnum(8, "SHRUB");
+        assertThat(dynEnum.getId()).isEqualTo(2);
         assertThat(dynEnum.getFieldDefinitionId()).isEqualTo(8);
-        assertThat(dynEnum.getLabel()).isEqualTo("HERB");
-        assertThat(dynEnum.getDescription()).isEqualTo("plant growing as a herb");
-        Map<String, DynEnum> map = registry.getDynEnumsByLabel(8);
+        assertThat(dynEnum.getLabel()).isEqualTo("SHRUB");
+        assertThat(dynEnum.getDescription()).isEqualTo("plant growing as a shrub");
+        Map<String, DynEnum> map = registry.getDynEnumsByFieldId(8);
         assertThat(map.size()).isEqualTo(3);
+        assertThat(registry.getDynEnum(8, "PLANET")).isNull();
+        assertThat(registry.getDynEnum(8, 999999)).isNull();
+        dynEnum = new DynEnum(null, 8, "MOSS", "growth form of Bryophytes");
+        registry.registerDynEnum(dynEnum);
+        assertThat(registry.getDynEnum(8, "MOSS").getId()).isGreaterThan(3);
 
-        Assertions.assertThatThrownBy(() -> registry.getDynEnumsByLabel(7))
+        // attempts to lookup or register illegal values result in IllegalArgumentExceptions
+        Assertions.assertThatThrownBy(() -> registry.getDynEnumsByFieldId(7))
                 .isInstanceOf(IllegalArgumentException.class);
 
-        // attempts to lookup illegal values result in IllegalArgumentException
-        Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, "PLANET"))
-                .isInstanceOf(IllegalArgumentException.class);
         Assertions.assertThatThrownBy(() -> registry.getDynEnum(1, 1))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        final DynEnum temp1 = new DynEnum(null, 7, "CAR", "Motorized vehicle");
+        Assertions.assertThatThrownBy(() -> registry.registerDynEnum(temp1))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        final DynEnum temp2 = new DynEnum(null, 8, "MOSS", "growth form of Bryophytes");
+        Assertions.assertThatThrownBy(() -> registry.registerDynEnum(temp2))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

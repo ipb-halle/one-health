@@ -8,11 +8,14 @@
 package de.ipb_halle.curator.metadata;
 
 import de.ipb_halle.curator.metadata.ElementType.ElementClass;
+import java.util.HashMap;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 /**
  * Read-only repository for loading metadata from {@code element_types},
@@ -40,13 +43,18 @@ public class MetadataRepository {
 
     @Transactional(readOnly = false)
     public DynEnum save(DynEnum dynEnum) {
-        String sql = "INSERT INTO dyn_enums (field_id, label, description) VALUES (?,?,?) RETURNING id AS id";
-        return jdbcTemplate.query(sql, (rs, rownum) -> new DynEnum(
-                rs.getInt("id"),
-                dynEnum.getFieldDefinitionId(),
-                dynEnum.getLabel(),
-                dynEnum.getDescription())
-        ).get(0);
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("dyn_enums")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns("field_id", "label", "description");
+
+        Map<String, Object> params = new HashMap<> ();
+        params.put("field_id", dynEnum.getFieldDefinitionId());
+        params.put("label", dynEnum.getLabel());
+        params.put("description", dynEnum.getDescription());
+        Number id = insert.executeAndReturnKey(params);
+        dynEnum.setId(id.intValue());
+        return dynEnum;
     }
 
     /**
