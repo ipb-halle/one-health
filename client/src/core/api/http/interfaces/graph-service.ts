@@ -1,11 +1,11 @@
 import { injectable } from 'inversify';
-import axios from 'axios';
 import { BaseDataService } from './base-data-service';
 import { IHttpResponseHandlerSettings } from '../http-responses-handler';
 import { OnReadByIdResponsesHandler } from '../http-responses-handler';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import { constructHttpParams } from '../../../../shared';
+import qs from 'qs';
 
 /**
  * Provides base implementations of the standard CRUD operations
@@ -18,7 +18,12 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-initial`, {}),
+            fetch(`${this.url}/get-initial`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
@@ -35,7 +40,12 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-node/${id}`, {}),
+            fetch(`${this.url}/get-node/${id}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
@@ -50,7 +60,12 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-edge/${id}`, {}),
+            fetch(`${this.url}/get-edge/${id}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
@@ -69,10 +84,16 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         const query = { sourceId: sourceId, targetId: targetId, type: type };
+        const qparams = constructHttpParams(query);
+        const queryString = qs.stringify(qparams, { indices: false });
+        const fullUrl = `${this.url}/get-links-between?${queryString}`;
+
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-links-between`, {
-                params: constructHttpParams(query),
-                paramsSerializer: { indexes: false },
+            fetch(fullUrl, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
             }),
             new OnReadByIdResponsesHandler(
                 'graph',
@@ -89,7 +110,14 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.post<any>(`${this.url}/get-node-expansion/${id}`, nodes),
+            fetch(`${this.url}/get-node-expansion/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(nodes),
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,

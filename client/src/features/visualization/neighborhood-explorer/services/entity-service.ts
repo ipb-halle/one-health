@@ -6,7 +6,6 @@ import {
     IHttpResponseHandlerSettings,
     OnReadByIdResponsesHandler,
 } from '../../../../core/api/http/http-responses-handler';
-import axios from 'axios';
 
 @injectable()
 export class IEntityService extends GraphService {
@@ -19,7 +18,14 @@ export class IEntityService extends GraphService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.post<any>(`${this.url}/get-graph-references`, nodes),
+            fetch(`${this.url}/get-graph-references`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(nodes),
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
