@@ -1,5 +1,5 @@
-import { AxiosError, AxiosResponse } from 'axios';
 import { IHttpResponsesHandler } from '../http-responses-handler';
+import { HttpFetchError } from '../http-fetch-error';
 import { injectable } from 'inversify';
 
 /**
@@ -10,25 +10,28 @@ export abstract class BaseDataService {
     readonly url: string = '';
 
     protected handleRequest<TResult>(
-        request: Promise<AxiosResponse<TResult, any>>,
+        request: Promise<Response>,
         responseHandler?: IHttpResponsesHandler,
     ): Promise<TResult> {
-        if (responseHandler) {
-            return request
-                .then((x: AxiosResponse<TResult, any>) => {
-                    if (responseHandler.handleSuccess) {
-                        responseHandler.handleSuccess();
-                    }
-                    return Promise.resolve(x.data);
-                })
-                .catch((errorResponse: AxiosError) => {
-                    if (responseHandler.handleError) {
-                        responseHandler.handleError(errorResponse);
-                    }
-                    return Promise.reject(errorResponse);
-                });
-        } else {
-            return request.then((x) => x.data);
-        }
+        return request
+            .then(async (response: Response) => {
+                if (!response.ok) {
+                    throw new HttpFetchError(response);
+                }
+
+                const data = (await response.json()) as TResult;
+
+                if (responseHandler?.handleSuccess) {
+                    responseHandler.handleSuccess();
+                }
+
+                return data;
+            })
+            .catch((error: HttpFetchError | Error) => {
+                if (responseHandler?.handleError) {
+                    responseHandler.handleError(error);
+                }
+                return Promise.reject(error);
+            });
     }
 }
