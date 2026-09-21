@@ -5,7 +5,6 @@ import {
     OnCreateResponseHandler,
     OnReadByIdResponsesHandler,
 } from '../http-responses-handler';
-import axios from 'axios';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 /**
@@ -23,7 +22,12 @@ export class CrudService<TEntity> extends BaseDataService {
     ): Promise<TEntity> {
         //TODO:how to fix the catch here
         return this.handleRequest<TEntity>(
-            axios.get<TEntity>(`${this.url}/${id}`),
+            fetch(`${this.url}/${id}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -39,7 +43,12 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity[]> {
         return this.handleRequest<TEntity[]>(
-            axios.get<TEntity[]>(`${this.url}/all`),
+            fetch(`${this.url}/all`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -56,7 +65,14 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity> {
         return this.handleRequest<TEntity>(
-            axios.post<TEntity>(`${this.url}`, item),
+            fetch(`${this.url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(item),
+            }),
             new OnCreateResponseHandler(
                 this.entityTitle,
                 messageService,
