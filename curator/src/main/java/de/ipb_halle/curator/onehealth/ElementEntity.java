@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name="elements")
-public class Element {
+public class ElementEntity {
 
     public final static String[] HEADER = { "id", "type" };
 
@@ -29,15 +29,15 @@ public class Element {
     @Column(name="type_id")
     private String typeId;
 
-    public Element() {
+    public ElementEntity() {
     }
 
-    public Element(UUID id, String type) {
+    public ElementEntity(UUID id, String type) {
         this.id = id;
         this.typeId = type;
     }
 
-    public Element(String typeId) {
+    public ElementEntity(String typeId) {
         this.id = UUID.randomUUID();
         this.typeId = typeId;
     }

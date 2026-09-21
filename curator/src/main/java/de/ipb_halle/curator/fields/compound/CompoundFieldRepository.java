@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
 public interface CompoundFieldRepository extends JpaRepository<CompoundFieldEntity, OrderedFieldId>, JpaSpecificationExecutor<CompoundFieldEntity> {
 
     /**
-     * Fetch a single CompoundFieldEntity by its compound key 
+     * Fetch a single CompoundFieldEntity by its compound key
      * (element_id, field_definition_id, order) using JPQL.
      */
     @Query("SELECT t FROM CompoundFieldEntity t WHERE t.id.elementId = :elementId "

@@ -45,10 +45,10 @@ public class ElementService {
     private FieldService fieldService;
 
     public List<ElementDTO> loadByType(ElementType type) {
-       List<Element> elements =  repository.findElementsByType(type.getId());
-       List<ElementDTO> dtos = converter.createDTOs(elements);
-       dtos.stream().forEach(e -> e.addFields(fieldService.loadFields(e.getId())));
-       return dtos;
+       List<ElementEntity> elementEntities =  repository.findElementsByType(type.getId());
+       List<ElementDTO> elements = converter.createDTOs(elementEntities);
+       elements.stream().forEach(e -> e.addFields(fieldService.loadFields(e.getId())));
+       return elements;
     }
 
 
@@ -57,11 +57,11 @@ public class ElementService {
         if (fields.size() == 1) {
             UUID elementId = fields.get(0).getId().getElementId();
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Element> cq = cb.createQuery(Element.class);
-            Root<Element> root = cq.from(Element.class);
+            CriteriaQuery<ElementEntity> cq = cb.createQuery(ElementEntity.class);
+            Root<ElementEntity> root = cq.from(ElementEntity.class);
             cq.where(cb.equal(root.get("id"), elementId));
             cq.select(root);
-            List<Element> result = entityManager.createQuery(cq).getResultList();
+            List<ElementEntity> result = entityManager.createQuery(cq).getResultList();
             if (result.size() == 1) {
                 ElementDTO element = converter.createDTO(result.get(0));
                 element.addFields(fieldService.loadFields(elementId));

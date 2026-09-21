@@ -48,12 +48,12 @@ public class ElementTest {
         dto.addField(TextField.createDTO(field, fieldDef));
         assertThat(dto.getFields().size()).isEqualTo(1);
 
-        Element element = dto.createEntity();
-        assertThat(element.getId()).isEqualByComparingTo(id1);
-        assertThat(element.getTypeId()).isEqualTo(type.getId());
+        ElementEntity elementEntity = dto.createEntity();
+        assertThat(elementEntity.getId()).isEqualByComparingTo(id1);
+        assertThat(elementEntity.getTypeId()).isEqualTo(type.getId());
 
-        ElementType type2 = registry.getElementType(element.getTypeId());
-        ElementDTO dto2 = ElementDTO.createDTO(element, type2);
+        ElementType type2 = registry.getElementType(elementEntity.getTypeId());
+        ElementDTO dto2 = ElementDTO.createDTO(elementEntity, type2);
         assertThat(dto2.getId()).isEqualByComparingTo(id1);
         assertThat(dto2.getType().getId()).isEqualTo(type.getId());
         assertThat(dto2.getFields().size()).isEqualTo(0);
@@ -64,7 +64,7 @@ public class ElementTest {
 
     @Test
     public void testElement() {
-        Element e = new Element(ELEMENT_TYPE_ID);
+        ElementEntity e = new ElementEntity(ELEMENT_TYPE_ID);
         assertThat(e.getTypeId()).isEqualTo(ELEMENT_TYPE_ID);
         assertThat(e.getId()).isInstanceOf(UUID.class);
     }

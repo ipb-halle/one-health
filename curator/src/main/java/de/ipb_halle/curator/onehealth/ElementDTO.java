@@ -39,12 +39,12 @@ public class ElementDTO {
         this.fields = new HashMap<> ();
     }
 
-    public static ElementDTO createDTO(Element element, ElementType type) {
+    public static ElementDTO createDTO(ElementEntity element, ElementType type) {
         return new ElementDTO(element.getId(), type);
     }
 
-    public Element createEntity() {
-        return new Element(id, type.getId());
+    public ElementEntity createEntity() {
+        return new ElementEntity(id, type.getId());
     }
 
     public void addField(AbstractField field) {

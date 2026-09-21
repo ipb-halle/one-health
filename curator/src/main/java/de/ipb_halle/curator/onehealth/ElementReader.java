@@ -30,7 +30,7 @@ public class ElementReader {
     public void read(InputStream input) throws IOException {
         try (var reader = new InputStreamReader(input)) {
             CSVParser parser = CSVParser.parse(reader, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(Element.HEADER)
+                    .setHeader(ElementEntity.HEADER)
                     .setSkipHeaderRecord(true)
                     .get());
             parser.forEach(record -> { parseRecord(record); });
@@ -38,10 +38,10 @@ public class ElementReader {
     }
 
     private void parseRecord(CSVRecord record) {
-        Element element = new Element(
-                UUID.fromString(record.get(Element.HEADER[0])),
-                record.get(Element.HEADER[1])
+        ElementEntity elementEntity = new ElementEntity(
+                UUID.fromString(record.get(ElementEntity.HEADER[0])),
+                record.get(ElementEntity.HEADER[1])
         );
-        repository.save(element);
+        repository.save(elementEntity);
     }
 }

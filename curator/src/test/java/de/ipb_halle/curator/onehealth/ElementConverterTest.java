@@ -46,7 +46,7 @@ public class ElementConverterTest {
 
     @Test
     public void testConverter() {
-        List<Element> elements = new ArrayList<> ();
+        List<ElementEntity> elementEntities = new ArrayList<> ();
 
         ElementType type = registry.getElementType("ORGANISM");
         ElementDTO dto1 = new ElementDTO(type);
@@ -54,16 +54,16 @@ public class ElementConverterTest {
         ElementDTO dto2 = new ElementDTO(type);
         dto2.addField(createTextField(dto2, "Foo"));
 
-        Element e = converter.createEntity(dto1);
-        elements.add(e);
+        ElementEntity e = converter.createEntity(dto1);
+        elementEntities.add(e);
 
         assertThat(e.getId()).isEqualTo(dto1.getId());
         assertThat(e.getTypeId()).isEqualTo(type.getId());
 
-        elements.add(converter.createEntity(dto2));
-        assertThat(converter.createDTOs(elements).size()).isEqualTo(2);
+        elementEntities.add(converter.createEntity(dto2));
+        assertThat(converter.createDTOs(elementEntities).size()).isEqualTo(2);
 
-        ElementDTO dto3 = converter.createDTO(elements.get(0));
+        ElementDTO dto3 = converter.createDTO(elementEntities.get(0));
         assertThat(dto3.getId()).isEqualTo(dto1.getId());
     }
 }

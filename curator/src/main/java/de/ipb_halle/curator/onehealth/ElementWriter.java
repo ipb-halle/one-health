@@ -28,18 +28,18 @@ public class ElementWriter {
     public void write(OutputStream output) throws IOException {
         try (var writer = new OutputStreamWriter(output)) {
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV.builder()
-                    .setHeader(Element.HEADER)
+                    .setHeader(ElementEntity.HEADER)
                     .get());
-            repository.findAll().stream().forEach(element -> {
-                writeRecord(printer, element);
+            repository.findAll().stream().forEach(elementEntity -> {
+                writeRecord(printer, elementEntity);
             });
         }
     }
 
-    private void writeRecord(CSVPrinter printer, Element element) {
+    private void writeRecord(CSVPrinter printer, ElementEntity elementEntity) {
         try {
-            printer.printRecord(element.getId().toString(),
-                    String.valueOf(element.getTypeId()));
+            printer.printRecord(elementEntity.getId().toString(),
+                    String.valueOf(elementEntity.getTypeId()));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }

@@ -20,19 +20,19 @@ import org.springframework.stereotype.Repository;
  * @author fblocal
  */
 @Repository
-public interface ElementRepository extends JpaRepository<Element, UUID>, JpaSpecificationExecutor<Element> {
+public interface ElementRepository extends JpaRepository<ElementEntity, UUID>, JpaSpecificationExecutor<ElementEntity> {
 
     /**
      * Fetch a single TextField by its id using JPQL.
      */
-    @Query("SELECT e FROM Element e WHERE e.id = :id")
-    Optional<Element> findElement(UUID id);
+    @Query("SELECT e FROM ElementEntity e WHERE e.id = :id")
+    Optional<ElementEntity> findElement(UUID id);
 
-    @Query("SELECT e FROM Element e WHERE e.typeId = :id")
-    List<Element> findElementsByType(String id);
+    @Query("SELECT e FROM ElementEntity e WHERE e.typeId = :id")
+    List<ElementEntity> findElementsByType(String id);
 
     /**
      * Fetch all Elements (supports dynamic criteria via {@link JpaSpecificationExecutor}).
      */
-    List<Element> findAll();
+    List<ElementEntity> findAll();
 }
