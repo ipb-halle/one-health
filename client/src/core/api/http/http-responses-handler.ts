@@ -37,7 +37,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         if (this.settings && this.settings.showErrorMessage == false) return;
 
         if (!(errorResponse instanceof HttpFetchError)) {
-            this.handleOtherError(errorResponse);
+            this.handleNetworkError(errorResponse);
             return;
         }
 
@@ -64,17 +64,24 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         }
     }
 
+    protected handleNetworkError(error: Error): void {
+        this.messageService.show({
+            severity: 'error',
+            summary: 'Network Error',
+            detail:
+                'Unable to connect to the server. Please check your network connection or CORS configuration.',
+        });
+    }
+
     protected handleOtherError(errorResponse: HttpFetchError | Error): void {
         this.messageService.show({
             severity: 'error',
             summary: 'Error',
             detail:
-                errorResponse instanceof HttpFetchError
-                    ? errorResponse.message
-                    : errorResponse.message ||
-                      'An error has occurred at the website and your support team will need to fix the problem. ' +
-                      'A preliminary report has been sent to the support team.Please do follow - up on the preliminary ' +
-                      'report using the Report a Problem page',
+                errorResponse.message ||
+                'An error has occurred at the website and your support team will need to fix the problem. ' +
+                'A preliminary report has been sent to the support team. Please do follow-up on the preliminary ' +
+                'report using the Report a Problem page.',
         });
     }
 }

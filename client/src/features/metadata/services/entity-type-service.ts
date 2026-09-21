@@ -20,9 +20,7 @@ export class IEntityTypeService extends PagedCrudService<IEntityType> {
                     Accept: 'application/json',
                 },
             }),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 }
 

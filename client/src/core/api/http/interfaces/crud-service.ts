@@ -34,9 +34,7 @@ export class CrudService<TEntity> extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getAll(
@@ -55,9 +53,7 @@ export class CrudService<TEntity> extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     create(

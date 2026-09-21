@@ -42,9 +42,7 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     /**

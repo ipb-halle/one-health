@@ -19,13 +19,14 @@ export abstract class BaseDataService {
                     throw new HttpFetchError(response);
                 }
 
-                const data = (await response.json()) as TResult;
+                const text = await response.text();
+                const data = text ? JSON.parse(text) : null;
 
                 if (responseHandler?.handleSuccess) {
                     responseHandler.handleSuccess();
                 }
 
-                return data;
+                return data as TResult;
             })
             .catch((error: HttpFetchError | Error) => {
                 if (responseHandler?.handleError) {

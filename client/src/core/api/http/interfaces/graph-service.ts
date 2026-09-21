@@ -30,9 +30,7 @@ export class GraphService extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getNode(
@@ -72,9 +70,7 @@ export class GraphService extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getLinksBetween(
@@ -124,8 +120,6 @@ export class GraphService extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 }

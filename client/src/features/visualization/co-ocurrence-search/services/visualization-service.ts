@@ -35,9 +35,7 @@ export class IOntologyService extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getCoOccurrencesDetails(
