@@ -6,6 +6,7 @@ import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import { constructHttpParams } from '../../../../shared';
 import qs from 'qs';
+import { httpFetch } from '@/core/api/http/http-client';
 
 /**
  * Provides base implementations of the standard CRUD operations
@@ -18,7 +19,7 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            fetch(`${this.url}/get-initial`, {
+            httpFetch(`${this.url}/get-initial`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -40,7 +41,7 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            fetch(`${this.url}/get-node/${id}`, {
+            httpFetch(`${this.url}/get-node/${id}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -60,7 +61,7 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            fetch(`${this.url}/get-edge/${id}`, {
+            httpFetch(`${this.url}/get-edge/${id}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -89,7 +90,7 @@ export class GraphService extends BaseDataService {
         const fullUrl = `${this.url}/get-links-between?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -110,7 +111,7 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            fetch(`${this.url}/get-node-expansion/${id}`, {
+            httpFetch(`${this.url}/get-node-expansion/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

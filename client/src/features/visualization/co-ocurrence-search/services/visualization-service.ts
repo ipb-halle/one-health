@@ -7,6 +7,7 @@ import { ICoOcurrenceQuery } from '../models/co-ocurrence-query';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import qs from 'qs';
+import { httpFetch } from '@/core/api/http/http-client';
 
 @injectable()
 export class IOntologyService extends BaseDataService {
@@ -23,7 +24,7 @@ export class IOntologyService extends BaseDataService {
         const fullUrl = `${this.url}/find-co-ocurrences?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -49,7 +50,7 @@ export class IOntologyService extends BaseDataService {
         const fullUrl = `${this.url}/find-co-occurrences-details?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',

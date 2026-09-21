@@ -8,6 +8,7 @@ import {
 } from '../../../../core/api/http/http-responses-handler';
 import { constructHttpParams } from '../../../../shared';
 import qs from 'qs';
+import { httpFetch } from '@/core/api/http/http-client';
 
 @injectable()
 export class ICompoundService extends BaseDataService {
@@ -71,7 +72,7 @@ export class CompoundService extends ICompoundService {
         const fullUrl = `${this.url}/by-smiles?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -95,7 +96,7 @@ export class CompoundService extends ICompoundService {
         const fullUrl = `${this.url}/by-inchi?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -119,7 +120,7 @@ export class CompoundService extends ICompoundService {
         const fullUrl = `${this.url}/by-inchikey?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -151,7 +152,7 @@ export class CompoundService extends ICompoundService {
         const fullUrl = `${this.url}/by-substructure?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -183,7 +184,7 @@ export class CompoundService extends ICompoundService {
         const fullUrl = `${this.url}/by-similarity?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',

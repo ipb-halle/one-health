@@ -7,6 +7,7 @@ import { OnReadByIdResponsesHandler } from '../http-responses-handler';
 import { constructHttpParams } from '../../../../shared';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 import qs from 'qs';
+import { httpFetch } from '@/core/api/http/http-client';
 
 @injectable()
 export class PagedCrudService<TEntity> extends CrudService<TEntity> {
@@ -30,7 +31,7 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
         const fullUrl = `${this.url}/getPage?${queryString}`;
 
         return this.handleRequest<IPagedData<TEntity>>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',

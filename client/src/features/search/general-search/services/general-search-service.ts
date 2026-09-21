@@ -6,6 +6,7 @@ import {
 } from '../../../../core/api/http/http-responses-handler';
 import { BaseDataService } from '../../../../core/api/http/interfaces/base-data-service';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
+import { httpFetch } from '@/core/api/http/http-client';
 
 @injectable()
 export class IGeneralSearchService extends BaseDataService {
@@ -34,7 +35,7 @@ export class GeneralSearchService extends IGeneralSearchService {
         const fullUrl = `${this.url}?${queryString}`;
 
         return this.handleRequest<any>(
-            fetch(fullUrl, {
+            httpFetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',

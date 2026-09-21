@@ -6,6 +6,7 @@ import {
     OnReadByIdResponsesHandler,
 } from '../http-responses-handler';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
+import { httpFetch } from '@/core/api/http/http-client';
 
 /**
  * Provides base implementations of the standard CRUD operations
@@ -22,7 +23,7 @@ export class CrudService<TEntity> extends BaseDataService {
     ): Promise<TEntity> {
         //TODO:how to fix the catch here
         return this.handleRequest<TEntity>(
-            fetch(`${this.url}/${id}`, {
+            httpFetch(`${this.url}/${id}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -43,7 +44,7 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity[]> {
         return this.handleRequest<TEntity[]>(
-            fetch(`${this.url}/all`, {
+            httpFetch(`${this.url}/all`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -65,7 +66,7 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity> {
         return this.handleRequest<TEntity>(
-            fetch(`${this.url}`, {
+            httpFetch(`${this.url}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

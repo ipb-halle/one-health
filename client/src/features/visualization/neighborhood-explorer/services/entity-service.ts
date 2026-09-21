@@ -6,6 +6,7 @@ import {
     IHttpResponseHandlerSettings,
     OnReadByIdResponsesHandler,
 } from '../../../../core/api/http/http-responses-handler';
+import { httpFetch } from '@/core/api/http/http-client';
 
 @injectable()
 export class IEntityService extends GraphService {
@@ -18,7 +19,7 @@ export class IEntityService extends GraphService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            fetch(`${this.url}/get-graph-references`, {
+            httpFetch(`${this.url}/get-graph-references`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

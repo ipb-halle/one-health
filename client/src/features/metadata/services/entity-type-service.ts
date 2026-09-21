@@ -4,6 +4,7 @@ import { PagedCrudService } from '../../../core/api/http/interfaces/paged-crud-s
 import { SelectableOption } from '../../../core/types/selectable-option';
 import { IEntityType } from '../entity-types';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
+import { httpFetch } from '@/core/api/http/http-client';
 
 
 @injectable()
@@ -13,7 +14,7 @@ export class IEntityTypeService extends PagedCrudService<IEntityType> {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<SelectableOption[]> {
         return this.handleRequest<SelectableOption[]>(
-            fetch(`${this.url}/as-options`, {
+            httpFetch(`${this.url}/as-options`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
