@@ -1,10 +1,10 @@
 import { HttpStatusCodes } from './http-status-codes';
-import { AxiosError } from 'axios';
+import { HttpFetchError } from './http-fetch-error';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 export interface IHttpResponsesHandler {
     handleSuccess?(): void;
-    handleError?(errorResponse: AxiosError): void;
+    handleError?(errorResponse: HttpFetchError | Error): void;
 }
 
 export interface IHttpResponseHandlerSettings {
@@ -33,26 +33,23 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         }
     }
 
-    handleError(errorResponse: AxiosError): void {
+    handleError(errorResponse: HttpFetchError | Error): void {
         if (this.settings && this.settings.showErrorMessage == false) return;
+
+        if (!(errorResponse instanceof HttpFetchError)) {
+            this.handleOtherError(errorResponse);
+            return;
+        }
 
         if (
             this.settings &&
             this.settings.errorStatusesMessages &&
-            this.settings.errorStatusesMessages[
-                errorResponse.response?.status
-                    ? errorResponse.response.status
-                    : 0
-            ] != null
+            this.settings.errorStatusesMessages[errorResponse.status] != null
         ) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
-                detail: this.settings.errorStatusesMessages[
-                    errorResponse.response?.status
-                        ? errorResponse.response.status
-                        : 0
-                ],
+                detail: this.settings.errorStatusesMessages[errorResponse.status],
             });
             return;
         }
@@ -60,22 +57,24 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         this.handleErrorHttpStatusCode(errorResponse);
     }
 
-    protected handleErrorHttpStatusCode(errorResponse: AxiosError): void {
+    protected handleErrorHttpStatusCode(errorResponse: HttpFetchError): void {
         switch (errorResponse.status) {
             default:
                 this.handleOtherError(errorResponse);
         }
     }
 
-    protected handleOtherError(errorResponse: AxiosError): void {
+    protected handleOtherError(errorResponse: HttpFetchError | Error): void {
         this.messageService.show({
             severity: 'error',
             summary: 'Error',
-            detail: errorResponse.code
-                ? errorResponse.code
-                : 'An error has occurred at the website and your support team will need to fix the problem. ' +
-                  'A preliminary report has been sent to the support team.Please do follow - up on the preliminary ' +
-                  'report using the Report a Problem page',
+            detail:
+                errorResponse instanceof HttpFetchError
+                    ? errorResponse.message
+                    : errorResponse.message ||
+                      'An error has occurred at the website and your support team will need to fix the problem. ' +
+                      'A preliminary report has been sent to the support team.Please do follow - up on the preliminary ' +
+                      'report using the Report a Problem page',
         });
     }
 }
@@ -90,11 +89,9 @@ export class OnReadByIdResponsesHandler extends BaseHttpResponsesHandler {
     }
 
     protected override handleErrorHttpStatusCode(
-        errorResponse: AxiosError,
+        errorResponse: HttpFetchError,
     ): void {
-        if (
-            errorResponse.response?.status == HttpStatusCodes.Status404NotFound
-        ) {
+        if (errorResponse.status == HttpStatusCodes.Status404NotFound) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
