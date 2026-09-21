@@ -55,7 +55,7 @@ public class ElementServiceTest {
         ElementType type = registry.getElementType("ORGANISM");
         try (DbTestHelper helper = new DbTestHelper(container)) {
             creator.setupFull(helper);
-            List<ElementDTO> dtos = service.loadByType(type);
+            List<Element> dtos = service.loadByType(type);
             assertThat(dtos.size()).isEqualTo(1);
             assertThat(dtos.get(0).getFields().size()).isEqualTo(4);
         }
@@ -70,9 +70,9 @@ public class ElementServiceTest {
             TextFieldEntity textField = new TextFieldEntity(fieldId, "common sage");
             TextField field = TextField.createDTO(textField, fieldDef);
 
-            ElementDTO elementDTO = service.loadByFieldValue(field);
-            assertThat(elementDTO).isNotNull();
-            assertThat(elementDTO.getId()).isEqualTo(UUID.fromString(ElementIoTest.ORGANISM_ID1));
+            Element element = service.loadByFieldValue(field);
+            assertThat(element).isNotNull();
+            assertThat(element.getId()).isEqualTo(UUID.fromString(ElementIoTest.ORGANISM_ID1));
         }
     }
 }

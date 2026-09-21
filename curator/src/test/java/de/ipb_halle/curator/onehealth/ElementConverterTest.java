@@ -38,9 +38,9 @@ public class ElementConverterTest {
     @Autowired
     private ElementConverter converter;
 
-    private AbstractField createTextField(ElementDTO e, String value) {
+    private AbstractField createTextField(Element element, String value) {
         FieldDefinition fd = registry.getFieldDefinition("ORGANISM:primary name");
-        TextFieldEntity f = new TextFieldEntity(e.getId(), fd.getId(), 0, value);
+        TextFieldEntity f = new TextFieldEntity(element.getId(), fd.getId(), 0, value);
         return TextField.createDTO(f, fd);
     }
 
@@ -49,21 +49,21 @@ public class ElementConverterTest {
         List<ElementEntity> elementEntities = new ArrayList<> ();
 
         ElementType type = registry.getElementType("ORGANISM");
-        ElementDTO dto1 = new ElementDTO(type);
-        dto1.addField(createTextField(dto1, "Hello World"));
-        ElementDTO dto2 = new ElementDTO(type);
-        dto2.addField(createTextField(dto2, "Foo"));
+        Element element1 = new Element(type);
+        element1.addField(createTextField(element1, "Hello World"));
+        Element element2 = new Element(type);
+        element2.addField(createTextField(element2, "Foo"));
 
-        ElementEntity e = converter.createEntity(dto1);
-        elementEntities.add(e);
+        ElementEntity elementEntity = converter.createEntity(element1);
+        elementEntities.add(elementEntity);
 
-        assertThat(e.getId()).isEqualTo(dto1.getId());
-        assertThat(e.getTypeId()).isEqualTo(type.getId());
+        assertThat(elementEntity.getId()).isEqualTo(element1.getId());
+        assertThat(elementEntity.getTypeId()).isEqualTo(type.getId());
 
-        elementEntities.add(converter.createEntity(dto2));
+        elementEntities.add(converter.createEntity(element2));
         assertThat(converter.createDTOs(elementEntities).size()).isEqualTo(2);
 
-        ElementDTO dto3 = converter.createDTO(elementEntities.get(0));
-        assertThat(dto3.getId()).isEqualTo(dto1.getId());
+        Element element3 = converter.createDTO(elementEntities.get(0));
+        assertThat(element3.getId()).isEqualTo(element1.getId());
     }
 }

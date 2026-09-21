@@ -13,7 +13,7 @@ import de.ipb_halle.curator.fields.FieldService;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.MetadataRegistry;
-import de.ipb_halle.curator.onehealth.ElementDTO;
+import de.ipb_halle.curator.onehealth.Element;
 import de.ipb_halle.curator.onehealth.ElementService;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public abstract class AbstractImportHandler implements ImportHandler {
     protected MetadataRegistry registry;
     protected FieldConverter converter;
 
-    protected Map<String, List<ElementDTO>> elementDTOsByType = new HashMap<> ();
+    protected Map<String, List<Element>> elementDTOsByType = new HashMap<> ();
 
     @Override
     public ImportHandler setElementService(ElementService elementService) {
@@ -58,10 +58,10 @@ public abstract class AbstractImportHandler implements ImportHandler {
         return this;
     }
 
-    protected ElementDTO createElement(ElementType elementType, FieldDefinition fieldDefinition, String value) {
-        List<ElementDTO> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
+    protected Element createElement(ElementType elementType, FieldDefinition fieldDefinition, String value) {
+        List<Element> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
         elementDTOsByType.put(elementType.getId(), typedElementDTOs);
-        ElementDTO elementDTO = new ElementDTO(elementType);
+        Element elementDTO = new Element(elementType);
         AbstractField field = createField(elementDTO.getId(), fieldDefinition, value);
         elementDTO.addField(field);
         typedElementDTOs.add(elementDTO);

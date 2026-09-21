@@ -24,16 +24,16 @@ public class ElementConverter {
     @Autowired
     private MetadataRegistry registry;
 
-    public ElementEntity createEntity(ElementDTO element) {
+    public ElementEntity createEntity(Element element) {
         return element.createEntity();
     }
 
-    public ElementDTO createDTO(ElementEntity elementEntity) {
+    public Element createDTO(ElementEntity elementEntity) {
         ElementType type = registry.getElementType(elementEntity.getTypeId());
-        return ElementDTO.createDTO(elementEntity, type);
+        return Element.createDTO(elementEntity, type);
     }
 
-    public List<ElementDTO> createDTOs(List<ElementEntity> elementEntities) {
+    public List<Element> createDTOs(List<ElementEntity> elementEntities) {
         return elementEntities.stream().map(e -> createDTO(e)).collect(Collectors.toList());
     }
 

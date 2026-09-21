@@ -44,15 +44,15 @@ public class ElementService {
     @Autowired
     private FieldService fieldService;
 
-    public List<ElementDTO> loadByType(ElementType type) {
+    public List<Element> loadByType(ElementType type) {
        List<ElementEntity> elementEntities =  repository.findElementsByType(type.getId());
-       List<ElementDTO> elements = converter.createDTOs(elementEntities);
+       List<Element> elements = converter.createDTOs(elementEntities);
        elements.stream().forEach(e -> e.addFields(fieldService.loadFields(e.getId())));
        return elements;
     }
 
 
-    public ElementDTO loadByFieldValue(AbstractField queryField) {
+    public Element loadByFieldValue(AbstractField queryField) {
         List <AbstractField> fields = fieldService.loadFieldsByValue(queryField, null, 0);
         if (fields.size() == 1) {
             UUID elementId = fields.get(0).getId().getElementId();
@@ -63,7 +63,7 @@ public class ElementService {
             cq.select(root);
             List<ElementEntity> result = entityManager.createQuery(cq).getResultList();
             if (result.size() == 1) {
-                ElementDTO element = converter.createDTO(result.get(0));
+                Element element = converter.createDTO(result.get(0));
                 element.addFields(fieldService.loadFields(elementId));
                 return element;
             } else {
@@ -94,9 +94,9 @@ public class ElementService {
         }
     }
 
-    public void save(ElementDTO dto) {
-        repository.save(dto.createEntity());
-        for(AbstractField field : dto.getFields()) {
+    public void save(Element element) {
+        repository.save(element.createEntity());
+        for(AbstractField field : element.getFields()) {
             fieldService.saveField(field);
         }
     }

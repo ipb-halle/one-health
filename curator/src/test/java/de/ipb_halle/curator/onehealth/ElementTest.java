@@ -40,32 +40,32 @@ public class ElementTest {
     public void testElementDTO() {
         UUID id1 = UUID.randomUUID();
         ElementType type = registry.getElementType(ELEMENT_TYPE_ID);
-        ElementDTO dto = new ElementDTO(id1, type);
-        assertThat(dto.getFields().size()).isEqualTo(0);
+        Element element = new Element(id1, type);
+        assertThat(element.getFields().size()).isEqualTo(0);
 
         FieldDefinition fieldDef = registry.getFieldDefinition(FIELD_DEFINITION_ID);
         TextFieldEntity field = new TextFieldEntity(id1, fieldDef.getId(), 0, "Sample Organism");
-        dto.addField(TextField.createDTO(field, fieldDef));
-        assertThat(dto.getFields().size()).isEqualTo(1);
+        element.addField(TextField.createDTO(field, fieldDef));
+        assertThat(element.getFields().size()).isEqualTo(1);
 
-        ElementEntity elementEntity = dto.createEntity();
+        ElementEntity elementEntity = element.createEntity();
         assertThat(elementEntity.getId()).isEqualByComparingTo(id1);
         assertThat(elementEntity.getTypeId()).isEqualTo(type.getId());
 
         ElementType type2 = registry.getElementType(elementEntity.getTypeId());
-        ElementDTO dto2 = ElementDTO.createDTO(elementEntity, type2);
-        assertThat(dto2.getId()).isEqualByComparingTo(id1);
-        assertThat(dto2.getType().getId()).isEqualTo(type.getId());
-        assertThat(dto2.getFields().size()).isEqualTo(0);
+        Element element2 = Element.createDTO(elementEntity, type2);
+        assertThat(element2.getId()).isEqualByComparingTo(id1);
+        assertThat(element2.getType().getId()).isEqualTo(type.getId());
+        assertThat(element2.getFields().size()).isEqualTo(0);
 
-        dto = new ElementDTO(type);
-        assertThat(dto.getId()).isInstanceOf(UUID.class);
+        element = new Element(type);
+        assertThat(element.getId()).isInstanceOf(UUID.class);
     }
 
     @Test
     public void testElement() {
-        ElementEntity e = new ElementEntity(ELEMENT_TYPE_ID);
-        assertThat(e.getTypeId()).isEqualTo(ELEMENT_TYPE_ID);
-        assertThat(e.getId()).isInstanceOf(UUID.class);
+        ElementEntity elementEntity = new ElementEntity(ELEMENT_TYPE_ID);
+        assertThat(elementEntity.getTypeId()).isEqualTo(ELEMENT_TYPE_ID);
+        assertThat(elementEntity.getId()).isInstanceOf(UUID.class);
     }
 }

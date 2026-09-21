@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author fblocal
  */
-public class ElementDTO {
+public class Element {
 
     private final UUID id;
 
@@ -27,20 +27,20 @@ public class ElementDTO {
 
     private final Map<String, AbstractField> fields;
 
-    public ElementDTO(UUID id, ElementType type) {
+    public Element(UUID id, ElementType type) {
         this.id = id;
         this.type = type;
         this.fields = new HashMap<> ();
     }
 
-    public ElementDTO(ElementType type) {
+    public Element(ElementType type) {
         this.id = UUID.randomUUID();
         this.type = type;
         this.fields = new HashMap<> ();
     }
 
-    public static ElementDTO createDTO(ElementEntity element, ElementType type) {
-        return new ElementDTO(element.getId(), type);
+    public static Element createDTO(ElementEntity elementEntity, ElementType type) {
+        return new Element(elementEntity.getId(), type);
     }
 
     public ElementEntity createEntity() {

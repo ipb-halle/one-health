@@ -9,7 +9,7 @@ package de.ipb_halle.curator.source.testHandler;
 
 import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.FieldDefinition;
-import de.ipb_halle.curator.onehealth.ElementDTO;
+import de.ipb_halle.curator.onehealth.Element;
 import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.ElementMapping;
@@ -46,17 +46,17 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
     }
 
     private void parseRecord(DataSource dataSource, CSVRecord record) {
-        ElementDTO elementDTO = parseElement(dataSource, record);
+        Element elementDTO = parseElement(dataSource, record);
         parseFields(dataSource, record, elementDTO);
         elementService.save(elementDTO);
     }
 
-    private ElementDTO parseElement(DataSource dataSource, CSVRecord record) {
+    private Element parseElement(DataSource dataSource, CSVRecord record) {
         for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
             AbstractField queryField = createField(null, fieldDefinition, value);
-            ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
+            Element elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
                 return createElement(em.getElementType(), fieldDefinition, value);
             }
@@ -65,7 +65,7 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
         return null;
     }
 
-    private void parseFields(DataSource dataSource, CSVRecord record, ElementDTO elementDTO) {
+    private void parseFields(DataSource dataSource, CSVRecord record, Element elementDTO) {
         for (FieldMapping fm : (Set<FieldMapping>) dataSource.getFieldMappings()) {
             String value = record.get(fm.getSourceFieldName());
             FieldDefinition fieldDefinition = fm.getMappingField();

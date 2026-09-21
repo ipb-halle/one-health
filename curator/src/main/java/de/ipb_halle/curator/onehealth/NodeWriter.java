@@ -63,20 +63,20 @@ public class NodeWriter {
         return headers.toArray(new String[0]);
     }
 
-    private Object[] getCells(ElementDTO dto, List<String> fieldNames) {
+    private Object[] getCells(Element element, List<String> fieldNames) {
         List<Object> cells = new ArrayList<> ();
-        cells.add(dto.getId());
+        cells.add(element.getId());
         for (String fieldName : fieldNames) {
-            AbstractField field = dto.getField(fieldName);
+            AbstractField field = element.getField(fieldName);
             cells.add((field != null) ? field.toCSVcell() : null);
         }
-        cells.add(dto.getType().getId());
+        cells.add(element.getType().getId());
         return cells.toArray();
     }
 
-    private void writeRecord(CSVPrinter printer, ElementDTO dto, List<String> fieldNames) {
+    private void writeRecord(CSVPrinter printer, Element element, List<String> fieldNames) {
         try {
-            printer.printRecord(getCells(dto, fieldNames));
+            printer.printRecord(getCells(element, fieldNames));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }

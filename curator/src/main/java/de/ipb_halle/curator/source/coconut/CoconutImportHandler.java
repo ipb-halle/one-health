@@ -11,7 +11,7 @@ import de.ipb_halle.curator.source.AbstractImportHandler;
 import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.metadata.ElementType;
 import de.ipb_halle.curator.metadata.FieldDefinition;
-import de.ipb_halle.curator.onehealth.ElementDTO;
+import de.ipb_halle.curator.onehealth.Element;
 import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.ElementMapping;
 import de.ipb_halle.curator.source.FieldMapping;
@@ -65,7 +65,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
             AbstractField queryField = createField(null, fieldDefinition, value);
-            ElementDTO elementDTO = elementService.loadByFieldValue(queryField);
+            Element elementDTO = elementService.loadByFieldValue(queryField);
             if (elementDTO == null) {
                 createElement(em.getElementType(), fieldDefinition, value);
             } else {
@@ -79,17 +79,17 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
             String value = record.get(fm.getSourceFieldName());
             FieldDefinition fieldDefinition = fm.getMappingField();
             ElementType elementType = fieldDefinition.getElementType();
-            List<ElementDTO> typedElementDTOs = elementDTOsByType.get(elementType.getId());
-            for (ElementDTO dto : typedElementDTOs) {
+            List<Element> typedElementDTOs = elementDTOsByType.get(elementType.getId());
+            for (Element dto : typedElementDTOs) {
                 AbstractField field = createField(dto.getId(), fieldDefinition, value);
                 dto.addField(field);
             }
         }
     }
 
-    private void addElement(ElementDTO elementDTO) {
+    private void addElement(Element elementDTO) {
         ElementType elementType = elementDTO.getType();
-        List<ElementDTO> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
+        List<Element> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
         elementDTOsByType.put(elementType.getId(), typedElementDTOs);
         typedElementDTOs.add(elementDTO);
     }
