@@ -3,10 +3,10 @@ import { CrudService } from './crud-service';
 import { IHttpResponseHandlerSettings } from '../http-responses-handler';
 import { IPagedData } from '../models/paged-data';
 import { injectable } from 'inversify';
-import axios from 'axios';
 import { OnReadByIdResponsesHandler } from '../http-responses-handler';
 import { constructHttpParams } from '../../../../shared';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
+import qs from 'qs';
 
 @injectable()
 export class PagedCrudService<TEntity> extends CrudService<TEntity> {
@@ -18,17 +18,23 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
         // var filters = Object.keys(queryCommand.filters).map(x => queryCommand.filters[x]);
 
         // filters = filters.filter((x : any) => { return x.value});
-        var query = {
+        const query = {
             first: queryCommand.first,
             rows: queryCommand.rows,
             page: queryCommand.page,
             sortField: queryCommand.sortField,
             sortOrder: queryCommand.sortOrder,
         };
+        const qparams = constructHttpParams(query);
+        const queryString = qs.stringify(qparams, { indices: false });
+        const fullUrl = `${this.url}/getPage?${queryString}`;
+
         return this.handleRequest<IPagedData<TEntity>>(
-            axios.get<any>(`${this.url}/getPage`, {
-                params: constructHttpParams(query),
-                paramsSerializer: { indexes: false },
+            fetch(fullUrl, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
             }),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
