@@ -1,7 +1,6 @@
 import { IHttpResponseHandlerSettings } from '../../../../core/api/http/http-responses-handler';
 import { injectable } from 'inversify';
 import { BaseDataService } from '../../../../core/api/http/interfaces/base-data-service';
-import axios from 'axios';
 import { OnReadByIdResponsesHandler } from '../../../../core/api/http/http-responses-handler';
 import { constructHttpParams } from '../../../../shared/utils/flatten';
 import { ICoOcurrenceQuery } from '../models/co-ocurrence-query';
@@ -19,15 +18,15 @@ export class IOntologyService extends BaseDataService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
-        var qparams = constructHttpParams(query);
+        const qparams = constructHttpParams(query);
+        const queryString = qs.stringify(qparams);
+        const fullUrl = `${this.url}/find-co-ocurrences?${queryString}`;
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/find-co-ocurrences`, {
-                params: qparams,
-                paramsSerializer: {
-                    serialize: (params) => {
-                        return qs.stringify(params);
-                    },
+            fetch(fullUrl, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
                 },
             }),
             new OnReadByIdResponsesHandler(
@@ -45,15 +44,15 @@ export class IOntologyService extends BaseDataService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
-        var qparams = constructHttpParams(query);
+        const qparams = constructHttpParams(query);
+        const queryString = qs.stringify(qparams);
+        const fullUrl = `${this.url}/find-co-occurrences-details?${queryString}`;
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/find-co-occurrences-details`, {
-                params: qparams,
-                paramsSerializer: {
-                    serialize: (params) => {
-                        return qs.stringify(params);
-                    },
+            fetch(fullUrl, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
                 },
             }),
             new OnReadByIdResponsesHandler(
