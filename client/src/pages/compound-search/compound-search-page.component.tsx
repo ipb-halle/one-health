@@ -24,8 +24,6 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Slider } from 'primereact/slider';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { INeighborhoodExplorerStore } from '../../store/inversify/neighborhood-explorer-store';
-import { STORES } from '../../store/inversify';
 import { useNavigate } from 'react-router-dom';
 import CompoundSearchPageTourComponent from './compound-search-page-tour.component';
 import MolecularDrawComponent from '../../shared/components/molecular-draw.component';
@@ -50,6 +48,8 @@ export interface ExactSearchQuery {
 export const CompoundSearchPageComponent: React.FC = () => {
 
     const tutorialStore = useContext(RootStoreContext).tutorialStore;
+    const neighborhoodExplorerStore =
+        useContext(RootStoreContext).neighborhoodExplorerStore;
     const navigate = useNavigate();
 
     const maxResultsOptions = [50, 100, 150, 200, 250, 500, 1000].map((x) => {
@@ -61,10 +61,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
         return { label: value, value: key };
     });
 
-    const neighborhoodExplorerStore =
-        dependencyFactory.get<INeighborhoodExplorerStore>(
-            STORES.INeighborhoodExplorerStore,
-        );
     const compoundService = dependencyFactory.get<ICompoundService>(
         SERVICES.ICompoundService,
     );
@@ -611,26 +607,17 @@ export const CompoundSearchPageComponent: React.FC = () => {
                         onClick={() => {
                             console.log(selectedCompounds);
                             neighborhoodExplorerStore.setIds(
-                                selectedCompounds.map((x) => {
-                                    return {
+                                selectedCompounds.map((x) => x.id),
+                            );
+                            neighborhoodExplorerStore.addNodes(
+                                selectedCompounds.map((x) => ({
+                                    data: {
                                         id: x.id,
                                         color: '#343ea0',
-                                        label: x.molformula,
-                                    };
-                                }),
+                                        label: x.molecularFormula,
+                                    },
+                                })),
                             );
-                            neighborhoodExplorerStore.nodes =
-                                neighborhoodExplorerStore.nodes.concat(
-                                    selectedCompounds.map((x) => {
-                                        return {
-                                            data: {
-                                                id: x.id,
-                                                color: '#343ea0',
-                                                label: x.molecularFormula,
-                                            },
-                                        };
-                                    }),
-                                );
                             navigate('/neighborhood-explorer');
                         }}></Button>
                 </div>

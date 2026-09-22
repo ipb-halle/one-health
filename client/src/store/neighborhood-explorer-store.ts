@@ -33,6 +33,25 @@ export const NeighborhoodExplorerStore = types
             self.ids.replace(value);
         },
 
+        addNodes(value: any[]) {
+            const nextNodes = value.map((node: any) => {
+                const data = node?.data ?? node ?? {};
+                const id = String(data.id ?? node?.id ?? '');
+
+                return NodeModel.create({
+                    id,
+                    label: String(data.label ?? node?.label ?? id),
+                    group: 'nodes',
+                    data: data ?? {},
+                    position: node?.position ?? undefined,
+                    color: data?.color ?? node?.color ?? undefined,
+                });
+            });
+
+            self.nodes.replace([...self.nodes, ...nextNodes]);
+            self.ids.replace(self.nodes.map((node) => node.id));
+        },
+
         setGraphData(nodes: any[], edges: any[]) {
             const nextNodes = nodes.map((node: any) => {
                 const data = node?.data ?? node ?? {};
