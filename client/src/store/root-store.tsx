@@ -5,6 +5,7 @@ import { ScreenDeviceStore } from './ScreenDeviceStore';
 import { EntityDetailStore } from './EntityDetailStore';
 import { TutorialStore } from './TutorialStore';
 import { WarningStore } from './WarningStore';
+import { NeighborhoodExplorerStore } from './neighborhood-explorer-store';
 
 export const RootStore = types
     .model('RootStore', {
@@ -14,6 +15,7 @@ export const RootStore = types
         entityDetailStore: types.optional(EntityDetailStore, {}),
         tutorialStore: types.optional(TutorialStore, {}),
         warningStore: types.optional(WarningStore, {}),
+        neighborhoodExplorerStore: types.optional(NeighborhoodExplorerStore, {}),
     });
 
 export interface IRootStore extends Instance<typeof RootStore> {}
