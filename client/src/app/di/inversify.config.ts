@@ -75,15 +75,6 @@ import {
     MockCoOcurrenceVisualizationHistoryService,
 } from '../../features/visualization/co-ocurrence-search/services/co-ocurrence-visualization-history-service';
 
-import {
-    STORES,
-} from '../../store/inversify';
-
-import {
-    INeighborhoodExplorerStore,
-    NeighborhoodExplorerStore,
-} from '../../store/inversify/neighborhood-explorer-store';
-
 
 const dependencyFactory = new Container();
 
@@ -144,11 +135,6 @@ dependencyFactory
 dependencyFactory
     .bind<IGeneralSearchHistoryService>(SERVICES.IGeneralSearchHistoryService)
     .to(MockGeneralSearchHistoryService)
-    .inSingletonScope();
-
-dependencyFactory
-    .bind<INeighborhoodExplorerStore>(STORES.INeighborhoodExplorerStore)
-    .to(NeighborhoodExplorerStore)
     .inSingletonScope();
 
 dependencyFactory
