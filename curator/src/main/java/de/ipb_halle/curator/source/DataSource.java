@@ -29,6 +29,9 @@ public class DataSource <T extends ImportHandler> {
         this.id = ds.getId();
         this.description = ds.getDescription();
         this.handler = Class.forName(ds.getHandler());
+        if (! ImportHandler.class.isAssignableFrom(this.handler)) {
+            throw new ClassNotFoundException("Handler class does not implement interface ImportHandler");
+        }
         this.sourceUrl = new URL(ds.getSourceUrl());
         this.elementMappings = new HashSet<> ();
         this.fieldMappings = new HashSet<> ();

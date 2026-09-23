@@ -7,7 +7,7 @@
  */
 package de.ipb_halle.curator.source;
 
-import de.ipb_halle.curator.source.coconut.CoconutImportHandler;
+import de.ipb_halle.curator.source.testHandler.TestOrganismImportHandler;
 import java.net.MalformedURLException;
 import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,9 +21,10 @@ public class DataSourceTest {
 
     public final static String ID = "MY_SOURCE";
     public final static String DESCRIPTION = "Arbitrary data source";
-    public final static String HANDLER = CoconutImportHandler.class.getName();
+    public final static String HANDLER = TestOrganismImportHandler.class.getName();
     public final static String SOURCE_URL = "file:///tmp/somefile";
-    public final static String INVALID_HANDLER = "INVALID_CLASS_NAME";
+    public final static String INVALID_HANDLER_1 = "INVALID_CLASS_NAME";
+    public final static String INVALID_HANDLER_2 = String.class.getName();
     public final static String INVALID_SOURCE_URL = "///////////////";
 
     @Test
@@ -45,12 +46,15 @@ public class DataSourceTest {
 
     @Test
     public void testDataSourceExceptions() {
-        final DataSourceEntity e1 = new DataSourceEntity(ID, DESCRIPTION, INVALID_HANDLER, SOURCE_URL);
-        final DataSourceEntity e2 = new DataSourceEntity(ID, DESCRIPTION, HANDLER, INVALID_SOURCE_URL);
+        final DataSourceEntity e1 = new DataSourceEntity(ID, DESCRIPTION, INVALID_HANDLER_1, SOURCE_URL);
+        final DataSourceEntity e2 = new DataSourceEntity(ID, DESCRIPTION, INVALID_HANDLER_2, SOURCE_URL);
+        final DataSourceEntity e3 = new DataSourceEntity(ID, DESCRIPTION, HANDLER, INVALID_SOURCE_URL);
 
         Assertions.assertThatThrownBy(() -> new DataSource(e1))
                 .isInstanceOf(ClassNotFoundException.class);
         Assertions.assertThatThrownBy(() -> new DataSource(e2))
+                .isInstanceOf(ClassNotFoundException.class);
+        Assertions.assertThatThrownBy(() -> new DataSource(e3))
                 .isInstanceOf(MalformedURLException .class);
     }
 }
