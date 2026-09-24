@@ -13,16 +13,21 @@ import { PanelMenu } from 'primereact/panelmenu';
 import { Sidebar } from 'primereact/sidebar';
 
 import HistoryModal from '@/features/search/search-history/components/general-search-history-modal.component';
-import { getOrcidAuthorizeUrl, logout } from '@/generated/auth/auth/auth';
-import { authService } from '@/app/services/auth.service';
+import { logout } from '@/generated/auth/auth/auth';
+
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+
+
+    const rootStore = useContext(RootStoreContext);
+    const screenDeviceStore = rootStore.screenDeviceStore;
+    const authStore = rootStore.authStore;
 
     const [historyVisible, setHistoryVisible] = useState<boolean>(false);
-    const user = authService.getUser();
+    const user = authStore.user;
+
     const getInitials = (displayName?: string): string => {
         if (!displayName) {
             return 'U';
@@ -77,24 +82,22 @@ const Header: React.FC = () => {
     };
 
     const authItems: MenuItem = {
-        label: authService.isAuthenticated()
+        label: authStore.isAuthenticated
             ? `${userInitials} ${user?.displayName ?? 'User'} . Log out`
             : 'Sign in with ORCID',
         icon: 'pi pi-user',
         command: async () => {
-            if (authService.isAuthenticated()) {
+            if (authStore.isAuthenticated) {
                 try {
                     await logout();
-                } finally {
-                    authService.logout();
-                    sessionStorage.removeItem('orcid_state');
+                    authStore.clearUser();
                     window.location.reload();
+                } catch (error) {
+                    console.error('Logout failed: ', error);
                 }
             }
             else {
-                const response = await getOrcidAuthorizeUrl();
-                sessionStorage.setItem('orcid_state', response.state);
-                window.location.href = response.url;
+                window.location.href = '/api/oauth2/authorization/orcid';
             }
         },
     };
@@ -188,28 +191,26 @@ const Header: React.FC = () => {
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
                             onClick={async () => {
-                                if (authService.isAuthenticated()) {
+                                if (authStore.isAuthenticated) {
                                     try {
                                         await logout();
-                                    } finally {
-                                        authService.logout();
-                                        sessionStorage.removeItem('orcid_state');
+                                        authStore.clearUser();
                                         window.location.reload();
+                                    } catch (error) {
+                                        console.error('Logout failed: ', error);
                                     }
                                 }
                                 else {
-                                    const response = await getOrcidAuthorizeUrl();
-                                    sessionStorage.setItem('orcid_state', response.state);
-                                    window.location.href = response.url;
+                                    window.location.href = '/api/oauth2/authorization/orcid';
                                 }
                             }}
                             title={
-                                authService.isAuthenticated()
+                                authStore.isAuthenticated
                                     ? `Log out ${user?.displayName ?? ''}`
                                     : 'Sign in with ORCID'
                             }
                         >
-                            {authService.isAuthenticated() ? (
+                            {authStore.isAuthenticated ? (
                                 <span className="shortcut-icon">{userInitials}</span>
                             ) : (
                                 <i className="pi pi-user shortcut-icon" />

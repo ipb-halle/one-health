@@ -8,7 +8,9 @@ import MobileApp from './MobileApp';
 
 function App() {
 
-    const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
+    const rootStore = useContext(RootStoreContext);
+    const screenDeviceStore = rootStore.screenDeviceStore;
+    const authStore = rootStore.authStore;
 
     useEffect(
         () => {
@@ -16,6 +18,11 @@ function App() {
             return () => screenDeviceStore.stop();
         },
         [screenDeviceStore]);
+
+    useEffect(() => {
+        void authStore.loadCurrentUser();
+    }, [authStore]);
+
 
     const appComponent = screenDeviceStore.isMobile ?
         <MobileApp /> :

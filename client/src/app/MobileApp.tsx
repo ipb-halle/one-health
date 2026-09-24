@@ -1,9 +1,8 @@
 import Layout from "@/layout/layout.component";
-import { 
-    DocumentationPageComponent, 
+import {
+    DocumentationPageComponent,
     LegalPageComponent,
-    OrcidCallbackPageComponent,
- } from "@/pages";
+} from "@/pages";
 import EntityDetailComponent from "@/pages/entity-detail/EntityDetailComponent";
 import MobileHomePageComponent from "@/pages/home/mobile-home-page.component";
 import { observer } from "mobx-react-lite";
@@ -27,10 +26,6 @@ function MobileApp() {
                 <Route
                     path="detail"
                     element={<EntityDetailComponent />}
-                />
-                <Route
-                    path="auth/orcid/callback"
-                    element={<OrcidCallbackPageComponent />}
                 />
             </Route>
         </Routes>

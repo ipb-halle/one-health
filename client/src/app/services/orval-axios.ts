@@ -1,22 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { authService } from './auth.service';
 
 // single reusable axios instance
 const axiosInstance = axios.create({
     baseURL: '/api',
-});
-
-
-// Attach JWT automatically
-axiosInstance.interceptors.request.use((config) => {
-    const token = authService.getToken();
-
-    if (token) {
-        config.headers = config.headers ?? {};
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
+    withXSRFToken: true,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
 });
 
 export const customAxiosInstance = <T>(

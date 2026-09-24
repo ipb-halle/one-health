@@ -51,7 +51,7 @@
     "js-yaml": "4.3.2"
   },
   "scripts": {
-    "start": "vite --mode development",
+    "start": "vite --mode development --open http://a.localhost:5173/",
     "build": "vite build --mode production",
     "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --fix",
     "test": "yarn jest",

@@ -1,12 +1,11 @@
 import Layout from "@/layout/layout.component";
-import { 
-    CoOccurrenceSummaryPageComponent, 
-    DocumentationPageComponent, 
-    HomePageComponent, 
-    LegalPageComponent, 
+import {
+    CoOccurrenceSummaryPageComponent,
+    DocumentationPageComponent,
+    HomePageComponent,
+    LegalPageComponent,
     NeighborhoodExplorerPageComponent,
-    OrcidCallbackPageComponent,
- } from "@/pages";
+} from "@/pages";
 import CompoundSearchPageComponent from "@/pages/compound-search/compound-search-page.component";
 import { Link, Route, Routes } from "react-router-dom";
 
@@ -52,10 +51,6 @@ export function DesktopApp() {
                 <Route
                     path="legal"
                     element={<LegalPageComponent />}
-                />
-                <Route
-                    path="auth/orcid/callback"
-                    element={<OrcidCallbackPageComponent />}
                 />
             </Route>
         </Routes>
