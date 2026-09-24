@@ -20,6 +20,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
+      ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
     networks:
       - one-health-network
     depends_on:

@@ -27,4 +27,5 @@ WORKDIR /app
 COPY --from=build /app/target/server.jar ./app.jar
 
 # Command to run the application
-CMD ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
+#CMD ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]

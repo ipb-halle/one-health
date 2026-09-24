@@ -68,3 +68,6 @@ node_modules/
 
 # Generated API client
 client/src/generated/
+
+# Generated server output
+server/bin/
