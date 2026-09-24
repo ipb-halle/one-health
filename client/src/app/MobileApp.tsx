@@ -1,5 +1,8 @@
 import Layout from "@/layout/layout.component";
-import { DocumentationPageComponent, LegalPageComponent } from "@/pages";
+import {
+    DocumentationPageComponent,
+    LegalPageComponent,
+} from "@/pages";
 import EntityDetailComponent from "@/pages/entity-detail/EntityDetailComponent";
 import MobileHomePageComponent from "@/pages/home/mobile-home-page.component";
 import { observer } from "mobx-react-lite";

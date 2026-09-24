@@ -1,25 +1,200 @@
+@use '../../assets/styles/Constants.scss' as c;
 
+.mobile-landing-container {
+    padding: 12px 14px 20px 14px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-.mobile {
-    margin: 10px;
-    padding-top: 35px;
+    /* Search Bar Section */
+    .mobile-search-bar-section {
+        margin-top: 26px;
+        margin-bottom: 12px;
 
-    .search {
-        .title {
-            font-size: large;
-            font-weight: bold;
-        }
+        .mobile-search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
 
-        .input {
-            margin: 5px;
+            .mobile-search-input {
+                flex: 1;
+                height: 42px;
+                padding: 0 12px;
+                font-size: 13px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                background-color: #ffffff;
+                box-shadow: none;
+                color: #1e293b;
+
+                &::placeholder {
+                    color: #94a3b8;
+                    font-size: 12px;
+                }
+
+                &:focus {
+                    border-color: #2e7d32;
+                    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+                }
+            }
+
+            .mobile-search-btn {
+                height: 38px;
+                width: 38px;
+                background-color: #28642a;
+                border: none;
+                border-radius: 6px;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 15px;
+                flex-shrink: 0;
+
+                &:hover,
+                &:active {
+                    background-color: #1e4d20;
+                }
+            }
+
+            .mobile-search-info-btn {
+                height: 38px;
+                width: 38px;
+                background: transparent;
+                border: 1px solid #28642a;
+                border-radius: 50%;
+                color: #28642a;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 16px;
+                flex-shrink: 0;
+
+                &:hover,
+                &:active {
+                    background-color: #f0fdf4;
+                }
+            }
         }
     }
 
-    .card {
-        text-align: center;
+    .mobile-results-wrapper {
+        .mobile-results-header {
+            margin-bottom: 10px;
 
-        img {
-            width: 70%;
+            .mobile-back-btn {
+                color: #28642a;
+                padding: 4px 8px;
+            }
+        }
+    }
+
+    .mobile-main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    /* Hero Card */
+    .mobile-hero-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        margin-top: 3%;
+        padding: 10px;
+        background-color: #ffffff;
+        // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+
+        .hero-left-col {
+            flex-shrink: 0;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .hero-earth-img {
+                width: 280px;
+                height: 280px;
+                object-fit: contain;
+            }
+        }
+
+        .hero-right-col {
+            flex: 1;
+
+            .hero-heading {
+                font-size: 22px;
+                font-weight: 600;
+                color: #1e293b;
+                margin: 0.5% 1% 0.5% 1%;
+                line-height: 1.5;
+            }
+
+            /*            .hero-subtext {
+                font-size: 12px;
+                font-weight: 400;
+                color: #475569;
+                margin: 0;
+                line-height: 1.4;
+            }*/
+        }
+    }
+
+    /* Platform Statistics Grid */
+    .mobile-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+
+            .stat-icon-box {
+                width: 34px;
+                height: 34px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                .stat-icon {
+                    font-size: 30px;
+                    color: #28642a;
+                }
+            }
+
+            .stat-text-box {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                .stat-value {
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #0f172a;
+                    line-height: 1.4;
+                }
+
+                .stat-label {
+                    font-size: 11px;
+                    font-weight: 500;
+                    color: #64748b;
+                    line-height: 1;
+                }
+            }
         }
     }
 

@@ -7,23 +7,25 @@ import logoForeign from '../assets/logo-foreign-office.png';
 import './footer.component.scss';
 
 function FooterIconsMobile() {
-    return <div className="icons-container">
-        <div className="footer-icons app-footer-coloured-dark fixed-bottom mobile-footer">
-            <div className="icon"><img alt="logo" src={logoIpb} /></div>
-            <div className="icon"><img alt="logo" src={logoGlacier} /></div>
-            <div className="icon"><img alt="logo" src={logoForeign} /></div>
-            <div className="icon"><img alt="logo" src={logoDaad} /></div>
-            <div className="icon"><img alt="logo" src={logoDip} /></div>
-            <div className="icon"><img alt="logo" src={logoLeibniz} /></div>
+    return (
+        <div className="icons-container">
+            <div className="footer-icons app-footer-coloured-dark fixed-bottom mobile-footer">
+                <div className="icon"><img alt="IPB logo" src={logoIpb} /></div>
+                <div className="icon"><img alt="GLACIER logo" src={logoGlacier} /></div>
+                <div className="icon"><img alt="Foreign Office logo" src={logoForeign} /></div>
+                <div className="icon"><img alt="DAAD logo" src={logoDaad} /></div>
+                <div className="icon"><img alt="DIP logo" src={logoDip} /></div>
+                <div className="icon"><img alt="Leibniz logo" src={logoLeibniz} /></div>
 
-            <div className="icon"><img alt="logo" src={logoIpb} /></div>
-            <div className="icon"><img alt="logo" src={logoGlacier} /></div>
-            <div className="icon"><img alt="logo" src={logoForeign} /></div>
-            <div className="icon"><img alt="logo" src={logoDaad} /></div>
-            <div className="icon"><img alt="logo" src={logoDip} /></div>
-            <div className="icon"><img alt="logo" src={logoLeibniz} /></div>
+                <div className="icon"><img alt="IPB logo" src={logoIpb} /></div>
+                <div className="icon"><img alt="GLACIER logo" src={logoGlacier} /></div>
+                <div className="icon"><img alt="Foreign Office logo" src={logoForeign} /></div>
+                <div className="icon"><img alt="DAAD logo" src={logoDaad} /></div>
+                <div className="icon"><img alt="DIP logo" src={logoDip} /></div>
+                <div className="icon"><img alt="Leibniz logo" src={logoLeibniz} /></div>
+            </div>
         </div>
-    </div>
+    );
 }
 
 export default FooterIconsMobile;

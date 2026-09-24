@@ -24,6 +24,7 @@ export class IGeneralSearchService extends BaseDataService {
 @injectable()
 export class GeneralSearchService extends IGeneralSearchService {
     url: string = 'api/search';
+    //url: string = '/search';
     entityTitle: string = 'Search Result';
 
     findEntities(
