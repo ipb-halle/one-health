@@ -22,4 +22,8 @@ public interface IFieldId {
     public int getOrder();
 
     public void setElementId(UUID elementId);
+
+    default public void setOrder(int order) {
+        // ignore by default
+    }
 }

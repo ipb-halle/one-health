@@ -21,6 +21,7 @@ public class MultiValueFieldDTO extends AbstractField<ListEntity> {
     public MultiValueFieldDTO(AbstractField first) {
         super(first.getId(), first.getFieldDefinition());
         values = new ArrayList<> ();
+        first.setOrder(0);
         values.add(first);
     }
 
@@ -30,6 +31,7 @@ public class MultiValueFieldDTO extends AbstractField<ListEntity> {
     }
 
     public void addValue(AbstractField value) {
+        value.setOrder(values.size());
         values.add(value);
     }
 

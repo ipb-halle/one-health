@@ -35,7 +35,7 @@ INSERT INTO data_sources (id, description, handler, source_url) VALUES
 
 INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name, identity_mapping, multivalued) VALUES
     ('COCONUT', 'ORGANISM', 'organisms', 'ORGANISM:synonym', true),
-    ('COCONUT', 'COMPOUND', 'standard_inchi', 'COMPOUND:structure', false);
+    ('COCONUT', 'COMPOUND', 'standard_inchi', 'COMPOUND:InChI-Key', false);
 
 INSERT INTO field_mappings (data_source_id, source_field_name, mapping, multivalued) VALUES
     ('COCONUT', 'identifier', 'COMPOUND:CoconutId', false),

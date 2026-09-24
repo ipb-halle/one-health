@@ -106,11 +106,9 @@ CREATE TABLE compound_fields (
     element_id  UUID NOT NULL REFERENCES elements (id) ON UPDATE CASCADE ON DELETE CASCADE,
     field_id    INTEGER NOT NULL REFERENCES field_definitions (id) ON UPDATE CASCADE ON DELETE CASCADE,
     value       TEXT,
-    compound    TEXT,
     PRIMARY KEY (element_id, field_id)
 );
 CREATE INDEX compound_fields_inchi_idx ON compound_fields (value);
-CREATE INDEX compound_fields_compound_idx ON compound_fields USING bingo_idx (compound bingo.molecule);
 
 /*
  * source mappings

@@ -49,16 +49,13 @@ public class FieldId implements IFieldId {
         return 0;
     }
 
+    @Override
     public void setElementId(UUID elementId) {
         if (this.elementId == null) {
             this.elementId = elementId;
         } else {
             throw new UnsupportedOperationException("Cannot replace existing element id.");
         }
-    }
-
-    public void setOrder(int order) {
-        // ignore
     }
 
     @Override

@@ -24,22 +24,19 @@ import java.util.UUID;
 @Table(name="compound_fields")
 public class CompoundFieldEntity implements FieldEntity<String> {
 
-    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value", "compound"};
+    public final static String[] HEADER = { "element_id", "field_id", "field_order", "value"};
 
     @EmbeddedId
     private FieldId id;
 
     @Column
-    private String value;   // the InChI
-
-    @Column
-    private String compound;
+    private String value;   // the chemical constituion or preferably: configuration
 
     public CompoundFieldEntity() {
 
     }
 
-    public CompoundFieldEntity(UUID elementId, int fieldDefinitionId, int order, String value, String compound) {
+    public CompoundFieldEntity(UUID elementId, int fieldDefinitionId, int order, String value) {
         this.id = new FieldId(elementId, fieldDefinitionId);
         this.value = value;
     }
@@ -55,13 +52,5 @@ public class CompoundFieldEntity implements FieldEntity<String> {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public String getCompound() {
-        return compound;
-    }
-
-    public void setCompound(String compound) {
-        this.compound = compound;
     }
 }

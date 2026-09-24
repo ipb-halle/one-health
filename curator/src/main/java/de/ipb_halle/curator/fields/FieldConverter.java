@@ -71,7 +71,7 @@ public class FieldConverter {
                         elementId,
                         fieldDefinition.getId(),
                         0,
-                        value, ""));
+                        value));
             default:
                 throw new UnsupportedOperationException("Not implemented yet.");
         }

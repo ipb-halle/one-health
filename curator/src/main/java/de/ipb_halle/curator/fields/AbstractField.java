@@ -9,6 +9,7 @@ package de.ipb_halle.curator.fields;
 
 import de.ipb_halle.curator.metadata.FieldDefinition;
 import de.ipb_halle.curator.metadata.FieldType;
+import java.util.UUID;
 
 /**
  *
@@ -45,6 +46,14 @@ public abstract class AbstractField <T extends FieldEntity> {
 
     public boolean isMultivalued() {
         return false;
+    }
+
+    public void setElementId(UUID elementId) {
+        getId().setElementId(elementId);
+    }
+
+    public void setOrder(int order) {
+        getId().setOrder(order);
     }
 
     public abstract Object toCSVcell();

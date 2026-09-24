@@ -7,7 +7,6 @@
  */
 package de.ipb_halle.curator.fields.compound;
 
-import de.ipb_halle.curator.fields.integer.*;
 import de.ipb_halle.curator.fields.IFieldId;
 import de.ipb_halle.curator.fields.AbstractField;
 import de.ipb_halle.curator.fields.FieldEntity;
@@ -20,20 +19,19 @@ import de.ipb_halle.curator.metadata.FieldDefinition;
 public class CompoundField extends AbstractField<CompoundFieldEntity> {
 
     private String value;
-    private String compound;
 
-    private CompoundField(IFieldId id, FieldDefinition fieldDefinition, String value, String  compound) {
+    private CompoundField(IFieldId id, FieldDefinition fieldDefinition, String value) {
         super(id, fieldDefinition);
         this.value = value;
     }
 
     public static CompoundField createDTO(FieldEntity<String> field, FieldDefinition fieldDefinition) {
-        return new CompoundField(field.getId(), fieldDefinition, field.getValue(), "");
+        return new CompoundField(field.getId(), fieldDefinition, field.getValue());
     }
 
     public CompoundFieldEntity createEntity() {
         IFieldId id = getId();
-        return new CompoundFieldEntity(id.getElementId(), id.getFieldId(), id.getOrder(), value, compound);
+        return new CompoundFieldEntity(id.getElementId(), id.getFieldId(), id.getOrder(), value);
     }
 
 
@@ -44,10 +42,6 @@ public class CompoundField extends AbstractField<CompoundFieldEntity> {
 
     public String getValue() {
         return value;
-    }
-
-    public void setCompound(String compound) {
-        this.compound = compound;
     }
 
     public void setValue(String value) {
