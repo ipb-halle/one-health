@@ -19,13 +19,16 @@ public class UserEntity {
 
     private String displayName;
 
+    @Column
+    private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
 
     @Column(nullable = false)
     private Boolean enabled;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AuthenticationProvider registeredVia;
@@ -49,6 +52,14 @@ public class UserEntity {
         this.displayName = displayName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public UserRole getRole() {
         return role;
     }
@@ -66,7 +77,7 @@ public class UserEntity {
     }
 
     public AuthenticationProvider getRegisteredVia() {
-    return registeredVia;
+        return registeredVia;
     }
 
     public void setRegisteredVia(AuthenticationProvider registeredVia) {

@@ -135,9 +135,9 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <parameterAnnotations>true</parameterAnnotations>
                                 <delegatePattern>false</delegatePattern>
+                                <openApiNullable>false</openApiNullable>
                             </configOptions>
                             <output>${project.build.directory}/generated-sources/openapi/src/main/java</output>
-
 
                         </configuration>
                     </execution>

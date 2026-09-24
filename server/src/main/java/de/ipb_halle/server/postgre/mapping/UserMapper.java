@@ -16,14 +16,15 @@ public interface UserMapper {
         if (userEntity == null) {
             return null;
         }
- 
+
         User userDto = new User();
 
         userDto.setId(userEntity.getId());
         userDto.setEnabled(userEntity.getEnabled());
         userDto.setDisplayName(userEntity.getDisplayName());
+        userDto.setEmail(userEntity.getEmail());
 
-        if(userEntity.getRole() != null) {
+        if (userEntity.getRole() != null) {
             userDto.setRole(UserRole.valueOf(userEntity.getRole().name()));
         }
 

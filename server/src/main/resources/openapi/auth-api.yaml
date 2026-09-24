@@ -12,22 +12,23 @@ servers:
 tags:
   - name: Auth
     description: Authentication and session management
-    
+
   - name: Users
     description: User profile management
 
 paths:
-          
+
   /auth/logout:
     post:
       tags:
         - Auth
       summary: Logout current user
       description: |
-        Invalidates the current authentication session.
+        Logs out the currently authenticated N1H web user.
+        The server invalidates the HTTP session and clears the session authentication.
       operationId: logout
       security:
-        - bearerAuth: []
+        - sessionAuth: []
 
       responses:
         "200":
@@ -44,65 +45,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /auth/orcid/authorize-url:
-    get:
-      tags:
-        - Auth
-      summary: Get ORCID authorization URL
-      description: Returns the ORCID OAuth2 authorization URL and state parameter.
-      operationId: getOrcidAuthorizeUrl
-      security: []
-
-      responses:
-        "200":
-          description: ORCID authorization URL generated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrcidAuthUrlResponse'
-  
-  /auth/orcid/token:
-    post:
-      tags:
-        - Auth
-      summary: Authenticate with ORCID 
-      description: |
-        Exchanges the ORCID authorization code for ORCID identity information,
-        creates or retrieves the corresponding N1H user, and returns an
-        N1H-generated JWT access token.
-      operationId: orcidLogin
-      security: []
-
-      requestBody:
-        required: true
-        description: ORCID authorization code and state parameter
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrcidTokenRequest'
-
-      responses:
-        "200":
-          description: Authentication successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-
-        "400":
-          description: Invalid request or missing parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-        "401":
-          description: Invalid ORCID code or authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
   /auth/me:
     get:
       tags:
@@ -112,6 +54,7 @@ paths:
         Returns information about the currently authenticated user.
       operationId: getCurrentUser
       security:
+        - sessionAuth: []
         - bearerAuth: []
 
       responses:
@@ -143,8 +86,9 @@ paths:
       summary: Update current user profile
       operationId: updateCurrentUser
       security:
+        - sessionAuth: []
         - bearerAuth: []
-      
+
       requestBody:
         required: true
         description: Updated user information
@@ -152,22 +96,22 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateUserRequest'
-              
+
       responses:
         "200":
           description: User profile updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User' 
-                
+                $ref: '#/components/schemas/User'
+
         "400":
           description: Invalid request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        
+
         "401":
           description: Unauthorized
           content:
@@ -180,22 +124,28 @@ components:
 
   securitySchemes:
 
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: |
+        N1H application authentication using a server-side HTTP session.
+
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: |
-        N1H application authentication using a JWT access token.
+        N1H API authentication using an N1H-issued JWT access token.
+        Intended for mobile applications and external API clients.
         Example:
         Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
   schemas:
-      
+
     UpdateUserRequest:
       type: object
-      required:
-        - email
-      
+
       properties:
         displayName:
           type: string
@@ -209,63 +159,6 @@ components:
           format: email
           description: Updated contact email address.
           example: "jane.doe@institution.org"
-        
-    OrcidTokenRequest:
-      type: object
-      required:
-        - code
-        - state
-      
-      properties:
-        code:
-          type: string
-          description: Authorization code returned by ORCID
-          example: 1234567890abcdef
-        state:
-          type: string
-          description: OAuth state value associated with the authorization request.
-          example: random_state_string
-
-    OrcidAuthUrlResponse:
-      type: object
-      required:
-        - url
-        - state
-
-      properties:
-        url:
-          type: string
-          format: uri
-          description: ORCID OAuth2 authorization URL.
-          example: https://orcid.org/oauth/authorize?client_id=APP-1234567890&response_type=code&scope=/authenticate&redirect_uri=https://yourapp.com/callback&state=random_state_string
-        
-        state:
-          type: string
-          description: OAuth state value associated with the authorization request.
-          example: random_state_string
-
-    LoginResponse:
-      type: object
-      required:
-        - token
-        - expiresInSeconds
-        - user
-
-      properties:
-        token:
-          type: string
-          description: N1H application JWT access token
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-        expiresInSeconds:
-          type: integer
-          format: int32
-          minimum: 1
-          description: Number of seconds until the N1H JWT expires.
-          example: 3600
-
-        user:
-          $ref: '#/components/schemas/User'
 
     UserRole:
       type: string
@@ -279,7 +172,6 @@ components:
       type: object
       required:
         - id
-        - orcid
         - displayName
         - role
         - enabled
@@ -289,7 +181,7 @@ components:
           type: integer
           format: int64
           example: 1
-        
+
         displayName:
           type: string
           minLength: 1
@@ -300,12 +192,15 @@ components:
         email:
           type: string
           format: email
+          nullable: true
+          description: Optional N1H contact email address.
           example: admin@n1h.org
 
         orcid:
           type: string
+          nullable: true
           pattern: '^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$'
-          description: User's unique and immutable ORCID identifier.
+          description: ORCID ID linked to this N1H account, when an ORCID identity is linked.
           example: "0000-0001-2345-6789"
 
         role:
