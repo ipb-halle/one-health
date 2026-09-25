@@ -120,6 +120,16 @@ CREATE TABLE data_sources (
     source_url  VARCHAR
 );
 
+
+CREATE TABLE data_source_parameters (
+    id          VARCHAR NOT NULL REFERENCES data_sources (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    name        VARCHAR NOT NULL,
+    description VARCHAR,
+    value       VARCHAR,
+    PRIMARY KEY (id, name)
+);
+
+
 CREATE TABLE element_mappings (
     id                  SERIAL NOT NULL PRIMARY KEY,
     data_source_id      VARCHAR NOT NULL REFERENCES data_sources (id) ON UPDATE CASCADE ON DELETE CASCADE,
