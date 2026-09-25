@@ -14,6 +14,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -22,6 +24,10 @@ import org.springframework.http.MediaType;
 public class SecurityConfig {
 
     private final N1hOidcUserService n1hOidcUserService;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
+
 
     public SecurityConfig(N1hOidcUserService n1hOidcUserService) {
         this.n1hOidcUserService = n1hOidcUserService;
@@ -90,7 +96,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo ->
                                 userInfo.oidcUserService(n1hOidcUserService))
                         .defaultSuccessUrl(
-                                "http://a.localhost:5173/", true));
+                                //"http://a.localhost:5173/", true));
+                                frontendUrl, true));
 
         return http.build();
     }
