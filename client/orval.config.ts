@@ -11,14 +11,14 @@ export default defineConfig({
             schemas: 'src/generated/auth/model',
 
             client: 'react-query',
-            httpClient: 'axios',
+            httpClient: 'fetch',
 
             clean: true,
 
             override: {
                 mutator: {
-                    path: './src/app/services/orval-axios.ts',
-                    name: 'customAxiosInstance',
+                    path: './src/app/services/orval-fetch.ts',
+                    name: 'customFetch',
                 },
             },
         },
