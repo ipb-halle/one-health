@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { httpRequest } from '@/core/api/http/http-client';
 import { injectable } from 'inversify';
 import qs from 'qs';
 import {
@@ -7,8 +7,6 @@ import {
 } from '../../../../core/api/http/http-responses-handler';
 import { BaseDataService } from '../../../../core/api/http/interfaces/base-data-service';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
-
-import { constructHttpParams } from '../../../../shared';
 
 @injectable()
 export class IGeneralSearchService extends BaseDataService {
@@ -36,14 +34,7 @@ export class GeneralSearchService extends IGeneralSearchService {
         const query = { query: encodedValue };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(`${this.url}?${qs.stringify(query)}`),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
