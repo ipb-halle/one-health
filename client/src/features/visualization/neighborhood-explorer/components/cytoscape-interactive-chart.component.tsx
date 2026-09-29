@@ -8,11 +8,8 @@ import { MessageService } from '@/core/api/messages/interfaces/message-service';
 import { darkenHexColor } from '../../../../shared';
 import { GraphService } from '../../../..';
 import { INeighborhoodExplorerStore } from '../../../../store/inversify/neighborhood-explorer-store';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 
 Cytoscape.use(cxtmenu);
-
-import React from 'react';
 
 interface CytoscapeInteractiveChartProps {
     elements: any;

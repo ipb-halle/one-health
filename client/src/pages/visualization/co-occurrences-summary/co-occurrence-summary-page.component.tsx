@@ -418,7 +418,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
                 run={tutorialStore.showCoOccurrencesSummaryTutorial}
                 callback={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(false)}>
 
-                </CoOccurrencesSummaryTour>
+            </CoOccurrencesSummaryTour>
             <div className="page-container-wide">
                 <PageTitle
                     title="Co-Occurrences Summary"
@@ -426,7 +426,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
                     help={true}
                     helpClickedHandler={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(true)}>
 
-                    </PageTitle>
+                </PageTitle>
 
                 <ConfirmDialog />
 
