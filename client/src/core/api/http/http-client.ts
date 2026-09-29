@@ -1,4 +1,6 @@
-import { HttpError } from '@/core/api/http/http-error';
+import { HttpError } from './http-error';
+
+const baseUrl = import.meta.env.VITE_API_URL ?? '';
 
 const getCookie = (name: string): string | undefined => {
     const prefix = `${encodeURIComponent(name)}=`;
@@ -34,9 +36,19 @@ const getResponseData = async (response: Response): Promise<unknown> => {
     return text.length > 0 ? text : undefined;
 };
 
-export const customFetch = async <T>(
+const getRequestUrl = (url: string): string => {
+    const normalizedBaseUrl = baseUrl.endsWith('/')
+        ? baseUrl.slice(0, -1)
+        : baseUrl;
+
+    const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+
+    return `${normalizedBaseUrl}${normalizedUrl}`;
+};
+
+export const httpRequest = async <T>(
     url: string,
-    options: RequestInit,
+    options: RequestInit = {},
 ): Promise<T> => {
     const headers = new Headers(options.headers);
 
@@ -48,7 +60,7 @@ export const customFetch = async <T>(
         }
     }
 
-    const response = await fetch(`/api${url}`, {
+    const response = await fetch(getRequestUrl(url), {
         ...options,
         headers,
         credentials: 'same-origin',

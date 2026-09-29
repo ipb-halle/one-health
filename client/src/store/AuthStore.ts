@@ -1,7 +1,7 @@
 import { flow, types } from 'mobx-state-tree';
 import { UserRole } from '@/generated/auth/model';
 import { getCurrentUser } from '@/generated/auth/auth/auth';
-import { HttpError } from '@/app/services/orval-fetch';
+import { HttpError } from '@/core/api/http/http-error';
 
 const AuthenticatedUser = types.model('AuthenticatedUser', {
     id: types.number,
