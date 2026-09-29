@@ -69,9 +69,11 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         const query = { sourceId: sourceId, targetId: targetId, type: type };
+        const params = new URLSearchParams(constructHttpParams(query));
+
         return this.handleRequest<any>(
             httpRequest<any>(
-                `${this.url}/get-links-between?${constructHttpParams(query).toString()}`,
+                `${this.url}/get-links-between?${params.toString()}`,
             ),
             new OnReadByIdResponsesHandler(
                 'graph',
