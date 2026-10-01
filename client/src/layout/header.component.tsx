@@ -83,7 +83,7 @@ const Header: React.FC = () => {
 
     const authItems: MenuItem = {
         label: authStore.isAuthenticated
-            ? `${userInitials} ${user?.displayName ?? 'User'} . Log out`
+            ? `Hi ${user?.displayName ?? 'User'} . Log out`
             : 'Sign in with ORCID',
         icon: 'pi pi-user',
         command: async () => {
@@ -211,7 +211,7 @@ const Header: React.FC = () => {
                             }
                         >
                             {authStore.isAuthenticated ? (
-                                <span className="shortcut-icon">{userInitials}</span>
+                                <span className="shortcut-icon">Hi {userInitials}</span>
                             ) : (
                                 <i className="pi pi-user shortcut-icon" />
                             )}
