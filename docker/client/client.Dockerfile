@@ -2,20 +2,19 @@
 FROM node:22-slim AS build
 
 # Set the working directory inside the container
-
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if exists)
-COPY client/package*.json ./
+# Copy package.json and yarn.lock
+COPY client/package.json client/yarn.lock ./
 
-# Install npm dependencies
-RUN npm install
+# Install dependencies exactly from the committed Yarn lockfile
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY client/ .
 
 # Build the React app
-RUN npm run build
+RUN yarn build
 
 # Use Apache httpd for serving the production build
 FROM httpd
