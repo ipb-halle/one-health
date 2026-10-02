@@ -35,9 +35,7 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     /**
@@ -45,5 +43,5 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
      * (e.g. you might want to append some custom filter conditions without overriding of the getPage method).
      * @param {IQueryCommand} queryCommand
      */
-    extendQueryCommand(queryCommand: IQueryCommand): void { }
+    extendQueryCommand(queryCommand: IQueryCommand): void {}
 }

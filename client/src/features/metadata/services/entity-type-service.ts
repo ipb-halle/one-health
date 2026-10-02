@@ -6,7 +6,6 @@ import { httpRequest } from '@/core/api/http/http-client';
 import { IEntityType } from '../entity-types';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
-
 @injectable()
 export class IEntityTypeService extends PagedCrudService<IEntityType> {
     getAllEntityTypesAsOptions(
@@ -15,9 +14,7 @@ export class IEntityTypeService extends PagedCrudService<IEntityType> {
     ): Promise<SelectableOption[]> {
         return this.handleRequest<SelectableOption[]>(
             httpRequest<SelectableOption[]>(`${this.url}/as-options`),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 }
 

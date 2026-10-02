@@ -30,9 +30,7 @@ export class IOntologyService extends BaseDataService {
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getCoOccurrencesDetails(
@@ -56,4 +54,4 @@ export class IOntologyService extends BaseDataService {
 }
 
 @injectable()
-export class OntologyService extends IOntologyService { }
+export class OntologyService extends IOntologyService {}
