@@ -3,7 +3,8 @@ import { CrudService } from './crud-service';
 import { IHttpResponseHandlerSettings } from '../http-responses-handler';
 import { IPagedData } from '../models/paged-data';
 import { injectable } from 'inversify';
-import axios from 'axios';
+import { httpRequest } from '../http-client';
+
 import { OnReadByIdResponsesHandler } from '../http-responses-handler';
 import { constructHttpParams } from '../../../../shared';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
@@ -26,18 +27,15 @@ export class PagedCrudService<TEntity> extends CrudService<TEntity> {
             sortOrder: queryCommand.sortOrder,
         };
         return this.handleRequest<IPagedData<TEntity>>(
-            axios.get<any>(`${this.url}/getPage`, {
-                params: constructHttpParams(query),
-                paramsSerializer: { indexes: false },
-            }),
+            httpRequest<IPagedData<TEntity>>(
+                `${this.url}/getPage?${constructHttpParams(query).toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     /**

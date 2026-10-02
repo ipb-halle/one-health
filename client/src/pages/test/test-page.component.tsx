@@ -1,5 +1,5 @@
 import { Button } from 'primereact/button';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 // @ts-ignore: TS7016: Could not find a declaration file for module 'smiles-drawer'.
 import SmilesDrawer from 'smiles-drawer';
