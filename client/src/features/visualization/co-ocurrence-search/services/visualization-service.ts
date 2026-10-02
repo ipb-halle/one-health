@@ -23,7 +23,7 @@ export class IOntologyService extends BaseDataService {
 
         return this.handleRequest<any>(
             httpRequest<any>(
-                `${this.url}/find-co-ocurrences${qs.stringify(qparams)}`,
+                `${this.url}/find-co-ocurrences?${qs.stringify(qparams)}`,
             ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
