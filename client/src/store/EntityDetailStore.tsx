@@ -2,7 +2,7 @@ import { clone, flow, getRoot, Instance, types } from 'mobx-state-tree';
 import { Entity } from './Entity';
 import { IEntityDTO } from '@/features/search/general-search/models/entity-dto';
 import { EntityREST2MST } from './adapter/EntityREST2MST';
-import { GET_ADJACENT_ENTITIES } from './adapter/REST_ENDPOINTS';
+import { API_ENDPOINTS } from '@/core/api/http/api-endpoints';
 import { httpRequest } from '@/core/api/http/http-client';
 import { RootStore } from './root-store';
 
@@ -31,7 +31,7 @@ export const EntityDetailStore = types
 
                 try {
                     const body: IEntityDTO[] = yield httpRequest<IEntityDTO[]>(
-                        `${GET_ADJACENT_ENTITIES}?${params.toString()}`,
+                        `${API_ENDPOINTS.entity.adjacent()}?${params.toString()}`,
                     );
 
                     self.adjacentEntities.replace(EntityREST2MST(body));
