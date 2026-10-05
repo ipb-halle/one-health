@@ -69,9 +69,7 @@ const Header: React.FC = () => {
     };
 
     const authItems: MenuItem = {
-        label: authStore.isAuthenticated
-            ? `Hi ${user?.displayName ?? 'User'} . Log out`
-            : 'Sign in with ORCID',
+        label: authStore.label,
         icon: 'pi pi-user',
         command: async () => {
             if (authStore.isAuthenticated) {
@@ -177,25 +175,8 @@ const Header: React.FC = () => {
 
                         <button
                             className="mobile-shortcut-btn mobile-user-btn"
-                            onClick={async () => {
-                                if (authStore.isAuthenticated) {
-                                    try {
-                                        await logout();
-                                        authStore.clearUser();
-                                        window.location.reload();
-                                    } catch (error) {
-                                        console.error('Logout failed: ', error);
-                                    }
-                                }
-                                else {
-                                    window.location.href = '/api/oauth2/authorization/orcid';
-                                }
-                            }}
-                            title={
-                                authStore.isAuthenticated
-                                    ? `Log out ${user?.displayName ?? ''}`
-                                    : 'Sign in with ORCID'
-                            }
+                            onClick={() => authStore.loginOrLogout(window)}
+                            title={authStore.buttonTitle}
                         >
                             {authStore.isAuthenticated ? (
                                 <span className="shortcut-icon">Hi {authStore.initials}</span>

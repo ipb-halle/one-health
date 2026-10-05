@@ -1,7 +1,9 @@
 import { flow, types } from 'mobx-state-tree';
 import { UserRole } from '@/generated/auth/model';
-import { getCurrentUser } from '@/generated/auth/auth/auth';
+import { getCurrentUser, logout } from '@/generated/auth/auth/auth';
 import { HttpError } from '@/core/api/http/http-error';
+
+type BrowserWindow = Pick<Window, 'location'>;
 
 const AuthenticatedUser = types.model('AuthenticatedUser', {
     id: types.number,
@@ -34,11 +36,22 @@ export const AuthStore = types
             ).toUpperCase();
         }
     }))
+    .views((self) => ({
+        get label(): string {
+            return self.isAuthenticated
+                ? `Hi ${self.user?.displayName ?? 'User'} . Log out`
+                : 'Sign in with ORCID'
+        },
+        get buttonTitle(): string {
+            return self.isAuthenticated
+                ? `Log out ${self.user?.displayName ?? ''}`
+                : 'Sign in with ORCID'
+        }
+    }))
     .actions((self) => ({
         clearUser() {
             self.user = null;
         },
-
         loadCurrentUser: flow(function* loadCurrentUser() {
             try {
                 const user = yield getCurrentUser();
@@ -52,4 +65,17 @@ export const AuthStore = types
                 console.error('Failed to load current user:', error);
             }
         }),
+        async loginOrLogout(browserWindow: BrowserWindow) {
+            if (self.isAuthenticated) {
+                try {
+                    await logout();
+                    self.user = null;
+                    browserWindow.location.reload();
+                } catch (error) {
+                    console.error('Logout failed: ', error);
+                }
+            } else {
+                browserWindow.location.href = '/api/oauth2/authorization/orcid';
+            }
+        },
     }));
