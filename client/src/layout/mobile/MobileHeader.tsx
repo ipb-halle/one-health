@@ -1,12 +1,13 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
 import { useContext } from "react";
-import { ProfileIcon } from "./ProfileIcon";
+import { ProfileIcon } from "../ProfileIcon";
 import { Sidebar } from "primereact/sidebar";
 import { PanelMenu } from "primereact/panelmenu";
-import oneHealthLogo from '../assets/logo-n1h.png';
+import oneHealthLogo from '../../assets/logo-n1h.png';
 import { MenuItem } from "primereact/menuitem";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { createMenuItem } from "../createMenuItem";
 
 const MobileHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
@@ -14,30 +15,18 @@ const MobileHeader: React.FC = () => {
     const navigate = useNavigate();
 
     const mobileMenuItems: MenuItem[] = [
-        {
-            label: 'Home',
-            icon: 'pi pi-home',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                navigate('/');
-            },
-        },
-        {
-            label: 'Documentation',
-            icon: 'pi pi-book',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                navigate('/documentation');
-            },
-        },
-        {
-            label: 'Legal Information',
-            icon: 'pi pi-file',
-            command: () => {
-                screenDeviceStore.setMenuVisibility(false);
-                navigate('/legal');
-            },
-        },
+        createMenuItem('Home', 'pi pi-home', () => {
+            screenDeviceStore.setMenuVisibility(false);
+            navigate('/');
+        }),
+        createMenuItem('Documentation', 'pi pi-book', () => {
+            screenDeviceStore.setMenuVisibility(false);
+            navigate('/documentation');
+        }),
+        createMenuItem('Legal Information', 'pi pi-file', () => {
+            screenDeviceStore.setMenuVisibility(false);
+            navigate('/legal');
+        })
     ];
 
     return (
