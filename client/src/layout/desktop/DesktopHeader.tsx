@@ -11,6 +11,7 @@ const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const authStore = rootStore.authStore;
     const navigate = useNavigate();
+    const screenDeviceStore = rootStore.screenDeviceStore;
 
     const legalItems: MenuItem = {
         label: 'Legal',
@@ -67,9 +68,21 @@ const DesktopHeader: React.FC = () => {
             }
         },
     };
+    const items: MenuItem[] = [legalItems, visItems, authItems];
+    if (location.pathname !== '/') {
+        items.unshift({
+            label: 'General Search',
+            icon: 'pi pi-search',
+            command: () => {
+                screenDeviceStore.setMenuVisibility(false);
+                navigate('/');
+            },
+        });
+    }
+
     return <div className="fluid fixed-top">
         <Menubar
-            model={[legalItems, visItems, authItems]}
+            model={items}
             start={<DesktopStartComponent />}
             pt={{ start: { style: { marginRight: 'auto' } } }}
         />
