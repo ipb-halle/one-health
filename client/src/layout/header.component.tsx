@@ -28,20 +28,7 @@ const Header: React.FC = () => {
     const [historyVisible, setHistoryVisible] = useState<boolean>(false);
     const user = authStore.user;
 
-    const getInitials = (displayName?: string): string => {
-        if (!displayName) {
-            return 'U';
-        }
-        const parts = displayName.trim().split(/\s+/);
-        if (parts.length === 1) {
-            return parts[0].charAt(0).toUpperCase();
-        }
-        return (
-            parts[0].charAt(0) +
-            parts[parts.length - 1].charAt(0)
-        ).toUpperCase();
-    }
-    const userInitials = getInitials(user?.displayName);
+
 
     const legalItems: MenuItem = {
         label: 'Legal',
@@ -211,14 +198,11 @@ const Header: React.FC = () => {
                             }
                         >
                             {authStore.isAuthenticated ? (
-                                <span className="shortcut-icon">Hi {userInitials}</span>
+                                <span className="shortcut-icon">Hi {authStore.initials}</span>
                             ) : (
                                 <i className="pi pi-user shortcut-icon" />
                             )}
                         </button>
-
-
-
                     </div>
                 </header>
 
