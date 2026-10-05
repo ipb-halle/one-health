@@ -14,6 +14,7 @@ import { Sidebar } from 'primereact/sidebar';
 
 import HistoryModal from '@/features/search/search-history/components/general-search-history-modal.component';
 import { logout } from '@/generated/auth/auth/auth';
+import { ProfileIcon } from './ProfileIcon';
 
 
 const Header: React.FC = () => {
@@ -25,10 +26,7 @@ const Header: React.FC = () => {
     const screenDeviceStore = rootStore.screenDeviceStore;
     const authStore = rootStore.authStore;
 
-    const [historyVisible, setHistoryVisible] = useState<boolean>(false);
-    const user = authStore.user;
-
-
+    const [historyVisible, setHistoryVisible] = useState<boolean>(false);   
 
     const legalItems: MenuItem = {
         label: 'Legal',
@@ -172,18 +170,7 @@ const Header: React.FC = () => {
                     </div>
 
                     <div className="mobile-header-right">
-
-                        <button
-                            className="mobile-shortcut-btn mobile-user-btn"
-                            onClick={() => authStore.loginOrLogout(window)}
-                            title={authStore.buttonTitle}
-                        >
-                            {authStore.isAuthenticated ? (
-                                <span className="shortcut-icon">Hi {authStore.initials}</span>
-                            ) : (
-                                <i className="pi pi-user shortcut-icon" />
-                            )}
-                        </button>
+                        <ProfileIcon />
                     </div>
                 </header>
 

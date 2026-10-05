@@ -65,10 +65,10 @@ export const AuthStore = types
                 console.error('Failed to load current user:', error);
             }
         }),
-        async loginOrLogout(browserWindow: BrowserWindow) {
+        loginOrLogout: flow(function* loginOrLogout(browserWindow: BrowserWindow) {
             if (self.isAuthenticated) {
                 try {
-                    await logout();
+                    yield logout();
                     self.user = null;
                     browserWindow.location.reload();
                 } catch (error) {
@@ -77,5 +77,5 @@ export const AuthStore = types
             } else {
                 browserWindow.location.href = '/api/oauth2/authorization/orcid';
             }
-        },
+        }),
     }));
