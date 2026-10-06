@@ -21,6 +21,8 @@ const isUnsafeMethod = (method?: string): boolean => {
 };
 
 const getResponseData = async (response: Response): Promise<unknown> => {
+    // 204 (No Content) and 205 (Reset Content) are successful responses
+    // that do not contain a response body, so there is nothing to parse.
     if (response.status === 204 || response.status === 205) {
         return undefined;
     }
@@ -52,6 +54,8 @@ export const httpRequest = async <T>(
 ): Promise<T> => {
     const headers = new Headers(options.headers);
 
+    // Spring Security requires a CSRF token for requests that can modify
+    // server-side state (POST, PUT, PATCH, DELETE, etc.).
     if (isUnsafeMethod(options.method)) {
         const csrfToken = getCookie('XSRF-TOKEN');
 
@@ -66,8 +70,12 @@ export const httpRequest = async <T>(
         credentials: 'same-origin',
     });
 
+    // Read the response body before checking the status so that an error
+    // response (e.g. 401, 403, 404 or 500) can also be included in HttpError.
     const data = await getResponseData(response);
 
+    // response.ok accepts every successful 2xx status, not only 200.
+    // Non-2xx statuses are preserved in HttpError for caller-specific handling.
     if (!response.ok) {
         throw new HttpError(response.status, response, data);
     }

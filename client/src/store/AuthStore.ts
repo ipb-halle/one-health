@@ -60,6 +60,7 @@ export const AuthStore = types
                 self.user = null;
 
                 if (error instanceof HttpError && error.status == 401) {
+                    // Expected case: there is currently no authenticated user.
                     return;
                 }
                 console.error('Failed to load current user:', error);

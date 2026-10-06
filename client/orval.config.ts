@@ -13,12 +13,14 @@ export default defineConfig({
             client: 'react-query',
             httpClient: 'fetch',
 
+            baseUrl: '/api',
+
             clean: true,
 
             override: {
                 mutator: {
-                    path: './src/app/services/orval-fetch.ts',
-                    name: 'customFetch',
+                    path: './src/core/api/http/http-client.ts',
+                    name: 'httpRequest',
                 },
             },
         },
