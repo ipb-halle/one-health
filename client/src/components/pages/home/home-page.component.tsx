@@ -1,11 +1,11 @@
-import logoGlacier from '../../assets/logo-glacier.png';
-import logoIpb from '../../assets/logo-ipb.png';
-import logoForeign from '../../assets/logo-foreign-office.png';
+import logoGlacier from '@/assets/logo-glacier.png';
+import logoIpb from '@/assets/logo-ipb.png';
+import logoForeign from '@/assets/logo-foreign-office.png';
 
 import './home-page.component.scss';
 import React from 'react';
 import HeroSectionRow from './hero-section-row.component';
-import SearchPanel from '../../features/search/general-search/components/search-panel.component';
+import SearchPanel from '../../../features/search/general-search/components/search-panel.component';
 const HomePageComponent: React.FC = () => {
     return (
         <div className="page-container-narrow" id="home-page">

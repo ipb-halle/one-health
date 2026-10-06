@@ -4,7 +4,7 @@ import {
     LegalPageComponent,
 } from "@/pages";
 import EntityDetailComponent from "@/pages/entity-detail/EntityDetailComponent";
-import MobileHomePageComponent from "@/pages/home/mobile-home-page.component";
+import MobileHomePageComponent from "@/components/pages/home/mobile-home-page.component";
 import { observer } from "mobx-react-lite";
 import { Route, Routes } from "react-router-dom";
 

@@ -1,6 +1,6 @@
-import neighborhoodExplorerImage from '../../assets/img/neighborhood-explorer.png';
-import coocurrencesSummaryImage from '../../assets/img/cooccurrences-summary.png';
-import heroSectionImage from '../../assets/img/earth_image.png';
+import neighborhoodExplorerImage from '@/assets/img/neighborhood-explorer.png';
+import coocurrencesSummaryImage from '@/assets/img/cooccurrences-summary.png';
+import heroSectionImage from '@/assets/img/earth_image.png';
 
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';

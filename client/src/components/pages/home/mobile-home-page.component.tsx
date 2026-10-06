@@ -1,58 +1,22 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
 import CompactResultDisplay from "@/features/search/general-search/components/compact-result-display";
 import { observer } from "mobx-react-lite";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { useContext, useState } from "react";
-import earthImage from '../../assets/img/earth_image.png';
-
+import { useContext } from "react";
+import earthImage from '@/assets/img/earth_image.png';
 import './mobile-home-page.component.scss';
+import SearchBar from "./SearchBar";
+
 
 const statistics = [{ value: "25,000+", label: "Publications", icon: "fa-regular fa-file-lines", }, { value: "3,400+", label: "Plant Species", icon: "fa-solid fa-seedling", }, { value: "8,200+", label: "Natural Compounds", icon: "fa-solid fa-atom", }, { value: "1,500+", label: "Diseases", icon: "fa-solid fa-virus", },];
 
 function MobileHomePageComponent() {
+
     const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
 
     const isSearchingActive = generalSearchStore.isSearching !== null;
 
-    const handleSearch = () => {
-        generalSearchStore.runQuery();
-    }
 
-    const handleKeyDown =
-        (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === "Enter") {
-                handleSearch();
-            }
-        };
-
-    const handleClearSearch = () => {
-        generalSearchStore.setQuery('');
-        generalSearchStore.setIsSearching(null as any);
-    };
-
-    const searchBar = (
-        <div className="mobile-search-bar-section">
-            <div className="mobile-search-input-wrapper">
-                <InputText
-                    className="mobile-search-input"
-                    value={generalSearchStore.query}
-                    onChange={(e) => generalSearchStore.setQuery(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Search in knowledge base (e.g. disease name, ...)"
-                />
-                <button
-                    type="button"
-                    className="mobile-search-btn"
-                    onClick={handleSearch}
-                    aria-label="Search"
-                    title="Search"
-                >
-                    <i className="pi pi-search" />
-                </button>
-            </div>
-        </div>
-    );
 
 
     return (
@@ -60,21 +24,21 @@ function MobileHomePageComponent() {
 
             {isSearchingActive ? (
                 <div className="mobile-results-wrapper">
-                    {searchBar}
+                    <SearchBar />
 
                     <div className="mobile-results-header">
                         <Button
                             label="Back to overview"
                             icon="pi pi-arrow-left"
                             className="p-button-text p-button-sm mobile-back-btn"
-                            onClick={handleClearSearch}
+                            onClick={generalSearchStore.clearSearch}
                         />
                     </div>
                     <CompactResultDisplay />
                 </div>
             ) : (
                 <div className="mobile-main-content">
-                    {searchBar}
+                    <SearchBar />
 
                     <div className="mobile-hero-card">
                         <div className="hero-left-col">
