@@ -1,10 +1,10 @@
-import logoGlacier from '../assets/logo-glacier.png';
-import logoDaad from '../assets/logo-daad.png';
-import logoDip from '../assets/logo-dip.png';
-import logoLeibniz from '../assets/logo-leibniz.png';
-import logoIpb from '../assets/logo-ipb.png';
-import logoForeign from '../assets/logo-foreign-office.png';
-import './footer.component.scss';
+import logoGlacier from '@/assets/logo-glacier.png';
+import logoDaad from '@/assets/logo-daad.png';
+import logoDip from '@/assets/logo-dip.png';
+import logoLeibniz from '@/assets/logo-leibniz.png';
+import logoIpb from '@/assets/logo-ipb.png';
+import logoForeign from '@/assets/logo-foreign-office.png';
+import './Footer.scss';
 
 function FooterIconsMobile() {
     return (

@@ -1,13 +1,13 @@
 import { RootStoreContext } from "@/app/providers/store-provider";
 import { useContext } from "react";
-import { ProfileIcon } from "../ProfileIcon";
 import { Sidebar } from "primereact/sidebar";
 import { PanelMenu } from "primereact/panelmenu";
-import oneHealthLogo from '../../assets/logo-n1h.png';
+import oneHealthLogo from '@/assets/logo-n1h.png';
 import { MenuItem } from "primereact/menuitem";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { createMenuItem } from "../createMenuItem";
+import { createMenuItem } from "./createMenuItem";
+import { ProfileIcon } from "./ProfileIcon";
 
 const MobileHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);

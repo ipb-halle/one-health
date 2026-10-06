@@ -1,4 +1,4 @@
-import Layout from "@/layout/layout.component";
+import Layout from "@/components/pages/Layout";
 import {
     DocumentationPageComponent,
     LegalPageComponent,

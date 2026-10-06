@@ -1,5 +1,5 @@
-import  { useContext } from 'react';
-import './footer.component.scss';
+import { useContext } from 'react';
+import './Footer.scss';
 
 import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '@/app/providers/store-provider';
@@ -7,12 +7,13 @@ import FooterIconsMobile from './FooterIconsMobile';
 import FooterIconsDesktop from './FooterIconsDesktop';
 
 
+
 function Footer() {
 
     const screenDeviceStore = useContext(RootStoreContext).screenDeviceStore;
 
     const footerIconComponent = screenDeviceStore.isMobile ?
-       <FooterIconsMobile /> :
+        <FooterIconsMobile /> :
         <FooterIconsDesktop />
 
     return (

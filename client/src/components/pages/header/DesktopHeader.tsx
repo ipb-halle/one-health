@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { Menubar } from "primereact/menubar";
-import DesktopStartComponent from "./DesktopStartComponent";
 import { MenuItem } from "primereact/menuitem";
 import { RootStoreContext } from "@/app/providers/store-provider";
 import { useContext } from "react";
 import { logout } from '@/generated/auth/auth/auth';
 import { useNavigate } from "react-router-dom";
+import DesktopStartComponent from "./DesktopStartComponent";
 
 const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);

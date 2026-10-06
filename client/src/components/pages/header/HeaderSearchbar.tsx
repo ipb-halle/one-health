@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext';
-import './header-searchbar.component.scss';
+import './HearderSearchbar.scss';
 
 import React from 'react';
 const HeaderSearchbar: React.FC = () => {

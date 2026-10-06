@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import oneHealthLogo from '../../assets/logo-n1h.png';
+import oneHealthLogo from '@/assets/logo-n1h.png';
 
 const DesktopStartComponent: React.FC = () => {
     return <div
