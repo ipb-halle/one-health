@@ -28,5 +28,9 @@ public class DatasetBuilderTest {
         assertThat(dataset).isNotNull();
         assertThat(dataset.getDefaultModel()).isNotNull();
         assertThat(dataset.getDefaultModel().isEmpty()).isFalse();
+
+        QueryExecutor executor = new QueryExecutor();
+        String id = executor.queryDataset(dataset);
+        assertThat(id).isEqualTo("NCBITaxon_38868");
     }
 }
