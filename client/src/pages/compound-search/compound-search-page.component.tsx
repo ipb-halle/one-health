@@ -289,7 +289,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                 icon="fa fa-atom"
                 title="Structure Search"
                 help={true}
-                helpClickedHandler={() => {tutorialStore.ChangeShowCompoundSearchTutorial(true)}}/>           
+                helpClickedHandler={() => {tutorialStore.ChangeShowCompoundSearchTutorial(true)}}/>
 
             <CompoundSearchPageTourComponent
                 run={tutorialStore.showCompoundSearchTutorial}

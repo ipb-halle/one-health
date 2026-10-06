@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import axios from 'axios';
+import { httpRequest } from '../http-client';
 import { BaseDataService } from './base-data-service';
 import { IHttpResponseHandlerSettings } from '../http-responses-handler';
 import { OnReadByIdResponsesHandler } from '../http-responses-handler';
@@ -18,15 +18,13 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-initial`, {}),
+            httpRequest<any>(`${this.url}/get-initial`),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getNode(
@@ -35,7 +33,7 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-node/${id}`, {}),
+            httpRequest<any>(`${this.url}/get-node/${id}`),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
@@ -50,15 +48,13 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-edge/${id}`, {}),
+            httpRequest<any>(`${this.url}/get-edge/${id}`),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getLinksBetween(
@@ -69,11 +65,12 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         const query = { sourceId: sourceId, targetId: targetId, type: type };
+        const params = new URLSearchParams(constructHttpParams(query));
+
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/get-links-between`, {
-                params: constructHttpParams(query),
-                paramsSerializer: { indexes: false },
-            }),
+            httpRequest<any>(
+                `${this.url}/get-links-between?${params.toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
@@ -89,14 +86,18 @@ export class GraphService extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): any {
         return this.handleRequest<any>(
-            axios.post<any>(`${this.url}/get-node-expansion/${id}`, nodes),
+            httpRequest<any>(`${this.url}/get-node-expansion/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(nodes),
+            }),
             new OnReadByIdResponsesHandler(
                 'graph',
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 }

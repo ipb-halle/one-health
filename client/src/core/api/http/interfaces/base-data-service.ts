@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { HttpError } from '../http-error';
 import { IHttpResponsesHandler } from '../http-responses-handler';
 import { injectable } from 'inversify';
 
@@ -10,25 +10,27 @@ export abstract class BaseDataService {
     readonly url: string = '';
 
     protected handleRequest<TResult>(
-        request: Promise<AxiosResponse<TResult, any>>,
+        request: Promise<TResult>,
         responseHandler?: IHttpResponsesHandler,
     ): Promise<TResult> {
         if (responseHandler) {
             return request
-                .then((x: AxiosResponse<TResult, any>) => {
+                .then((result: TResult) => {
                     if (responseHandler.handleSuccess) {
                         responseHandler.handleSuccess();
                     }
-                    return Promise.resolve(x.data);
+                    return result;
                 })
-                .catch((errorResponse: AxiosError) => {
-                    if (responseHandler.handleError) {
-                        responseHandler.handleError(errorResponse);
+                .catch((error: unknown) => {
+                    if (
+                        error instanceof HttpError &&
+                        responseHandler.handleError
+                    ) {
+                        responseHandler.handleError(error);
                     }
-                    return Promise.reject(errorResponse);
+                    return Promise.reject(error);
                 });
-        } else {
-            return request.then((x) => x.data);
         }
+        return request;
     }
 }

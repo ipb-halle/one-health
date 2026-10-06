@@ -6,7 +6,7 @@ import {
     IHttpResponseHandlerSettings,
     OnReadByIdResponsesHandler,
 } from '../../../../core/api/http/http-responses-handler';
-import axios from 'axios';
+import { httpRequest } from '@/core/api/http/http-client';
 import { constructHttpParams } from '../../../../shared';
 import qs from 'qs';
 
@@ -70,14 +70,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-smiles`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-smiles?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -94,14 +89,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchi`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-inchi?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -118,14 +108,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchikey`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-inchikey?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -150,7 +135,9 @@ export class CompoundService extends ICompoundService {
         const parsed = constructHttpParams(query);
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-substructure`, { params: parsed }),
+            httpRequest<any>(
+                `${this.url}/by-substructure?${parsed.toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -175,7 +162,9 @@ export class CompoundService extends ICompoundService {
         const parsed = constructHttpParams(query);
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-similarity`, { params: parsed }),
+            httpRequest<any>(
+                `${this.url}/by-similarity?${parsed.toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,

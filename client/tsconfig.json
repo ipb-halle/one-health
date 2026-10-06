@@ -31,7 +31,9 @@
             "jest",
             "node",
             "reflect-metadata"
-        ]
+        ],
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
     },
     "include": [
         "src",
