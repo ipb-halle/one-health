@@ -77,11 +77,11 @@ class SearchControllerIT {
         N4JPropertyInfo descProperty = new N4JPropertyInfo("Description", "Entity description", false, DataType.STRING);
         descProperty.setPosition(1);
 
-        N4JEntityType diseaseType = new N4JEntityType(
-                "Disease",
-                "Diseases",
+        N4JEntityType npType = new N4JEntityType(
+                "np",
+                "Natural Products",
                 null,
-                "A disease entity type",
+                "A natural product entity type",
                 "#FF0000",
                 new HashSet<>(),
                 new HashSet<>(List.of(descProperty)),
@@ -89,7 +89,7 @@ class SearchControllerIT {
                 nameProperty
         );
 
-        N4JEntityType savedType = neo4jTemplate.save(diseaseType);
+        N4JEntityType savedType = neo4jTemplate.save(npType);
 
         neo4jClient.query(
                 "CREATE (e:Entity {OHUUID: $id, __type: $type, Name: $name, Description: $desc})"
@@ -126,7 +126,7 @@ class SearchControllerIT {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getId()).isEqualTo("entity-aspirin-1");
         assertThat(result.get(0).getName()).isEqualTo("Aspirin");
-        assertThat(result.get(0).getType()).isEqualTo("Disease");
+        assertThat(result.get(0).getType()).isEqualTo("np");
         assertThat(result.get(0).getColor()).isEqualTo("#FF0000");
         assertThat(result.get(0).getSynonyms()).contains("Acetylsalicylic acid");
         assertThat(result.get(0).getProperties()).isNotNull().isNotEmpty();
