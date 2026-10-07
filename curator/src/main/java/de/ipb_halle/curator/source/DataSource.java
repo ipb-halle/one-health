@@ -8,8 +8,11 @@
 package de.ipb_halle.curator.source;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,6 +27,7 @@ public class DataSource <T extends ImportHandler> {
     private final URL sourceUrl;
     private final Set<ElementMapping> elementMappings;
     private final Set<FieldMapping> fieldMappings;
+    private final Map<String, Object> parameterMappings;
 
     public DataSource(DataSourceEntity ds) throws MalformedURLException, ClassNotFoundException {
         this.id = ds.getId();
@@ -35,6 +39,7 @@ public class DataSource <T extends ImportHandler> {
         this.sourceUrl = new URL(ds.getSourceUrl());
         this.elementMappings = new HashSet<> ();
         this.fieldMappings = new HashSet<> ();
+        this.parameterMappings = new HashMap<> ();
     }
 
     public String getId() {
@@ -47,6 +52,10 @@ public class DataSource <T extends ImportHandler> {
 
     public Class<T> getHandler() {
         return handler;
+    }
+
+    public Object getParameter(String key) {
+        return parameterMappings.get(key);
     }
 
     public URL getSourceUrl() {

@@ -71,4 +71,15 @@ public abstract class AbstractImportHandler implements ImportHandler {
     protected AbstractField createField(UUID elementId, FieldDefinition fieldDefinition, String value) {
         return converter.fromString(elementId, fieldDefinition, value);
     }
+
+    protected void addElement(Element elementDTO) {
+        ElementType elementType = elementDTO.getType();
+        List<Element> typedElementDTOs = elementDTOsByType.getOrDefault(elementType.getId(), new ArrayList<> ());
+        elementDTOsByType.put(elementType.getId(), typedElementDTOs);
+        typedElementDTOs.add(elementDTO);
+    }
+
+    protected void reset() {
+        this.elementDTOsByType = new HashMap<> ();
+    }
 }

@@ -5,8 +5,9 @@
  * Curator
  * Curator provides an ETL pipeline to the One Health project.
  */
-package de.ipb_halle.curator.ontology;
+package de.ipb_halle.curator.source.ontology;
 
+import de.ipb_halle.curator.source.DataSource;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;

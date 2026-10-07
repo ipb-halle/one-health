@@ -5,7 +5,7 @@
  * Curator
  * Curator provides an ETL pipeline to the One Health project.
  */
-package de.ipb_halle.curator.ontology;
+package de.ipb_halle.curator.source.ontology;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
