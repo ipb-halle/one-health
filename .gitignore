@@ -63,3 +63,6 @@ build/
 
 /data/
 client/src/assets/.nfs0000000123d9124f00000369
+
+# Copilot Instructions
+/.github/copilot-instructions.md
