@@ -37,6 +37,8 @@ public class SourceRegistryTest {
         List<DataSourceEntity> dsList = new ArrayList<> ();
 
         SourceRegistry sreg = new SourceRegistry();
+        Assertions.assertThatThrownBy(() -> sreg.initializeDataSourceParameters(null))
+                .isInstanceOf(RuntimeException.class);
         Assertions.assertThatThrownBy(() -> sreg.initializeElementMappings(null))
                 .isInstanceOf(RuntimeException.class);
         Assertions.assertThatThrownBy(() -> sreg.initializeFieldMappings(null))
@@ -53,6 +55,7 @@ public class SourceRegistryTest {
         dsList.clear();
 
         sreg.initializeDataSources(dsList);
+        sreg.initializeDataSourceParameters(new ArrayList<> ());
         sreg.initializeElementMappings(new ArrayList<> ());
         assertThat(sreg.isInitialized()).isFalse();
 
@@ -64,6 +67,8 @@ public class SourceRegistryTest {
     public void testDataSource_FailOnDuplicateInitialization() {
         assertThat(sourceRegistry.isInitialized()).isTrue();
         Assertions.assertThatThrownBy(() -> sourceRegistry.initializeDataSources(null))
+                .isInstanceOf(RuntimeException.class);
+        Assertions.assertThatThrownBy(() -> sourceRegistry.initializeDataSourceParameters(null))
                 .isInstanceOf(RuntimeException.class);
         Assertions.assertThatThrownBy(() -> sourceRegistry.initializeElementMappings(null))
                 .isInstanceOf(RuntimeException.class);

@@ -35,6 +35,7 @@ public class SourceRegistry {
     private Map<String, DataSource> dataSourcesById;
 
     private boolean dataSourcesInitialized = false;
+    private boolean dataSourceParametersInitialized = false;
     private boolean elementMappingsInitialized = false;
     private boolean fieldMappingsInitialized = false;
 
@@ -54,6 +55,23 @@ public class SourceRegistry {
         this.dataSourcesById = this.dataSources.stream()
                 .collect(Collectors.toMap(DataSource::getId, Function.identity()));
         dataSourcesInitialized = true;
+    }
+
+    public void initializeDataSourceParameters(List<DataSourceParameterEntity> dataSourceParameters) {
+        if (! dataSourcesInitialized) {
+            throw new RuntimeException("Missing initialization of DataSources");
+        }
+        if (dataSourceParametersInitialized) {
+            throw new RuntimeException("Duplicate initialization of DataSourceParameters");
+        }
+        for (var dsp : dataSourceParameters) {
+            DataSource ds = dataSourcesById.get(dsp.getId());
+            if (ds == null) {
+                throw new IllegalArgumentException("Unresolvable data source parameter.");
+            }
+            ds.addParameter(dsp);
+        }
+        dataSourceParametersInitialized = true;
     }
 
     public void initializeElementMappings(List<ElementMappingEntity> elementMappings) {
@@ -101,6 +119,7 @@ public class SourceRegistry {
 
     public boolean isInitialized() {
         return this.dataSourcesInitialized
+                && this.dataSourceParametersInitialized
                 && this.elementMappingsInitialized
                 && this.fieldMappingsInitialized;
     }

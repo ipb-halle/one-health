@@ -38,6 +38,17 @@ public class SourceRepository {
     }
 
     @Transactional(readOnly = true)
+    public List<DataSourceParameterEntity> findAllDataSourceParameters() {
+        String sql = "SELECT id, name, description, value FROM data_source_parameters ORDER BY id, name";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new DataSourceParameterEntity(
+                rs.getString("id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getString("value")
+        ));
+    }
+
+    @Transactional(readOnly = true)
     public List<ElementMappingEntity> findAllElementMappings() {
         String sql = "SELECT id, data_source_id, element_type_id, source_field_name, identity_mapping, multivalued "
                 + "FROM element_mappings";

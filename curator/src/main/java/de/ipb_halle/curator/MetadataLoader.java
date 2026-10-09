@@ -49,6 +49,7 @@ public class MetadataLoader implements CommandLineRunner {
         metadataRegistry.initializeFieldDefinitions(metadataRepository.findAllFieldDefinitions());
         metadataRegistry.initializeDynEnums(metadataRepository.findAllDynEnums());
         sourceRegistry.initializeDataSources(sourceRepository.findAllDataSources());
+        sourceRegistry.initializeDataSourceParameters(sourceRepository.findAllDataSourceParameters());
         sourceRegistry.initializeElementMappings(sourceRepository.findAllElementMappings());
         sourceRegistry.initializeFieldMappings(sourceRepository.findAllFieldMappings());
     }

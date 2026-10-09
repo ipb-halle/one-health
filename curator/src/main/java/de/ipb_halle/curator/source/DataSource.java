@@ -58,6 +58,10 @@ public class DataSource <T extends ImportHandler> {
         return parameterMappings.get(key);
     }
 
+    public void addParameter(DataSourceParameterEntity parameter) {
+        parameterMappings.put(parameter.getName(), parameter.getValue());
+    }
+
     public URL getSourceUrl() {
         return sourceUrl;
     }
