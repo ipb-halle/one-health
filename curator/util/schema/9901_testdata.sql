@@ -37,13 +37,22 @@ INSERT INTO dyn_enums (field_id, label, description) VALUES
  * test data source
  */
 INSERT INTO data_sources (id, description, handler, source_url) VALUES
-    ('TEST_ORGANISMS', 'Source of test data', 'de.ipb_halle.curator.source.testHandler.TestOrganismImportHandler', 'file:testOrganisms.csv');
+    ('CSV_ORGANISMS', 'CSV source of test data', 'de.ipb_halle.curator.source.testHandler.TestOrganismImportHandler', 'file:testOrganisms.csv'),
+    ('OWL_ORGANISMS', 'OWL source of test data', 'de.ipb_halle.curator.source.ontology.OntologyImportHandler', 'file:test.owl');
+
+INSERT INTO data_source_parameters (id, name, description, value) VALUES
+    ('OWL_ORGANISMS', 'QUERY', 'SPARQL query for the import of owl data', 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT ?class ?id WHERE {
+                ?class rdfs:label "Salvia officinalis" .
+                BIND(STRAFTER(STR(?class), "http://purl.obolibrary.org/obo/NCBITaxon_") AS ?id)
+            }');
 
 INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name, identity_mapping, multivalued) VALUES
-    ('TEST_ORGANISMS', 'ORGANISM', 'ncbitaxon', 'ORGANISM:NCBItaxonId', false);
+    ('CSV_ORGANISMS', 'ORGANISM', 'ncbitaxon', 'ORGANISM:NCBItaxonId', false),
+    ('OWL_ORGANISMS', 'ORGANISM', 'id', 'ORGANISM:NCBItaxonId', false);
 
 INSERT INTO field_mappings (data_source_id, source_field_name, mapping, multivalued) VALUES
-    ('TEST_ORGANISMS', 'primary name', 'ORGANISM:primary name', false),
-    ('TEST_ORGANISMS', 'growth form', 'ORGANISM:Growth form', false),
-    ('TEST_ORGANISMS', 'synonym', 'ORGANISM:synonym', false);
+    ('CSV_ORGANISMS', 'primary name', 'ORGANISM:primary name', false),
+    ('CSV_ORGANISMS', 'growth form', 'ORGANISM:Growth form', false),
+    ('CSV_ORGANISMS', 'synonym', 'ORGANISM:synonym', false);
 

@@ -7,7 +7,6 @@
  */
 package de.ipb_halle.curator.source.ontology;
 
-import de.ipb_halle.curator.source.DataSource;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -28,7 +27,7 @@ public class QueryExecutor {
      */
     public final static String QUERY = """
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            SELECT ?id
+            SELECT ?class ?id
             WHERE {
                 ?class rdfs:label "Salvia officinalis" .
                 BIND(STRAFTER(STR(?class), "http://purl.obolibrary.org/obo/") AS ?id)
