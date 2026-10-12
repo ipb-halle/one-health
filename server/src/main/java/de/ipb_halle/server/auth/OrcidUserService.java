@@ -6,6 +6,7 @@ import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.models.UserRole;
+import java.util.Optional;
 
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
@@ -34,44 +35,50 @@ public class OrcidUserService {
 
         String displayName = resolveDisplayName(oidcUser, orcid);
 
-        return userAuthenticationRepository
+        Optional<UserAuthenticationEntity> authentification = userAuthenticationRepository
                 .findByProviderAndProviderSubjectId(
                         AuthenticationProvider.ORCID,
-                        orcid)
-                .map(authentication -> {
-                    UserEntity existingUser = authentication.getUser();
+                        orcid);
 
-                    if (existingUser.getDisplayName() == null
-                            || existingUser.getDisplayName().isBlank()) {
-                        existingUser.setDisplayName(displayName);
-                        return userRepository.save(existingUser);
-                    }
-                    return existingUser;
+        if (authentification.isPresent()) {
+            return updateExistingLocalUser(authentification.get(), displayName);
+        } else {
+            return createNewLocalUser(displayName, orcid);
+        }
 
-                })
-                .orElseGet(() -> {
-                    UserEntity newUser = new UserEntity();
-                    newUser.setDisplayName(displayName);
-                    newUser.setRole(UserRole.VIEWER);
-                    newUser.setEnabled(true);
-                    newUser.setRegisteredVia(AuthenticationProvider.ORCID);
-
-                    UserEntity savedUser = userRepository.save(newUser);
-
-                    UserAuthenticationEntity authentication = 
-                        new UserAuthenticationEntity();
-
-                    authentication.setUser(savedUser);
-                    authentication.setProvider(AuthenticationProvider.ORCID);
-                    authentication.setProviderSubjectId(orcid);
-
-                    userAuthenticationRepository.save(authentication);
-
-                    return savedUser;
-                });
     }
 
-    
+    private UserEntity updateExistingLocalUser(UserAuthenticationEntity authentication, String displayName) {
+        UserEntity existingUser = authentication.getUser();
+
+        if (existingUser.getDisplayName() == null
+                || existingUser.getDisplayName().isBlank()) {
+            existingUser.setDisplayName(displayName);
+            return userRepository.save(existingUser);
+        }
+        return existingUser;
+    }
+
+    private UserEntity createNewLocalUser(String displayName, String orcid) {
+        UserEntity newUser = new UserEntity();
+        newUser.setDisplayName(displayName);
+        newUser.setRole(UserRole.VIEWER);
+        newUser.setEnabled(true);
+        newUser.setRegisteredVia(AuthenticationProvider.ORCID);
+
+        UserEntity savedUser = userRepository.save(newUser);
+
+        UserAuthenticationEntity authentication
+                = new UserAuthenticationEntity();
+
+        authentication.setUser(savedUser);
+        authentication.setProvider(AuthenticationProvider.ORCID);
+        authentication.setProviderSubjectId(orcid);
+
+        userAuthenticationRepository.save(authentication);
+
+        return savedUser;
+    }
 
     private String resolveDisplayName(OidcUser oidcUser, String orcid) {
 
@@ -97,11 +104,11 @@ public class OrcidUserService {
             familyName = familyName.trim();
         }
 
-        boolean hasGivenName =
-                givenName != null && !givenName.isEmpty();
+        boolean hasGivenName
+                = givenName != null && !givenName.isEmpty();
 
-        boolean hasFamilyName =
-                familyName != null && !familyName.isEmpty();
+        boolean hasFamilyName
+                = familyName != null && !familyName.isEmpty();
 
         if (hasGivenName && hasFamilyName) {
             return givenName + " " + familyName;
