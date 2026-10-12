@@ -17,20 +17,21 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "display_name")
     private String displayName;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private UserRole role;
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "registered_via", nullable = false)
     private AuthenticationProvider registeredVia;
 
     public UserEntity() {
