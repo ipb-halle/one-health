@@ -126,17 +126,14 @@ export class CompoundService extends ICompoundService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<any> {
-        const query = {
-            smiles: smiles,
-            take: take,
-            page: page,
-        };
-
-        const parsed = constructHttpParams(query);
+        const params = new URLSearchParams();
+        params.append("smiles", smiles);
+        params.append("take", take.toString());
+        params.append("page", page.toString());
 
         return this.handleRequest<any>(
             httpRequest<any>(
-                `${this.url}/by-substructure?${parsed.toString()}`,
+                `${this.url}/by-substructure?${params.toString()}`,
             ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
@@ -153,17 +150,17 @@ export class CompoundService extends ICompoundService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined,
     ): Promise<any> {
-        const query = {
-            smiles: smiles,
-            threshold: threshold,
-            limit: limit,
-        };
 
-        const parsed = constructHttpParams(query);
+
+        const params = new URLSearchParams();
+        params.append("smiles", smiles);
+        params.append("threshold", threshold.toString());
+        params.append("limit", limit.toString());
+
 
         return this.handleRequest<any>(
             httpRequest<any>(
-                `${this.url}/by-similarity?${parsed.toString()}`,
+                `${this.url}/by-similarity?${params.toString()}`,
             ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
