@@ -226,7 +226,9 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         var valuex: number[] = [];
         var labelx: string[] = [];
 
-        graph.links.forEach((x: any) => {
+        graph.links
+        .sort((a: any, b: any) => b.value - a.value)
+        .forEach((x: any) => {
             sourcex.push(nodesMap.get(x.source));
             targetx.push(nodesMap.get(x.target));
             valuex.push(x.value);
