@@ -57,4 +57,28 @@ describe("AuthStore", () => {
         expect(authStore.isAuthenticated).toBe(true);
     });
 
+    // Test the loadCurrentUser action when the user is not authenticated (HTTP 401)
+    it('handles HTTP 401 without logging an error', async () => {
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            status: 401,
+            headers: new Headers(),
+            text: async () => '',
+        });
+
+        const consoleSpy = jest.spyOn(console, 'error')
+            .mockImplementation(() => { });
+
+        try {
+            const authStore = AuthStore.create();
+
+            await authStore.loadCurrentUser();
+
+            expect(authStore.user).toBeNull();
+            expect(consoleSpy).not.toHaveBeenCalled();
+        } finally {
+            consoleSpy.mockRestore();
+        }
+    });
+
 });
