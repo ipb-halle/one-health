@@ -81,4 +81,40 @@ describe("AuthStore", () => {
         }
     });
 
+
+    // Test the loginOrLogout action for logging out the authenticated user
+    it('logs out the authenticated user successfully', async () => {
+        const authStore = AuthStore.create({
+            user: {
+                id: 1,
+                displayName: 'John Doe',
+                email: 'john@example.com',
+                orcid: '0000-0001-2345-6789',
+                role: UserRole.VIEWER,
+                enabled: true,
+            },
+        });
+
+        globalThis.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            status: 204,
+            headers: new Headers(),
+        });
+
+        const reload = jest.fn();
+        const browserWindow = {
+            location: {
+                reload,
+            },
+        } as unknown as Window;
+
+        await authStore.loginOrLogout(browserWindow);
+
+        expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+        expect(authStore.user).toBeNull();
+        expect(authStore.isAuthenticated).toBe(false);
+        expect(reload).toHaveBeenCalledTimes(1);
+    });
+
+
 });
