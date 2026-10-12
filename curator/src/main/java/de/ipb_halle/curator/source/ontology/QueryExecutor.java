@@ -12,6 +12,7 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * Executes SPARQL queries against a Jena {@link Dataset}.
@@ -47,7 +48,11 @@ public class QueryExecutor {
             ResultSet results = qexec.execSelect();
             if (results.hasNext()) {
                 QuerySolution solution = results.nextSolution();
-                return solution.getLiteral("id").getString();
+                // do some experiments here
+                Resource resource = solution.getResource("class");
+                String rString = resource.toString();
+                String id = solution.getLiteral("id").getString();
+                return rString + id;
             }
         }
         throw new IllegalStateException("No NCBI taxonomy id found for Salvia officinalis");
