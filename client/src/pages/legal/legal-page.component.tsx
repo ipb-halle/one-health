@@ -126,54 +126,60 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                     <div className="text-container">
                         <h2>General information on data processing</h2>
                         <p>
-                            N1H.org is aimed at the interested public
-                            (scientists, technical staff, students, etc.). The
-                            offer can be used anonymously - there is no
-                            mechanism for registration or personalization. Even
-                            with anonymous use, however, the processing of
-                            personal information (namely IP address, time of
-                            call, operating system and browser version, URL of
-                            the requested resource and referrer) takes place.
-                            The temporary storage and processing of this data is
-                            necessary for the delivery of the content as well as
-                            the technical monitoring of the systems. Obtaining
-                            your prior consent to this data processing is
-                            regularly actually not possible. The legal basis for
-                            the processing and storage of this data is Art. 6
-                            para. 1 lit. b or f. GDPR.
+                            N1H.org is aimed at the interested public (researchers, technical staff,
+                            students, etc.). Much of the content can be accessed anonymously. However,
+                            even when accessed anonymously, personal data is processed (namely, IP address,
+                            time of access, operating system and browser version, URL of the requested
+                            resource, and referrer). The temporary storage and processing of this data
+                            is necessary for providing the content and for the technical monitoring
+                            of the systems. It is generally not possible to obtain your prior consent
+                            to this data processing. The legal basis for the processing and storage of
+                            this data is Article 6(1)(b) or (f) of the GDPR.
+                        </p>
+                        <p>
+                            Particularly complex analysis procedures or services prone to misuse, such as
+                            document uploads, can only be made available with restricted access. For these services,
+                            user authentication via an ORCID account is required. For this purpose, N1H.org
+                            will store the user's name and the ORCID ID and obtain confirmation of the
+                            user's identity from ORCID.org. To ensure fair access for all
+                            users, N1H.org will provide users with a certain number of credits and keep track
+                            of the credits available to each user. Credits are non-transferable and cannot be
+                            exchanged for money.
                         </p>
                     </div>
 
                     <div className="text-container">
                         <h2>Purpose of data processing</h2>
                         <p>
-                            The purpose of the data processing is the delivery
-                            of the content.
+                            The purpose of data processing is to provide content, ensure fair access, and prevent misuse.
+                            N1H.org provides all users with anonymous basic access. For more resource-intensive services,
+                            such as extensive queries or the analysis of uploaded documents, N1H.org uses ORCID
+                            authentication. To distribute technical resources fairly among all registered users, N1H.org
+                            manages a user-specific credit balance.
                         </p>
                     </div>
 
                     <div className="text-container">
                         <h2>Cookies, log files, ...</h2>
                         <p>
-                            N1H.org does not use cookies. There is no (external)
-                            advertising, tracking pixels, browser
-                            fingerprinting, analytics or profiling on N1H.org.
-                            We do not load resources from external servers. On
-                            N1H.org you cannot buy goods or services and you
-                            cannot register personally. There is no transfer of
-                            personal data to third parties.
+                            N1H.org uses cookies and local browser storage exclusively for technically
+                            necessary purposes. N1H.org contains no (external) advertising, no tracking
+                            pixels, no browser fingerprinting, no analytics, and no profiling. We do not
+                            load any resources from external servers; analytics are fully anonymized by
+                            the N1H.org backend. Authentication via an ORCID account is required for certain
+                            services and features on N1H.org. The amount of data collected is strictly limited,
+                            and no personal data is shared with third parties.
                         </p>
-
                         <p>
                             To monitor the servers and to support
                             troubleshooting, anonymized log files are created by
                             the servers. The log files are deleted after 7 days
                             at the latest.
                         </p>
-
                         <p>
-                            The N1H.org servers are operated in German data
-                            centers.
+                            The N1H.org servers are operated in German data centers. Access to our servers is
+                            restricted to authorized personel. All data transmissions are protected by transport
+                            layer encryption (TLS 1.2 or above).
                         </p>
                     </div>
 
@@ -321,6 +327,9 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
 
                     <div className="text-container">
                         <h2>Right to deletion</h2>
+                        Notwithstanding the rigth to deletion set forth below, N1H.org reserves
+                        the reight to modify or discontinue N1H.org service at any time or to
+                        delete personal data.
                         <h3>a) Obligation to delete</h3>
                         <p>
                             You may request the operator to delete the personal
@@ -589,6 +598,11 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             of the operator, to express his or her point of view
                             and to contest the decision.
                         </p>
+                        <p>
+                            User credits are allocated automatically based solely on usage intensity.
+                            Beyond the allocation of credits, these automatic processes have no
+                            legal effect whatsoever.
+                        </p>
                     </div>
 
                     <div className="text-container">
@@ -620,19 +634,24 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                                 <br />
                             </center>
                         </p>
+                        <h2>Obligation to report data breaches</h2>
+                        <p>
+                            In the event of a personal data breach, it will be reported immediately to the competent
+                            supervisory authority in Saxony-Anhalt (Art. 33 GDPR). As we do not store highly sensitive
+                            information that poses a risk to user's rights or the freedoms, nor do we store contact
+                            information, it is neither necessary nor possible to inform affected users.
+                        </p>
                     </div>
                     <div className="text-container last">
                         <h2>Up-to-dateness of the privacy policy</h2>
                         <p>
-                            The data protection declaration has been reviewed by
-                            the external data protection officer of the Leibniz
-                            Institute of Plant Biochemistry (IPB). The data
-                            protection declaration is regularly adapted to
-                            current changes in the legal situation or due to
-                            legal decisions.
+                            The data protection declaration has been reviewed by the external data
+                            protection officer of the Leibniz Institute of Plant Biochemistry (IPB).
+                            The data protection declaration is regularly adapted to current changes
+                            in the web application, legal situation or due to legal decisions.
                         </p>
                         <p>
-                            Revision: July, 16<sup>th</sup> 2026
+                            Revision: October, 12<sup>th</sup> 2026
                         </p>
                     </div>
                 </AccordionTab>
