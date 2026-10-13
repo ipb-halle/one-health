@@ -4,7 +4,7 @@ import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 export interface IHttpResponsesHandler {
     handleSuccess?(): void;
-    handleError?(errorResponse: HttpError): void;
+    handleError?(errorResponse: unknown): void;
 }
 
 export interface IHttpResponseHandlerSettings {
@@ -33,20 +33,22 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         }
     }
 
-    handleError(errorResponse: HttpError): void {
-        if (this.settings && this.settings.showErrorMessage == false) return;
+    handleError(errorResponse: unknown): void {
+        if (this.settings?.showErrorMessage === false) return;
 
-        if (
-            this.settings &&
-            this.settings.errorStatusesMessages &&
-            this.settings.errorStatusesMessages[errorResponse.status] != null
-        ) {
+        if (!(errorResponse instanceof HttpError)) {
+            this.handleUnexpectedError(errorResponse);
+            return;
+        }
+
+        const customMessage =
+            this.settings?.errorStatusesMessages?.[errorResponse.status];
+
+        if (customMessage != null) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
-                detail: this.settings.errorStatusesMessages[
-                    errorResponse.status
-                ],
+                detail: customMessage,
             });
             return;
         }
@@ -57,11 +59,11 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
     protected handleErrorHttpStatusCode(errorResponse: HttpError): void {
         switch (errorResponse.status) {
             default:
-                this.handleOtherError(errorResponse);
+                this.handleOtherError();
         }
     }
 
-    protected handleOtherError(errorResponse: HttpError): void {
+    protected handleOtherError(): void {
         this.messageService.show({
             severity: 'error',
             summary: 'Error',
@@ -69,6 +71,30 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
                 'An error has occurred at the website and your support team will need to fix the problem. ' +
                 'A preliminary report has been sent to the support team. Please do follow-up on the preliminary ' +
                 'report using the Report a Problem page',
+        });
+    }
+
+    protected handleUnexpectedError(error: unknown): void {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+        }
+
+        if (error instanceof TypeError) {
+            this.messageService.show({
+                severity: 'error',
+                summary: 'Network Error',
+                detail:
+                    'Unable to complete the request. Please check your connection.',
+            });
+            return;
+        }
+
+        console.error('Unexpected request error:', error);
+
+        this.messageService.show({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An unexpected error occurred.',
         });
     }
 }
