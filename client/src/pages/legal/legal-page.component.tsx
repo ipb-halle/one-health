@@ -147,25 +147,30 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                         </p>
                         <p>
                             Particularly complex analysis procedures or services prone to misuse, such as
-                            document uploads, can only be made available with restricted access. For these services,
-                            user authentication via an ORCID account is required. For this purpose, N1H.org
-                            will store the user's name and the ORCID ID and obtain confirmation of the
-                            user's identity from ORCID.org. To ensure fair access for all
-                            users, N1H.org will provide users with a certain number of credits and keep track
-                            of the credits available to each user. Credits are non-transferable and cannot be
-                            exchanged for money. Storage and processing of this data is pursuant to
-                            Article 6(1)(a) of the GDPR.
+                            document uploads, can only be made available with restricted access. For these
+                            services, user authentication via an ORCID account is required. For this purpose,
+                            N1H.org will store the user's name and the ORCID ID and obtain confirmation of the
+                            user's identity from ORCID.org. The transmission of personal data to the web
+                            application of the single sign-on process and the subsequent processing of such
+                            personal data ar carried out in accordance with the applicable regulations of the
+                            ORCID organization and with the express consent of the users.
+                        </p>
+                        <p>
+                            To ensure fair access for all users, N1H.org will provide users with a certain
+                            number of credits and keep track of the credits available to each user. Credits
+                            are non-transferable and cannot be exchanged for money. All storage and processing
+                            of personal data happens on the basis of Article 6(1)(a) of the GDPR.
                         </p>
                     </div>
 
                     <div className="text-container">
                         <h2>Purpose of data processing</h2>
                         <p>
-                            The purpose of data processing is to provide content, ensure fair access, and prevent misuse.
-                            N1H.org provides all users with anonymous basic access. For more resource-intensive services,
-                            such as extensive queries or the analysis of uploaded documents, N1H.org uses ORCID
-                            authentication. To distribute technical resources fairly among all registered users, N1H.org
-                            manages a user-specific credit balance.
+                            The purpose of data processing is to provide content, allow scientific analyses, ensure
+                            fair access, and prevent misuse.  N1H.org provides all users with anonymous basic access.
+                            For more resource-intensive services, such as extensive queries or the analysis of
+                            uploaded documents, N1H.org uses ORCID authentication. To distribute technical resources
+                            fairly among all registered users, N1H.org manages a user-specific credit balance.
                         </p>
                     </div>
 
