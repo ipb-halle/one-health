@@ -79,9 +79,10 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                     </p>
                     <p>
                         <b>
-                            For specific questions regarding N1H.org or this
-                            software, please address the developers directly
-                            (fbroda@ipb-halle.org, Tel. +49-345-5582-1361).
+                            For specific questions regarding the N1H.org platform or
+                            the underlying software, please contact the software
+                            developers directly:<br/>
+                            fbroda@ipb-halle.org, Tel. +49-345-5582-1361.
                         </b>
                     </p>
                 </AccordionTab>
@@ -121,6 +122,14 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                                 <br />
                             </center>
                         </p>
+                        <p>
+                          <b>
+                            For privacy-related inquiries or specific questions about the N1H.org
+                            platform, please also contact the software developers directly:
+                            fbroda@ipb-halle.org, Tel. +49-345-5582-1361. Legitimate inquiries
+                            will be processed free of charge within one month.
+                          </b>
+                        </p>
                     </div>
 
                     <div className="text-container">
@@ -144,7 +153,8 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             user's identity from ORCID.org. To ensure fair access for all
                             users, N1H.org will provide users with a certain number of credits and keep track
                             of the credits available to each user. Credits are non-transferable and cannot be
-                            exchanged for money.
+                            exchanged for money. Storage and processing of this data is pursuant to
+                            Article 6(1)(a) of the GDPR.
                         </p>
                     </div>
 
@@ -173,13 +183,21 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                         <p>
                             To monitor the servers and to support
                             troubleshooting, anonymized log files are created by
-                            the servers. The log files are deleted after 7 days
-                            at the latest.
+                            the servers.
                         </p>
                         <p>
                             The N1H.org servers are operated in German data centers. Access to our servers is
                             restricted to authorized personel. All data transmissions are protected by transport
                             layer encryption (TLS 1.2 or above).
+                        </p>
+                    </div>
+
+                    <div className="text-container">
+                        <h2>Data retention</h2>
+                        <p>
+                            The log files on the server are deleted after 7 days at the latest. Personal
+                            account data will be deleted one year after the last login. Users can demand
+                            the correction or deletion of their personal information at any time (see below).
                         </p>
                     </div>
 
@@ -257,6 +275,17 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             request to be informed about the appropriate
                             safeguards pursuant to Art. 46 GDPR in connection
                             with the transfer.
+                        </p>
+                        <p>
+                            If you have asserted the right to rectification,
+                            deletion or restriction of processing against the
+                            operator (see below), the operator is obliged to inform all
+                            recipients to whom the personal data concerning you
+                            have been disclosed of this rectification or
+                            deletion of the data or restriction of processing,
+                            unless this proves impossible or involves a
+                            disproportionate effort.
+
                         </p>
                     </div>
 
@@ -426,25 +455,6 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                                 legal claims.
                             </li>
                         </ol>
-                    </div>
-
-                    <div className="text-container">
-                        <h2>Right to information</h2>
-                        <p>
-                            If you have asserted the right to rectification,
-                            deletion or restriction of processing against the
-                            operator, the operator is obliged to inform all
-                            recipients to whom the personal data concerning you
-                            have been disclosed of this rectification or
-                            deletion of the data or restriction of processing,
-                            unless this proves impossible or involves a
-                            disproportionate effort.
-                        </p>
-
-                        <p>
-                            You have the right to be informed about these
-                            recipients by the data operator.
-                        </p>
                     </div>
 
                     <div className="text-container">
@@ -642,6 +652,7 @@ const LegalPageComponent: React.FC<LegalPageProps> = ({ activeIndex }) => {
                             information, it is neither necessary nor possible to inform affected users.
                         </p>
                     </div>
+
                     <div className="text-container last">
                         <h2>Up-to-dateness of the privacy policy</h2>
                         <p>
