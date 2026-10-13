@@ -1,6 +1,6 @@
 import { HttpError } from './http-error';
 
-const baseUrl = import.meta.env.VITE_API_URL ?? '';
+import { API_BASE_URL } from '@/core/api/http/api-config';
 
 const getCookie = (name: string): string | undefined => {
     const prefix = `${encodeURIComponent(name)}=`;
@@ -39,9 +39,9 @@ const getResponseData = async (response: Response): Promise<unknown> => {
 };
 
 const getRequestUrl = (url: string): string => {
-    const normalizedBaseUrl = baseUrl.endsWith('/')
-        ? baseUrl.slice(0, -1)
-        : baseUrl;
+    const normalizedBaseUrl = API_BASE_URL.endsWith('/')
+        ? API_BASE_URL.slice(0, -1)
+        : API_BASE_URL;
 
     const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
 
