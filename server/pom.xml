@@ -10,7 +10,7 @@
     </parent>
     <groupId>de.ipb-halle</groupId>
     <artifactId>server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>server</name>
     <description>A basic ontology manager</description>
     <properties>
