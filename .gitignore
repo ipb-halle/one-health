@@ -63,3 +63,11 @@ build/
 
 /data/
 client/src/assets/.nfs0000000123d9124f00000369
+node_modules/
+.env
+
+# Generated API client
+client/src/generated/
+
+# Generated server output
+server/bin/

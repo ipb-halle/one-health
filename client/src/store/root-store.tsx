@@ -4,6 +4,7 @@ import { HistorySearchStore } from '../features/search/search-history/history-se
 import { ScreenDeviceStore } from './ScreenDeviceStore';
 import { EntityDetailStore } from './EntityDetailStore';
 import { TutorialStore } from './TutorialStore';
+import { AuthStore } from './AuthStore';
 
 export const RootStore = types
     .model('RootStore', {
@@ -12,6 +13,7 @@ export const RootStore = types
         screenDeviceStore: types.optional(ScreenDeviceStore, {}),
         entityDetailStore: types.optional(EntityDetailStore, {}),
         tutorialStore: types.optional(TutorialStore, {}),
+        authStore: types.optional(AuthStore, {}),
     });
 
-export interface IRootStore extends Instance<typeof RootStore> {}
+export interface IRootStore extends Instance<typeof RootStore> { }
