@@ -10,11 +10,8 @@ export default defineConfig({
             target: 'src/generated/auth',
             schemas: 'src/generated/auth/model',
 
-            client: 'react-query',
-            httpClient: 'fetch',
-
+            client: 'fetch',
             baseUrl: '/api',
-
             clean: true,
 
             override: {
