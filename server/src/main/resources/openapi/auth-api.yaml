@@ -6,7 +6,7 @@ info:
   description: Authentication and authorization API for the N1H platform.
 
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080/api/
     description: Local Development
 
 tags:
