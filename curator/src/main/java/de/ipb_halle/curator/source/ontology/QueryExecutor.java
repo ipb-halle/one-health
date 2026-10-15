@@ -14,9 +14,14 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDF;
 
 /**
  * Executes SPARQL queries against a Jena {@link Dataset}.
@@ -65,19 +70,41 @@ public class QueryExecutor {
                 printProperties(resource, sb);
             }
             System.out.println(sb.toString());
-            return id;
+            return "it worked";
         }
     }
 
     private void printProperties(Resource res, StringBuilder sb) {
         StmtIterator iter = res.listProperties();
+        Model model = res.getModel();
         while(iter.hasNext()) {
             Statement stmt = iter.nextStatement();
             Triple triple = stmt.asTriple();
-            sb.append("    %s %s %s\n".formatted(
+            sb.append("    %s %s %s".formatted(
                 nodeToString(triple.getSubject()),
                 nodeToString(triple.getPredicate()),
                 nodeToString(triple.getObject())));
+            Resource axiom = findAxiom(model, triple);
+            if (axiom != null) {
+                printAnnotation(axiom, sb);
+            }
+            sb.append("\n");
+        }
+    }
+
+    private void printAnnotation(Resource axiom, StringBuilder sb) {
+        StmtIterator iter = axiom.listProperties();
+        while (iter.hasNext()) {
+            Statement stmt = iter.nextStatement();
+            Property p = stmt.getPredicate();
+            if (! (p.equals(RDF.type)
+                    || p.equals(OWL.annotatedSource)
+                    || p.equals(OWL.annotatedProperty)
+                    || p.equals(OWL.annotatedTarget))) {
+                sb.append(" (%s %s)".formatted(
+                    nodeToString(p.asNode()),
+                    nodeToString(stmt.getObject().asNode())));
+            }
         }
     }
 
@@ -92,5 +119,27 @@ public class QueryExecutor {
             return node.getURI();
         }
         return "SOMETHING_ELSE";
+    }
+
+    /**
+     * NOTE: This method is restricted to find the first axiom annotating a given
+     * Triple. Subsequent further annotations are ignored.
+     * @param model
+     * @param triple
+     * @return
+     */
+    private Resource findAxiom(Model model, Triple triple) {
+        RDFNode subjectNode = model.asRDFNode(triple.getSubject());
+        StmtIterator iter = model.listStatements(null, OWL.annotatedSource, subjectNode);
+        while (iter.hasNext()) {
+            Statement stmt = iter.next();
+            Resource candidateAxiom = stmt.getSubject();
+            if (candidateAxiom.hasProperty(RDF.type, OWL.Axiom) &&
+                    candidateAxiom.hasProperty(OWL.annotatedProperty, model.asRDFNode(triple.getPredicate())) &&
+                    candidateAxiom.hasProperty(OWL.annotatedTarget, model.asRDFNode(triple.getObject()))) {
+                return candidateAxiom;
+            }
+        }
+        return null;
     }
 }

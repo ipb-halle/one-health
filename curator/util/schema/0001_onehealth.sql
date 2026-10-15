@@ -139,6 +139,17 @@ CREATE TABLE element_mappings (
     multivalued         BOOLEAN NOT NULL
 );
 
+/*
+CREATE TABLE element_mapping_parameters (
+    id                  VARCHAR NOT NULL PRIMARY KEY,
+    name                VARCHAR,
+    order               INTEGER,
+    description         VARCHAR,
+    handler             VARCHAR,
+    parameters          VARCHAR
+);
+*/
+
 CREATE TABLE field_mappings (
     id                  SERIAL NOT NULL PRIMARY KEY,
     data_source_id      VARCHAR NOT NULL REFERENCES data_sources (id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -146,4 +157,15 @@ CREATE TABLE field_mappings (
     mapping             VARCHAR NOT NULL,
     multivalued         BOOLEAN NOT NULL
 );
+
+/*
+CREATE TABLE field_mapping_parameters (
+    id                  VARCHAR NOT NULL PRIMARY KEY,
+    name                VARCHAR,
+    order               INTEGER,
+    description         VARCHAR,
+    handler             VARCHAR,
+    parameters          VARCHAR
+);
+*/
 

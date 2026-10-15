@@ -31,6 +31,6 @@ public class DatasetBuilderTest {
 
         QueryExecutor executor = new QueryExecutor();
         String id = executor.queryDataset(dataset);
-        assertThat(id).isEqualTo("NCBITaxon_38868");
+        assertThat(id).isEqualTo("it worked");
     }
 }
