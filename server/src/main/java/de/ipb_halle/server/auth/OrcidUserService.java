@@ -26,6 +26,7 @@ public class OrcidUserService {
     private final UserAuthenticationRepository userAuthenticationRepository;
     private final UserCreditRepository userCreditRepository;
     private static final BigDecimal INITIAL_CREDIT = new BigDecimal("5.00");
+    private static final LocalDateTime LAST_LOCAL_DATE_TIME = LocalDateTime.now(ZoneId.of("Europe/Berlin"));
 
     public OrcidUserService(
             UserRepository userRepository,
@@ -137,7 +138,7 @@ public class OrcidUserService {
 
     public void updateLastLogin(UserEntity user) {
         user.setLastLogin(
-                LocalDateTime.now(ZoneId.of("Europe/Berlin")));
+                LAST_LOCAL_DATE_TIME);
         userRepository.save(user);
     }
 
@@ -145,7 +146,7 @@ public class OrcidUserService {
         UserCreditEntity userCreditEntity = new UserCreditEntity();
         userCreditEntity.setUser(user);
         userCreditEntity.setCredit(INITIAL_CREDIT);
-        userCreditEntity.setLastCreditAssigned(LocalDateTime.now(ZoneId.of("Europe/Berlin")));
+        userCreditEntity.setLastCreditAssigned(LAST_LOCAL_DATE_TIME);
         userCreditRepository.save(userCreditEntity);
     }
 }

@@ -14,6 +14,8 @@ public interface UserMapper {
 
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
+    public static final ZoneId ZONE_ID = ZoneId.of("Europe/Berlin");
+
     default User toDto(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
@@ -27,7 +29,7 @@ public interface UserMapper {
         userDto.setLastLogin(userEntity.getLastLogin() == null
                 ? null
                 : userEntity.getLastLogin()
-                        .atZone(ZoneId.of("Europe/Berlin"))
+                        .atZone(ZONE_ID)
                         .toOffsetDateTime());
 
         if (userEntity.getRole() != null) {
