@@ -15,6 +15,34 @@ GRANT SELECT ON bingo.bingo_tau_config TO :CURATOR_USER;
  * data model
  */
 
+CREATE TABLE users (
+    id                  BIGSERIAL NOT NULL PRIMARY KEY,
+    display_name        VARCHAR,
+    enabled             BOOLEAN NOT NULL,
+    registered_via      VARCHAR NOT NULL,
+    role                VARCHAR NOT NULL,
+    email               VARCHAR,
+    CONSTRAINT users_registered_via_check CHECK (((registered_via)::TEXT = 'ORCID'::TEXT)),
+    CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['VIEWER'::TEXT, 'CURATOR'::TEXT, 'ADMIN'::TEXT])::TEXT[])))
+);
+
+CREATE TABLE user_authentication (
+    id                  BIGSERIAL NOT NULL PRIMARY KEY,
+    provider            VARCHAR NOT NULL,
+    provider_subject_id VARCHAR NOT NULL,
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT user_authentication_provider_check CHECK (((provider)::text = 'ORCID'::text)),
+    UNIQUE (provider, provider_subject_id)
+);
+
+/*
+GRANT SELECT, INSERT, UPDATE, DELETE ON users TO readonly;
+GRANT USAGE ON SEQUENCE users_id_seq TO readonly;
+GRANT SELECT, INSERT, UPDATE, DELETE ON user_authentication TO readonly;
+GRANT USAGE ON SEQUENCE user_authentication_id_seq TO readonly;
+*/
+
+
 CREATE TYPE element_class AS ENUM ('NODE', 'EDGE');
 CREATE TABLE element_types (
     id          VARCHAR NOT NULL PRIMARY KEY,
