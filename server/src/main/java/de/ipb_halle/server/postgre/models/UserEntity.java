@@ -20,9 +20,6 @@ public class UserEntity {
     @Column(name = "display_name")
     private String displayName;
 
-    @Column(name = "email")
-    private String email;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role;
@@ -51,14 +48,6 @@ public class UserEntity {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public UserRole getRole() {

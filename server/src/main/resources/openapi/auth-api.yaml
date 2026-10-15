@@ -154,12 +154,6 @@ components:
           description: Updated display name within N1H.
           example: "Dr. Jane Doe"
 
-        email:
-          type: string
-          format: email
-          description: Updated contact email address.
-          example: "jane.doe@institution.org"
-
     UserRole:
       type: string
       enum:
@@ -188,13 +182,6 @@ components:
           maxLength: 200
           description: User's editable display name within N1H
           example: "Dr. Jane Doe"
-
-        email:
-          type: string
-          format: email
-          nullable: true
-          description: Optional N1H contact email address.
-          example: admin@n1h.org
 
         orcid:
           type: string

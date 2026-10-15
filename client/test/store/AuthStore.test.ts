@@ -33,7 +33,6 @@ describe("AuthStore", () => {
         const user = {
             id: 1,
             displayName: 'John Doe',
-            email: 'john@example.com',
             orcid: '0000-0001-2345-6789',
             role: UserRole.VIEWER,
             enabled: true,
@@ -88,7 +87,6 @@ describe("AuthStore", () => {
             user: {
                 id: 1,
                 displayName: 'John Doe',
-                email: 'john@example.com',
                 orcid: '0000-0001-2345-6789',
                 role: UserRole.VIEWER,
                 enabled: true,
