@@ -6,6 +6,7 @@ import de.ipb_halle.server.postgre.models.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import java.time.ZoneOffset;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
@@ -22,6 +23,9 @@ public interface UserMapper {
         userDto.setId(userEntity.getId());
         userDto.setEnabled(userEntity.getEnabled());
         userDto.setDisplayName(userEntity.getDisplayName());
+        userDto.setLastLogin(userEntity.getLastLogin() == null
+                ? null
+                : userEntity.getLastLogin().atOffset(ZoneOffset.UTC));
 
         if (userEntity.getRole() != null) {
             userDto.setRole(UserRole.valueOf(userEntity.getRole().name()));

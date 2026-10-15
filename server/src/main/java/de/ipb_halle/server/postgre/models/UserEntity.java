@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +31,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "registered_via", nullable = false)
     private AuthenticationProvider registeredVia;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
 
     public UserEntity() {
     }
@@ -72,6 +76,14 @@ public class UserEntity {
 
     public void setRegisteredVia(AuthenticationProvider registeredVia) {
         this.registeredVia = registeredVia;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
 }

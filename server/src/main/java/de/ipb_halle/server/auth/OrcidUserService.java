@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class OrcidUserService {
 
@@ -68,8 +70,7 @@ public class OrcidUserService {
 
         UserEntity savedUser = userRepository.save(newUser);
 
-        UserAuthenticationEntity authentication
-                = new UserAuthenticationEntity();
+        UserAuthenticationEntity authentication = new UserAuthenticationEntity();
 
         authentication.setUser(savedUser);
         authentication.setProvider(AuthenticationProvider.ORCID);
@@ -104,11 +105,9 @@ public class OrcidUserService {
             familyName = familyName.trim();
         }
 
-        boolean hasGivenName
-                = givenName != null && !givenName.isEmpty();
+        boolean hasGivenName = givenName != null && !givenName.isEmpty();
 
-        boolean hasFamilyName
-                = familyName != null && !familyName.isEmpty();
+        boolean hasFamilyName = familyName != null && !familyName.isEmpty();
 
         if (hasGivenName && hasFamilyName) {
             return givenName + " " + familyName;
@@ -125,4 +124,8 @@ public class OrcidUserService {
         return orcid;
     }
 
+    public void updateLastLogin(UserEntity user) {
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+    }
 }

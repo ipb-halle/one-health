@@ -196,6 +196,12 @@ components:
         enabled:
           type: boolean
           example: true
+        
+        lastLogin:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp of the user's most recent successful login.
 
     LogoutResponse:
       type: object
