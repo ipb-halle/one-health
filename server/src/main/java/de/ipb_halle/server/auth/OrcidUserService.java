@@ -6,6 +6,9 @@ import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.models.UserRole;
+import de.ipb_halle.server.postgre.models.UserCreditEntity;
+import de.ipb_halle.server.postgre.repositories.UserCreditRepository;
+
 import java.util.Optional;
 
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -14,18 +17,24 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import java.math.BigDecimal;
+
 @Service
 public class OrcidUserService {
 
     private final UserRepository userRepository;
     private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserCreditRepository userCreditRepository;
+    private static final BigDecimal INITIAL_CREDIT = new BigDecimal("5.00");
 
     public OrcidUserService(
             UserRepository userRepository,
-            UserAuthenticationRepository userAuthenticationRepository) {
+            UserAuthenticationRepository userAuthenticationRepository,
+            UserCreditRepository userCreditRepository) {
 
         this.userRepository = userRepository;
         this.userAuthenticationRepository = userAuthenticationRepository;
+        this.userCreditRepository = userCreditRepository;
     }
 
     public UserEntity provisionUser(OidcUser oidcUser) {
@@ -78,6 +87,7 @@ public class OrcidUserService {
         authentication.setProviderSubjectId(orcid);
 
         userAuthenticationRepository.save(authentication);
+        assignInitialCredits(savedUser);
 
         return savedUser;
     }
@@ -129,5 +139,13 @@ public class OrcidUserService {
         user.setLastLogin(
                 LocalDateTime.now(ZoneId.of("Europe/Berlin")));
         userRepository.save(user);
+    }
+
+    private void assignInitialCredits(UserEntity user) {
+        UserCreditEntity userCreditEntity = new UserCreditEntity();
+        userCreditEntity.setUser(user);
+        userCreditEntity.setCredit(INITIAL_CREDIT);
+        userCreditEntity.setLastCreditAssigned(LocalDateTime.now(ZoneId.of("Europe/Berlin")));
+        userCreditRepository.save(userCreditEntity);
     }
 }
