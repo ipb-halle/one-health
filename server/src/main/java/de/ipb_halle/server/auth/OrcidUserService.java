@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class OrcidUserService {
@@ -125,7 +126,8 @@ public class OrcidUserService {
     }
 
     public void updateLastLogin(UserEntity user) {
-        user.setLastLogin(LocalDateTime.now());
+        user.setLastLogin(
+                LocalDateTime.now(ZoneId.of("Europe/Berlin")));
         userRepository.save(user);
     }
 }
