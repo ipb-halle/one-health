@@ -41,6 +41,7 @@ public class N1hOidcUserService
 
         orcidUserService.updateLastLogin(user);
 
-        return oidcUser;
+        // Wrap the OIDC user with N1H-specific context (user ID and role)
+        return new CustomOidcUser(oidcUser, user.getId(), user.getRole());
     }
 }
