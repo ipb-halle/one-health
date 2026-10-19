@@ -70,7 +70,7 @@ export const AuthStore = types
                 try {
                     yield logout();
                     self.user = null;
-                    browserWindow.location.reload();
+                    browserWindow.location.href = "/";
                 } catch (error) {
                     console.error('Logout failed: ', error);
                 }

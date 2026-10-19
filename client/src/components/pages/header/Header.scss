@@ -1,12 +1,5 @@
 @use '@/assets/styles/Constants' as c;
 
-.p-menubar {
-    background-color: white;
-    box-shadow: c.$app-box-shadow;
-    border: none;
-    display: flex;
-    align-items: flex-end;
-}
 
 .mobile-header {
     display: flex;
@@ -107,4 +100,76 @@
             }
         }
     }
+}
+
+
+.profile-shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.profile-shortcut:hover {
+    background: #f3f6f8;
+}
+
+.profile-shortcut:focus-visible {
+    outline: 2px solid #1688e8;
+    outline-offset: 2px;
+}
+
+
+.desktop-user-menu-button.p-button {
+    color: #64748b;
+}
+
+.desktop-user-menu-button.p-button:hover {
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+.desktop-user-menu-button.p-button:focus {
+    box-shadow: none;
+}
+
+.desktop-user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.p-menubar {
+    background-color: white;
+    box-shadow: c.$app-box-shadow;
+    border: none;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.p-menubar .p-menubar-start {
+    flex: 0 0 auto;
+    margin-right: auto;
+}
+
+.p-menubar .p-menubar-root-list {
+    margin-left: auto;
+    margin-right: 1rem;
+    justify-content: flex-end;
+}
+
+.p-menubar .p-menubar-end {
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    flex: 0 0 auto;
 }
