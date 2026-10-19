@@ -7,6 +7,7 @@ import EntityDetailComponent from "@/pages/entity-detail/EntityDetailComponent";
 import MobileHomePageComponent from "@/components/pages/home/mobile-home-page.component";
 import { observer } from "mobx-react-lite";
 import { Route, Routes } from "react-router-dom";
+import UserProfilePage from "@/pages/auth/user-profile-page";
 
 function MobileApp() {
     return <div className="mobile-app">
@@ -26,6 +27,11 @@ function MobileApp() {
                 <Route
                     path="detail"
                     element={<EntityDetailComponent />}
+                />
+
+                <Route
+                    path="/profile"
+                    element={<UserProfilePage />}
                 />
             </Route>
         </Routes>

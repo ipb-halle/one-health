@@ -6,6 +6,7 @@ import {
     LegalPageComponent,
     NeighborhoodExplorerPageComponent,
 } from "@/pages";
+import UserProfilePage from "@/pages/auth/user-profile-page";
 import CompoundSearchPageComponent from "@/pages/compound-search/compound-search-page.component";
 import { Link, Route, Routes } from "react-router-dom";
 
@@ -28,16 +29,19 @@ export function DesktopApp() {
 
         <Routes>
             <Route path="/" element={<Layout />}>
-                <Route index element={<HomePageComponent />} />
+                <Route index element={<HomePageComponent />}
+                />
 
                 <Route
                     path="search/structure-search"
                     element={<CompoundSearchPageComponent />}
                 />
+
                 <Route
                     path="neighborhood-explorer"
                     element={<NeighborhoodExplorerPageComponent />}
                 />
+
                 <Route
                     path="visualization/co-occurrence-search"
                     element={<CoOccurrenceSummaryPageComponent />}
@@ -52,10 +56,14 @@ export function DesktopApp() {
                     path="legal"
                     element={<LegalPageComponent />}
                 />
+
+                <Route
+                    path="/profile"
+                    element={<UserProfilePage />}
+                />
             </Route>
         </Routes>
     </div>
-
 }
 
 
