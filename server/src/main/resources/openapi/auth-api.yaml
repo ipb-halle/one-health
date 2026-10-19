@@ -119,6 +119,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+    delete:
+      operationId: deleteCurrentUser
+      summary: Delete the authenticated user's account
+      description: >
+        Deletes or anonymizes the authenticated user's account
+        according to the application's data-retention policy.
+      responses:
+        "204":
+          description: Account deletion request completed
+        "401":
+          description: Authentication required
+        "403":
+          description: Request rejected by security policy
+        "409":
+          description: Account cannot be deleted in its current state
+
 
 components:
 
@@ -202,6 +218,14 @@ components:
           format: date-time
           nullable: true
           description: Timestamp of the user's most recent successful login.
+
+        credits:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: true
+          description: Current credit balance of the authenticated user.
+          example: 100
 
     LogoutResponse:
       type: object
