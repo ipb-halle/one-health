@@ -1,0 +1,83 @@
+package de.ipb_halle.server.api;
+
+import de.ipb_halle.api.UsersApi;
+import de.ipb_halle.model.User;
+import de.ipb_halle.model.UpdateUserRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import de.ipb_halle.server.postgre.models.UserEntity;
+import de.ipb_halle.server.services.UserService;
+import org.springframework.web.bind.annotation.RestController;
+import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
+import de.ipb_halle.server.postgre.models.AuthenticationProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RestController
+@RequestMapping(path = "api")
+public class UserController implements UsersApi {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+    private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserService userService;
+
+    public UserController(
+            UserAuthenticationRepository userAuthenticationRepository,
+            UserService userService) {
+        this.userAuthenticationRepository = userAuthenticationRepository;
+        this.userService = userService;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCurrentUser() {
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+            || !authentication.isAuthenticated()
+            || !(authentication.getPrincipal() instanceof OidcUser oidcUser)) {
+            log.warn("Unauthorized delete user attempt");
+            return ResponseEntity.status(401).build();
+        }
+
+        String orcid = oidcUser.getSubject();
+
+        try {
+            var userAuthentication = userAuthenticationRepository
+                .findByProviderAndProviderSubjectId(
+                        AuthenticationProvider.ORCID,
+                        orcid)
+                .orElseThrow(() -> {
+                    log.warn("User authentication not found for ORCID: {}", orcid);
+                    return new RuntimeException("User not found");
+                });
+
+            UserEntity userEntity = userAuthentication.getUser();
+            Long userId = userEntity.getId();
+
+            log.info("Deleting user account for user ID: {} (ORCID: {})", userId, orcid);
+
+            userService.deleteUserById(userId);
+
+            log.info("Successfully deleted user account for user ID: {} (ORCID: {})", userId, orcid);
+
+            return ResponseEntity.noContent().build();
+
+        } catch (Exception e) {
+            log.error("Failed to delete user account for ORCID: {}", orcid, e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<User> updateCurrentUser(UpdateUserRequest updateUserRequest) {
+        // TODO: Implement user update logic using userService
+        
+        // Returning a mock/empty User object or throwing an exception to satisfy compiler temporarily
+        return ResponseEntity.status(501).build();
+    }
+}

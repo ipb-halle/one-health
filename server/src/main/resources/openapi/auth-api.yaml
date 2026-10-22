@@ -120,6 +120,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
     delete:
+      tags:
+        - Users
       operationId: deleteCurrentUser
       summary: Delete the authenticated user's account
       description: >
