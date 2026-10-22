@@ -42,6 +42,8 @@ import { INeighborhoodExplorerStore } from '../../../../store/inversify/neighbor
 import { ISavedGraphVisualization } from '../../visualization-history/models/saved-graph-visualization';
 
 import React from 'react';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
+
 const MemoChart = React.memo(CytoscapeInteractiveChartComponent);
 
 interface GraphExplorerProps {
@@ -200,6 +202,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items
             .sort((a, b) => a.position - b.position)
             .map((query, index) => {
+                const isFormula = query.name === 'Molecular Formula';
                 return (
                     <div
                         style={{
@@ -211,7 +214,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
                             overflowX: 'scroll',
                         }}>
                         <span style={{ marginLeft: 5 }}>
-                            <b>{query.name}</b>: {query.value}
+                            <b>{query.name}</b>:{' '}
+                            {isFormula ? (
+                                <FormulaRenderer formula={query.value} />
+                            ) : (
+                                query.value
+                            )}
                         </span>
                     </div>
                 );

@@ -32,6 +32,7 @@ import MolecularDrawComponent from '../../shared/components/molecular-draw.compo
 import OpenChemLib from 'openchemlib/full';
 import { RootStoreContext } from '@/app/providers/store-provider';
 import { observer } from 'mobx-react-lite';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
 
 export interface CompoundSearchQuery {
     value?: string;
@@ -655,7 +656,14 @@ export const CompoundSearchPageComponent: React.FC = () => {
                             body={structureDrawTemplate}></Column>
                         <Column
                             field="molecularFormula"
-                            header="Mol. Formula"></Column>
+                            header="Mol. Formula"
+                            body={(rowData) =>
+                                rowData.molecularFormula ? (
+                                    <FormulaRenderer formula={rowData.molecularFormula} />
+                                ) : (
+                                    <span>—</span>
+                                )
+                            }></Column>
                         <Column
                             field="molecularWeight"
                             header="Mol. Weight"
