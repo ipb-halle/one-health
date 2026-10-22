@@ -71,4 +71,41 @@ public class UserService {
             throw e;
         }
     }
+
+    /**
+     * Updates a user's display name.
+     * 
+     * @param userId the ID of the user to update
+     * @param displayName the new display name (must be non-empty and between 1-200 characters)
+     * @return the updated UserEntity
+     * @throws IllegalArgumentException if userId is invalid or displayName is invalid
+     */
+    @Transactional
+    public de.ipb_halle.server.postgre.models.UserEntity updateUserDisplayName(
+            Long userId,
+            String displayName) {
+
+        if (userId == null || userId <= 0) {
+            throw new IllegalArgumentException("Invalid user ID");
+        }
+
+        if (displayName == null || displayName.isBlank() || displayName.length() > 200) {
+            throw new IllegalArgumentException(
+                    "Display name must be between 1 and 200 characters");
+        }
+
+        var user = userRepository.findById(userId)
+            .orElseThrow(() -> {
+                log.warn("User not found for update: {}", userId);
+                return new IllegalArgumentException("User not found");
+            });
+
+        user.setDisplayName(displayName.trim());
+
+        de.ipb_halle.server.postgre.models.UserEntity updatedUser = userRepository.save(user);
+
+        log.info("Updated display name for user ID: {}", userId);
+
+        return updatedUser;
+    }
 }

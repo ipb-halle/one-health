@@ -3,6 +3,7 @@ package de.ipb_halle.server.api;
 import de.ipb_halle.api.UsersApi;
 import de.ipb_halle.model.User;
 import de.ipb_halle.model.UpdateUserRequest;
+import de.ipb_halle.server.postgre.mapping.UserMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,9 +76,57 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> updateCurrentUser(UpdateUserRequest updateUserRequest) {
-        // TODO: Implement user update logic using userService
-        
-        // Returning a mock/empty User object or throwing an exception to satisfy compiler temporarily
-        return ResponseEntity.status(501).build();
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+            || !authentication.isAuthenticated()
+            || !(authentication.getPrincipal() instanceof OidcUser oidcUser)) {
+            log.warn("Unauthorized update user attempt");
+            return ResponseEntity.status(401).build();
+        }
+
+        if (updateUserRequest == null
+            || updateUserRequest.getDisplayName() == null
+            || updateUserRequest.getDisplayName().isBlank()) {
+            log.warn("Invalid update user request: displayName is required");
+            return ResponseEntity.badRequest().build();
+        }
+
+        String orcid = oidcUser.getSubject();
+
+        try {
+            var userAuthentication = userAuthenticationRepository
+                .findByProviderAndProviderSubjectId(
+                        AuthenticationProvider.ORCID,
+                        orcid)
+                .orElseThrow(() -> {
+                    log.warn("User authentication not found for ORCID: {}", orcid);
+                    return new RuntimeException("User not found");
+                });
+
+            UserEntity userEntity = userAuthentication.getUser();
+            Long userId = userEntity.getId();
+
+            log.info("Updating user profile for user ID: {} (ORCID: {})", userId, orcid);
+
+            UserEntity updatedUser = userService.updateUserDisplayName(
+                    userId,
+                    updateUserRequest.getDisplayName());
+
+            User userDto = UserMapper.MAPPER.toDto(updatedUser);
+            userDto.setOrcid(orcid);
+
+            log.info("Successfully updated user profile for user ID: {} (ORCID: {})", userId, orcid);
+
+            return ResponseEntity.ok(userDto);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Validation error updating user for ORCID: {} - {}", orcid, e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            log.error("Failed to update user profile for ORCID: {}", orcid, e);
+            return ResponseEntity.status(500).build();
+        }
     }
 }
