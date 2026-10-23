@@ -7,21 +7,31 @@ import { Divider } from "primereact/divider";
 import { Message } from "primereact/message";
 import "./user-profile-page.scss";
 
-type UserRole = "VIEWER" | "CURATOR" | "ADMIN";
+// Import Orval generated API clients and types
+import { getCurrentUser } from "@/generated/auth/auth/auth";
+import { updateCurrentUser, deleteCurrentUser } from "@/generated/auth/users/users";
+import type { ErrorResponse, UpdateUserRequest, User } from "@/generated/auth/model";
+import { HttpError } from "@/core/api/http/http-error";
 
-interface UserProfile {
-    id: string;
-    displayName: string;
-    role: UserRole;
-    enabled: boolean;
-    lastLogin?: string | null;
-    credits?: number | null;
-}
+const isErrorResponse = (data: unknown): data is ErrorResponse =>
+    typeof data === "object" && data !== null && typeof (data as ErrorResponse).message === "string";
 
-const API_BASE = "/api";
+// The `httpRequest` mutator resolves with the raw response body (not Orval's declared {data,status,headers} wrapper).
+const fetchCurrentUser = (options?: Parameters<typeof getCurrentUser>[0]): Promise<User> =>
+    getCurrentUser(options) as unknown as Promise<User>;
+
+const saveCurrentUser = (body: UpdateUserRequest): Promise<User> =>
+    updateCurrentUser(body) as unknown as Promise<User>;
+
+const describeError = (err: unknown, fallback: string): string => {
+    if (err instanceof HttpError && isErrorResponse(err.data)) {
+        return err.data.message;
+    }
+    return err instanceof Error ? err.message : fallback;
+};
 
 const UserProfilePage: React.FC = () => {
-    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [profile, setProfile] = useState<User | null>(null);
     const [displayName, setDisplayName] = useState("");
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -37,30 +47,19 @@ const UserProfilePage: React.FC = () => {
             setError("");
 
             try {
-                const response = await fetch(`${API_BASE}/auth/me`, {
-                    credentials: "include",
-                    signal: controller.signal,
-                    headers: { Accept: "application/json" },
-                });
+                const user = await fetchCurrentUser({ signal: controller.signal });
 
-                if (!response.ok) {
-                    throw new Error(
-                        response.status === 401
-                            ? "Please sign in to view your profile."
-                            : `Could not load profile (${response.status}).`
-                    );
-                }
-
-                const user = (await response.json()) as UserProfile;
                 setProfile(user);
                 setDisplayName(user.displayName ?? "");
             } catch (err) {
                 if (controller.signal.aborted) return;
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "An unexpected error occurred."
-                );
+                if (err instanceof HttpError && err.status === 401) {
+                    setError("You are not signed in.");
+                } else if (err instanceof HttpError && err.status === 404) {
+                    setError("Profile not found.");
+                } else {
+                    setError(describeError(err, "An unexpected error occurred."));
+                }
             } finally {
                 if (!controller.signal.aborted) setLoading(false);
             }
@@ -84,41 +83,17 @@ const UserProfilePage: React.FC = () => {
         setNotice("");
 
         try {
-            const response = await fetch(`${API_BASE}/users/me`, {
-                method: "PUT",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    // Add the project's CSRF header/token here if required.
-                },
-                body: JSON.stringify({
-                    displayName: trimmedName,
-                }),
-            });
+            const updatedUser = await saveCurrentUser({ displayName: trimmedName });
 
-            if (!response.ok) {
-                throw new Error(
-                    `Could not save profile (${response.status}).`
-                );
-            }
-
-            // If the API returns the updated user, use that response.
-            // If it returns no content, update the local display name.
-            const body = await response.text();
-            const updated = body
-                ? (JSON.parse(body) as UserProfile)
-                : { ...profile, displayName: trimmedName };
-
-            setProfile(updated);
-            setDisplayName(updated.displayName);
+            setProfile(updatedUser);
+            setDisplayName(updatedUser.displayName);
             setNotice("Your profile has been updated.");
         } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Could not save profile."
-            );
+            if (err instanceof HttpError && err.status === 401) {
+                setError("Your session has expired. Please sign in again.");
+            } else {
+                setError(describeError(err, "Could not save profile."));
+            }
         } finally {
             setSaving(false);
         }
@@ -138,29 +113,17 @@ const UserProfilePage: React.FC = () => {
         setNotice("");
 
         try {
-            const response = await fetch(`${API_BASE}/users/me`, {
-                method: "DELETE",
-                credentials: "include",
-                headers: {
-                    Accept: "application/json",
-                    // Add the project's CSRF header/token here if required.
-                },
-            });
+            await deleteCurrentUser();
 
-            if (!response.ok) {
-                throw new Error(
-                    `Account deletion failed (${response.status}).`
-                );
-            }
-
-            // Prefer the application's existing logout/session-cleanup flow.
             window.location.assign("/");
         } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Could not delete account."
-            );
+            if (err instanceof HttpError && err.status === 403) {
+                setError("You are not permitted to delete this account.");
+            } else if (err instanceof HttpError && err.status === 409) {
+                setError("Account cannot be deleted in its current state.");
+            } else {
+                setError(describeError(err, "Could not delete account."));
+            }
         } finally {
             setDeleting(false);
         }
