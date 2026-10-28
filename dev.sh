@@ -22,17 +22,37 @@
 p=`dirname $0`
 cd "$p"
 
+if [ -e ~/.onehealth ] ; then
+    . ~/.onehealth
+else
+    echo 'Configuration file "~/.onehealth" is missing'
+    echo 'Aborting ...'
+    exit 1
+fi
+
+echo "Note: running in development mode with ports exposed!"
 
 case $1 in
-    start)
-        echo "Note: running in development mode with ports exposed!"
+    interactive)
+        docker compose -f docker-compose.yml -f compose-dev.yml up postgredb graphdb server
+        ;;
+    debug)
+        docker compose -f docker-compose.yml -f compose-dev.yml up
+        ;;
+    server)
         docker compose -f docker-compose.yml -f compose-dev.yml up -d server
+        ;;
+    client)
+        docker compose -f docker-compose.yml -f compose-dev.yml up -d client
+        ;;
+    start)
+        docker compose -f docker-compose.yml -f compose-dev.yml up -d
         ;;
     stop)
         docker compose -f docker-compose.yml -f compose-dev.yml down
         ;;
     *)
-        echo "Usage: dev.sh [start|stop]"
+        echo "Usage: dev.sh [start|stop|interactive|debug|server|client]"
         ;;
 esac
 

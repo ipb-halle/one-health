@@ -1,5 +1,5 @@
 # Use a base image with Node.js pre-installed
-FROM node:22-slim AS build
+FROM node:24-slim AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,6 +12,12 @@ RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY client/ .
+
+# Copy OpenAPI specification from server source
+COPY server/openapi /server/openapi
+
+# Generate the OpenAPI code
+RUN yarn generate:api
 
 # Build the React app
 RUN yarn build

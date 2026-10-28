@@ -20,9 +20,12 @@
 
 services:
   server:
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
+      ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
     ports:
       - "8080:8080"
-      - "5173:8080"
 
   client:
     hostname: a.localhost
@@ -35,6 +38,10 @@ services:
       - "7687:7687"
 
   postgredb:
+    environment:
+      POSTGRES_USER: one_health_user
+      POSTGRES_PASSWORD: one_health_password
+      POSTGRES_DB: one_health
     ports:
       - "5432:5432"
 

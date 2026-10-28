@@ -13,6 +13,9 @@ RUN mvn dependency:go-offline -B
 # Copy the source code to the working directory
 COPY server/src ./src
 
+# Copy the OpenAPI specification
+COPY server/openapi ./openapi
+
 # Build the application
 RUN mvn package -Dmaven.test.skip
 #RUN mvn clean package -DskipTests 

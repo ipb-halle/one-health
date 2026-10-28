@@ -123,7 +123,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/src/main/resources/openapi/auth-api.yaml</inputSpec>
+                            <inputSpec>${basedir}/openapi/auth-api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <apiPackage>de.ipb_halle.api</apiPackage>
                             <modelPackage>de.ipb_halle.model</modelPackage>
