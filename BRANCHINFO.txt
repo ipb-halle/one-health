@@ -1,2 +1,1 @@
-Update GDPR declaration to reflect ongoing changes: ORCID authentication, use of cookies, etc.
-Branch created 2026-10-12
+This is the main branch.
