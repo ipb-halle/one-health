@@ -21,7 +21,6 @@
 services:
   server:
     environment:
-      SPRING_PROFILES_ACTIVE: dev
       ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
       ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
     ports:

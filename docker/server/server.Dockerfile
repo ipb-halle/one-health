@@ -29,6 +29,12 @@ WORKDIR /app
 # Copy the JAR file from the build stage to the new image
 COPY --from=build /app/target/server.jar ./app.jar
 
+# Set default profile, overriden in compose-dev.yml
+ARG SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILE=$SPRING_PROFILES_ACTIVE
+
 # Command to run the application
-#CMD ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
-CMD ["java", "-jar", "app.jar"]
+#
+# explicitly use the shell form to expand the environment variable!
+#
+CMD java -Dspring.profiles.active=$SPRING_PROFILE -jar app.jar

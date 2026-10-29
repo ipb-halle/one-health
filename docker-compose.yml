@@ -20,8 +20,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
+      args:
+        - SPRING_PROFILES_ACTIVE
     environment:
-      SPRING_PROFILES_ACTIVE: prod
       ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
       ORCID_CLIENT_SECRET: ${ORCID_CLIENT_SECRET:-}
     networks:
