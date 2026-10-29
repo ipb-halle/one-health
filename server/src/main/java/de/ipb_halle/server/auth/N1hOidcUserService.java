@@ -14,10 +14,10 @@ public class N1hOidcUserService
         implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final OidcUserService delegate = new OidcUserService();
-    private final OrcidUserService orcidUserService;
+    private final ProviderUserServiceContext providerUserServiceContext;
 
-    public N1hOidcUserService(OrcidUserService orcidUserService) {
-        this.orcidUserService = orcidUserService;
+    public N1hOidcUserService(ProviderUserServiceContext providerUserServiceContext) {
+        this.providerUserServiceContext = providerUserServiceContext;
     }
 
     @Override
@@ -28,18 +28,11 @@ public class N1hOidcUserService
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        if (!"orcid".equals(registrationId)) {
-            throw new OAuth2AuthenticationException(
-                    "Unsupported OIDC provider: " + registrationId);
-        }
-
-        UserEntity user = orcidUserService.provisionUser(oidcUser);
+        UserEntity user = providerUserServiceContext.provisionAndUpdateUser(oidcUser, registrationId);
 
         if (!Boolean.TRUE.equals(user.getEnabled())) {
             throw new DisabledException("N1H user account is disabled");
         }
-
-        orcidUserService.updateLastLogin(user);
 
         return oidcUser;
     }
