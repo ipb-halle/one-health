@@ -1,41 +1,29 @@
 package de.ipb_halle.server.auth;
 
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
-import de.ipb_halle.server.postgre.repositories.UserRepository;
 import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.models.UserRole;
-import de.ipb_halle.server.postgre.models.UserCreditEntity;
-import de.ipb_halle.server.postgre.repositories.UserCreditRepository;
 
 import java.util.Optional;
 
+import de.ipb_halle.server.services.UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
-import java.math.BigDecimal;
 
 @Service
 public class OrcidUserService implements ProviderUserService {
 
-    private final UserRepository userRepository;
     private final UserAuthenticationRepository userAuthenticationRepository;
-    private final UserCreditRepository userCreditRepository;
-    private static final BigDecimal INITIAL_CREDIT = new BigDecimal("5.00");
-    private static final LocalDateTime LAST_LOCAL_DATE_TIME = LocalDateTime.now(ZoneId.of("Europe/Berlin"));
+    private final UserService userService;
 
     public OrcidUserService(
-            UserRepository userRepository,
             UserAuthenticationRepository userAuthenticationRepository,
-            UserCreditRepository userCreditRepository) {
+            UserService userService) {
 
-        this.userRepository = userRepository;
         this.userAuthenticationRepository = userAuthenticationRepository;
-        this.userCreditRepository = userCreditRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -55,43 +43,39 @@ public class OrcidUserService implements ProviderUserService {
                         orcid);
 
         if (authentification.isPresent()) {
-            return updateExistingLocalUser(authentification.get(), displayName);
+            return updateExistingUser(authentification.get().getUser(), displayName);
         } else {
-            return createNewLocalUser(displayName, orcid);
+            return createNewUser(displayName, orcid);
         }
 
     }
 
-    private UserEntity updateExistingLocalUser(UserAuthenticationEntity authentication, String displayName) {
-        UserEntity existingUser = authentication.getUser();
-
-        if (existingUser.getDisplayName() == null
-                || existingUser.getDisplayName().isBlank()) {
-            existingUser.setDisplayName(displayName);
-            return userRepository.save(existingUser);
-        }
-        return existingUser;
+    /**
+     * Updates an existing user's display name if it's currently empty.
+     * Delegates to UserService for consistency.
+     * 
+     * @param user the existing UserEntity
+     * @param displayName the display name to set if current is empty
+     * @return the updated UserEntity
+     */
+    private UserEntity updateExistingUser(UserEntity user, String displayName) {
+        return userService.updateUserDisplayNameIfEmpty(user, displayName);
     }
 
-    private UserEntity createNewLocalUser(String displayName, String orcid) {
-        UserEntity newUser = new UserEntity();
-        newUser.setDisplayName(displayName);
-        newUser.setRole(UserRole.VIEWER);
-        newUser.setEnabled(true);
-        newUser.setRegisteredVia(AuthenticationProvider.ORCID);
-
-        UserEntity savedUser = userRepository.save(newUser);
-
-        UserAuthenticationEntity authentication = new UserAuthenticationEntity();
-
-        authentication.setUser(savedUser);
-        authentication.setProvider(AuthenticationProvider.ORCID);
-        authentication.setProviderSubjectId(orcid);
-
-        userAuthenticationRepository.save(authentication);
-        assignInitialCredits(savedUser);
-
-        return savedUser;
+    /**
+     * Creates a new user with ORCID authentication.
+     * Delegates all user creation and authentication setup to UserService.
+     * 
+     * @param displayName the display name for the new user
+     * @param orcid the ORCID ID
+     * @return the newly created UserEntity
+     */
+    private UserEntity createNewUser(String displayName, String orcid) {
+        return userService.createUserWithAuthProvider(
+                displayName,
+                UserRole.VIEWER,
+                AuthenticationProvider.ORCID,
+                orcid);
     }
 
     private String resolveDisplayName(OidcUser oidcUser, String orcid) {
@@ -136,19 +120,9 @@ public class OrcidUserService implements ProviderUserService {
 
         return orcid;
     }
-@Override
-    
-    public void updateLastLogin(UserEntity user) {
-        user.setLastLogin(
-                LAST_LOCAL_DATE_TIME);
-        userRepository.save(user);
-    }
 
-    private void assignInitialCredits(UserEntity user) {
-        UserCreditEntity userCreditEntity = new UserCreditEntity();
-        userCreditEntity.setUser(user);
-        userCreditEntity.setCredit(INITIAL_CREDIT);
-        userCreditEntity.setLastCreditAssigned(LAST_LOCAL_DATE_TIME);
-        userCreditRepository.save(userCreditEntity);
+    @Override
+    public void updateLastLogin(UserEntity user) {
+        userService.updateLastLogin(user);
     }
 }
