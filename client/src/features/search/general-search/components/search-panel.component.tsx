@@ -25,7 +25,9 @@ const SearchPanel: React.FC = () => {
         <div id="general-search-panel">
             <GeneralSearchPageTourComponent
                 run={tutorialStore.showGeneralSearchTutorial}
-                callback={() => tutorialStore.ChangeShowGeneralSearchTutorial(false)}></GeneralSearchPageTourComponent>
+                callback={() =>
+                    tutorialStore.ChangeShowGeneralSearchTutorial(false)
+                }></GeneralSearchPageTourComponent>
 
             <div className="general-search-header" id="general-search-header">
                 <div
@@ -43,7 +45,11 @@ const SearchPanel: React.FC = () => {
                             id="page-title-help-button"
                             icon="pi pi-question-circle"
                             style={{ marginLeft: '5px' }}
-                            onClick={() => tutorialStore.ChangeShowGeneralSearchTutorial(true)}
+                            onClick={() =>
+                                tutorialStore.ChangeShowGeneralSearchTutorial(
+                                    true,
+                                )
+                            }
                             tooltip={`Watch tutorial`}
                             tooltipOptions={{
                                 position: 'bottom',

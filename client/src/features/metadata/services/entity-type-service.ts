@@ -2,10 +2,9 @@ import { IHttpResponseHandlerSettings } from '../../../core/api/http/http-respon
 import { injectable } from 'inversify';
 import { PagedCrudService } from '../../../core/api/http/interfaces/paged-crud-service';
 import { SelectableOption } from '../../../core/types/selectable-option';
-import axios from 'axios';
+import { httpRequest } from '@/core/api/http/http-client';
 import { IEntityType } from '../entity-types';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
-
 
 @injectable()
 export class IEntityTypeService extends PagedCrudService<IEntityType> {
@@ -14,10 +13,8 @@ export class IEntityTypeService extends PagedCrudService<IEntityType> {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<SelectableOption[]> {
         return this.handleRequest<SelectableOption[]>(
-            axios.get<SelectableOption[]>(`${this.url}/as-options`),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+            httpRequest<SelectableOption[]>(`${this.url}/as-options`),
+        );
     }
 }
 

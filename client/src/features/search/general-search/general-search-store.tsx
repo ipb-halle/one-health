@@ -115,4 +115,10 @@ export const GeneralSearchStore = types
             }
             self.selectedEntities.clear();
         }),
+    })).actions((self) => ({
+        clearSearch(): void {
+            self.setQuery('');
+            self.setIsSearching(false);
+
+        },
     }));

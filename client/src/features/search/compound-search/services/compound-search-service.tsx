@@ -6,7 +6,7 @@ import {
     IHttpResponseHandlerSettings,
     OnReadByIdResponsesHandler,
 } from '../../../../core/api/http/http-responses-handler';
-import axios from 'axios';
+import { httpRequest } from '@/core/api/http/http-client';
 import { constructHttpParams } from '../../../../shared';
 import qs from 'qs';
 
@@ -70,14 +70,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-smiles`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-smiles?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -94,14 +89,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchi`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-inchi?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -118,14 +108,9 @@ export class CompoundService extends ICompoundService {
         const query = { value: value };
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-inchikey`, {
-                params: query,
-                paramsSerializer: {
-                    serialize: (params: any) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/by-inchikey?${qs.stringify(query)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -141,16 +126,15 @@ export class CompoundService extends ICompoundService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<any> {
-        const query = {
-            smiles: smiles,
-            take: take,
-            page: page,
-        };
-
-        const parsed = constructHttpParams(query);
+        const params = new URLSearchParams();
+        params.append("smiles", smiles);
+        params.append("take", take.toString());
+        params.append("page", page.toString());
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-substructure`, { params: parsed }),
+            httpRequest<any>(
+                `${this.url}/by-substructure?${params.toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
@@ -166,16 +150,18 @@ export class CompoundService extends ICompoundService {
         messageService: MessageService,
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings | undefined,
     ): Promise<any> {
-        const query = {
-            smiles: smiles,
-            threshold: threshold,
-            limit: limit,
-        };
 
-        const parsed = constructHttpParams(query);
+
+        const params = new URLSearchParams();
+        params.append("smiles", smiles);
+        params.append("threshold", threshold.toString());
+        params.append("limit", limit.toString());
+
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/by-similarity`, { params: parsed }),
+            httpRequest<any>(
+                `${this.url}/by-similarity?${params.toString()}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,

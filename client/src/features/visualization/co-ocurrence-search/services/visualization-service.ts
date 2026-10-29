@@ -1,7 +1,7 @@
 import { IHttpResponseHandlerSettings } from '../../../../core/api/http/http-responses-handler';
 import { injectable } from 'inversify';
 import { BaseDataService } from '../../../../core/api/http/interfaces/base-data-service';
-import axios from 'axios';
+import { httpRequest } from '@/core/api/http/http-client';
 import { OnReadByIdResponsesHandler } from '../../../../core/api/http/http-responses-handler';
 import { constructHttpParams } from '../../../../shared/utils/flatten';
 import { ICoOcurrenceQuery } from '../models/co-ocurrence-query';
@@ -22,22 +22,15 @@ export class IOntologyService extends BaseDataService {
         var qparams = constructHttpParams(query);
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/find-co-ocurrences`, {
-                params: qparams,
-                paramsSerializer: {
-                    serialize: (params) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/find-co-ocurrences?${qs.stringify(qparams)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getCoOccurrencesDetails(
@@ -48,14 +41,9 @@ export class IOntologyService extends BaseDataService {
         var qparams = constructHttpParams(query);
 
         return this.handleRequest<any>(
-            axios.get<any>(`${this.url}/find-co-occurrences-details`, {
-                params: qparams,
-                paramsSerializer: {
-                    serialize: (params) => {
-                        return qs.stringify(params);
-                    },
-                },
-            }),
+            httpRequest<any>(
+                `${this.url}/find-co-occurrences-details?${qs.stringify(qparams)}`,
+            ),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,

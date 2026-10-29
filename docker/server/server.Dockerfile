@@ -1,5 +1,5 @@
 # Use a base image with Maven installed
-FROM maven:3.8.3-openjdk-17-slim AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -13,11 +13,15 @@ RUN mvn dependency:go-offline -B
 # Copy the source code to the working directory
 COPY server/src ./src
 
+# Copy the OpenAPI specification
+COPY server/openapi ./openapi
+
 # Build the application
 RUN mvn package -Dmaven.test.skip
+#RUN mvn clean package -DskipTests 
 
 # Create a new image for running the application
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 # Set the working directory
 WORKDIR /app
@@ -25,5 +29,12 @@ WORKDIR /app
 # Copy the JAR file from the build stage to the new image
 COPY --from=build /app/target/server.jar ./app.jar
 
+# Set default profile, overriden in compose-dev.yml
+ARG SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILE=$SPRING_PROFILES_ACTIVE
+
 # Command to run the application
-CMD ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+#
+# explicitly use the shell form to expand the environment variable!
+#
+CMD java -Dspring.profiles.active=$SPRING_PROFILE -jar app.jar
