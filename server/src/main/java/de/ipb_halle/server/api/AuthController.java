@@ -4,8 +4,6 @@ import de.ipb_halle.api.AuthApi;
 import de.ipb_halle.model.LogoutResponse;
 import de.ipb_halle.model.User;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
-import de.ipb_halle.server.postgre.models.UserEntity;
-import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.services.UserAuthenticationService;
 
 import org.springframework.security.core.Authentication;
@@ -40,7 +38,7 @@ public class AuthController implements AuthApi {
         String orcid = oidcUser.getSubject();
 
         return userAuthenticationService
-            .findUserByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
+            .findUserByOidcAuthentication(orcid, authentication)
             .map(userEntity -> {
                 User user = UserMapper.MAPPER.toDto(userEntity);
                 user.setOrcid(orcid);

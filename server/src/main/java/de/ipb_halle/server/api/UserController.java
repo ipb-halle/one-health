@@ -14,7 +14,6 @@ import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.services.UserService;
 import de.ipb_halle.server.services.UserAuthenticationService;
 import org.springframework.web.bind.annotation.RestController;
-import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,15 +47,14 @@ public class UserController implements UsersApi {
         String orcid = oidcUser.getSubject();
 
         try {
-            var userAuthentication = userAuthenticationService
-                .findByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
+            var user = userAuthenticationService
+                .findUserByOidcAuthentication(orcid, authentication)
                 .orElseThrow(() -> {
-                    log.warn("User authentication not found for ORCID: {}", orcid);
+                    log.warn("User not found for ORCID: {}", orcid);
                     return new RuntimeException("User not found");
                 });
 
-            UserEntity userEntity = userAuthentication.getUser();
-            Long userId = userEntity.getId();
+            Long userId = user.getId();
 
             log.info("Deleting user account for user ID: {} (ORCID: {})", userId, orcid);
 
@@ -94,15 +92,14 @@ public class UserController implements UsersApi {
         String orcid = oidcUser.getSubject();
 
         try {
-            var userAuthentication = userAuthenticationService
-                .findByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
+            var user = userAuthenticationService
+                .findUserByOidcAuthentication(orcid, authentication)
                 .orElseThrow(() -> {
-                    log.warn("User authentication not found for ORCID: {}", orcid);
+                    log.warn("User not found for ORCID: {}", orcid);
                     return new RuntimeException("User not found");
                 });
 
-            UserEntity userEntity = userAuthentication.getUser();
-            Long userId = userEntity.getId();
+            Long userId = user.getId();
 
             log.info("Updating user profile for user ID: {} (ORCID: {})", userId, orcid);
 
