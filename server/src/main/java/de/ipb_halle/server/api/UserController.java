@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.services.UserService;
+import de.ipb_halle.server.services.UserAuthenticationService;
 import org.springframework.web.bind.annotation.RestController;
-import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +23,13 @@ import org.slf4j.LoggerFactory;
 public class UserController implements UsersApi {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserAuthenticationService userAuthenticationService;
     private final UserService userService;
 
     public UserController(
-            UserAuthenticationRepository userAuthenticationRepository,
+            UserAuthenticationService userAuthenticationService,
             UserService userService) {
-        this.userAuthenticationRepository = userAuthenticationRepository;
+        this.userAuthenticationService = userAuthenticationService;
         this.userService = userService;
     }
 
@@ -48,10 +48,8 @@ public class UserController implements UsersApi {
         String orcid = oidcUser.getSubject();
 
         try {
-            var userAuthentication = userAuthenticationRepository
-                .findByProviderAndProviderSubjectId(
-                        AuthenticationProvider.ORCID,
-                        orcid)
+            var userAuthentication = userAuthenticationService
+                .findByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
                 .orElseThrow(() -> {
                     log.warn("User authentication not found for ORCID: {}", orcid);
                     return new RuntimeException("User not found");
@@ -96,10 +94,8 @@ public class UserController implements UsersApi {
         String orcid = oidcUser.getSubject();
 
         try {
-            var userAuthentication = userAuthenticationRepository
-                .findByProviderAndProviderSubjectId(
-                        AuthenticationProvider.ORCID,
-                        orcid)
+            var userAuthentication = userAuthenticationService
+                .findByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
                 .orElseThrow(() -> {
                     log.warn("User authentication not found for ORCID: {}", orcid);
                     return new RuntimeException("User not found");
