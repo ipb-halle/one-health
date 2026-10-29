@@ -5,8 +5,8 @@ import de.ipb_halle.model.LogoutResponse;
 import de.ipb_halle.model.User;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
 import de.ipb_halle.server.postgre.models.UserEntity;
-import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 import de.ipb_halle.server.postgre.models.AuthenticationProvider;
+import de.ipb_halle.server.services.UserAuthenticationService;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,12 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "api")
 public class AuthController implements AuthApi {
 
-    private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserAuthenticationService userAuthenticationService;
 
-    public AuthController(
-            UserAuthenticationRepository userAuthenticationRepository) {
-
-        this.userAuthenticationRepository = userAuthenticationRepository;
+    public AuthController(UserAuthenticationService userAuthenticationService) {
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     @Override
@@ -41,16 +39,11 @@ public class AuthController implements AuthApi {
 
         String orcid = oidcUser.getSubject();
 
-        return userAuthenticationRepository
-            .findByProviderAndProviderSubjectId(
-                    AuthenticationProvider.ORCID,
-                    orcid)
-            .map(userAuthentication -> {
-                UserEntity userEntity = userAuthentication.getUser();
-
+        return userAuthenticationService
+            .findUserByProviderAndSubjectId(AuthenticationProvider.ORCID, orcid)
+            .map(userEntity -> {
                 User user = UserMapper.MAPPER.toDto(userEntity);
                 user.setOrcid(orcid);
-
                 return ResponseEntity.ok(user);
             })
             .orElseGet(() -> ResponseEntity.notFound().build());
