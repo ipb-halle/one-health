@@ -20,7 +20,7 @@ import java.time.ZoneId;
 import java.math.BigDecimal;
 
 @Service
-public class OrcidUserService {
+public class OrcidUserService implements ProviderUserService {
 
     private final UserRepository userRepository;
     private final UserAuthenticationRepository userAuthenticationRepository;
@@ -38,6 +38,7 @@ public class OrcidUserService {
         this.userCreditRepository = userCreditRepository;
     }
 
+    @Override
     public UserEntity provisionUser(OidcUser oidcUser) {
 
         String orcid = oidcUser.getSubject();
@@ -135,7 +136,8 @@ public class OrcidUserService {
 
         return orcid;
     }
-
+@Override
+    
     public void updateLastLogin(UserEntity user) {
         user.setLastLogin(
                 LAST_LOCAL_DATE_TIME);
