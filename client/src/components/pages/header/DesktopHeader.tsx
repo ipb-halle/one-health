@@ -2,16 +2,39 @@ import { observer } from "mobx-react-lite";
 import { Menubar } from "primereact/menubar";
 import { MenuItem } from "primereact/menuitem";
 import { RootStoreContext } from "@/app/providers/store-provider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { logout } from '@/generated/auth/auth/auth';
 import { useNavigate } from "react-router-dom";
 import DesktopStartComponent from "./DesktopStartComponent";
+import MessageServiceContext from "@/app/providers/messages/message-service.context";
 
 const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const authStore = rootStore.authStore;
     const navigate = useNavigate();
     const screenDeviceStore = rootStore.screenDeviceStore;
+    const { messageService } = useContext(MessageServiceContext);
+
+    // Check for authentication failure on initial render
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get('error');
+
+        console.log("OAuth Check -> error:", error, "messageService:", messageService);
+        
+        if (error === 'auth_failed') {
+
+            if (messageService) {
+                messageService.show({
+                    severity: 'error',
+                    summary: 'Authentication Failed',
+                    detail: 'ORCID login was cancelled or failed. Please try again.',
+                });
+            }
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [messageService]);
 
     const legalItems: MenuItem = {
         label: 'Legal',

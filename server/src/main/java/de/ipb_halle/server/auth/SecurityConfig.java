@@ -97,7 +97,8 @@ public class SecurityConfig {
                                 userInfo.oidcUserService(n1hOidcUserService))
                         .defaultSuccessUrl(
                                 //"http://a.localhost:5173/", true));
-                                frontendUrl, true));
+                                frontendUrl, true)
+                        .failureUrl(frontendUrl + "?error=auth_failed"));
 
         return http.build();
     }
