@@ -18,21 +18,20 @@ const DesktopHeader: React.FC = () => {
     // Check for authentication failure on initial render
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const error = params.get('error');
+        const errorCode = params.get('auth_error');
+        const errorDescription = params.get('auth_message');
 
-        console.log("OAuth Check -> error:", error, "messageService:", messageService);
-        
-        if (error === 'auth_failed') {
+        if (errorCode) {
+            // Clean URL immediately so error doesn't re-trigger on refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
 
             if (messageService) {
                 messageService.show({
                     severity: 'error',
-                    summary: 'Authentication Failed',
-                    detail: 'ORCID login was cancelled or failed. Please try again.',
+                    summary: errorCode.replace(/_/g, ' ').toUpperCase(), // e.g., "ACCESS_DENIED" -> "ACCESS DENIED"
+                    detail: errorDescription || 'An unexpected authentication error occurred.',
                 });
             }
-
-            window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [messageService]);
 

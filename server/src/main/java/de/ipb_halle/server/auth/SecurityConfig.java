@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+
+import de.ipb_halle.server.auth.utils.CustomAuthenticationFailureHandler;
+
 import org.springframework.security.web.csrf.CsrfFilter;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -24,13 +27,16 @@ import org.springframework.http.MediaType;
 public class SecurityConfig {
 
     private final N1hOidcUserService n1hOidcUserService;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
 
-    public SecurityConfig(N1hOidcUserService n1hOidcUserService) {
+    public SecurityConfig(N1hOidcUserService n1hOidcUserService,
+                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.n1hOidcUserService = n1hOidcUserService;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     @Bean
@@ -98,7 +104,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl(
                                 //"http://a.localhost:5173/", true));
                                 frontendUrl, true)
-                        .failureUrl(frontendUrl + "?error=auth_failed"));
+                        .failureHandler(customAuthenticationFailureHandler));
 
         return http.build();
     }
