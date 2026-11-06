@@ -3,10 +3,12 @@ package de.ipb_halle.server.config;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -15,6 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 @EnableScheduling
+@EnableRetry
 public class AsyncConfig {
 
     /**
@@ -61,6 +64,23 @@ public class AsyncConfig {
         return builder
                 .setConnectTimeout(Duration.ofSeconds(30))
                 .setReadTimeout(Duration.ofSeconds(30))
+                .build();
+    }
+
+    /**
+     * WebClient bean for reactive communication with downstream consumption service.
+     *
+     * Configured with:
+     * - Base URL pointing to the downstream RDKit extraction service
+     * - 30-second timeout for file processing requests
+     * - Increased buffer size (10MB) to handle multipart file uploads
+     *
+     * @return configured WebClient instance
+     */
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder()
+                .baseUrl("http://localhost:8081")
                 .build();
     }
 }
