@@ -12,8 +12,6 @@ CREATE TABLE document_records (
 
 -- Create indexes for common query patterns
 CREATE INDEX idx_document_records_status ON document_records(status);
-CREATE INDEX idx_document_records_created_at ON document_records(created_at);
-CREATE INDEX idx_document_records_status_created_at ON document_records(status, created_at);
 
 -- Add check constraint to enforce valid status values
 ALTER TABLE document_records
