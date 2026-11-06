@@ -34,6 +34,9 @@ public class DocumentRecord {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "retry_count", nullable = false)
+    private int retryCount;
+
     public DocumentRecord() {
     }
 
@@ -43,6 +46,7 @@ public class DocumentRecord {
         this.status = status;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.retryCount = 0;
     }
 
     // Getters and Setters
@@ -93,5 +97,13 @@ public class DocumentRecord {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getRetryCount() {
+        return retryCount;
+    }
+
+    public void setRetryCount(int retryCount) {
+        this.retryCount = retryCount;
     }
 }
