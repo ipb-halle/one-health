@@ -2,16 +2,38 @@ import { observer } from "mobx-react-lite";
 import { Menubar } from "primereact/menubar";
 import { MenuItem } from "primereact/menuitem";
 import { RootStoreContext } from "@/app/providers/store-provider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { logout } from '@/generated/auth/auth/auth';
 import { useNavigate } from "react-router-dom";
 import DesktopStartComponent from "./DesktopStartComponent";
+import MessageServiceContext from "@/app/providers/messages/message-service.context";
 
 const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const authStore = rootStore.authStore;
     const navigate = useNavigate();
     const screenDeviceStore = rootStore.screenDeviceStore;
+    const { messageService } = useContext(MessageServiceContext);
+
+    // Check for authentication failure on initial render
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const errorCode = params.get('auth_error');
+        const errorDescription = params.get('auth_message');
+
+        if (errorCode) {
+            // Clean URL immediately so error doesn't re-trigger on refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            if (messageService) {
+                messageService.show({
+                    severity: 'error',
+                    summary: errorCode.replace(/_/g, ' ').toUpperCase(), // e.g., "ACCESS_DENIED" -> "ACCESS DENIED"
+                    detail: errorDescription || 'An unexpected authentication error occurred.',
+                });
+            }
+        }
+    }, [messageService]);
 
     const legalItems: MenuItem = {
         label: 'Legal',
