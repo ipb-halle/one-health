@@ -5,7 +5,8 @@ import {
     OnCreateResponseHandler,
     OnReadByIdResponsesHandler,
 } from '../http-responses-handler';
-import axios from 'axios';
+
+import { httpRequest } from '../http-client';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 /**
@@ -23,15 +24,13 @@ export class CrudService<TEntity> extends BaseDataService {
     ): Promise<TEntity> {
         //TODO:how to fix the catch here
         return this.handleRequest<TEntity>(
-            axios.get<TEntity>(`${this.url}/${id}`),
+            httpRequest<TEntity>(`${this.url}/${id}`),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     getAll(
@@ -39,15 +38,13 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity[]> {
         return this.handleRequest<TEntity[]>(
-            axios.get<TEntity[]>(`${this.url}/all`),
+            httpRequest<TEntity[]>(`${this.url}/all`),
             new OnReadByIdResponsesHandler(
                 this.entityTitle,
                 messageService,
                 httpResponseHandlerSettings,
             ),
-        )
-            .then((x) => x)
-            .catch((x) => x);
+        );
     }
 
     create(
@@ -56,7 +53,14 @@ export class CrudService<TEntity> extends BaseDataService {
         httpResponseHandlerSettings?: IHttpResponseHandlerSettings,
     ): Promise<TEntity> {
         return this.handleRequest<TEntity>(
-            axios.post<TEntity>(`${this.url}`, item),
+            httpRequest<TEntity>(this.url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(item),
+            }),
+
             new OnCreateResponseHandler(
                 this.entityTitle,
                 messageService,

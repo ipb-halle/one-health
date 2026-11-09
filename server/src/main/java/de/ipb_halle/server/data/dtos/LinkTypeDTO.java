@@ -136,4 +136,3 @@ public class LinkTypeDTO extends DTO<String> {
     }
 
 }
-

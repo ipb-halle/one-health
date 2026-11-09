@@ -145,22 +145,6 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         orientation: 'h',
         visible: true,
         arrangement: 'fixed',
-        // legend: '',
-        // legendrank: 1,
-        // legendgrouptitle: {},
-        // legendwidth: 123,
-        // ids: [],
-        // hoverinfo: 'hello',
-        // meta: 123,
-        // customdata: [],
-        // domain: {},
-        // textfont: {},
-        // selectpoints: 13,
-        // arrangement: 'freeform',
-        // hoverlabel: {},
-        // valueformat: '',
-        // valuesuffix: '',
-        // uirevision: 23,
     };
 
     const chartConfig: Partial<Plotly.Config> = {
@@ -242,14 +226,14 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         var valuex: number[] = [];
         var labelx: string[] = [];
 
-        graph.links.forEach((x: any) => {
+        graph.links
+        .sort((a: any, b: any) => b.value - a.value)
+        .forEach((x: any) => {
             sourcex.push(nodesMap.get(x.source));
             targetx.push(nodesMap.get(x.target));
             valuex.push(x.value);
             labelx.push(`${x.source} - ${x.label} - ${x.target}`);
         });
-
-        // labelx.push(`${x.source} - ${x.label} - ${x.target}`);
 
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);
@@ -436,7 +420,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
                 run={tutorialStore.showCoOccurrencesSummaryTutorial}
                 callback={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(false)}>
 
-                </CoOccurrencesSummaryTour>
+            </CoOccurrencesSummaryTour>
             <div className="page-container-wide">
                 <PageTitle
                     title="Co-Occurrences Summary"
@@ -444,7 +428,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
                     help={true}
                     helpClickedHandler={() => tutorialStore.ChangeShowCoOccurrencesSummaryTutorial(true)}>
 
-                    </PageTitle>
+                </PageTitle>
 
                 <ConfirmDialog />
 

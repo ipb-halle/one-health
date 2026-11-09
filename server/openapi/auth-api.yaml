@@ -1,0 +1,245 @@
+openapi: 3.0.3
+
+info:
+  title: N1H Authentication API
+  version: 1.0.0
+  description: Authentication and authorization API for the N1H platform.
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local Development
+
+tags:
+  - name: Auth
+    description: Authentication and session management
+
+  - name: Users
+    description: User profile management
+
+paths:
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout current user
+      description: |
+        Logs out the currently authenticated N1H web user.
+        The server invalidates the HTTP session and clears the session authentication.
+      operationId: logout
+      security:
+        - sessionAuth: []
+
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: Get current authenticated user
+      description: |
+        Returns information about the currently authenticated user.
+      operationId: getCurrentUser
+      security:
+        - sessionAuth: []
+        - bearerAuth: []
+
+      responses:
+        "200":
+          description: Current authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/me:
+    put:
+      tags:
+        - Users
+      summary: Update current user profile
+      operationId: updateCurrentUser
+      security:
+        - sessionAuth: []
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        description: Updated user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+
+      responses:
+        "200":
+          description: User profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+
+  securitySchemes:
+
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: |
+        N1H application authentication using a server-side HTTP session.
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        N1H API authentication using an N1H-issued JWT access token.
+        Intended for mobile applications and external API clients.
+        Example:
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+  schemas:
+
+    UpdateUserRequest:
+      type: object
+
+      properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Updated display name within N1H.
+          example: "Dr. Jane Doe"
+
+        email:
+          type: string
+          format: email
+          description: Updated contact email address.
+          example: "jane.doe@institution.org"
+
+    UserRole:
+      type: string
+      enum:
+        - VIEWER
+        - CURATOR
+        - ADMIN
+      example: ADMIN
+
+    User:
+      type: object
+      required:
+        - id
+        - displayName
+        - role
+        - enabled
+
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: User's editable display name within N1H
+          example: "Dr. Jane Doe"
+
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: Optional N1H contact email address.
+          example: admin@n1h.org
+
+        orcid:
+          type: string
+          nullable: true
+          pattern: '^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$'
+          description: ORCID ID linked to this N1H account, when an ORCID identity is linked.
+          example: "0000-0001-2345-6789"
+
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+        enabled:
+          type: boolean
+          example: true
+
+    LogoutResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Logged out successfully
+
+    MessageResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Operation successful
+
+    ErrorResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+        message:
+          type: string
+          example: Unauthorized request
+
+        code:
+          type: string
+          example: AUTH_401
