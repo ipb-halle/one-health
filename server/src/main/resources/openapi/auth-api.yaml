@@ -84,6 +84,7 @@ paths:
       tags:
         - Users
       summary: Update current user profile
+      description: Update editable profile fields for the currently authenticated user.
       operationId: updateCurrentUser
       security:
         - sessionAuth: []
@@ -91,7 +92,6 @@ paths:
 
       requestBody:
         required: true
-        description: Updated user information
         content:
           application/json:
             schema:
@@ -118,22 +118,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
+      tags:
+        - Users
       operationId: deleteCurrentUser
-      summary: Delete the authenticated user's account
+      summary: Delete the current authenticated user's account
       description: >
-        Deletes or anonymizes the authenticated user's account
-        according to the application's data-retention policy.
+        Deletes the authenticated user's N1H account according to the
+        project's account deletion and data retention policy.
+      
+      security:
+        - sessionAuth: []
+        - bearerAuth: []
+  
       responses:
         "204":
-          description: Account deletion request completed
+          description: Account deleted successfully
         "401":
-          description: Authentication required
-        "403":
-          description: Request rejected by security policy
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         "409":
-          description: Account cannot be deleted in its current state
+          description: Account cannot be deleted due to data constraints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 
 components:
@@ -161,7 +185,8 @@ components:
 
     UpdateUserRequest:
       type: object
-
+      required:
+        - displayName
       properties:
         displayName:
           type: string
