@@ -5,15 +5,16 @@ import de.ipb_halle.server.services.exceptions.DownstreamConsumptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
 /**
  * Client for consuming documents via the downstream extraction service.
@@ -24,15 +25,15 @@ public class DownstreamConsumerClient {
 
     private static final Logger log = LoggerFactory.getLogger(DownstreamConsumerClient.class);
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
-    public DownstreamConsumerClient(WebClient webClient) {
-        this.webClient = webClient;
+    public DownstreamConsumerClient(RestClient downstreamRestClient) {
+        this.restClient = downstreamRestClient;
     }
 
     /**
      * Consumes a document file by sending it to the downstream extraction service.
-     * 
+     *
      * Retries up to 3 times with exponential backoff (1s, 2s, 4s) on network or
      * response errors. Falls back to recovery method which logs and rethrows as
      * DownstreamConsumptionException.
@@ -43,7 +44,7 @@ public class DownstreamConsumerClient {
      * @throws DownstreamConsumptionException if all retries are exhausted
      */
     @Retryable(
-            retryFor = {WebClientRequestException.class, WebClientResponseException.class},
+            retryFor = {ResourceAccessException.class, RestClientResponseException.class},
             maxAttempts = 3,
             backoff = @Backoff(delay = 1000, multiplier = 2)
     )
@@ -52,13 +53,12 @@ public class DownstreamConsumerClient {
 
         FileSystemResource fileResource = new FileSystemResource(filePath);
 
-        return webClient.post()
+        return restClient.post()
                 .uri("/api/v1/consume")
-                .body(BodyInserters.fromMultipartData(buildMultipartBody(fileResource, fileName)))
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(buildMultipartBody(fileResource, fileName))
                 .retrieve()
-                .bodyToMono(ExtractionResult.class)
-                .doOnError(error -> log.warn("Error consuming document {}: {}", fileName, error.getMessage()))
-                .block();
+                .body(ExtractionResult.class);
     }
 
     /**
@@ -88,12 +88,12 @@ public class DownstreamConsumerClient {
      * @return MultiValueMap representing the multipart body
      */
     private MultiValueMap<String, Object> buildMultipartBody(FileSystemResource fileResource, String fileName) {
-        MultiValueMap<String, Object> body = new org.springframework.util.LinkedMultiValueMap<>();
-        
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
         // Add the file part with the name "file" and original filename
         body.add("file", fileResource);
         body.add("fileName", fileName);
-        
+
         return body;
     }
 }

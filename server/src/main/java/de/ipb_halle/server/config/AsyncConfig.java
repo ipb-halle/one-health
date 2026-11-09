@@ -7,8 +7,8 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -68,18 +68,18 @@ public class AsyncConfig {
     }
 
     /**
-     * WebClient bean for reactive communication with downstream consumption service.
+     * RestClient bean for communication with downstream consumption service.
      *
      * Configured with:
-     * - Base URL pointing to the downstream RDKit extraction service
+     * - Base URL pointing to the downstream extraction service
      * - 30-second timeout for file processing requests
      * - Increased buffer size (10MB) to handle multipart file uploads
      *
-     * @return configured WebClient instance
+     * @return configured RestClient instance
      */
     @Bean
-    public WebClient webClient() {
-        return WebClient.builder()
+    public RestClient downstreamRestClient(RestClient.Builder builder) {
+        return builder
                 .baseUrl("http://localhost:8081")
                 .build();
     }
