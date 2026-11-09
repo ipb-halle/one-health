@@ -10,7 +10,7 @@
     </parent>
     <groupId>de.ipb-halle</groupId>
     <artifactId>server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>server</name>
     <description>A basic ontology manager</description>
     <properties>
@@ -123,7 +123,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/src/main/resources/openapi/auth-api.yaml</inputSpec>
+                            <inputSpec>${basedir}/openapi/auth-api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <apiPackage>de.ipb_halle.api</apiPackage>
                             <modelPackage>de.ipb_halle.model</modelPackage>
