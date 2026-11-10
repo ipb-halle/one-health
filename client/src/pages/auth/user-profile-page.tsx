@@ -231,7 +231,10 @@ const UserProfilePage: React.FC = () => {
                         <strong>
                             {profile.credits == null
                                 ? "Not available"
-                                : profile.credits.toLocaleString()}
+                                : profile.credits.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}
                         </strong>
                     </div>
 
