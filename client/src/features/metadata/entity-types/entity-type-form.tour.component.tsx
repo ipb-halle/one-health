@@ -1,4 +1,4 @@
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, EventData, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import { faL } from '@fortawesome/free-solid-svg-icons';
 import myGif from '../../../assets/tutorials/visualization/neighborhood-explorer/node_context_menu.gif';
@@ -12,7 +12,7 @@ const EntityTypeFormTour: React.FC<EntityTypeFormTourProps> = ({
     run,
     callback,
 }) => {
-    const handleJoyrideCallback = (data: CallBackProps) => {
+    const handleJoyrideCallback = (data: EventData) => {
         const { status, type } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -33,7 +33,7 @@ const EntityTypeFormTour: React.FC<EntityTypeFormTourProps> = ({
             ),
             placement: 'center',
             target: 'body',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#definition',
@@ -50,14 +50,15 @@ const EntityTypeFormTour: React.FC<EntityTypeFormTourProps> = ({
 
     return (
         <Joyride
-            callback={handleJoyrideCallback}
+            onEvent={handleJoyrideCallback}
             steps={steps}
             run={run}
             continuous
-            showProgress
             scrollToFirstStep
-            showSkipButton
-        />
+            options={{
+                showProgress: true,
+                buttons: ['back', 'close', 'primary', 'skip']
+            }} />
     );
 };
 
