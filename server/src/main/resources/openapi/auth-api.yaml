@@ -245,12 +245,11 @@ components:
           description: Timestamp of the user's most recent successful login.
 
         credits:
-          type: integer
-          format: int64
+          type: number
           minimum: 0
           nullable: true
           description: Current credit balance of the authenticated user.
-          example: 100
+          example: 100.00
 
     LogoutResponse:
       type: object

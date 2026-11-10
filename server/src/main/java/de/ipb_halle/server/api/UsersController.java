@@ -6,6 +6,7 @@ import de.ipb_halle.model.User;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
 import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
+import de.ipb_halle.server.postgre.repositories.UserCreditRepository;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 import de.ipb_halle.server.postgre.repositories.UserRepository;
@@ -18,18 +19,24 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "api")
 public class UsersController implements UsersApi {
 
     private final UserRepository userRepository;
     private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserCreditRepository userCreditRepository;
 
     public UsersController(
             UserRepository userRepository,
-            UserAuthenticationRepository userAuthenticationRepository) {
+            UserAuthenticationRepository userAuthenticationRepository,
+            UserCreditRepository userCreditRepository) {
+
         this.userRepository = userRepository;
         this.userAuthenticationRepository = userAuthenticationRepository;
+        this.userCreditRepository = userCreditRepository;
     }
 
     @Override
@@ -73,6 +80,9 @@ public class UsersController implements UsersApi {
         // Map the saved entity to a the generated API response model (UserDto)
         User response = UserMapper.MAPPER.toDto(savedUserEntity);
         response.setOrcid(orcid);
+
+        userCreditRepository.findByUser_Id(savedUserEntity.getId())
+                .ifPresent(userCredit -> response.setCredits(userCredit.getCredit()));
 
         return ResponseEntity.ok(response);
     }
