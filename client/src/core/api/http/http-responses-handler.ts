@@ -89,8 +89,6 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
             return;
         }
 
-        console.error('Unexpected request error:', error);
-
         this.messageService.show({
             severity: 'error',
             summary: 'Error',
