@@ -3,7 +3,7 @@ import { defineConfig } from 'orval';
 export default defineConfig({
     authApi: {
         input: {
-            target: '../server/src/main/resources/openapi/auth-api.yaml',
+            target: '../server/openapi/auth-api.yaml',
         },
         output: {
             mode: 'tags-split',
