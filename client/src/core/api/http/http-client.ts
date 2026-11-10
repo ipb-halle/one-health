@@ -39,13 +39,14 @@ const getResponseData = async (response: Response): Promise<unknown> => {
 };
 
 const getRequestUrl = (url: string): string => {
-    const normalizedBaseUrl = API_BASE_URL.endsWith('/')
-        ? API_BASE_URL.slice(0, -1)
-        : API_BASE_URL;
 
-    const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+    if (/^https?:\/\//i.test(url)) {
+        return url;
+    }
+    const normalizedBaseUrl = API_BASE_URL.replace(/\/+$/, '');
+    const normalizedUrl = url.replace(/^\/+/, '');
 
-    return `${normalizedBaseUrl}${normalizedUrl}`;
+    return `${normalizedBaseUrl}/${normalizedUrl}`;
 };
 
 export const httpRequest = async <T>(
@@ -67,7 +68,7 @@ export const httpRequest = async <T>(
     const response = await fetch(getRequestUrl(url), {
         ...options,
         headers,
-        credentials: 'same-origin',
+        credentials: options.credentials ?? 'same-origin',
     });
 
     // Read the response body before checking the status so that an error

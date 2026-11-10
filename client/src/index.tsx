@@ -9,27 +9,22 @@ import ToastMessageServiceProvider from './app/providers/messages/toast-message-
 import { StoreProvider } from './app/providers/store-provider';
 import App from './app/app.component';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
 );
 
-const queryClient = new QueryClient();
 root.render(
     <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <PrimeReactProvider>
-                <ToastMessageServiceProvider>
-                    <BrowserRouter>
-                        <StoreProvider>
-                            <App />
-                        </StoreProvider>
-                    </BrowserRouter>
-                </ToastMessageServiceProvider>
-            </PrimeReactProvider>
-        </QueryClientProvider>
+        <PrimeReactProvider>
+            <ToastMessageServiceProvider>
+                <BrowserRouter>
+                    <StoreProvider>
+                        <App />
+                    </StoreProvider>
+                </BrowserRouter>
+            </ToastMessageServiceProvider>
+        </PrimeReactProvider>
     </React.StrictMode>,
 );
 
