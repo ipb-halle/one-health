@@ -1,4 +1,4 @@
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, EventData, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import compoundDrawGif from '../../assets/tutorials/search/compound-search/compound_search_draw.gif';
 import compoundImportGif from '../../assets/tutorials/search/compound-search/compound_search_import.gif';
@@ -12,7 +12,7 @@ interface CompoundSearchPageTourProps {
 const CompoundSearchPageTourComponent: React.FC<
     CompoundSearchPageTourProps
 > = ({ run, callback }) => {
-    const handleJoyrideCallback = (data: CallBackProps) => {
+    const handleJoyrideCallback = (data: EventData) => {
         const { status, type } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -28,7 +28,7 @@ const CompoundSearchPageTourComponent: React.FC<
             styles: { tooltip: { width: '500px' } },
             placement: 'center',
             target: 'body',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#compound-search-structure-panel',
@@ -45,7 +45,7 @@ const CompoundSearchPageTourComponent: React.FC<
             ),
             styles: { tooltip: { width: '550px', height: '490px' } },
             placement: 'right',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#compound-search-structure-panel',
@@ -60,7 +60,7 @@ const CompoundSearchPageTourComponent: React.FC<
             ),
             styles: { tooltip: { width: '550px', height: '450px' } },
             placement: 'right',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#compound-search-exact-panel',
@@ -75,7 +75,7 @@ const CompoundSearchPageTourComponent: React.FC<
             ),
             styles: { tooltip: { width: '550px', height: '450px' } },
             placement: 'left',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -94,7 +94,7 @@ const CompoundSearchPageTourComponent: React.FC<
             ),
             styles: { tooltip: { width: '550px', height: '470px' } },
             placement: 'top',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -103,7 +103,7 @@ const CompoundSearchPageTourComponent: React.FC<
 
             content:
                 'You can access this tutorial at any time by clicking the help button.',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -112,14 +112,15 @@ const CompoundSearchPageTourComponent: React.FC<
 
     return (
         <Joyride
-            callback={handleJoyrideCallback}
+            onEvent={handleJoyrideCallback}
             steps={steps}
             run={run}
             continuous
-            showProgress
             scrollToFirstStep
-            showSkipButton
-        />
+            options={{
+                showProgress: true,
+                buttons: ['back', 'close', 'primary', 'skip']
+            }} />
     );
 };
 
