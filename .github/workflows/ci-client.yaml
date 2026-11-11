@@ -21,6 +21,9 @@ jobs:
     - name: Install dependencies based on yarn lock file
       run: cd client && yarn install --frozen-lockfile
 
+    - name: Generate orval glue code
+      run: cd client && yarn generate:api
+
     - name: Audit production dependencies
       run: cd client && yarn audit --groups dependencies
 
