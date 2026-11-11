@@ -6,7 +6,6 @@ import { injectable } from 'inversify';
  */
 @injectable()
 export abstract class BaseDataService {
-    readonly url: string = '';
 
     protected async handleRequest<TResult>(
         request: Promise<TResult>,
