@@ -12,8 +12,6 @@ import { INeighborhoodExplorerStore } from '../../../../store/neighborhood-explo
 
 Cytoscape.use(cxtmenu);
 
-import React from 'react';
-
 interface CytoscapeInteractiveChartProps {
     elements: any;
     contextMenu: boolean;
@@ -419,7 +417,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                                                 color: node.color,
                                             },
                                         });
-                                    } catch {}
+                                    } catch { }
                                 });
 
                                 graph.links.forEach((edge: any) => {
@@ -584,7 +582,6 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
             'overlay-opacity': 0,
             opacity: 0.2,
             'z-index': -1,
-            // "background-opacity" : 0.5,
         },
     };
 
@@ -649,8 +646,6 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                     this.selectedStyle,
                     this.lockeStyles,
                 ]}
-                //  layout={this.layout}
-                // "#343843"
                 style={{
                     width: '100%',
                     height: '100%',

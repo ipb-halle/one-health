@@ -15,11 +15,9 @@ public class EntityTypeDTO extends DTO<String> {
     private PropertyInfoDTO label;
     private Set<KeywordDTO> keywords;
     private Set<PropertyInfoDTO> properties;
-    private Set<DataSourceDTO> sources;
-
     public EntityTypeDTO(){}
 
-    public EntityTypeDTO(String id, String name, String pluralName, EntityTypeDTO parent, String description, String color, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties,Set<DataSourceDTO> sources) {
+    public EntityTypeDTO(String id, String name, String pluralName, EntityTypeDTO parent, String description, String color, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties) {
         this.id = id;
         this.name = name;
         this.pluralName = pluralName;
@@ -28,7 +26,6 @@ public class EntityTypeDTO extends DTO<String> {
         this.color = color;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
     public EntityTypeDTO(String id, String name, String pluralName, EntityTypeDTO parent, String description, String color, Set<PropertyInfoDTO> properties) {
@@ -41,14 +38,13 @@ public class EntityTypeDTO extends DTO<String> {
         this.properties = properties;
     }
 
-    public EntityTypeDTO(String name, String pluralName, EntityTypeDTO parent, String description, String color, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties, Set<PropertyInfoDTO> inheritedProperties, Set<DataSourceDTO> sources) {
+    public EntityTypeDTO(String name, String pluralName, EntityTypeDTO parent, String description, String color, Set<KeywordDTO> keywords, Set<PropertyInfoDTO> properties, Set<PropertyInfoDTO> inheritedProperties) {
         this.name = name;
         this.pluralName = pluralName;
         this.parent = parent;
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
     public String getId() {
@@ -121,14 +117,6 @@ public class EntityTypeDTO extends DTO<String> {
 
     public void setProperties(Set<PropertyInfoDTO> properties) {
         this.properties = properties;
-    }
-
-    public Set<DataSourceDTO> getSources() {
-        return sources;
-    }
-
-    public void setSources(Set<DataSourceDTO> sources) {
-        this.sources = sources;
     }
 
     public PropertyInfoDTO getLabel() {

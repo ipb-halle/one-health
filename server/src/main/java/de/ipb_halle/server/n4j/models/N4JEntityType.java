@@ -30,9 +30,6 @@ public class N4JEntityType {
     @Relationship(type = "INHERITS_PROPERTY", direction = Relationship.Direction.OUTGOING)
     private Set<N4JPropertyInfo> inheritedProperties;
 
-    @Relationship(type = "FROM_DATASOURCE", direction = Relationship.Direction.OUTGOING)
-    private Set<N4JDataSource> sources;
-
     @Relationship(type = "__HAS_LABEL", direction = Relationship.Direction.OUTGOING)
     private N4JPropertyInfo label;
 
@@ -44,7 +41,7 @@ public class N4JEntityType {
 
 
 
-    public N4JEntityType(String id, String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties, Set<N4JDataSource> sources) {
+    public N4JEntityType(String id, String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties) {
         this.id = id;
         this.name = name;
         this.pluralName = pluralName;
@@ -52,31 +49,28 @@ public class N4JEntityType {
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
         this.inheritedProperties = inheritedProperties;
         this.color = color;
     }
 
-    public N4JEntityType(String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties, Set<N4JDataSource> sources) {
+    public N4JEntityType(String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties) {
         this.name = name;
         this.pluralName = pluralName;
         this.parent = parent;
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
         this.inheritedProperties = inheritedProperties;
         this.color = color;
     }
 
-    public N4JEntityType(String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties, Set<N4JDataSource> sources, N4JPropertyInfo label) {
+    public N4JEntityType(String name, String pluralName, N4JEntityType parent, String description, String color, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JPropertyInfo> inheritedProperties, N4JPropertyInfo label) {
         this.name = name;
         this.pluralName = pluralName;
         this.parent = parent;
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
         this.inheritedProperties = inheritedProperties;
         this.color = color;
         this.label = label;
@@ -144,14 +138,6 @@ public class N4JEntityType {
 
     public void setProperties(Set<N4JPropertyInfo> properties) {
         this.properties = properties;
-    }
-
-    public Set<N4JDataSource> getSources() {
-        return sources;
-    }
-
-    public void setSources(Set<N4JDataSource> sources) {
-        this.sources = sources;
     }
 
     public Set<N4JPropertyInfo> getInheritedProperties() {

@@ -1,4 +1,3 @@
-import { AxiosError, AxiosResponse } from 'axios';
 import { IHttpResponsesHandler } from '../http-responses-handler';
 import { injectable } from 'inversify';
 
@@ -7,28 +6,21 @@ import { injectable } from 'inversify';
  */
 @injectable()
 export abstract class BaseDataService {
-    readonly url: string = '';
 
-    protected handleRequest<TResult>(
-        request: Promise<AxiosResponse<TResult, any>>,
+    protected async handleRequest<TResult>(
+        request: Promise<TResult>,
         responseHandler?: IHttpResponsesHandler,
     ): Promise<TResult> {
-        if (responseHandler) {
-            return request
-                .then((x: AxiosResponse<TResult, any>) => {
-                    if (responseHandler.handleSuccess) {
-                        responseHandler.handleSuccess();
-                    }
-                    return Promise.resolve(x.data);
-                })
-                .catch((errorResponse: AxiosError) => {
-                    if (responseHandler.handleError) {
-                        responseHandler.handleError(errorResponse);
-                    }
-                    return Promise.reject(errorResponse);
-                });
-        } else {
-            return request.then((x) => x.data);
+        let result: TResult;
+
+        try {
+            result = await request;
+        } catch (error: unknown) {
+            responseHandler?.handleError?.(error);
+            throw error;
         }
+
+        responseHandler?.handleSuccess?.();
+        return result;
     }
 }

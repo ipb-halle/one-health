@@ -89,7 +89,6 @@ export const CompoundSearchPageComponent: React.FC = () => {
             1,
         );
         setEditor(newEditor);
-        // metadataService.getBySMILES("[H]OC(=O)C=1C(OC(=O)C([H])([H])[H])=C([H])C([H])=C([H])C1[H]", messageService!);
     }, []);
 
     const onMolFileUpload = async (e: FileUploadSelectEvent) => {
@@ -286,7 +285,7 @@ export const CompoundSearchPageComponent: React.FC = () => {
                 icon="fa fa-atom"
                 title="Structure Search"
                 help={true}
-                helpClickedHandler={() => {tutorialStore.ChangeShowCompoundSearchTutorial(true)}}/>           
+                helpClickedHandler={() => {tutorialStore.ChangeShowCompoundSearchTutorial(true)}}/>
 
             <CompoundSearchPageTourComponent
                 run={tutorialStore.showCompoundSearchTutorial}

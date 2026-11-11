@@ -1,7 +1,9 @@
 package de.ipb_halle.server.services;
 
-import de.ipb_halle.server.data.dtos.*;
-import de.ipb_halle.server.data.dtos.*;
+import de.ipb_halle.server.data.dtos.EntityTypeDTO;
+import de.ipb_halle.server.data.dtos.KeywordDTO;
+import de.ipb_halle.server.data.dtos.LinkTypeDTO;
+import de.ipb_halle.server.data.dtos.PropertyInfoDTO;
 import de.ipb_halle.server.data.enums.Cardinality;
 import de.ipb_halle.server.data.enums.DataType;
 import de.ipb_halle.server.data.interfaces.IEntityTypeRepository;
@@ -73,8 +75,7 @@ public class OntologyInitializerService implements IOntologyInitializerService {
                         "A multicellular eukaryotic organism that belongs to the kingdom Plantae.",
                         "#297e00",
                         new HashSet<>(new ArrayList<KeywordDTO>()),
-                        new HashSet<PropertyInfoDTO>(List.of(plantProperties)),
-                        new HashSet<>(new ArrayList<DataSourceDTO>())
+                        new HashSet<PropertyInfoDTO>(List.of(plantProperties))
 
                 ),
                 new EntityTypeDTO(
@@ -85,8 +86,7 @@ public class OntologyInitializerService implements IOntologyInitializerService {
                         "A chemical compound produced by a living organism through its natural biochemical pathways.",
                         "#343ea0",
                         new HashSet<>(new ArrayList<KeywordDTO>()),
-                        new HashSet<>(List.of(npProperties)),
-                new HashSet<>(new ArrayList<DataSourceDTO>())
+                        new HashSet<>(List.of(npProperties))
 
                 ),
                 new EntityTypeDTO(
@@ -97,8 +97,7 @@ public class OntologyInitializerService implements IOntologyInitializerService {
                         "A condition that impairs the normal functioning of the body or one of its parts, and it is typically associated with specific symptoms and signs.",
                         "#b1002a",
                         new HashSet<>(new ArrayList<KeywordDTO>()),
-                        new HashSet<>(List.of(diseaseProperties)),
-                        new HashSet<>(new ArrayList<DataSourceDTO>())
+                        new HashSet<>(List.of(diseaseProperties))
                 )
         };
 

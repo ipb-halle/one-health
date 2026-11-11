@@ -10,8 +10,6 @@ import de.ipb_halle.server.data.interfaces.IEntityTypeRepository;
 import de.ipb_halle.server.n4j.mapping.N4JMapper;
 import de.ipb_halle.server.n4j.models.N4JEntityType;
 import de.ipb_halle.server.n4j.models.N4JPropertyInfo;
-import de.ipb_halle.server.services.interfaces.PageResult;
-import de.ipb_halle.server.services.interfaces.QueryCommand;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,11 +112,6 @@ public class N4JEntityTypeRepository implements IEntityTypeRepository {
 
         neo4jTemplate.deleteById(id, N4JEntityType.class);
 
-    }
-
-    @Override
-    public PageResult<EntityTypeDTO> GetPage(QueryCommand query) {
-        return null;
     }
 
     @Override

@@ -1,0 +1,93 @@
+import { RootStoreContext } from "@/app/providers/store-provider";
+import CompactResultDisplay from "@/features/search/general-search/components/compact-result-display";
+import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
+import { useContext } from "react";
+import earthImage from '@/assets/img/earth_image.png';
+import './mobile-home-page.component.scss';
+import SearchBar from "./SearchBar";
+
+
+const statistics = [{ value: "25,000+", label: "Publications", icon: "fa-regular fa-file-lines", }, { value: "3,400+", label: "Plant Species", icon: "fa-solid fa-seedling", }, { value: "8,200+", label: "Natural Compounds", icon: "fa-solid fa-atom", }, { value: "1,500+", label: "Diseases", icon: "fa-solid fa-virus", },];
+
+function MobileHomePageComponent() {
+
+    const generalSearchStore = useContext(RootStoreContext).generalSearchStore;
+
+    const isSearchingActive = generalSearchStore.isSearching !== null;
+
+
+
+
+    return (
+        <div className="mobile-landing-container">
+
+            {isSearchingActive ? (
+                <div className="mobile-results-wrapper">
+                    <SearchBar />
+
+                    <div className="mobile-results-header">
+                        <Button
+                            label="Back to overview"
+                            icon="pi pi-arrow-left"
+                            className="p-button-text p-button-sm mobile-back-btn"
+                            onClick={generalSearchStore.clearSearch}
+                        />
+                    </div>
+                    <CompactResultDisplay />
+                </div>
+            ) : (
+                <div className="mobile-main-content">
+                    <SearchBar />
+
+                    <div className="mobile-hero-card">
+                        <div className="hero-left-col">
+                            <img
+                                src={earthImage}
+                                alt="One Health Earth Illustration"
+                                className="hero-earth-img"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mobile-hero-card">
+                        <div className="hero-right-col">
+                            <h2 className="hero-heading">
+                                Empowering the research on plant-derived
+                                natural products for the treatment of diseases
+                            </h2>
+                        </div>
+                    </div>
+
+                    {/* PLATFORM STATISTICS */}
+                    <div className="mobile-stats-grid">
+                        {statistics.map((stat) => (
+                            <div
+                                className="stat-card"
+                                key={stat.label}
+                            >
+
+                                <div className="stat-icon-box">
+                                    <i
+                                        className={`${stat.icon} stat-icon`}
+                                    />
+                                </div>
+
+                                <div className="stat-text-box">
+                                    <span className="stat-value">
+                                        {stat.value}
+                                    </span>
+                                    <span className="stat-label">
+                                        {stat.label}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+export default observer(MobileHomePageComponent);

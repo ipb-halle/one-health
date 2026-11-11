@@ -1,10 +1,10 @@
 import { HttpStatusCodes } from './http-status-codes';
-import { AxiosError } from 'axios';
+import { HttpError } from './http-error';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 export interface IHttpResponsesHandler {
     handleSuccess?(): void;
-    handleError?(errorResponse: AxiosError): void;
+    handleError?(errorResponse: unknown): void;
 }
 
 export interface IHttpResponseHandlerSettings {
@@ -19,7 +19,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
     constructor(
         protected messageService: MessageService,
         protected settings?: IHttpResponseHandlerSettings,
-    ) {}
+    ) { }
 
     handleSuccess(): void {
         if (this.settings && this.settings.showSuccessMessage) {
@@ -33,26 +33,22 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         }
     }
 
-    handleError(errorResponse: AxiosError): void {
-        if (this.settings && this.settings.showErrorMessage == false) return;
+    handleError(errorResponse: unknown): void {
+        if (this.settings?.showErrorMessage === false) return;
 
-        if (
-            this.settings &&
-            this.settings.errorStatusesMessages &&
-            this.settings.errorStatusesMessages[
-                errorResponse.response?.status
-                    ? errorResponse.response.status
-                    : 0
-            ] != null
-        ) {
+        if (!(errorResponse instanceof HttpError)) {
+            this.handleUnexpectedError(errorResponse);
+            return;
+        }
+
+        const customMessage =
+            this.settings?.errorStatusesMessages?.[errorResponse.status];
+
+        if (customMessage != null) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
-                detail: this.settings.errorStatusesMessages[
-                    errorResponse.response?.status
-                        ? errorResponse.response.status
-                        : 0
-                ],
+                detail: customMessage,
             });
             return;
         }
@@ -60,22 +56,43 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
         this.handleErrorHttpStatusCode(errorResponse);
     }
 
-    protected handleErrorHttpStatusCode(errorResponse: AxiosError): void {
+    protected handleErrorHttpStatusCode(errorResponse: HttpError): void {
         switch (errorResponse.status) {
             default:
-                this.handleOtherError(errorResponse);
+                this.handleOtherError();
         }
     }
 
-    protected handleOtherError(errorResponse: AxiosError): void {
+    protected handleOtherError(): void {
         this.messageService.show({
             severity: 'error',
             summary: 'Error',
-            detail: errorResponse.code
-                ? errorResponse.code
-                : 'An error has occurred at the website and your support team will need to fix the problem. ' +
-                  'A preliminary report has been sent to the support team.Please do follow - up on the preliminary ' +
-                  'report using the Report a Problem page',
+            detail:
+                'An error has occurred at the website and your support team will need to fix the problem. ' +
+                'A preliminary report has been sent to the support team. Please do follow-up on the preliminary ' +
+                'report using the Report a Problem page',
+        });
+    }
+
+    protected handleUnexpectedError(error: unknown): void {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+        }
+
+        if (error instanceof TypeError) {
+            this.messageService.show({
+                severity: 'error',
+                summary: 'Network Error',
+                detail:
+                    'Unable to complete the request. Please check your connection.',
+            });
+            return;
+        }
+
+        this.messageService.show({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An unexpected error occurred.',
         });
     }
 }
@@ -90,11 +107,9 @@ export class OnReadByIdResponsesHandler extends BaseHttpResponsesHandler {
     }
 
     protected override handleErrorHttpStatusCode(
-        errorResponse: AxiosError,
+        errorResponse: HttpError,
     ): void {
-        if (
-            errorResponse.response?.status == HttpStatusCodes.Status404NotFound
-        ) {
+        if (errorResponse.status === HttpStatusCodes.Status404NotFound) {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Error',
@@ -124,80 +139,3 @@ export class OnCreateResponseHandler extends BaseHttpResponsesHandler {
             this.settings.successMessage = `${entityTitle} created.`;
     }
 }
-
-// export class OnUpdateResponseHandler extends BaseHttpResponsesHandler {
-//     constructor(private entityTitle: string, protected toast : MutableRefObject<Toast>, settings?: IHttpResponseHandlerSettings) {
-//         super(toast, settings);
-
-//         if (!this.settings) this.settings = <IHttpResponseHandlerSettings> {};
-//         if (this.settings.showSuccessMessage == null) this.settings.showSuccessMessage = true;
-//         if (this.settings.successMessage == null) this.settings.successMessage = `${entityTitle} updated.`;
-//     }
-
-//     protected handleErrorHttpStatusCode(errorResponse: AxiosResponse): void {
-//         if (errorResponse.status == HttpStatusCodes.Status404NotFound) {
-//             this.toast.current?.show({severity: 'error', summary: 'Error', detail:
-//                 `${this.entityTitle} not found. Perhaps another user has deleted the ${this.entityTitle}. ` +
-//                 "Please consider taking a note of your changes and then refreshing the page."
-//             });
-//             return;
-//         }
-
-//         super.handleErrorHttpStatusCode(errorResponse);
-//     }
-// }
-
-// export class OnDeleteResponseHandler extends BaseHttpResponsesHandler {
-//     constructor(private entityTitle: string, protected toast : MutableRefObject<Toast>, settings?: IHttpResponseHandlerSettings) {
-//         super(toast, settings);
-
-//         if (!this.settings) this.settings = <IHttpResponseHandlerSettings> {};
-//         if (this.settings.showSuccessMessage == null) this.settings.showSuccessMessage = true;
-//         if (this.settings.successMessage == null) this.settings.successMessage = `${entityTitle} deleted.`;
-//     }
-
-//     protected handleErrorHttpStatusCode(errorResponse: AxiosResponse): void {
-//         if (errorResponse.status == HttpStatusCodes.Status404NotFound) {
-//             this.toast.current?.show({severity: 'error', summary: 'Error', detail:
-//                 `${this.entityTitle} not found. Perhaps another user has deleted the ${this.entityTitle}. ` +
-//                 "Please consider taking a note of your changes and then refreshing the page."
-//             });
-//             return;
-//         }
-
-//         super.handleErrorHttpStatusCode(errorResponse);
-//     }
-// }
-
-// export class HttpResponsesHandlersFactory {
-//     constructor(protected toast : MutableRefObject<Toast>) {
-//     }
-
-//     getDefault(settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new BaseHttpResponsesHandler(this.toast, settings);
-//     }
-
-//     getForReadById(entityTitle: string, settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new OnReadByIdResponsesHandler(entityTitle, this.toast, settings);
-//     }
-
-//     getForReadByFilter(settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new BaseHttpResponsesHandler(this.toast, settings);
-//     }
-
-//     getForReadAll(settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new BaseHttpResponsesHandler(this.toast, settings);
-//     }
-
-//     getForCreate(entityTitle: string, settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new OnCreateResponseHandler(entityTitle, this.toast, settings);
-//     }
-
-//     getForUpdate(entityTitle: string, settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new OnUpdateResponseHandler(entityTitle, this.toast, settings);
-//     }
-
-//     getForDelete(entityTitle: string, settings?: IHttpResponseHandlerSettings): IHttpResponsesHandler {
-//         return new OnDeleteResponseHandler(entityTitle, this.toast, settings);
-//     }
-// }

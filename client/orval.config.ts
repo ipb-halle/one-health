@@ -1,0 +1,25 @@
+import { defineConfig } from 'orval';
+
+export default defineConfig({
+    authApi: {
+        input: {
+            target: '../server/openapi/auth-api.yaml',
+        },
+        output: {
+            mode: 'tags-split',
+            target: 'src/generated/auth',
+            schemas: 'src/generated/auth/model',
+
+            client: 'fetch',
+            baseUrl: '/api',
+            clean: true,
+
+            override: {
+                mutator: {
+                    path: './src/core/api/http/http-client.ts',
+                    name: 'httpRequest',
+                },
+            },
+        },
+    },
+});

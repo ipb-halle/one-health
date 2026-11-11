@@ -28,9 +28,6 @@ public class N4JLinkType {
     @Relationship(type = "HAS_PROPERTY", direction = Relationship.Direction.OUTGOING)
     private Set<N4JPropertyInfo> properties;
 
-    @Relationship(type = "FROM_DATASOURCE", direction = Relationship.Direction.OUTGOING)
-    private Set<N4JDataSource> sources;
-
     public N4JLinkType() {
     }
 
@@ -38,7 +35,7 @@ public class N4JLinkType {
         this.id = id;
     }
 
-    public N4JLinkType(String id, String name, String direction, N4JEntityType leftEntityType, Cardinality leftCardinality, N4JEntityType rightEntityType, Cardinality rightCardinality, String description, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JDataSource> sources) {
+    public N4JLinkType(String id, String name, String direction, N4JEntityType leftEntityType, Cardinality leftCardinality, N4JEntityType rightEntityType, Cardinality rightCardinality, String description, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties) {
         this.id = id;
         this.name = name;
         this.direction = direction;
@@ -49,10 +46,9 @@ public class N4JLinkType {
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
-    public N4JLinkType(String name, String direction, N4JEntityType leftEntityType, Cardinality leftCardinality, N4JEntityType rightEntityType, Cardinality rightCardinality, String description, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties, Set<N4JDataSource> sources) {
+    public N4JLinkType(String name, String direction, N4JEntityType leftEntityType, Cardinality leftCardinality, N4JEntityType rightEntityType, Cardinality rightCardinality, String description, Set<N4JKeyword> keywords, Set<N4JPropertyInfo> properties) {
         this.name = name;
         this.direction = direction;
         this.leftEntityType = leftEntityType;
@@ -62,7 +58,6 @@ public class N4JLinkType {
         this.description = description;
         this.keywords = keywords;
         this.properties = properties;
-        this.sources = sources;
     }
 
     public String getId() {
@@ -145,11 +140,4 @@ public class N4JLinkType {
         this.properties = properties;
     }
 
-    public Set<N4JDataSource> getSources() {
-        return sources;
-    }
-
-    public void setSources(Set<N4JDataSource> sources) {
-        this.sources = sources;
-    }
 }
