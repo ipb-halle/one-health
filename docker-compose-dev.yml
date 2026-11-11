@@ -20,6 +20,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/server/server.Dockerfile
+      args:
+         SPRING_PROFILES_ACTIVE: dev
     environment:
       SPRING_PROFILES_ACTIVE: dev
       ORCID_CLIENT_ID: ${ORCID_CLIENT_ID:-}
