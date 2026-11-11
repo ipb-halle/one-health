@@ -27,5 +27,8 @@ jobs:
     - name: Audit production dependencies
       run: cd client && yarn audit --groups dependencies
 
+    - name: Build the project
+      run: cd client && yarn build
+
     - name: Run unit tests
       run: cd client && yarn test
