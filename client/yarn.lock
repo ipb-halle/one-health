@@ -1198,9 +1198,9 @@
     pbf "^5.0.0"
 
 "@maplibre/geojson-vt@^6.3.0":
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/@maplibre/geojson-vt/-/geojson-vt-6.3.1.tgz#a4c015e2bdea681e4b8b00db9ecfbe64d3d9bdf5"
-  integrity sha512-743sKqGQPU35Vgdjw0GFk58mUdKlxI3c36vvUvrU9qBx7EdWGSXagLU5yNlOTP12WADo+foDyP5vtlDJjzlvHw==
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/geojson-vt/-/geojson-vt-6.3.0.tgz#468783ab2726b678751f20e9ac0766ac6ee375a5"
+  integrity sha512-3Zw2jsU9pIJG3G2CQFbLjWj2MlAHodhD7cSY+15iywUuLmmkgzcKRnueVRZ4AcC/5wOtfhidcJAAzBpoBNs3Xg==
   dependencies:
     kdbush "^4.1.0"
 
