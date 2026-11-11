@@ -2809,9 +2809,9 @@ camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001819:
-  version "1.0.30001823"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001823.tgz#331a7cb49aa317517697e76b0b1295f2225959fe"
-  integrity sha512-TQ5s/djDjNk1axreUW+4rULH+BmdCMLiJkhaXnO5wqivG7tITkSUj4ItIdzqdZHKaXcHAV8dhH3JxOM7/7bwqw==
+  version "1.0.30001826"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001826.tgz#6c2cc43e4858e54d6f7200fa87b4de93cb39aa77"
+  integrity sha512-wTB+9tIbLro/BCXwLuNV1meHE4L9dS6dArMDwgYfNBPMYScqClHyGunhkCSDtHhe/69Xl0sHlKgBVZ+fNsYtWA==
 
 chalk@^3.0.0:
   version "3.0.0"
@@ -3086,9 +3086,9 @@ cytoscape-svg@0.4.0:
   integrity sha512-omqIzfPd1Vy9mk6lHTiR2wTbjxELxb9GXSQ2pE6W+GwAe/6/yvOUQ2h5ApFf2QhCBnpMwLkCTq5DZXxBCgUpDw==
 
 cytoscape@*:
-  version "3.34.4"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.34.4.tgz#20cbd1b1f8cb2e25699bdf68887564fc3c74b375"
-  integrity sha512-msY99tMY8iWTg+sIPGfSqDcPNOt4xcj+v/K/7qUFaCUxxlqnMkUYLBjRUzn9W5CU/R2hrmtJa5+UtovrEM2ctg==
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.35.0.tgz#2049a927b5f2cf9501e23cadeb27e59d831ea750"
+  integrity sha512-sMvBIXiGMnhkCaWz2R06FwF/27MNlS+Tqvi17foO9UhnUg3XGZccKjxsvEqQFAQYMSSZmN5SxYzUYlQ0DOJJ3g==
 
 cytoscape@3.27.2:
   version "3.27.2"
@@ -3393,9 +3393,9 @@ eastasianwidth@^0.2.0:
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
 electron-to-chromium@^1.5.464:
-  version "1.5.479"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.479.tgz#879b8b0c0447b3d9beec2954eae77e7271844784"
-  integrity sha512-uAJdJQ7vHa4TvPfzt1TOqoRgHmav5gwmqHMPLxBH6m8Cbj5R9/z/rygTOQiZ8pe5g0ZAEogga1bP6HoKcOzx/Q==
+  version "1.5.481"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.481.tgz#cb6d3067ae0611e0f2004fffc6b9d821f24a88b3"
+  integrity sha512-dNUsbAP6E2S1dHIYEuN3cQ0dViThjMtpVRheGdvv5HgHFtzLi4Cu4Mbzms85YggP3Eh2VVZTl5+XxEN8ofCbmQ==
 
 elementary-circuits-directed-graph@^1.0.4:
   version "1.3.1"
@@ -6342,9 +6342,9 @@ pkg-dir@^4.2.0:
     find-up "^4.0.0"
 
 plotly.js@^4.1.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/plotly.js/-/plotly.js-4.2.0.tgz#4de4ae23371f9839a4ab3cf776f60c7582642c66"
-  integrity sha512-981kV6uik6mKxPz1ztaoFR27rKWRGvjrXRLIQokPbaTEA04osqc1599O5GrCWl51cu6jmhdAUnJfBjt31NLgdw==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/plotly.js/-/plotly.js-4.3.0.tgz#0ffe336cc5c34ccf6f2a476b7d69cb21965a9c17"
+  integrity sha512-q2rdd+w+WVl8c0wLkwaKGAaNeA9/2JSOCtf1Scp49MK0NuohnJDlaahRDNsAczxvLp4hqDwrKUvJ6D1my6f8mA==
   dependencies:
     "@plotly/d3" "3.8.2"
     "@plotly/d3-sankey" "0.12.3"
