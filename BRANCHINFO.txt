@@ -1,1 +1,1 @@
-This is the main branch.
+This is a branch for the implementation of a proper rendering of the molecular formulas.
