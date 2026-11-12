@@ -8,6 +8,7 @@ import de.ipb_halle.server.services.client.dto.ExtractionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +35,18 @@ public class DocumentWorkerService {
     private final DownstreamConsumerClient downstreamConsumerClient;
     private final Semaphore downstreamPermit;
     private final ObjectMapper objectMapper;
+    private final int downstreamMaxWaitSeconds;
 
     public DocumentWorkerService(DocumentRecordRepository documentRepository,
                                  DownstreamConsumerClient downstreamConsumerClient,
-                                 ObjectMapper objectMapper) {
+                                 ObjectMapper objectMapper,
+                                 @Value("${document.downstream.max-wait-seconds}") int downstreamMaxWaitSeconds) {
         this.documentRepository = documentRepository;
         this.downstreamConsumerClient = downstreamConsumerClient;
         // Semaphore(1) ensures only one document is processed at a time by the downstream service
         this.downstreamPermit = new Semaphore(1);
         this.objectMapper = objectMapper;
+        this.downstreamMaxWaitSeconds = downstreamMaxWaitSeconds;
     }
 
     /**
@@ -81,8 +85,8 @@ public class DocumentWorkerService {
             log.debug("Document {} status updated to DISPATCHED", documentId);
 
             // 3. Acquire semaphore and process
-            if (!downstreamPermit.tryAcquire(300, TimeUnit.SECONDS)) {
-                log.error("Failed to acquire downstream permit for document {} within 300 seconds timeout", documentId);
+            if (!downstreamPermit.tryAcquire(downstreamMaxWaitSeconds, TimeUnit.SECONDS)) {
+                log.error("Failed to acquire downstream permit for document {} within {} seconds timeout", documentId, downstreamMaxWaitSeconds);
                 document.setStatus(DocumentRecordStatus.FAILED);
                 document.setUpdatedAt(LocalDateTime.now());
                 documentRepository.save(document);

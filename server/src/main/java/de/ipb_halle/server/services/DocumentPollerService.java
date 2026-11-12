@@ -24,7 +24,7 @@ public class DocumentPollerService {
 
     public DocumentPollerService(DocumentRecordRepository documentRepository,
                                  DocumentWorkerService documentWorkerService,
-                                 @Value("${document.poller.batch-size:20}") int batchSize) {
+                                 @Value("${document.poller.batch-size}") int batchSize) {
         this.documentRepository = documentRepository;
         this.documentWorkerService = documentWorkerService;
         this.batchSize = batchSize;
@@ -40,7 +40,7 @@ public class DocumentPollerService {
      * fails to dispatch, the error is logged and processing continues with the
      * next document.
      */
-    @Scheduled(fixedDelayString = "${document.poller.delay-ms:5000}")
+    @Scheduled(fixedDelayString = "${document.poller.delay-ms}")
     public void pollAndDispatch() {
         try {
             // Fetch a batch of PENDING documents
