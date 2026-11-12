@@ -4,6 +4,8 @@ import { HistorySearchStore } from '../features/search/search-history/history-se
 import { ScreenDeviceStore } from './ScreenDeviceStore';
 import { EntityDetailStore } from './EntityDetailStore';
 import { TutorialStore } from './TutorialStore';
+import { WarningStore } from './WarningStore';
+import { NeighborhoodExplorerStore } from './neighborhood-explorer-store';
 import { AuthStore } from './AuthStore';
 
 export const RootStore = types
@@ -13,6 +15,8 @@ export const RootStore = types
         screenDeviceStore: types.optional(ScreenDeviceStore, {}),
         entityDetailStore: types.optional(EntityDetailStore, {}),
         tutorialStore: types.optional(TutorialStore, {}),
+        warningStore: types.optional(WarningStore, {}),
+        neighborhoodExplorerStore: types.optional(NeighborhoodExplorerStore, {}),
         authStore: types.optional(AuthStore, {}),
     });
 

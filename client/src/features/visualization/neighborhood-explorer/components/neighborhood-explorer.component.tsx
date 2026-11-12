@@ -8,6 +8,7 @@ import {
 } from 'react';
 
 import { SERVICES } from '@/app/di/service-types';
+import { RootStoreContext } from '@/app/providers/store-provider';
 import { IEntityTypeService } from '@/features/metadata/services/entity-type-service';
 import { IGeneralSearchService } from '@/features/search/general-search/services/general-search-service';
 import { Button } from 'primereact/button';
@@ -37,10 +38,9 @@ import {
     LoadingPlaceholderComponent,
 } from '../../../../shared/components';
 import MolecularDrawComponent from '../../../../shared/components/molecular-draw.component';
-import { STORES } from '../../../../store/inversify';
-import { INeighborhoodExplorerStore } from '../../../../store/inversify/neighborhood-explorer-store';
 import { ISavedGraphVisualization } from '../../visualization-history/models/saved-graph-visualization';
 
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 const MemoChart = React.memo(CytoscapeInteractiveChartComponent);
 
@@ -93,9 +93,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
     const [selectedLink, setSelectedLink] = useState<any>(null);
 
     const neighborhoodExplorerStore =
-        dependencyFactory.get<INeighborhoodExplorerStore>(
-            STORES.INeighborhoodExplorerStore,
-        );
+        useContext(RootStoreContext).neighborhoodExplorerStore;
 
     const init = async () => {
         setQueryHistory(
@@ -104,10 +102,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
             ),
         );
 
-        if (
-            !neighborhoodExplorerStore.nodes ||
-            neighborhoodExplorerStore.nodes.length <= 0
-        ) {
+        if (neighborhoodExplorerStore.nodes.length === 0) {
             const viz = await graphVisualizationHistoryService.get(
                 '0',
                 messageService!,
@@ -831,7 +826,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
                                         graphService={graphService}
                                         messageService={messageService!}
                                         store={
-                                            neighborhoodExplorerStore
+                                            neighborhoodExplorerStore as any
                                         }></MemoChart>
                                 </div>
                             </div>
@@ -1021,4 +1016,4 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
     );
 };
 
-export default NeighborhoodExplorerComponent;
+export default observer(NeighborhoodExplorerComponent);
