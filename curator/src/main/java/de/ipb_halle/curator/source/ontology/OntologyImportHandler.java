@@ -53,11 +53,10 @@ public class OntologyImportHandler extends AbstractImportHandler {
     }
 
     private void executeQuery(DataSource source, Dataset dataset) {
-        // xxxxxx
         String query = source.getParameter(PARAMETER_QUERY).toString();
         try (QueryExecution qexec = QueryExecutionFactory.create(query, dataset)) {
             ResultSet results = qexec.execSelect();
-            if (results.hasNext()) {
+            while (results.hasNext()) {
                 QuerySolution solution = results.nextSolution();
                 reset();
                 handleElements(source, solution);

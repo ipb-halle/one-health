@@ -75,7 +75,7 @@ public class FieldService {
     @Transactional
     public void saveField(AbstractField field) {
         if (field.isMultivalued()) {
-            saveFields((MultiValueFieldDTO) field);
+            saveFields((MultiValueField) field);
         } else {
             saveSingleField(field);
         }
@@ -98,7 +98,7 @@ public class FieldService {
         }
     }
 
-    private void saveFields(MultiValueFieldDTO field) {
+    private void saveFields(MultiValueField field) {
         field.getValues()
                 .stream()
                 .forEach(f -> saveField((AbstractField) f));

@@ -117,6 +117,10 @@ public class SourceRegistry {
         return dataSources;
     }
 
+    public DataSource getDataSourceById(String id) {
+        return dataSourcesById.get(id);
+    }
+
     public boolean isInitialized() {
         return this.dataSourcesInitialized
                 && this.dataSourceParametersInitialized

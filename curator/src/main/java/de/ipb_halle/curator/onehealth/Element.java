@@ -11,7 +11,7 @@ import de.ipb_halle.curator.metadata.ElementType;
 import java.util.Collection;
 import java.util.UUID;
 import de.ipb_halle.curator.fields.AbstractField;
-import de.ipb_halle.curator.fields.MultiValueFieldDTO;
+import de.ipb_halle.curator.fields.MultiValueField;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,13 +52,13 @@ public class Element {
         boolean multivalued = field.getFieldDefinition().isMultivalued();
         if(fields.containsKey(key)) {
             if (multivalued) {
-                ((MultiValueFieldDTO) fields.get(key)).addValue(field);
+                ((MultiValueField) fields.get(key)).addValue(field);
                 return;
             }
             throw new UnsupportedOperationException("Multiple values for singleton field");
         } else {
             if (multivalued) {
-                fields.put(key, new MultiValueFieldDTO(field));
+                fields.put(key, new MultiValueField(field));
             } else {
                 fields.put(key, field);
             }

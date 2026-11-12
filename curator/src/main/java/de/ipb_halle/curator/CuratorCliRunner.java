@@ -7,10 +7,6 @@
  */
 package de.ipb_halle.curator;
 
-import de.ipb_halle.curator.fields.FieldConverter;
-import de.ipb_halle.curator.fields.FieldService;
-import de.ipb_halle.curator.metadata.MetadataRegistry;
-import de.ipb_halle.curator.onehealth.ElementService;
 import de.ipb_halle.curator.onehealth.NodeWriter;
 import de.ipb_halle.curator.source.DataSource;
 import de.ipb_halle.curator.source.ImportHandler;
@@ -40,10 +36,17 @@ public class CuratorCliRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (DataSource source : sourceRegistry.getDataSources()) {
-            ImportHandler handler = factory.build(source.getHandler());
-            handler.importSource(source);
+        boolean isRun = false;
+        for (String arg : args) {
+            if (arg.equals("--run")) {
+                isRun = true;
+            }
         }
-        // nodeWriter.writeNodes(elementType, output);
+        if (isRun) {
+            for (DataSource source : sourceRegistry.getDataSources()) {
+                ImportHandler handler = factory.build(source.getHandler());
+                handler.importSource(source);
+            }
+        }
     }
 }

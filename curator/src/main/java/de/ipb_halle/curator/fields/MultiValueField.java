@@ -14,11 +14,11 @@ import java.util.List;
  *
  * @author fblocal
  */
-public class MultiValueFieldDTO extends AbstractField<ListEntity> {
+public class MultiValueField extends AbstractField<ListEntity> {
 
     private List<AbstractField> values;
 
-    public MultiValueFieldDTO(AbstractField first) {
+    public MultiValueField(AbstractField first) {
         super(first.getId(), first.getFieldDefinition());
         values = new ArrayList<> ();
         first.setOrder(0);
