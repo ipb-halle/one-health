@@ -41,6 +41,7 @@ import { toolDisclaimer } from '../../../shared';
 import React from 'react';
 import { RootStoreContext } from '@/app/providers/store-provider';
 import { observer } from 'mobx-react-lite';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
 
 // ToDo: this code fixes the "old import method" for Plotly 2.6.0 and
 // we need to upgrade to Plotly 4.x asap to get rid of this.
@@ -414,6 +415,21 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         );
     };
 
+    // "np" entity type's label property is a molecular formula, so render it via FormulaRenderer
+    const leftIsNP = leftTypeQuery?.type === 'np';
+    const rightIsNP = rightTypeQuery?.type === 'np';
+
+    const entityBodyTemplate =
+        (isNP: boolean, field: string) =>
+        (rowData: any) => {
+            const value = rowData[field];
+            return isNP && value ? (
+                <FormulaRenderer formula={value} />
+            ) : (
+                value
+            );
+        };
+
     return (
         <>
             <CoOccurrencesSummaryTour
@@ -697,13 +713,21 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
                                         tableStyle={{ minWidth: '50rem' }}>
                                         <Column
                                             field="leftEntity"
-                                            header="Left Entity"></Column>
+                                            header="Left Entity"
+                                            body={entityBodyTemplate(
+                                                leftIsNP,
+                                                'leftEntity',
+                                            )}></Column>
                                         <Column
                                             field="type"
                                             header="Relationship"></Column>
                                         <Column
                                             field="rightEntity"
-                                            header="Right Entity"></Column>
+                                            header="Right Entity"
+                                            body={entityBodyTemplate(
+                                                rightIsNP,
+                                                'rightEntity',
+                                            )}></Column>
                                         <Column
                                             field="sourceName"
                                             header="Source Name"></Column>
