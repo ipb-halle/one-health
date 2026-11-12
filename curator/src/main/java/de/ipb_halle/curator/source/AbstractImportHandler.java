@@ -80,6 +80,14 @@ public abstract class AbstractImportHandler implements ImportHandler {
     }
 
     protected void reset() {
-        this.elementDTOsByType = new HashMap<> ();
+        this.elementDTOsByType.clear();
+    }
+
+    protected void save() {
+        for (List<Element> elements : elementDTOsByType.values()) {
+            for (Element element : elements) {
+                elementService.save(element);
+            }
+        }
     }
 }

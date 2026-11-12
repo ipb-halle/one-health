@@ -17,6 +17,7 @@ import de.ipb_halle.curator.source.FieldMapping;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.Set;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -52,7 +53,7 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
     }
 
     private Element parseElement(DataSource dataSource, CSVRecord record) {
-        for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
+        for (ElementMapping em : (Collection<ElementMapping>) dataSource.getElementMappings().values()) {
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
             AbstractField queryField = createField(null, fieldDefinition, value);
@@ -66,7 +67,7 @@ public class TestOrganismImportHandler extends AbstractImportHandler {
     }
 
     private void parseFields(DataSource dataSource, CSVRecord record, Element elementDTO) {
-        for (FieldMapping fm : (Set<FieldMapping>) dataSource.getFieldMappings()) {
+        for (FieldMapping fm : (Collection<FieldMapping>) dataSource.getFieldMappings().values()) {
             String value = record.get(fm.getSourceFieldName());
             FieldDefinition fieldDefinition = fm.getMappingField();
             if (elementDTO.getField(fieldDefinition.getName()) == null) {

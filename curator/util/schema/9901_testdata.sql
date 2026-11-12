@@ -56,6 +56,16 @@ INSERT INTO element_mappings (data_source_id, element_type_id, source_field_name
     ('CSV_ORGANISMS', 'ORGANISM', 'ncbitaxon', 'ORGANISM:NCBItaxonId', false);
 
 INSERT INTO field_mappings (data_source_id, source_field_name, mapping, multivalued) VALUES
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/OMO_0003003', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/OMO_0003006', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/OMO_0003007', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/OMO_0003012', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#blast_name', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#equivalent_name', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#genbank_common_name', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#in_part', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#scientific_name', 'ORGANISM:synonym', true),
+    ('OWL_ORGANISMS', 'http://purl.obolibrary.org/obo/ncbitaxon#synonym', 'ORGANISM:synonym', true),
     ('CSV_ORGANISMS', 'primary name', 'ORGANISM:primary name', false),
     ('CSV_ORGANISMS', 'growth form', 'ORGANISM:Growth form', false),
     ('CSV_ORGANISMS', 'synonym', 'ORGANISM:synonym', false);

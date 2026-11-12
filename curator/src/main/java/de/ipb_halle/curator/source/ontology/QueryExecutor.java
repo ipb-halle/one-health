@@ -7,6 +7,8 @@
  */
 package de.ipb_halle.curator.source.ontology;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.query.Dataset;
@@ -84,9 +86,11 @@ public class QueryExecutor {
                 nodeToString(triple.getSubject()),
                 nodeToString(triple.getPredicate()),
                 nodeToString(triple.getObject())));
-            Resource axiom = findAxiom(model, triple);
-            if (axiom != null) {
-                printAnnotation(axiom, sb);
+            List<Resource> axioms = findAxioms(model, triple);
+            if (!axioms.isEmpty()) {
+                for (Resource axiom : axioms) {
+                    printAnnotation(axiom, sb);
+                }
             }
             sb.append("\n");
         }
@@ -101,7 +105,7 @@ public class QueryExecutor {
                     || p.equals(OWL.annotatedSource)
                     || p.equals(OWL.annotatedProperty)
                     || p.equals(OWL.annotatedTarget))) {
-                sb.append(" (%s %s)".formatted(
+                sb.append("\n             Axiom --> (%s %s)".formatted(
                     nodeToString(p.asNode()),
                     nodeToString(stmt.getObject().asNode())));
             }
@@ -122,24 +126,23 @@ public class QueryExecutor {
     }
 
     /**
-     * NOTE: This method is restricted to find the first axiom annotating a given
-     * Triple. Subsequent further annotations are ignored.
      * @param model
      * @param triple
      * @return
      */
-    private Resource findAxiom(Model model, Triple triple) {
+    private List<Resource> findAxioms(Model model, Triple triple) {
         RDFNode subjectNode = model.asRDFNode(triple.getSubject());
         StmtIterator iter = model.listStatements(null, OWL.annotatedSource, subjectNode);
+        List<Resource> axioms = new ArrayList<> ();
         while (iter.hasNext()) {
             Statement stmt = iter.next();
             Resource candidateAxiom = stmt.getSubject();
             if (candidateAxiom.hasProperty(RDF.type, OWL.Axiom) &&
                     candidateAxiom.hasProperty(OWL.annotatedProperty, model.asRDFNode(triple.getPredicate())) &&
                     candidateAxiom.hasProperty(OWL.annotatedTarget, model.asRDFNode(triple.getObject()))) {
-                return candidateAxiom;
+                axioms.add(candidateAxiom);
             }
         }
-        return null;
+        return axioms;
     }
 }

@@ -22,10 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -61,7 +59,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
     }
 
     private void handleElements(DataSource dataSource, CSVRecord record) {
-        for (ElementMapping em : (Set<ElementMapping>) dataSource.getElementMappings()) {
+        for (ElementMapping em : (Collection<ElementMapping>) dataSource.getElementMappings().values()) {
             String value = record.get(em.getSourceFieldName());
             FieldDefinition fieldDefinition = em.getIdentityMappingField();
             AbstractField queryField = createField(null, fieldDefinition, value);
@@ -75,7 +73,7 @@ public class CoconutImportHandler extends AbstractImportHandler implements Impor
     }
 
     private void handleFields(DataSource dataSource, CSVRecord record) {
-        for (FieldMapping fm : (Set<FieldMapping>) dataSource.getFieldMappings()) {
+        for (FieldMapping fm : (Collection<FieldMapping>) dataSource.getFieldMappings().values()) {
             String value = record.get(fm.getSourceFieldName());
             FieldDefinition fieldDefinition = fm.getMappingField();
             ElementType elementType = fieldDefinition.getElementType();

@@ -8,12 +8,9 @@
 package de.ipb_halle.curator.source;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -25,8 +22,8 @@ public class DataSource <T extends ImportHandler> {
     private final String description;
     private final Class handler;
     private final URL sourceUrl;
-    private final Set<ElementMapping> elementMappings;
-    private final Set<FieldMapping> fieldMappings;
+    private final Map<String, ElementMapping> elementMappings;
+    private final Map<String, FieldMapping> fieldMappings;
     private final Map<String, Object> parameterMappings;
 
     public DataSource(DataSourceEntity ds) throws MalformedURLException, ClassNotFoundException {
@@ -37,8 +34,8 @@ public class DataSource <T extends ImportHandler> {
             throw new ClassNotFoundException("Handler class does not implement interface ImportHandler");
         }
         this.sourceUrl = new URL(ds.getSourceUrl());
-        this.elementMappings = new HashSet<> ();
-        this.fieldMappings = new HashSet<> ();
+        this.elementMappings = new HashMap<> ();
+        this.fieldMappings = new HashMap<> ();
         this.parameterMappings = new HashMap<> ();
     }
 
@@ -67,18 +64,18 @@ public class DataSource <T extends ImportHandler> {
     }
 
     public void addElementMapping(ElementMapping em) {
-        elementMappings.add(em);
+        elementMappings.put(em.getSourceFieldName(), em);
     }
 
-    public Set<ElementMapping> getElementMappings() {
+    public Map<String, ElementMapping> getElementMappings() {
         return elementMappings;
     }
 
     public void addFieldMapping(FieldMapping fm) {
-        fieldMappings.add(fm);
+        fieldMappings.put(fm.getSourceFieldName(), fm);
     }
 
-    public Set<FieldMapping> getFieldMappings() {
+    public Map<String, FieldMapping> getFieldMappings() {
         return fieldMappings;
     }
 }
