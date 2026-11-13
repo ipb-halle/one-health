@@ -25,8 +25,6 @@ interface UserProfile {
     credits?: number | null;
 }
 
-const API_BASE = '/api';
-
 const UserProfilePage: React.FC = () => {
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [displayName, setDisplayName] = useState('');
@@ -117,8 +115,8 @@ const UserProfilePage: React.FC = () => {
     async function deleteAccount() {
         const confirmed = window.confirm(
             'Are you sure you want to delete your account? ' +
-                'This action may be irreversible. Review the data-retention ' +
-                'information before proceeding.',
+            'This action may be irreversible. Review the data-retention ' +
+            'information before proceeding.',
         );
 
         if (!confirmed) return;
@@ -128,29 +126,17 @@ const UserProfilePage: React.FC = () => {
         setNotice('');
 
         try {
-            const response = await fetch(`${API_BASE}/users/me`, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    // Add the project's CSRF header/token here if required.
-                },
-            });
 
-            if (!response.ok) {
-                throw new Error(
-                    `Account deletion failed (${response.status}).`,
-                );
-            }
-
-            // Prefer the application's existing logout/session-cleanup flow.
+            await deleteCurrentUser();
+            // Successful deletion return HTTP 204.
             window.location.assign('/');
         } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : 'Could not delete account.',
-            );
+
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Could not delete account.');
+            }
         } finally {
             setDeleting(false);
         }
@@ -227,9 +213,9 @@ const UserProfilePage: React.FC = () => {
                             {profile.credits == null
                                 ? 'Not available'
                                 : profile.credits.toLocaleString(undefined, {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                  })}
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}
                         </strong>
                     </div>
 
