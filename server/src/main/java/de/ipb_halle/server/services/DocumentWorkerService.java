@@ -40,11 +40,12 @@ public class DocumentWorkerService {
     public DocumentWorkerService(DocumentRecordRepository documentRepository,
                                  DownstreamConsumerClient downstreamConsumerClient,
                                  ObjectMapper objectMapper,
-                                 @Value("${document.downstream.max-wait-seconds}") int downstreamMaxWaitSeconds) {
+                                 @Value("${document.downstream.max-wait-seconds}") int downstreamMaxWaitSeconds,
+                                 @Value("${document.worker.semaphore-permits}") int semaphorePermits) {
         this.documentRepository = documentRepository;
         this.downstreamConsumerClient = downstreamConsumerClient;
-        // Semaphore(1) ensures only one document is processed at a time by the downstream service
-        this.downstreamPermit = new Semaphore(1);
+        
+        this.downstreamPermit = new Semaphore(semaphorePermits);
         this.objectMapper = objectMapper;
         this.downstreamMaxWaitSeconds = downstreamMaxWaitSeconds;
     }
@@ -93,14 +94,20 @@ public class DocumentWorkerService {
                 return;
             }
 
+            ExtractionResult response;
             try {
                 // Consume document via downstream extraction service
-                ExtractionResult response = downstreamConsumerClient.consume(
+                response = downstreamConsumerClient.consume(
                     document.getFilePath(),
                     document.getOriginalFilename()
                 );
+            } finally {
+                // Always release the semaphore permit
+                downstreamPermit.release();
+                log.debug("Released downstream permit for document {}", documentId);
+            }
 
-                // Store the extraction result as JSON
+
                 String resultJson = objectMapper.writeValueAsString(response);
                 document.setResultJson(resultJson);
 
@@ -109,11 +116,7 @@ public class DocumentWorkerService {
                 document.setUpdatedAt(LocalDateTime.now());
                 documentRepository.save(document);
                 log.info("Document {} successfully processed and marked as CONSUMED", documentId);
-            } finally {
-                // Always release the semaphore permit
-                downstreamPermit.release();
-                log.debug("Released downstream permit for document {}", documentId);
-            }
+
         } catch (Exception ex) {
             // 4. On any exception: increment retry count and mark as FAILED
             log.error("Error processing document {}: {}", documentId, ex.getMessage(), ex);
