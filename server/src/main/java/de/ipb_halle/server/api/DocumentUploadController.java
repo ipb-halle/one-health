@@ -38,7 +38,7 @@ public class DocumentUploadController {
      * loading the entire file into memory. A DocumentRecord is created with
      * PENDING status and immediately returned with HTTP 202 Accepted.
      *
-     * @param file the uploaded file (must be PDF, CSV, or TXT)
+     * @param file the uploaded file
      * @return ResponseEntity with HTTP 202 Accepted and document metadata
      */
     @PostMapping("/upload")
