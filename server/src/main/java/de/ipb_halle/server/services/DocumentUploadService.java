@@ -6,6 +6,7 @@ import de.ipb_halle.server.postgre.repositories.DocumentRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,19 +21,18 @@ public class DocumentUploadService {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentUploadService.class);
 
-    private static final Set<String> ALLOWED_MIME_TYPES = Set.of(
-        "application/pdf",
-        "text/csv",
-        "text/plain"
-    );
-
-    private static final String TEMP_FILE_PREFIX = "doc_";
-
     private final DocumentRecordRepository documentRecordRepository;
+    private final Set<String> allowedMimeTypes;
+    private final String tempFilePrefix;
 
     @Autowired
-    public DocumentUploadService(DocumentRecordRepository documentRecordRepository) {
+    public DocumentUploadService(
+            DocumentRecordRepository documentRecordRepository,
+            @Value("${document.upload.allowed-mime-types}") Set<String> allowedMimeTypes,
+            @Value("${document.upload.temp-file-prefix}") String tempFilePrefix) {
         this.documentRecordRepository = documentRecordRepository;
+        this.allowedMimeTypes = allowedMimeTypes;
+        this.tempFilePrefix = tempFilePrefix;
     }
 
     /**
@@ -79,7 +79,7 @@ public class DocumentUploadService {
         }
 
         String contentType = file.getContentType();
-        if (contentType == null || !ALLOWED_MIME_TYPES.contains(contentType)) {
+        if (contentType == null || !allowedMimeTypes.contains(contentType)) {
             log.warn("Upload attempted with disallowed MIME type: {}", contentType);
             throw new IllegalArgumentException(
                 "File type not allowed. Supported types: PDF, CSV, TXT"
@@ -103,7 +103,7 @@ public class DocumentUploadService {
             String extension = getFileExtension(file.getOriginalFilename());
             
             // Create temporary file with prefix and suffix
-            Path tempFilePath = Files.createTempFile(TEMP_FILE_PREFIX, extension);
+            Path tempFilePath = Files.createTempFile(tempFilePrefix, extension);
             
             // Stream the file content directly to disk
             file.transferTo(tempFilePath.toFile());
