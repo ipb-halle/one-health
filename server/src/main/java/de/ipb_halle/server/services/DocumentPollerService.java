@@ -60,14 +60,11 @@ public class DocumentPollerService {
                     documentWorkerService.process(document.getId());
                 } catch (Exception ex) {
                     // Log the error but continue with the next document
-                    // This ensures a single bad record doesn't kill the entire poll cycle
                     log.error("Failed to dispatch document {} to worker: {}", 
                         document.getId(), ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex) {
-            // Log any errors that occur during the poll cycle itself
-            // but don't let them crash the scheduler
             log.error("Error in document polling cycle: {}", ex.getMessage(), ex);
         }
     }
