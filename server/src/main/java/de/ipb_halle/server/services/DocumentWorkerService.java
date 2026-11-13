@@ -117,12 +117,11 @@ public class DocumentWorkerService {
         } catch (Exception ex) {
             // 4. On any exception: increment retry count and mark as FAILED
             log.error("Error processing document {}: {}", documentId, ex.getMessage(), ex);
-            document.setRetryCount(document.getRetryCount() + 1);
             document.setStatus(DocumentRecordStatus.FAILED);
             document.setUpdatedAt(LocalDateTime.now());
             try {
                 documentRepository.save(document);
-                log.debug("Document {} marked as FAILED with retry count: {}", documentId, document.getRetryCount());
+                log.debug("Document {} marked as FAILED", documentId);
             } catch (Exception saveEx) {
                 log.error("Failed to persist document {} error state after exception", documentId, saveEx);
             }
