@@ -1,7 +1,6 @@
 package de.ipb_halle.server.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -10,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -56,23 +54,6 @@ public class AsyncConfig {
 
         executor.initialize();
         return executor;
-    }
-
-    /**
-     * RestTemplate bean for communication with downstream document processing service.
-     *
-     * Configured with:
-     * - 30-second connection and read timeout to handle file conversion latency
-     * - HTTP client configured for multipart file uploads
-     *
-     * @return configured RestTemplate instance
-     */
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder
-                .setConnectTimeout(Duration.ofSeconds(30))
-                .setReadTimeout(Duration.ofSeconds(30))
-                .build();
     }
 
     /**
