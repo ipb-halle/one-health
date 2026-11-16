@@ -22,7 +22,6 @@
     "cytoscape-svg": "0.4.0",
     "inversify": "6.2.2",
     "localforage": "1.10.0",
-    "maplibre-gl": "^6.4.1",
     "match-sorter": "6.3.4",
     "mobx": "6.15.0",
     "mobx-react-lite": "4.1.0",
