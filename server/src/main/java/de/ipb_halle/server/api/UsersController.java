@@ -28,8 +28,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(path = "api")
 public class UsersController implements UsersApi {
