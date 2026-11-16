@@ -65,7 +65,7 @@ public class DownstreamConsumerClient {
 
             // 3. Execute POST request with application/json
             return restClient.post()
-                    .uri("/extract")
+                    .uri("/api/v1/extract")
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(payload)
                     .retrieve()
