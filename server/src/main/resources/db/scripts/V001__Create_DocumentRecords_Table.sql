@@ -1,5 +1,5 @@
 -- Create document_records table for tracking document uploads
--- Stores metadata about uploaded documents including file path, status, and timestamps
+-- Stores metadata about uploaded documents including file path, status, timestamps, and extraction results
 
 CREATE TABLE document_records (
     id BIGSERIAL PRIMARY KEY,
@@ -7,12 +7,13 @@ CREATE TABLE document_records (
     file_path VARCHAR(1024) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    result_json JSONB
 );
 
 -- Create indexes for common query patterns
 CREATE INDEX idx_document_records_status ON document_records(status);
 
--- Add check constraint to enforce valid status values
+-- Add check constraint to enforce valid status values matching DocumentRecordStatus enum
 ALTER TABLE document_records
 ADD CONSTRAINT check_document_status CHECK (status IN ('PENDING', 'DISPATCHED', 'CONSUMED', 'FAILED'));
