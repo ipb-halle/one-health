@@ -1,4 +1,4 @@
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, EventData, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import coOcurrencesFiltersGif from '../../../assets/tutorials/visualization/co-occurrences-summary/coocurrences_filter.gif';
 import coOcurrencesLoadGif from '../../../assets/tutorials/visualization/co-occurrences-summary/cooccurrences_load.gif';
@@ -13,7 +13,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
     run,
     callback,
 }) => {
-    const handleJoyrideCallback = (data: CallBackProps) => {
+    const handleJoyrideCallback = (data: EventData) => {
         const { status, type } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -29,7 +29,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
             styles: { tooltip: { width: '500px' } },
             placement: 'center',
             target: 'body',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#cooccurrences-summary-toolbar',
@@ -59,7 +59,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
                 </div>
             ),
             styles: { tooltip: { width: '550px', height: '250px' } },
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#cooccurrences-summary-filters',
@@ -74,7 +74,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '450px' } },
             placement: 'left',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#cooccurrences-summary-details',
@@ -91,7 +91,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '470px' } },
             placement: 'top',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#cooccurrences-summary-history',
@@ -107,7 +107,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '470px' } },
             placement: 'right',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -116,7 +116,7 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
 
             content:
                 'You can access this tutorial any time by clicking the help button.',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -125,14 +125,15 @@ const CoOccurrencesSummaryTour: React.FC<CoOccurrencesSummaryTourProps> = ({
 
     return (
         <Joyride
-            callback={handleJoyrideCallback}
+            onEvent={handleJoyrideCallback}
             steps={steps}
             run={run}
             continuous
-            showProgress
             scrollToFirstStep
-            showSkipButton
-        />
+            options={{
+                showProgress: true,
+                buttons: ['back', 'close', 'primary', 'skip']
+            }} />
     );
 };
 

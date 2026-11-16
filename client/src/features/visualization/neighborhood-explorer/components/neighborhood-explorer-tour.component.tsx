@@ -1,4 +1,4 @@
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, EventData, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import nodeContextMenuGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/node_context_menu.gif';
 import nodeExpandGif from '../../../../assets/tutorials/visualization/neighborhood-explorer/node_expand.gif';
@@ -19,7 +19,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
     run,
     callback,
 }) => {
-    const handleJoyrideCallback = (data: CallBackProps) => {
+    const handleJoyrideCallback = (data: EventData) => {
         const { status, type } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -35,14 +35,14 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             styles: { tooltip: { width: '500px' } },
             placement: 'center',
             target: 'body',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer-toolbar',
             content: (
                 <div> In the toolbar you will find different utilities.</div>
             ),
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer-toolbar',
@@ -57,7 +57,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
                 </div>
             ),
             styles: { tooltip: { width: '500px', height: '460px' } },
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer-toolbar',
@@ -111,7 +111,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'left',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer-details',
@@ -128,7 +128,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'left',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer',
@@ -144,7 +144,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '330px', height: '410px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer',
@@ -161,7 +161,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '500px', height: '460px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer',
@@ -178,7 +178,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '500px', height: '460px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer',
@@ -196,7 +196,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '500px', height: '480px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer',
@@ -212,7 +212,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '400px', height: '380px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#neighborhood-explorer-history',
@@ -228,7 +228,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'right',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -237,7 +237,7 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
 
             content:
                 'You can access this tutorial any time by clicking the help button.',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -246,14 +246,15 @@ const NeighborhoodExplorerTour: React.FC<NeighborhoodExplorerTourProps> = ({
 
     return (
         <Joyride
-            callback={handleJoyrideCallback}
+            onEvent={handleJoyrideCallback}
             steps={steps}
             run={run}
             continuous
-            showProgress
             scrollToFirstStep
-            showSkipButton
-        />
+            options={{
+                showProgress: true,
+                buttons: ['back', 'close', 'primary', 'skip']
+            }} />
     );
 };
 

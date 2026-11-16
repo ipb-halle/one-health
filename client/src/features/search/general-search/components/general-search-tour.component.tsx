@@ -1,4 +1,4 @@
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, EventData, STATUS, Step } from 'react-joyride';
 import React from 'react';
 import queryGif from '../../../../assets/tutorials/search/general-search/general_search_examples.gif';
 import toNeighborhoodGif from '../../../../assets/tutorials/search/general-search/general_search_neighbordhood.gif';
@@ -13,7 +13,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
     run,
     callback,
 }) => {
-    const handleJoyrideCallback = (data: CallBackProps) => {
+    const handleJoyrideCallback = (data: EventData) => {
         const { status } = data;
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -29,7 +29,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
             styles: { tooltip: { width: '500px' } },
             placement: 'center',
             target: 'body',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#general-search-header',
@@ -45,7 +45,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'bottom',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#general-search-panel',
@@ -61,7 +61,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'center',
-            disableBeacon: true,
+            skipBeacon: true,
         },
         {
             target: '#general-search-history',
@@ -76,7 +76,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
             ),
             styles: { tooltip: { width: '550px', height: '460px' } },
             placement: 'right',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -85,7 +85,7 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
 
             content:
                 'You can access this tutorial at any time by clicking the help button.',
-            disableBeacon: true,
+            skipBeacon: true,
 
             // Add more options if needed
         },
@@ -94,14 +94,15 @@ const GeneralSearchPageTourComponent: React.FC<GeneralSearchPageTourProps> = ({
 
     return (
         <Joyride
-            callback={handleJoyrideCallback}
+            onEvent={handleJoyrideCallback}
             steps={steps}
             run={run}
             continuous
-            showProgress
             scrollToFirstStep
-            showSkipButton
-        />
+            options={{
+                showProgress: true,
+                buttons: ['back', 'close', 'primary', 'skip']
+            }} />
     );
 };
 
