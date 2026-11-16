@@ -41,7 +41,7 @@ import { toolDisclaimer } from '../../../shared';
 import React from 'react';
 import { RootStoreContext } from '@/app/providers/store-provider';
 import { observer } from 'mobx-react-lite';
-import FormulaRenderer from '@/shared/components/FormulaRenderer';
+import { FormularComponent } from './FormularComponent';
 
 // ToDo: this code fixes the "old import method" for Plotly 2.6.0 and
 // we need to upgrade to Plotly 4.x asap to get rid of this.
@@ -228,13 +228,13 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         var labelx: string[] = [];
 
         graph.links
-        .sort((a: any, b: any) => b.value - a.value)
-        .forEach((x: any) => {
-            sourcex.push(nodesMap.get(x.source));
-            targetx.push(nodesMap.get(x.target));
-            valuex.push(x.value);
-            labelx.push(`${x.source} - ${x.label} - ${x.target}`);
-        });
+            .sort((a: any, b: any) => b.value - a.value)
+            .forEach((x: any) => {
+                sourcex.push(nodesMap.get(x.source));
+                targetx.push(nodesMap.get(x.target));
+                valuex.push(x.value);
+                labelx.push(`${x.source} - ${x.label} - ${x.target}`);
+            });
 
         setLeftTypeQuery(query.leftTypeQuery);
         setRightTypeQuery(query.rightTypeQuery);
@@ -307,6 +307,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"coOccuranceList" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -371,7 +372,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
             );
         });
 
-        return [<div className="grid grid-nogutter">{list}</div>];
+        return [<div key="co-occurance-container " className="grid grid-nogutter">{list}</div>];
     };
 
     const confirmCoOcurrenceVisualizationSave = () => {
@@ -419,16 +420,20 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
     const leftIsNP = leftTypeQuery?.type === 'np';
     const rightIsNP = rightTypeQuery?.type === 'np';
 
+
     const entityBodyTemplate =
         (isNP: boolean, field: string) =>
-        (rowData: any) => {
-            const value = rowData[field];
-            return isNP && value ? (
-                <FormulaRenderer formula={value} />
-            ) : (
-                value
-            );
-        };
+            // eslint-disable-next-line react/display-name
+            (rowData: any) => {
+                const value = rowData[field];
+
+                return (
+                    <FormularComponent
+                        isNP={isNP}
+                        formular={value}
+                    />
+                );
+            };
 
     return (
         <>
