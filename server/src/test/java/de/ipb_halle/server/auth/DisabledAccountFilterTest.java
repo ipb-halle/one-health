@@ -62,6 +62,8 @@ class DisabledAccountFilterTest {
         SecurityContextHolder.clearContext();
     }
 
+    // Verifies that an authenticated user with an enabled local account
+    // is allowed to continue using the application.
     @Test
     void shouldContinueWhenAccountIsEnabled() throws Exception {
         UserEntity user = new UserEntity();
@@ -81,6 +83,8 @@ class DisabledAccountFilterTest {
         assertFalse(session.isInvalid());
     }
 
+    // Verifies that an authenticated user whose local account is disabled
+    // is logged out, their session is invalidated, and HTTP 403 is returned.
     @Test
     void shouldRejectAndInvalidateSessionWhenAccountIsDisabled()
             throws Exception {
@@ -102,6 +106,8 @@ class DisabledAccountFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
+    // Verifies that an authenticated user whose local account or ORCID
+    // association no longer exists is logged out and receives HTTP 403.
     @Test
     void shouldRejectAndInvalidateSessionWhenAccountDoesNotExist()
             throws Exception {
