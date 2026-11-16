@@ -80,4 +80,70 @@ class OrcidUserServiceTest {
         verify(userAuthenticationRepository).findByProviderAndProviderSubjectId(
                 AuthenticationProvider.ORCID, ORCID);
     }
+
+    // Verifies that an existing ORCID user is reused without creating
+    // another local user, authentication association, or credit record.
+    @Test
+    void shouldReuseExistingUserWithoutCreatingDuplicateRecords() {
+        OidcUser oidcUser = mock(OidcUser.class);
+        when(oidcUser.getSubject()).thenReturn(ORCID);
+        when(oidcUser.getFullName()).thenReturn("New Test Name");
+
+        UserEntity existingUser = new UserEntity();
+        existingUser.setDisplayName("Existing Test User");
+
+        UserAuthenticationEntity authentication = new UserAuthenticationEntity();
+        authentication.setUser(existingUser);
+        authentication.setProvider(AuthenticationProvider.ORCID);
+        authentication.setProviderSubjectId(ORCID);
+
+        when(userAuthenticationRepository.findByProviderAndProviderSubjectId(
+                AuthenticationProvider.ORCID, ORCID))
+                .thenReturn(Optional.of(authentication));
+
+        UserEntity result = orcidUserService.provisionUser(oidcUser);
+
+        assertSame(existingUser, result);
+        assertEquals("Existing Test User", result.getDisplayName());
+
+        verify(userRepository, never()).save(any(UserEntity.class));
+        verify(userAuthenticationRepository, never())
+                .save(any(UserAuthenticationEntity.class));
+        verify(userCreditRepository, never()).save(any(UserCreditEntity.class));
+    }
+
+    // Verifies that an existing user with a missing display name
+    // receives the name from ORCID without creating duplicate records.
+    @Test
+    void shouldUpdateDisplayNameForExistingUser() {
+        OidcUser oidcUser = mock(OidcUser.class);
+        when(oidcUser.getSubject()).thenReturn(ORCID);
+        when(oidcUser.getFullName()).thenReturn("Updated Test User");
+
+        UserEntity existingUser = new UserEntity();
+        existingUser.setDisplayName(null);
+
+        UserAuthenticationEntity authentication = new UserAuthenticationEntity();
+        authentication.setUser(existingUser);
+        authentication.setProvider(AuthenticationProvider.ORCID);
+        authentication.setProviderSubjectId(ORCID);
+
+        when(userAuthenticationRepository.findByProviderAndProviderSubjectId(
+                AuthenticationProvider.ORCID, ORCID))
+                .thenReturn(Optional.of(authentication));
+
+        when(userRepository.save(any(UserEntity.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        UserEntity result = orcidUserService.provisionUser(oidcUser);
+
+        assertSame(existingUser, result);
+        assertEquals("Updated Test User", result.getDisplayName());
+
+        verify(userRepository).save(existingUser);
+        verify(userAuthenticationRepository, never())
+                .save(any(UserAuthenticationEntity.class));
+        verify(userCreditRepository, never()).save(any(UserCreditEntity.class));
+    }
+
 }
