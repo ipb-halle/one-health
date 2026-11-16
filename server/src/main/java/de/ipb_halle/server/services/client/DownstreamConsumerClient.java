@@ -1,24 +1,27 @@
 package de.ipb_halle.server.services.client;
 
+import de.ipb_halle.server.services.client.dto.ExtractionRequest;
 import de.ipb_halle.server.services.client.dto.ExtractionResult;
 import de.ipb_halle.server.services.exceptions.DownstreamConsumptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+
 /**
- * Client for consuming documents via the downstream extraction service.
- * Handles multipart file uploads with retry and recovery logic.
+ * Client for consuming documents via the downstream FastAPI extraction service.
+ * Handles Base64 encoding, JSON request payload, and retry/recovery logic.
  */
 @Component
 public class DownstreamConsumerClient {
@@ -32,9 +35,10 @@ public class DownstreamConsumerClient {
     }
 
     /**
-     * Consumes a document file by sending it to the downstream extraction service.
+     * Consumes a document file by Base64 encoding it and sending it as JSON
+     * to the downstream FastAPI extraction service.
      *
-     * Retries up to 3 times with exponential backoff (1s, 2s, 4s) on network or
+     * Retries up to 3 times with exponential backoff on network or
      * response errors. Falls back to recovery method which logs and rethrows as
      * DownstreamConsumptionException.
      *
@@ -49,16 +53,28 @@ public class DownstreamConsumerClient {
             backoff = @Backoff(delay = 1000, multiplier = 2)
     )
     public ExtractionResult consume(String filePath, String fileName) {
-        log.debug("Sending document for extraction: {}", fileName);
+        log.debug("Sending document for extraction (Base64 JSON) to FastAPI service: {}", fileName);
 
-        FileSystemResource fileResource = new FileSystemResource(filePath);
+        try {
+            // 1. Read raw bytes from disk and encode to Base64 string
+            byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+            String fileBase64 = Base64.getEncoder().encodeToString(fileBytes);
 
-        return restClient.post()
-                .uri("/api/v1/consume")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(buildMultipartBody(fileResource, fileName))
-                .retrieve()
-                .body(ExtractionResult.class);
+            // 2. Build the request DTO matching the FastAPI Base64Bytes schema
+            ExtractionRequest payload = new ExtractionRequest(fileName, fileBase64);
+
+            // 3. Execute POST request with application/json
+            return restClient.post()
+                    .uri("/extract")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(payload)
+                    .retrieve()
+                    .body(ExtractionResult.class);
+
+        } catch (IOException e) {
+            log.error("Failed to read or Base64-encode file for downstream extraction: {}", filePath, e);
+            throw new ResourceAccessException("Failed to process file bytes for downstream request", e);
+        }
     }
 
     /**
@@ -78,22 +94,5 @@ public class DownstreamConsumerClient {
         );
         log.error(errorMessage, ex);
         throw new DownstreamConsumptionException(errorMessage, ex);
-    }
-
-    /**
-     * Builds the multipart request body with file and metadata.
-     *
-     * @param fileResource the file resource to include
-     * @param fileName the original file name
-     * @return MultiValueMap representing the multipart body
-     */
-    private MultiValueMap<String, Object> buildMultipartBody(FileSystemResource fileResource, String fileName) {
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-        // Add the file part with the name "file" and original filename
-        body.add("file", fileResource);
-        body.add("fileName", fileName);
-
-        return body;
     }
 }
