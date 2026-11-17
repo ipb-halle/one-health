@@ -118,7 +118,7 @@ public class DocumentWorkerService {
                 log.info("Document {} successfully processed and marked as CONSUMED", documentId);
 
         } catch (Exception ex) {
-            // 4. On any exception: increment retry count and mark as FAILED
+            // 4. On any exception: mark as FAILED
             log.error("Error processing document {}: {}", documentId, ex.getMessage(), ex);
             document.setStatus(DocumentRecordStatus.FAILED);
             document.setUpdatedAt(LocalDateTime.now());

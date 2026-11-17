@@ -78,16 +78,15 @@ public class AsyncConfig {
             @Value("${document.downstream.base-url}") String baseUrl,
             @Value("${document.downstream.timeout-seconds}") int timeoutSeconds) {
 
-        // 1. Build an Apache HttpClient 5 with the read timeout applied at the client level
         RequestConfig requestConfig = RequestConfig.custom()
                 .setResponseTimeout(Timeout.ofSeconds(timeoutSeconds))
                 .build();
-
+        
+        // supports HTTP/1.1 transport only
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setDefaultRequestConfig(requestConfig)
                 .build();
 
-        // 2. Wrap it in Spring's factory (uses HTTP/1.1 by default)
         HttpComponentsClientHttpRequestFactory factory =
                 new HttpComponentsClientHttpRequestFactory(httpClient);
 
