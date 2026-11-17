@@ -1,0 +1,34 @@
+name: continuous-integration-client
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 24
+
+    - name: Install dependencies based on yarn lock file
+      run: cd client && yarn install --frozen-lockfile
+
+    - name: Generate orval glue code
+      run: cd client && yarn generate:api
+
+    - name: Audit production dependencies
+      run: cd client && yarn audit --groups dependencies
+
+    - name: Build the project
+      run: cd client && yarn build
+
+    - name: Run unit tests
+      run: cd client && yarn test

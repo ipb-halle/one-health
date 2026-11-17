@@ -1,32 +1,38 @@
 package de.ipb_halle.server.auth;
 
+import de.ipb_halle.server.auth.utils.CustomAuthenticationFailureHandler;
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
 
         private final N1hOidcUserService n1hOidcUserService;
+        private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
         @Value("${app.frontend-url}")
         private String frontendUrl;
 
-        public SecurityConfig(N1hOidcUserService n1hOidcUserService) {
+        public SecurityConfig(
+                        N1hOidcUserService n1hOidcUserService,
+                        CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
                 this.n1hOidcUserService = n1hOidcUserService;
+                this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
         }
 
         @Bean
@@ -38,7 +44,8 @@ public class SecurityConfig {
                                 "/api/oauth2/authorization");
 
                 resolver.setAuthorizationRequestCustomizer(
-                                builder -> builder.additionalParameters(params -> params.put("prompt", "login")));
+                                builder -> builder.additionalParameters(
+                                                params -> params.put("prompt", "login")));
                 return resolver;
         }
 
@@ -57,7 +64,8 @@ public class SecurityConfig {
                                                                 CookieCsrfTokenRepository.withHttpOnlyFalse())
                                                 .csrfTokenRequestHandler(csrfTokenRequestHandler))
                                 .addFilterAfter(new CsrfCookieFilter(), CsrfFilter.class)
-                                .addFilterAfter(new DisabledAccountFilter(userAuthenticationRepository),
+                                .addFilterAfter(
+                                                new DisabledAccountFilter(userAuthenticationRepository),
                                                 AnonymousAuthenticationFilter.class)
 
                                 .logout(logout -> logout
@@ -67,8 +75,7 @@ public class SecurityConfig {
                                                 .deleteCookies("JSESSIONID", "XSRF-TOKEN")
                                                 .logoutSuccessHandler((request, response, authentication) -> {
                                                         response.setStatus(HttpStatus.OK.value());
-                                                        response.setContentType(
-                                                                        MediaType.APPLICATION_JSON_VALUE);
+                                                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                                                         response.setCharacterEncoding("UTF-8");
                                                         response.getWriter().write(
                                                                         "{\"message\":\"Logged out successfully\"}");
@@ -90,9 +97,7 @@ public class SecurityConfig {
                                                                 "/api/login/oauth2/code/*"))
                                                 .userInfoEndpoint(userInfo -> userInfo
                                                                 .oidcUserService(n1hOidcUserService))
-                                                .defaultSuccessUrl(
-                                                                // "http://a.localhost:5173/", true));
-                                                                frontendUrl, true));
+                                                .defaultSuccessUrl(frontendUrl, true));
 
                 return http.build();
         }

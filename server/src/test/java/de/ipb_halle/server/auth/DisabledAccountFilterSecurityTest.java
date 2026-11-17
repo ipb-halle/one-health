@@ -5,6 +5,7 @@ import de.ipb_halle.server.postgre.models.AuthenticationProvider;
 import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
 import de.ipb_halle.server.postgre.models.UserEntity;
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
+import de.ipb_halle.server.auth.utils.CustomAuthenticationFailureHandler;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,11 @@ class DisabledAccountFilterSecurityTest {
     @Configuration
     @EnableWebMvc
     @EnableWebSecurity
-    @Import(SecurityConfig.class)
+    @Import({
+            SecurityConfig.class,
+            CustomAuthenticationFailureHandler.class
+    })
+
     static class TestConfig {
 
         @Bean

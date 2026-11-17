@@ -1,4 +1,6 @@
 function FormulaRenderer(data: {formula:string}) {
+    if (!data.formula) return <span>—</span>;
+
     let mockId = 0;
     const formula = splitFormula(data.formula).map((e) => {
         if (e.match("[0-9]+")) {

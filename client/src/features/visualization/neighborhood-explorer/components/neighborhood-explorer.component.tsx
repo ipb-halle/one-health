@@ -42,6 +42,9 @@ import { INeighborhoodExplorerStore } from '../../../../store/inversify/neighbor
 import { ISavedGraphVisualization } from '../../visualization-history/models/saved-graph-visualization';
 
 import React from 'react';
+import FormulaRenderer from '@/shared/components/FormulaRenderer';
+import { CompoundProperty } from '@/core/types/CompoundProperty';
+
 const MemoChart = React.memo(CytoscapeInteractiveChartComponent);
 
 interface GraphExplorerProps {
@@ -200,8 +203,10 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items
             .sort((a, b) => a.position - b.position)
             .map((query, index) => {
+                const isFormula = query.name === CompoundProperty.MOLECULAR_FORMULAR;
                 return (
                     <div
+                        key={"compund-property" + index}
                         style={{
                             padding: 5,
                             backgroundColor: '#F8F9FA',
@@ -211,7 +216,12 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
                             overflowX: 'scroll',
                         }}>
                         <span style={{ marginLeft: 5 }}>
-                            <b>{query.name}</b>: {query.value}
+                            <b>{query.name}</b>:{' '}
+                            {isFormula ? (
+                                <FormulaRenderer formula={query.value} />
+                            ) : (
+                                query.value
+                            )}
                         </span>
                     </div>
                 );
@@ -231,6 +241,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.sort().map((query, index) => {
             return (
                 <div
+                    key={"synonym" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -258,6 +269,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"reference" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -306,6 +318,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"link" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -342,7 +355,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         });
 
         return [
-            <div className="grid grid-nogutter">
+            <div key={"badge-container"} className="grid grid-nogutter">
                 <div style={{ overflow: 'scroll' }}>
                     <Badge
                         value={truncateString(
@@ -401,6 +414,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"results" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -452,7 +466,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
             );
         });
 
-        return [<div className="grid grid-nogutter">{list}</div>];
+        return [<div key="query-result-container" className="grid grid-nogutter">{list}</div>];
     };
 
     const listTemplate = (
@@ -463,6 +477,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"graph-visualsations" + index}
                     style={{
                         padding: 5,
                         backgroundColor: '#F8F9FA',
@@ -517,7 +532,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
             );
         });
 
-        return [<div className="grid grid-nogutter">{list}</div>];
+        return [<div key="graph-visualisation-container" className="grid grid-nogutter">{list}</div>];
     };
 
     const typeListTemplate = (
@@ -528,6 +543,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         let list = items.map((query, index) => {
             return (
                 <div
+                    key={"entityType" + index}
                     style={{
                         padding: 5,
                         marginBottom: 5,
@@ -549,7 +565,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
             );
         });
 
-        return [<div className="grid grid-nogutter">{list}</div>];
+        return [<div key="entity-type-container" className="grid grid-nogutter">{list}</div>];
     };
 
     const accept = async () => {
@@ -567,7 +583,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
         );
     };
 
-    const reject = () => {};
+    const reject = () => { };
 
     const confirmGraphVisualizationSave = () => {
         confirmDialog({
