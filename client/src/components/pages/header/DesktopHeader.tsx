@@ -6,13 +6,15 @@ import { useContext } from "react";
 import { logout } from '@/generated/auth/auth/auth';
 import { useNavigate } from "react-router-dom";
 import DesktopStartComponent from "./DesktopStartComponent";
-import { DesktopUploadButton } from "./DesktopUploadButton";
+import { useDesktopUpload } from "./DesktopUploadButton";
 
 const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const authStore = rootStore.authStore;
     const navigate = useNavigate();
     const screenDeviceStore = rootStore.screenDeviceStore;
+
+    const { uploadItem, FileInputRenderer } = useDesktopUpload();
 
     const legalItems: MenuItem = {
         label: 'Legal',
@@ -52,10 +54,6 @@ const DesktopHeader: React.FC = () => {
         ],
     };
 
-    const uploadMenuItem: MenuItem = {
-        template: () => <DesktopUploadButton />,
-    }; 
-
     const authItems: MenuItem = {
         label: authStore.label,
         icon: 'pi pi-user',
@@ -74,7 +72,7 @@ const DesktopHeader: React.FC = () => {
             }
         },
     };
-    const items: MenuItem[] = [legalItems, visItems, uploadMenuItem, authItems];
+    const items: MenuItem[] = [legalItems, visItems, uploadItem, authItems];
     if (location.pathname !== '/') {
         items.unshift({
             label: 'General Search',
@@ -86,15 +84,17 @@ const DesktopHeader: React.FC = () => {
         });
     }
 
-    return <div className="fluid fixed-top">
-        <Menubar
-            model={items}
-            start={<DesktopStartComponent />}
-            pt={{ start: { style: { marginRight: 'auto' } } }}
-        />
-    </div>
-
-}
+    return (
+        <div className="fluid fixed-top">
+            <Menubar
+                model={items}
+                start={<DesktopStartComponent />}
+                pt={{ start: { style: { marginRight: 'auto' } } }}
+            />
+            <FileInputRenderer />
+        </div>
+    );
+};
 
 
 export default observer(DesktopHeader);

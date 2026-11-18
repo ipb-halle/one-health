@@ -1,16 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useRef, useState, useContext } from 'react';
+import { MenuItem } from 'primereact/menuitem';
 import { dependencyFactory } from "@/app/di";
 import { IDocumentService } from "@/core/services/document-service";
 import { SERVICES } from "@/app/di/service-types";
 import MessageServiceContext from "@/app/providers/messages/message-service.context";
 
-export const DesktopUploadButton: React.FC = () => {
-    const [isDraggingOver, setIsDraggingOver] = useState(false);
+export const useDesktopUpload = () => {
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
     const { messageService } = useContext(MessageServiceContext);
 
-    const handleFiles = async (files: FileList | null) => {
-        const file = files?.[0];
+    const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
         if (!file || !messageService) return;
 
         setIsUploading(true);
@@ -34,48 +35,31 @@ export const DesktopUploadButton: React.FC = () => {
             });
         } finally {
             setIsUploading(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         }
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(true);
+    // Return the menu item configuration AND the hidden input element renderer
+    const uploadItem: MenuItem = {
+        label: isUploading ? 'Uploading...' : 'Upload Document',
+        icon: 'pi pi-upload',
+        disabled: isUploading,
+        command: () => {
+            fileInputRef.current?.click();
+        },
     };
 
-    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-    };
-
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-        handleFiles(e.dataTransfer.files);
-    };
-
-    return (
-        <div 
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            style={{
-                backgroundColor: isDraggingOver ? '#28a745' : 'transparent',
-                color: isDraggingOver ? '#ffffff' : 'inherit',
-                cursor: isUploading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 1rem',
-                userSelect: 'none',
-            }}
-        >
-            <i className={isUploading ? 'pi pi-spin pi-spinner' : 'pi pi-upload'} />
-            <span>{isUploading ? 'Uploading...' : isDraggingOver ? 'Drop file here' : 'Upload Document'}</span>
-        </div>
+    const FileInputRenderer = () => (
+        <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleFileSelect}
+            accept=".pdf,.csv,.txt"
+        />
     );
-};
 
-export default DesktopUploadButton;
+    return { uploadItem, FileInputRenderer };
+};
