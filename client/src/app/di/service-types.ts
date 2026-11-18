@@ -13,6 +13,7 @@ const SERVICES = {
     ICompoundService: Symbol.for('ICompoundService'),
     IGeneralSearchService: Symbol.for('IGeneralSearchService'),
     IGeneralSearchHistoryService: Symbol.for('IGeneralSearchHistoryService'),
+    IDocumentService: Symbol.for('IDocumentService'),
     MessageService: Symbol.for('MessageService'),
 };
 

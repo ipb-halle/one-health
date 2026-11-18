@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { logout } from '@/generated/auth/auth/auth';
 import { useNavigate } from "react-router-dom";
 import DesktopStartComponent from "./DesktopStartComponent";
+import { DesktopUploadButton } from "./DesktopUploadButton";
 
 const DesktopHeader: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
@@ -50,6 +51,11 @@ const DesktopHeader: React.FC = () => {
             },
         ],
     };
+
+    const uploadMenuItem: MenuItem = {
+        template: () => <DesktopUploadButton />,
+    }; 
+
     const authItems: MenuItem = {
         label: authStore.label,
         icon: 'pi pi-user',
@@ -68,7 +74,7 @@ const DesktopHeader: React.FC = () => {
             }
         },
     };
-    const items: MenuItem[] = [legalItems, visItems, authItems];
+    const items: MenuItem[] = [legalItems, visItems, uploadMenuItem, authItems];
     if (location.pathname !== '/') {
         items.unshift({
             label: 'General Search',

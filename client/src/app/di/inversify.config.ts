@@ -66,6 +66,11 @@ import {
     NeighborhoodExplorerStore,
 } from '../../store/inversify/neighborhood-explorer-store';
 
+import {
+    IDocumentService,
+    DocumentService,
+} from '../../core/services/document-service';
+
 const dependencyFactory = new Container();
 
 dependencyFactory
@@ -123,5 +128,9 @@ dependencyFactory
 dependencyFactory
     .bind<MessageService>(SERVICES.MessageService)
     .to(ToastMessageService);
+
+dependencyFactory
+    .bind<IDocumentService>(SERVICES.IDocumentService)
+    .to(DocumentService);
 
 export { dependencyFactory };
