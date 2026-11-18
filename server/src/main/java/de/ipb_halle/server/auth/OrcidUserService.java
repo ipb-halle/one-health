@@ -1,30 +1,43 @@
 package de.ipb_halle.server.auth;
 
-import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
-import de.ipb_halle.server.postgre.repositories.UserRepository;
-import de.ipb_halle.server.postgre.models.AuthenticationProvider;
-import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
-import de.ipb_halle.server.postgre.models.UserEntity;
-import de.ipb_halle.server.postgre.models.UserRole;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import de.ipb_halle.server.postgre.models.AuthenticationProvider;
+import de.ipb_halle.server.postgre.models.UserAuthenticationEntity;
+import de.ipb_halle.server.postgre.models.UserCreditEntity;
+import de.ipb_halle.server.postgre.models.UserEntity;
+import de.ipb_halle.server.postgre.models.UserRole;
+import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
+import de.ipb_halle.server.postgre.repositories.UserCreditRepository;
+import de.ipb_halle.server.postgre.repositories.UserRepository;
 
 @Service
 public class OrcidUserService {
 
     private final UserRepository userRepository;
     private final UserAuthenticationRepository userAuthenticationRepository;
+    private final UserCreditRepository userCreditRepository;
+    private static final BigDecimal INITIAL_CREDIT = new BigDecimal("5.00");
+    private static final ZoneId ZONE_ID = ZoneId.of("Europe/Berlin");
 
     public OrcidUserService(
             UserRepository userRepository,
-            UserAuthenticationRepository userAuthenticationRepository) {
+            UserAuthenticationRepository userAuthenticationRepository,
+            UserCreditRepository userCreditRepository) {
 
         this.userRepository = userRepository;
         this.userAuthenticationRepository = userAuthenticationRepository;
+        this.userCreditRepository = userCreditRepository;
     }
 
+    @Transactional
     public UserEntity provisionUser(OidcUser oidcUser) {
 
         String orcid = oidcUser.getSubject();
@@ -68,14 +81,14 @@ public class OrcidUserService {
 
         UserEntity savedUser = userRepository.save(newUser);
 
-        UserAuthenticationEntity authentication
-                = new UserAuthenticationEntity();
+        UserAuthenticationEntity authentication = new UserAuthenticationEntity();
 
         authentication.setUser(savedUser);
         authentication.setProvider(AuthenticationProvider.ORCID);
         authentication.setProviderSubjectId(orcid);
 
         userAuthenticationRepository.save(authentication);
+        assignInitialCredits(savedUser);
 
         return savedUser;
     }
@@ -104,11 +117,9 @@ public class OrcidUserService {
             familyName = familyName.trim();
         }
 
-        boolean hasGivenName
-                = givenName != null && !givenName.isEmpty();
+        boolean hasGivenName = givenName != null && !givenName.isEmpty();
 
-        boolean hasFamilyName
-                = familyName != null && !familyName.isEmpty();
+        boolean hasFamilyName = familyName != null && !familyName.isEmpty();
 
         if (hasGivenName && hasFamilyName) {
             return givenName + " " + familyName;
@@ -125,4 +136,17 @@ public class OrcidUserService {
         return orcid;
     }
 
+    public void updateLastLogin(UserEntity user) {
+
+        user.setLastLogin(LocalDateTime.now(ZONE_ID));
+        userRepository.save(user);
+    }
+
+    private void assignInitialCredits(UserEntity user) {
+        UserCreditEntity userCreditEntity = new UserCreditEntity();
+        userCreditEntity.setUser(user);
+        userCreditEntity.setCredit(INITIAL_CREDIT);
+        userCreditEntity.setLastCreditAssigned(LocalDateTime.now(ZONE_ID));
+        userCreditRepository.save(userCreditEntity);
+    }
 }

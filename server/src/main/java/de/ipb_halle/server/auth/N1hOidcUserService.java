@@ -39,6 +39,8 @@ public class N1hOidcUserService
             throw new DisabledException("N1H user account is disabled");
         }
 
+        orcidUserService.updateLastLogin(user);
+
         return oidcUser;
     }
 }

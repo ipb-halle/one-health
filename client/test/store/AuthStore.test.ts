@@ -1,6 +1,5 @@
-import { AuthStore } from "@/store/AuthStore";
+import { AuthStore } from '@/store/AuthStore';
 import { UserRole } from '@/generated/auth/model';
-
 
 let originalFetch: typeof globalThis.fetch | undefined;
 
@@ -16,11 +15,10 @@ afterEach(() => {
     }
 });
 
-
-describe("AuthStore", () => {
+describe('AuthStore', () => {
     // Test the initial state of the AuthStore
-    describe("initial state", () => {
-        it("user is not authenticated", () => {
+    describe('initial state', () => {
+        it('user is not authenticated', () => {
             const authStore = AuthStore.create();
 
             expect(authStore.user).toBeNull();
@@ -33,7 +31,6 @@ describe("AuthStore", () => {
         const user = {
             id: 1,
             displayName: 'John Doe',
-            email: 'john@example.com',
             orcid: '0000-0001-2345-6789',
             role: UserRole.VIEWER,
             enabled: true,
@@ -66,8 +63,9 @@ describe("AuthStore", () => {
             text: async () => '',
         });
 
-        const consoleSpy = jest.spyOn(console, 'error')
-            .mockImplementation(() => { });
+        const consoleSpy = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
 
         try {
             const authStore = AuthStore.create();
@@ -81,14 +79,12 @@ describe("AuthStore", () => {
         }
     });
 
-
     // Test the loginOrLogout action for logging out the authenticated user
     it('logs out the authenticated user successfully', async () => {
         const authStore = AuthStore.create({
             user: {
                 id: 1,
                 displayName: 'John Doe',
-                email: 'john@example.com',
                 orcid: '0000-0001-2345-6789',
                 role: UserRole.VIEWER,
                 enabled: true,
@@ -101,10 +97,9 @@ describe("AuthStore", () => {
             headers: new Headers(),
         });
 
-        const reload = jest.fn();
         const browserWindow = {
             location: {
-                reload,
+                href: '',
             },
         } as unknown as Window;
 
@@ -113,8 +108,6 @@ describe("AuthStore", () => {
         expect(globalThis.fetch).toHaveBeenCalledTimes(1);
         expect(authStore.user).toBeNull();
         expect(authStore.isAuthenticated).toBe(false);
-        expect(reload).toHaveBeenCalledTimes(1);
+        expect(browserWindow.location.href).toBe('/');
     });
-
-
 });

@@ -84,6 +84,7 @@ paths:
       tags:
         - Users
       summary: Update current user profile
+      description: Update editable profile fields for the currently authenticated user.
       operationId: updateCurrentUser
       security:
         - sessionAuth: []
@@ -91,7 +92,6 @@ paths:
 
       requestBody:
         required: true
-        description: Updated user information
         content:
           application/json:
             schema:
@@ -114,6 +114,46 @@ paths:
 
         "401":
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Users
+      operationId: deleteCurrentUser
+      summary: Delete the current authenticated user's account
+      description: >
+        Deletes the authenticated user's N1H account according to the
+        project's account deletion and data retention policy.
+      
+      security:
+        - sessionAuth: []
+        - bearerAuth: []
+  
+      responses:
+        "204":
+          description: Account deleted successfully
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "409":
+          description: Account cannot be deleted due to data constraints
           content:
             application/json:
               schema:
@@ -145,7 +185,8 @@ components:
 
     UpdateUserRequest:
       type: object
-
+      required:
+        - displayName
       properties:
         displayName:
           type: string
@@ -153,12 +194,6 @@ components:
           maxLength: 200
           description: Updated display name within N1H.
           example: "Dr. Jane Doe"
-
-        email:
-          type: string
-          format: email
-          description: Updated contact email address.
-          example: "jane.doe@institution.org"
 
     UserRole:
       type: string
@@ -189,13 +224,6 @@ components:
           description: User's editable display name within N1H
           example: "Dr. Jane Doe"
 
-        email:
-          type: string
-          format: email
-          nullable: true
-          description: Optional N1H contact email address.
-          example: admin@n1h.org
-
         orcid:
           type: string
           nullable: true
@@ -209,6 +237,19 @@ components:
         enabled:
           type: boolean
           example: true
+        
+        lastLogin:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp of the user's most recent successful login.
+
+        credits:
+          type: number
+          minimum: 0
+          nullable: true
+          description: Current credit balance of the authenticated user.
+          example: 100.00
 
     LogoutResponse:
       type: object

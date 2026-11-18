@@ -19,7 +19,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
     constructor(
         protected messageService: MessageService,
         protected settings?: IHttpResponseHandlerSettings,
-    ) { }
+    ) {}
 
     handleSuccess(): void {
         if (this.settings && this.settings.showSuccessMessage) {
@@ -83,8 +83,7 @@ export class BaseHttpResponsesHandler implements IHttpResponsesHandler {
             this.messageService.show({
                 severity: 'error',
                 summary: 'Network Error',
-                detail:
-                    'Unable to complete the request. Please check your connection.',
+                detail: 'Unable to complete the request. Please check your connection.',
             });
             return;
         }

@@ -8,7 +8,6 @@ type BrowserWindow = Pick<Window, 'location'>;
 const AuthenticatedUser = types.model('AuthenticatedUser', {
     id: types.number,
     displayName: types.string,
-    email: types.maybeNull(types.string),
     orcid: types.maybeNull(types.string),
     role: types.enumeration<UserRole>('UserRole', Object.values(UserRole)),
     enabled: types.boolean,
@@ -71,7 +70,7 @@ export const AuthStore = types
                 try {
                     yield logout();
                     self.user = null;
-                    browserWindow.location.reload();
+                    browserWindow.location.href = "/";
                 } catch (error) {
                     console.error('Logout failed: ', error);
                 }
