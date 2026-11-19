@@ -8,7 +8,7 @@ import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
 import { darkenHexColor } from '../../../../shared';
 import { GraphService } from '../../../..';
-import { INeighborhoodExplorerStore } from '../../../../store/neighborhood-explorer-store';
+import { INeighborhoodExplorerStore } from '../../../../store/NeighborhoodExplorerStore';
 
 Cytoscape.use(cxtmenu);
 
@@ -218,10 +218,8 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         const parsed = JSON.parse(elements);
         if (typeof parsed === 'string') {
             const reParsed = JSON.parse(parsed);
-            this.props.store.setFromStringifiedElements(JSON.stringify(reParsed));
             this.cytoscapeCore.add(reParsed);
         } else {
-            this.props.store.setFromStringifiedElements(JSON.stringify(parsed));
             this.cytoscapeCore.add(parsed);
         }
         this.syncGraphToStore();
