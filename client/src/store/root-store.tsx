@@ -5,7 +5,7 @@ import { ScreenDeviceStore } from './ScreenDeviceStore';
 import { EntityDetailStore } from './EntityDetailStore';
 import { TutorialStore } from './TutorialStore';
 import { WarningStore } from './WarningStore';
-import { NeighborhoodExplorerStore } from './neighborhood-explorer-store';
+import { NeighborhoodExplorerStore } from './NeighborhoodExplorerStore';
 import { AuthStore } from './AuthStore';
 
 export const RootStore = types
