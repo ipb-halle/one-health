@@ -1,14 +1,19 @@
 package de.ipb_halle.server.auth;
 
 import de.ipb_halle.server.auth.utils.CustomAuthenticationFailureHandler;
+
 import de.ipb_halle.server.postgre.repositories.UserAuthenticationRepository;
 
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
@@ -67,6 +72,10 @@ public class SecurityConfig {
                                 .addFilterAfter(
                                                 new DisabledAccountFilter(userAuthenticationRepository),
                                                 AnonymousAuthenticationFilter.class)
+
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                                                .sessionFixation(sessionFixation -> sessionFixation.changeSessionId()))
 
                                 .logout(logout -> logout
                                                 .logoutUrl("/api/auth/logout")
