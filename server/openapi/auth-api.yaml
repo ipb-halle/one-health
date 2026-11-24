@@ -29,6 +29,7 @@ paths:
       operationId: logout
       security:
         - sessionAuth: []
+          csrfToken: []
 
       responses:
         "200":
@@ -44,6 +45,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: CSRF token missing or invalid
 
   /auth/me:
     get:
@@ -55,7 +58,6 @@ paths:
       operationId: getCurrentUser
       security:
         - sessionAuth: []
-        - bearerAuth: []
 
       responses:
         "200":
@@ -88,7 +90,7 @@ paths:
       operationId: updateCurrentUser
       security:
         - sessionAuth: []
-        - bearerAuth: []
+          csrfToken: []
 
       requestBody:
         required: true
@@ -118,6 +120,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+        "403":
+          description: CSRF token missing or invalid
+
         "404":
           description: User not found
           content:
@@ -132,26 +138,32 @@ paths:
       description: >
         Deletes the authenticated user's N1H account according to the
         project's account deletion and data retention policy.
-      
+
       security:
         - sessionAuth: []
-        - bearerAuth: []
-  
+          csrfToken: []
+
       responses:
         "204":
           description: Account deleted successfully
+
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+        "403":
+          description: CSRF token missing or invalid
+
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
         "409":
           description: Account cannot be deleted due to data constraints
           content:
@@ -171,15 +183,14 @@ components:
       description: |
         N1H application authentication using a server-side HTTP session.
 
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-XSRF-TOKEN
       description: |
-        N1H API authentication using an N1H-issued JWT access token.
-        Intended for mobile applications and external API clients.
-        Example:
-        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        CSRF protection token required for state-changing requests.
+        The frontend reads the XSRF-TOKEN cookie and sends its value
+        in the X-XSRF-TOKEN request header.
 
   schemas:
 
@@ -237,7 +248,7 @@ components:
         enabled:
           type: boolean
           example: true
-        
+
         lastLogin:
           type: string
           format: date-time
