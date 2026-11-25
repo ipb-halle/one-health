@@ -61,11 +61,17 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         const initialNodes = getSnapshot(props.store.nodes ?? []);
         const initialEdges = getSnapshot(props.store.edges ?? []);
 
+        const unfreeze = (el: any) => ({
+            ...el,
+            data: el.data ? { ...el.data } : el.data,
+            position: el.position ? { ...el.position } : el.position,
+        });
+
         if (initialNodes.length > 0) {
-            this.elements = [...initialNodes];
+            this.elements = [...initialNodes.map(unfreeze)];
         }
         if (initialEdges.length > 0) {
-            this.elements = [...this.elements, ...initialEdges];
+            this.elements = [...this.elements, ...initialEdges.map(unfreeze)];
         }
     }
 

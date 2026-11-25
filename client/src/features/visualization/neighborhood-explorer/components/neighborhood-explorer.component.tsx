@@ -826,7 +826,7 @@ const NeighborhoodExplorerComponent: React.FC<GraphExplorerProps> = ({
                                         graphService={graphService}
                                         messageService={messageService!}
                                         store={
-                                            neighborhoodExplorerStore as any
+                                            neighborhoodExplorerStore
                                         }></MemoChart>
                                 </div>
                             </div>
