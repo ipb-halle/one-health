@@ -81,7 +81,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.configureCytoscape(this.cytoscapeCore);
     }
 
-    private syncGraphToStore() {
+    componentWillUnmount() {
         if (!this.cytoscapeCore) return;
 
         const cytoscapeElements = this.cytoscapeCore.json().elements ?? {
@@ -192,14 +192,12 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.currentSelectedNode = 0;
         this.lockedNodes = new Map();
         this.cytoscapeCore.remove(this.cytoscapeCore.elements());
-        this.syncGraphToStore();
     }
 
     clean(): void {
         this.cytoscapeCore.nodes().forEach((n: any) => {
             if (!this.lockedNodes.has(n.id())) this.cytoscapeCore.remove(n);
         });
-        this.syncGraphToStore();
     }
 
     getNodes() {
@@ -229,8 +227,7 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
             this.cytoscapeCore.add(reParsed);
         } else {
             this.cytoscapeCore.add(parsed);
-        }
-        this.syncGraphToStore();
+        };
         this.redoLayout();
         this.resetView();
     }
@@ -337,7 +334,6 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                                 if (this.lockedNodes.has(node.id())) return;
                                 cytoscapeCore.remove(`node[id="${HIGHLIGHT}"]`);
                                 cytoscapeCore.remove(`node[id="${node.id()}"]`);
-                                this.syncGraphToStore();
                             },
                         },
                         {
@@ -445,7 +441,6 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
                                 this.selectedNodes = [node];
 
                                 node.addClass('selected');
-                                this.syncGraphToStore();
 
                                 // cytoscapeCore.nodes().forEach((node:any) => {
                                 //     node.unlock();
