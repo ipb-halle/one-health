@@ -6,9 +6,9 @@ import Cytoscape from 'cytoscape';
 import { getSnapshot } from 'mobx-state-tree';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
-import { darkenHexColor } from '../../../../shared';
-import { GraphService } from '../../../..';
-import { INeighborhoodExplorerStore } from '../../../../store/NeighborhoodExplorerStore';
+import { darkenHexColor } from '@/shared';
+import { GraphService } from '@/core/api/http/interfaces/graph-service';
+import { INeighborhoodExplorerStore } from '@/store/NeighborhoodExplorerStore';
 
 Cytoscape.use(cxtmenu);
 
@@ -61,18 +61,20 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         const initialNodes = getSnapshot(props.store.nodes ?? []);
         const initialEdges = getSnapshot(props.store.edges ?? []);
 
-        const unfreeze = (el: any) => ({
+        if (initialNodes.length > 0) {
+            this.elements = [...initialNodes.map(this.unfreeze)];
+        }
+        if (initialEdges.length > 0) {
+            this.elements = [...this.elements, ...initialEdges.map(this.unfreeze)];
+        }
+    }
+
+    private unfreeze(el: any) {
+        return {
             ...el,
             data: el.data ? { ...el.data } : el.data,
             position: el.position ? { ...el.position } : el.position,
-        });
-
-        if (initialNodes.length > 0) {
-            this.elements = [...initialNodes.map(unfreeze)];
-        }
-        if (initialEdges.length > 0) {
-            this.elements = [...this.elements, ...initialEdges.map(unfreeze)];
-        }
+        };
     }
 
     componentDidMount(): void {
