@@ -28,11 +28,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ITypeQuery } from '../../../features/visualization/co-ocurrence-search/models/type-query';
 import CoOccurrencesSummaryTour from './co-occurrences-summary-tour.component';
-import {
-    ILocalStorageStore,
-    LOCAL_STORAGE_KEYS,
-    STORES,
-} from '../../../store/inversify';
 
 import * as XLSX from 'xlsx';
 import { useNavigate } from 'react-router-dom';
@@ -98,9 +93,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
 
     const [links, setLinks] = useState<any>([]);
 
-    const localStorageStore = dependencyFactory.get<ILocalStorageStore>(
-        STORES.ILocalStorageStore,
-    );
+    const warningStore = useContext(RootStoreContext).warningStore;
 
     const tutorialStore = useContext(RootStoreContext).tutorialStore;
 
@@ -111,12 +104,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
             message: toolDisclaimer,
             acceptLabel: 'Understood',
             rejectLabel: 'Back',
-            accept: () => {
-                localStorageStore.setBooleanKeyValue(
-                    LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryWarning,
-                    false,
-                );
-            },
+            accept: () => warningStore.ChangeShowCoOccurrencesSummaryWarning(false),
             reject: () => {
                 navigate('/');
             },
@@ -193,9 +181,7 @@ const CoOccurrenceSummaryPageComponent: React.FC = () => {
         setRightTypeQuery(loaded.query.rightTypeQuery);
 
         if (
-            localStorageStore.getBooleanKeyValue(
-                LOCAL_STORAGE_KEYS.showCoOccurrencesSummaryWarning,
-            )
+            warningStore.showCoOccurrencesSummaryWarning
         )
             confirmTermsAndConditions();
     };

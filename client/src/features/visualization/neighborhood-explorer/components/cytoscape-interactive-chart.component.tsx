@@ -3,11 +3,12 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import cytoscape, { CoseLayoutOptions } from 'cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import Cytoscape from 'cytoscape';
+import { getSnapshot } from 'mobx-state-tree';
 import { MessageService } from '@/core/api/messages/interfaces/message-service';
 
-import { darkenHexColor } from '../../../../shared';
-import { GraphService } from '../../../..';
-import { INeighborhoodExplorerStore } from '../../../../store/inversify/neighborhood-explorer-store';
+import { darkenHexColor } from '@/shared';
+import { GraphService } from '@/core/api/http/interfaces/graph-service';
+import { INeighborhoodExplorerStore } from '@/store/NeighborhoodExplorerStore';
 
 Cytoscape.use(cxtmenu);
 
@@ -54,17 +55,26 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
         this.graphService = props.graphService;
         this.messageService = props.messageService;
         this.store = props.store;
-        console.log('running constructor');
 
         this.elements = [];
 
-        if (props.store.nodes) {
-            this.elements = [...props.store.nodes];
+        const initialNodes = getSnapshot(props.store.nodes ?? []);
+        const initialEdges = getSnapshot(props.store.edges ?? []);
+
+        if (initialNodes.length > 0) {
+            this.elements = [...initialNodes.map(this.unfreeze)];
         }
-        if (props.store.edges) {
-            this.elements = [...this.elements, ...props.store.edges];
+        if (initialEdges.length > 0) {
+            this.elements = [...this.elements, ...initialEdges.map(this.unfreeze)];
         }
-        // Initialize state if needed
+    }
+
+    private unfreeze(el: any) {
+        return {
+            ...el,
+            data: el.data ? { ...el.data } : el.data,
+            position: el.position ? { ...el.position } : el.position,
+        };
     }
 
     componentDidMount(): void {
@@ -72,22 +82,30 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     }
 
     componentWillUnmount() {
-        console.log('saving');
-        this.store.elements = this.cytoscapeCore.json().elements;
+        if (!this.cytoscapeCore) return;
 
-        const nodes = this.cytoscapeCore
-            .elements()
-            .jsons()
-            .filter((x: any) => x.group === 'nodes' && x.data.id !== HIGHLIGHT);
+        const cytoscapeElements = this.cytoscapeCore.json().elements ?? {
+            nodes: [],
+            edges: [],
+        };
+        const nextNodes = (cytoscapeElements.nodes ?? []).filter(
+            (x: any) => x.group === 'nodes' && x.data.id !== HIGHLIGHT,
+        );
+        const nextEdges = (cytoscapeElements.edges ?? []).filter(
+            (x: any) => x.group === 'edges',
+        );
 
-        const edges = this.cytoscapeCore
-            .elements()
-            .jsons()
-            .filter((x: any) => x.group === 'edges');
+        const currentNodes = getSnapshot(this.props.store.nodes ?? []);
+        const currentEdges = getSnapshot(this.props.store.edges ?? []);
 
-        this.store.nodes = nodes;
-        this.store.edges = edges;
-        console.log(this.store.elements);
+        if (
+            JSON.stringify(nextNodes) === JSON.stringify(currentNodes) &&
+            JSON.stringify(nextEdges) === JSON.stringify(currentEdges)
+        ) {
+            return;
+        }
+
+        this.props.store.setGraphData(nextNodes, nextEdges);
     }
 
     findNode(query: string) {
@@ -204,7 +222,12 @@ class CytoscapeInteractiveChartComponent extends Component<CytoscapeInteractiveC
     setElements(elements: any) {
         this.reset();
         const parsed = JSON.parse(elements);
-        this.cytoscapeCore.add(parsed);
+        if (typeof parsed === 'string') {
+            const reParsed = JSON.parse(parsed);
+            this.cytoscapeCore.add(reParsed);
+        } else {
+            this.cytoscapeCore.add(parsed);
+        };
         this.redoLayout();
         this.resetView();
     }
