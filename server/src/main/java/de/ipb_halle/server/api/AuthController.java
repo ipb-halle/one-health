@@ -1,7 +1,6 @@
 package de.ipb_halle.server.api;
 
 import de.ipb_halle.api.AuthApi;
-import de.ipb_halle.model.LogoutResponse;
 import de.ipb_halle.model.User;
 import de.ipb_halle.server.postgre.mapping.UserMapper;
 import de.ipb_halle.server.postgre.models.UserEntity;
@@ -60,12 +59,6 @@ public class AuthController implements AuthApi {
                     return ResponseEntity.ok(user);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @Override
-    public ResponseEntity<LogoutResponse> logout() {
-        return ResponseEntity.ok(
-                new LogoutResponse("Logged out successfully"));
     }
 
 }
