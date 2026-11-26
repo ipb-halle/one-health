@@ -1,6 +1,7 @@
 import { flow, types } from 'mobx-state-tree';
 import { UserRole } from '@/generated/auth/model';
-import { getCurrentUser, logout } from '@/generated/auth/auth/auth';
+import { getCurrentUser } from '@/generated/auth/auth/auth';
+import { httpRequest } from '@/core/api/http/http-client';
 import { HttpError } from '@/core/api/http/http-error';
 
 type BrowserWindow = Pick<Window, 'location'>;
@@ -68,7 +69,9 @@ export const AuthStore = types
         loginOrLogout: flow(function* loginOrLogout(browserWindow: BrowserWindow) {
             if (self.isAuthenticated) {
                 try {
-                    yield logout();
+                    yield httpRequest<void>('api/auth/logout', {
+                        method: 'POST',
+                    });
                     self.user = null;
                     browserWindow.location.href = "/";
                 } catch (error) {
