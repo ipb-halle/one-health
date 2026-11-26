@@ -106,6 +106,7 @@ public class SecurityConfig {
                                                                 "/api/login/oauth2/code/*"))
                                                 .userInfoEndpoint(userInfo -> userInfo
                                                                 .oidcUserService(n1hOidcUserService))
+                                                .failureHandler(customAuthenticationFailureHandler)
                                                 .defaultSuccessUrl(frontendUrl, true));
 
                 return http.build();
