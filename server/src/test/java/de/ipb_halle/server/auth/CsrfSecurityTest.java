@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.TestPropertySource;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,6 +36,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.mock;
+
+import java.util.Arrays;
 
 /**
  * Integration tests for the application's CSRF protection.
@@ -187,14 +191,50 @@ class CsrfSecurityTest {
     }
 
     /**
-     * Verifies that logout accepts a valid CSRF token.
+     * Verifies successful logout using the real CSRF cookie/header workflow.
      *
-     * This test focuses on CSRF validation; the application-level logout
-     * behavior is configured separately in SecurityConfig.
+     * Checks that Spring Security invalidates the session and clears both the
+     * session and CSRF cookies.
      */
     @Test
-    void shouldAllowLogoutWithValidCsrfToken() throws Exception {
-        mockMvc.perform(post("/api/auth/logout").with(csrf()))
-                .andExpect(status().isOk());
+    void shouldInvalidateSessionAndClearCookiesOnLogout() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("test-session", "active");
+
+        // Obtain the CSRF cookie by performing a GET request with the session
+        MockHttpServletResponse getResponse = mockMvc.perform(
+                get("/test/csrf").session(session))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        Cookie csrfCookie = getResponse.getCookie("XSRF-TOKEN");
+
+        assertNotNull(csrfCookie, "GET request should issue an XSRF-TOKEN cookie");
+
+        // Logout using the same cookie and its matching header.
+        MockHttpServletResponse logoutResponse = mockMvc.perform(
+                post("/api/auth/logout")
+                        .session(session)
+                        .cookie(csrfCookie)
+                        .header("X-XSRF-TOKEN", csrfCookie.getValue()))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        // Verify that the HTTP session was invalidated.
+
+        assertTrue(session.isInvalid(), "Logout should invalidate the HTTP session");
+
+        // Verify that both cookies are cleared by the logout response.
+        Cookie[] cookies = logoutResponse.getCookies();
+
+        assertTrue(Arrays.stream(cookies).anyMatch(
+                cookie -> "JSESSIONID".equals(cookie.getName()) && cookie.getMaxAge() == 0),
+                "Logout should clear the JSESSIONID cookie");
+        assertTrue(
+                Arrays.stream(cookies)
+                        .anyMatch(cookie -> "XSRF-TOKEN".equals(cookie.getName()) && cookie.getMaxAge() == 0),
+                "Logout should clear the XSRF-TOKEN cookie");
     }
 }
