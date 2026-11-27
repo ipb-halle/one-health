@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "users")
@@ -20,9 +22,6 @@ public class UserEntity {
     @Column(name = "display_name")
     private String displayName;
 
-    @Column(name = "email")
-    private String email;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role;
@@ -33,6 +32,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "registered_via", nullable = false)
     private AuthenticationProvider registeredVia;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
 
     public UserEntity() {
     }
@@ -51,14 +53,6 @@ public class UserEntity {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public UserRole getRole() {
@@ -83,6 +77,14 @@ public class UserEntity {
 
     public void setRegisteredVia(AuthenticationProvider registeredVia) {
         this.registeredVia = registeredVia;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
 }

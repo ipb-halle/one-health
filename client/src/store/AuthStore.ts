@@ -1,6 +1,7 @@
 import { flow, types } from 'mobx-state-tree';
 import { UserRole } from '@/generated/auth/model';
-import { getCurrentUser, logout } from '@/generated/auth/auth/auth';
+import { getCurrentUser } from '@/generated/auth/auth/auth';
+import { httpRequest } from '@/core/api/http/http-client';
 import { HttpError } from '@/core/api/http/http-error';
 
 type BrowserWindow = Pick<Window, 'location'>;
@@ -8,7 +9,6 @@ type BrowserWindow = Pick<Window, 'location'>;
 const AuthenticatedUser = types.model('AuthenticatedUser', {
     id: types.number,
     displayName: types.string,
-    email: types.maybeNull(types.string),
     orcid: types.maybeNull(types.string),
     role: types.enumeration<UserRole>('UserRole', Object.values(UserRole)),
     enabled: types.boolean,
@@ -69,9 +69,11 @@ export const AuthStore = types
         loginOrLogout: flow(function* loginOrLogout(browserWindow: BrowserWindow) {
             if (self.isAuthenticated) {
                 try {
-                    yield logout();
+                    yield httpRequest<void>('api/auth/logout', {
+                        method: 'POST',
+                    });
                     self.user = null;
-                    browserWindow.location.reload();
+                    browserWindow.location.href = "/";
                 } catch (error) {
                     console.error('Logout failed: ', error);
                 }
